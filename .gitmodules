@@ -1,0 +1,40 @@
+[submodule "lvgl"]
+	path = lvgl
+	url = https://github.com/lvgl/lvgl
+	branch = release/v8.3
+[submodule "bsp/n9h20"]
+	path = bsp/n9h20
+	url = https://github.com/OpenNuvoton/N9H20_NonOS_BSP
+	branch = master
+[submodule "bsp/n9h26"]
+	path = bsp/n9h26
+	url = https://github.com/OpenNuvoton/N9H26_NonOS_BSP
+	branch = master
+[submodule "bsp/n9h30"]
+	path = bsp/n9h30
+	url = https://github.com/OpenNuvoton/N9H30_NonOS
+	branch = master
+[submodule "bsp/m460"]
+	path = bsp/m460
+	url = https://github.com/OpenNuvoton/m460bsp
+	branch = master
+[submodule "bsp/m2354"]
+	path = bsp/m2354
+	url = https://github.com/OpenNuvoton/M2354BSP
+	branch = master
+[submodule "bsp/m480"]
+	path = bsp/m480
+	url = https://github.com/OpenNuvoton/M480BSP
+	branch = master
+[submodule "bsp/m031"]
+	path = bsp/m031
+	url = https://github.com/OpenNuvoton/M031BSP
+	branch = master
+[submodule "bsp/ma35d1"]
+	path = bsp/ma35d1
+	url = https://github.com/OpenNuvoton/MA35D1_NonOS_BSP
+	branch = master
+[submodule "bsp/nuc980"]
+	path = bsp/nuc980
+	url = https://github.com/OpenNuvoton/NUC980_NonOS_BSP
+	branch = master
