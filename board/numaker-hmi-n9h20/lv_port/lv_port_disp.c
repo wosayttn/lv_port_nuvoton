@@ -44,9 +44,8 @@ static void lv_port_disp_partial_update(lv_disp_drv_t *disp_drv, const lv_area_t
     }
     else
     {
-        lv_color_t *pDisp = (lv_color_t *)((uint32_t)psLCDInfo->pvVramStartAddr | BIT31) + (LV_HOR_RES_MAX * area->y1 + area->x1);
-
         int32_t x, y;
+
         for (y = 0; y < h; y++)
         {
             for (x = 0; x < w; x++)

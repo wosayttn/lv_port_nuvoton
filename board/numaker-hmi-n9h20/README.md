@@ -15,7 +15,7 @@ Nuvoton offers the HMI platform which is embedded with Nuvoton N9H MPU. The N9H2
 | lv_port | lvgl porting files |
 | lv_conf.h | Major lvgl configuration file |
 | main.c | main routine |
-| standalone.c | start-up routine for MDK4 |
+| standalone.c | minimal C library bootstrap for MDK4 |
 | wb_init.s | start-up routine for MDK4 |
 
 ## **KEIL project**
@@ -34,9 +34,9 @@ User can select listed **Build configurations** to build target execution using 
 | Target | Description |
 |-|-|
 | N9H20K5_480x272 | Use 480x272 LCD panel and NAND  storage |
-| N9H20K5_SD_480x272 | Use 800x480 LCD panel and SD storage |
+| N9H20K5_SD_480x272 | Use 480x272 LCD panel and SD storage |
 
-## Compiling option
+## Compiling options
 
 - The porting given CONFIG_LV_DISP_FULL_REFRESH to 0 by default, partial update approach is applied.
 
@@ -56,6 +56,10 @@ User can select listed **Build configurations** to build target execution using 
   #endif
   ```
 
+## **Purchase**
+
+[Nuvoton Direct](https://direct.nuvoton.com/en/numaker-emwin-n9h20)
+
 ## **Resources**
 
-[Tool/utility](../../bsp/n9h20/Tools)
+1. [TurboWriter](../../bsp/n9h20/Tools/PC_Tools)
