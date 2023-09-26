@@ -9,9 +9,15 @@
 #define __LV_GLUE_H__
 
 #include "lvgl.h"
+#include "sys_cache_ex.h"
+
+#define NVT_ALIGN(size, align)      (((size) + (align) - 1) & ~((align) - 1))
+#define NVT_ALIGN_DOWN(size, align) ((size) & ~((align) - 1))
 
 #define CONFIG_EXTERN_FREQUENCY     (sysGetExternalClock()*1000)
 #define CONFIG_TICK_PER_SECOND      1000
+
+#define NVT_MEM_ALIGN()             1000
 
 typedef struct
 {

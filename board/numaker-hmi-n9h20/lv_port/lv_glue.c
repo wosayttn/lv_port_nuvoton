@@ -9,9 +9,9 @@
 #include "lvgl.h"
 #include "lv_glue.h"
 
-#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    (LV_HOR_RES_MAX * LV_VER_RES_MAX * sizeof(lv_color_t) * CONFIG_LCD_FB_NUM)
+#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * LV_VER_RES_MAX * sizeof(lv_color_t) * CONFIG_LCD_FB_NUM), DEF_CACHE_LINE_SIZE)
 
-static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(32)));
+static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DEF_CACHE_LINE_SIZE)));
 
 extern S_CALIBRATION_MATRIX g_sCalMat;
 
@@ -71,8 +71,8 @@ static int nuvoton_fs_init(void)
 
     /* Format NAND if necessery */
 #if defined(NAND_2)
-    if ((fsDiskFreeSpace('C', &block_size, &free_size, &disk_size) < 0) ||
-            (fsDiskFreeSpace('D', &block_size, &free_size, &disk_size) < 0))
+    if ((fsDiskFreeSpace('C', (UINT32 *) &block_size, (UINT32 *)&free_size, (UINT32 *)&disk_size) < 0) ||
+            (fsDiskFreeSpace('D', (UINT32 *)&block_size, (UINT32 *)&free_size, (UINT32 *)&disk_size) < 0))
     {
         LV_LOG_INFO("unknow disk type, format device .....");
         if (fsTwoPartAndFormatAll((PDISK_T *)ptNDisk.pDisk, NAND1_1_SIZE * 1024, (u32TotalSize - NAND1_1_SIZE * 1024)) < 0)
@@ -182,13 +182,17 @@ int lcd_device_open(void)
     /* Specify pixel format. */
     lcdFormat.ucVASrcFormat = DRVVPOST_FRAME_RGB565;
 
-    LV_ASSERT(vpostLCMInit(&lcdFormat, (uint32_t *)s_au8FrameBuf) == 0);
+    LV_ASSERT(vpostLCMInit(&lcdFormat, (UINT32 *)s_au8FrameBuf) == 0);
 
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
     PFN_DRVVPOST_INT_CALLBACK pfnOld;
     vpostInstallCallBack(eDRVVPOST_VINT, lcd_vpost_handler, &pfnOld);
     vpostEnableInt(eDRVVPOST_VINT);
     sysEnableInterrupt(IRQ_VPOST);
+#endif
+
+#if (CONFIG_LV_GPU_USE_N9H20_BLT==1)
+    bltOpen();
 #endif
 
     return 0;
@@ -243,6 +247,10 @@ void lcd_device_close(void)
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
     sysDisableInterrupt(IRQ_VPOST);
     vpostDisableInt(eDRVVPOST_VINT);
+#endif
+
+#if (CONFIG_LV_GPU_USE_N9H20_BLT==1)
+    bltClose();
 #endif
 
 }

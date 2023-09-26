@@ -8,6 +8,9 @@
 
 #include "lvgl.h"
 #include "lv_glue.h"
+#if (CONFIG_LV_GPU_USE_N9H20_BLT==1)
+    #include "lv_gpu_n9h20_blt.h"
+#endif
 
 static void lv_port_disp_partial_update(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color_p)
 {
@@ -26,13 +29,13 @@ static void lv_port_disp_partial_update(lv_disp_drv_t *disp_drv, const lv_area_t
 
         LV_ASSERT((evVDMAIdx = (E_DRVEDMA_CHANNEL_INDEX)VDMA_FindandRequest()) == 0);
 
-        sysFlushCache(D_CACHE);
+        sys_cache_clean_dcache((uint32_t)color_p, lv_area_get_size(area) * sizeof(lv_color_t));
 
-        EDMA_SetupSingle(evVDMAIdx, (uint32_t)color_p, (uint32_t)pDisp, w * h * psLCDInfo->u32BytePerPixel);
+        EDMA_SetupSingle(evVDMAIdx, (uint32_t)color_p, (uint32_t)pDisp, w * h * sizeof(lv_color_t));
 
-        DrvEDMA_SetSourceStride(evVDMAIdx, w * psLCDInfo->u32BytePerPixel, 0);
+        DrvEDMA_SetSourceStride(evVDMAIdx, w * sizeof(lv_color_t), 0);
 
-        DrvEDMA_SetDestinationStrideOffset(evVDMAIdx, (psLCDInfo->u32ResWidth - w) * psLCDInfo->u32BytePerPixel);
+        DrvEDMA_SetDestinationStrideOffset(evVDMAIdx, (psLCDInfo->u32ResWidth - w) * sizeof(lv_color_t));
 
         outp32(REG_VDMA_CTCSR, inp32(REG_VDMA_CTCSR) | STRIDE_EN);
 
@@ -63,7 +66,8 @@ static void lv_port_disp_partial_update(lv_disp_drv_t *disp_drv, const lv_area_t
 static void *buf3_next = NULL;
 static void lv_port_disp_full_refresh(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color_p)
 {
-    sysFlushCache(D_CACHE);
+    //sysFlushCache(D_CACHE);
+    sys_cache_clean_dcache((uint32_t)color_p, lv_area_get_size(area)* sizeof(lv_color_t));
 
     /* Use PANDISPLAY without H/W copying */
     LV_ASSERT(lcd_device_control(evLCD_CTRL_PAN_DISPLAY, (void *)color_p) == 0);
@@ -136,6 +140,12 @@ void lv_port_disp_init(void)
 
     /*Set a display buffer*/
     disp_drv.draw_buf = &disp_buf;
+
+#if (CONFIG_LV_GPU_USE_N9H20_BLT==1)
+    disp_drv.draw_ctx_init = lv_draw_n9h20_blt_ctx_init;
+    disp_drv.draw_ctx_deinit = lv_draw_n9h20_blt_ctx_init;
+    disp_drv.draw_ctx_size = sizeof(lv_draw_n9h20_blt_ctx_t);
+#endif
 
     /*Finally register the driver*/
     lv_disp_drv_register(&disp_drv);
