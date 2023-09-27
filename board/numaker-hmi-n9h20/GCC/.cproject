@@ -122,6 +122,8 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/stress&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/widgets&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/music\assets&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../sls_files&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1464253970" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="N9H20K5=1"/>
@@ -318,6 +320,8 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/stress&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/widgets&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/music\assets&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../sls_files&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1758450561" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="N9H20K5=1"/>

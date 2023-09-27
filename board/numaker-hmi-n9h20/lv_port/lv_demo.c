@@ -8,7 +8,11 @@
 
 #include "lvgl.h"
 
-void lv_user_gui_init(void)
+#if defined (__GNUC__)
+    __attribute__((weak)) void ui_init(void)
+#else
+    __weak void ui_init(void)
+#endif
 {
 
 #if (LV_USE_DEMO_WIDGETS)

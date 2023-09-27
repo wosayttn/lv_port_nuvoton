@@ -45,6 +45,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>sls_files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>Driver/Startup_GCC.S</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h20/BSP/Driver/Source/Startup_GCC.S</locationURI>
