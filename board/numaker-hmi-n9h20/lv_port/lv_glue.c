@@ -180,7 +180,13 @@ int lcd_device_open(void)
     LCDFORMATEX lcdFormat = {0};
 
     /* Specify pixel format. */
+#if (LV_COLOR_DEPTH==16)
     lcdFormat.ucVASrcFormat = DRVVPOST_FRAME_RGB565;
+#elif (LV_COLOR_DEPTH==32)
+    lcdFormat.ucVASrcFormat = DRVVPOST_FRAME_RGBx888;
+#else
+#error "Wrong LV_COLOR_DEPTH definition. Please correct".
+#endif
 
     LV_ASSERT(vpostLCMInit(&lcdFormat, (UINT32 *)s_au8FrameBuf) == 0);
 
@@ -318,15 +324,29 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
     psInDevData->state = adc_read(ADC_NONBLOCK, (uint16_t *)&adc_x, (uint16_t *)&adc_y)
                          ? LV_INDEV_STATE_PRESSED : LV_INDEV_STATE_RELEASED;
 
-    if (psInDevData->state)
+    if (psInDevData->state == LV_INDEV_STATE_PRESSED)
     {
-        extern void ad_touch_cal(int32_t *sumx, int32_t *sumy);
-        ad_touch_cal((int32_t *)&adc_x, (int32_t *)&adc_y);
+        extern int ad_touch_map(int32_t *sumx, int32_t *sumy);
+        if (ad_touch_map((int32_t *)&adc_x, (int32_t *)&adc_y) == 0)
+        {
 
-        psInDevData->point.x = (int16_t)adc_x;
-        psInDevData->point.y = (int16_t)adc_y;
+            psInDevData->point.x = ((int16_t)adc_x < 0) ? 0 :
+                                   ((int16_t)adc_x >= LV_HOR_RES_MAX) ? (LV_HOR_RES_MAX - 1) :
+                                   adc_x;
 
-        LV_LOG_INFO("[%d, %d]", psInDevData->point.x, psInDevData->point.y);
+            psInDevData->point.y = ((int16_t)adc_y < 0) ? 0 :
+                                   ((int16_t)adc_y >= LV_VER_RES_MAX) ? (LV_VER_RES_MAX - 1) :
+                                   adc_y;
+
+            LV_LOG_INFO("[%d, %d]", psInDevData->point.x, psInDevData->point.y);
+        }
+        else
+        {
+            psInDevData->point.x = (int16_t)adc_x;
+
+            psInDevData->point.y = (int16_t)adc_y;
+        }
+
         return 1;
     }
 

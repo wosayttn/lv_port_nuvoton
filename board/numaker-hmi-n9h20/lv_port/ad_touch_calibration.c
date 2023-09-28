@@ -19,6 +19,7 @@ S_CALIBRATION_MATRIX g_sCalMat = { 35449, 105, -2482568, -79, -26579, 22557014, 
 #elif defined(__800x480__)
 S_CALIBRATION_MATRIX g_sCalMat = { 55392, 419, -2233488, -1037, -35995, 34183424, 65536 };
 #endif
+
 static const S_CALIBRATION_MATRIX g_sCalZero = { 1, 0, 0, 0, 1, 0, 1 };
 
 void ad_touch_reset_calmat(void)
@@ -161,9 +162,12 @@ const static lv_point_t sDispPoints[DEF_CAL_POINT_NUM] =
 };
 #endif
 
-void ad_touch_cal(int32_t *sumx, int32_t *sumy)
+int ad_touch_map(int32_t *sumx, int32_t *sumy)
 {
     int32_t xtemp, ytemp;
+
+    if (g_sCalMat.div == 1)
+        return -1;
 
     xtemp = *sumx;
     ytemp = *sumy;
@@ -173,6 +177,8 @@ void ad_touch_cal(int32_t *sumx, int32_t *sumy)
     *sumy = (g_sCalMat.f +
              g_sCalMat.d * xtemp +
              g_sCalMat.e * ytemp) / g_sCalMat.div;
+
+    return 0;
 }
 
 static void _cleanscreen(void)
@@ -251,21 +257,20 @@ int ad_touch_calibrate(void)
 
     ad_touch_reset_calmat();
 
+    _cleanscreen();
+
     for (i = 0; i < DEF_CAL_POINT_NUM; i++)
     {
         int count = 0;
-
-        _cleanscreen();
-
-        sysDelay(300);
+        uint32_t u32SumX, u32SumY;
 
         /* Ready to calibrate */
         _draw_bots(sDispPoints[i].x, sDispPoints[i].y);
 
-#define DEF_MAX_GET_POINT_NUM 5
+#define DEF_MAX_GET_POINT_NUM 10
 
-        sADCPoints[i].x = 0;
-        sADCPoints[i].y = 0;
+        u32SumX = 0;
+        u32SumY = 0;
 
         while (count < DEF_MAX_GET_POINT_NUM)
         {
@@ -275,22 +280,28 @@ int ad_touch_calibrate(void)
             }
             else
             {
-                sADCPoints[i].x += (int32_t)sInDevData.point.x;
-                sADCPoints[i].y += (int32_t)sInDevData.point.y;
-                LV_LOG_INFO("[%d %d] - Disp:[%d, %d] -> ADC:[%d, %d]",
+                u32SumX += (lv_coord_t)sInDevData.point.x;
+                u32SumY += (lv_coord_t)sInDevData.point.y;
+                LV_LOG_INFO("[%d %d] - Disp:[%d, %d] -> ADC:[%d, %d], SUM:[%d, %d]",
                             i,
                             count,
                             sDispPoints[i].x,
                             sDispPoints[i].y,
-                            sADCPoints[i].x,
-                            sADCPoints[i].y);
+                            sInDevData.point.x,
+                            sInDevData.point.y,
+                            u32SumX,
+                            u32SumY);
                 count++;
             }
         }
 
-        sADCPoints[i].x = (int32_t)((float)sADCPoints[i].x / DEF_MAX_GET_POINT_NUM);
-        sADCPoints[i].y = (int32_t)((float)sADCPoints[i].y / DEF_MAX_GET_POINT_NUM);
-        LV_LOG_INFO("[%d] - Disp:[%d, %d], ADC:[%d, %d]", i, sDispPoints[i].x, sDispPoints[i].y, sADCPoints[i].x, sADCPoints[i].y);
+        sADCPoints[i].x = (lv_coord_t)((float)u32SumX / DEF_MAX_GET_POINT_NUM);
+        sADCPoints[i].y = (lv_coord_t)((float)u32SumY / DEF_MAX_GET_POINT_NUM);
+        LV_LOG_INFO("[%d] - Disp:[%d, %d], AVG-ADC:[%d, %d]", i, sDispPoints[i].x, sDispPoints[i].y, sADCPoints[i].x, sADCPoints[i].y);
+
+        _cleanscreen();
+
+        while (touchpad_device_read(&sInDevData)); //Drain all unused points
 
         sysDelay(500);
     }

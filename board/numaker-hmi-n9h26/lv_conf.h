@@ -42,7 +42,7 @@
    ii. lvgl keeps previous surface and redraw new dirty joined area, the do vsync-switch.
 */
 #define CONFIG_LV_DISP_FULL_REFRESH      0
-#define CONFIG_LV_GPU_USE_N9H26_BLT      0
+#define CONFIG_LV_GPU_USE_N9H20_BLT      0
 
 #if CONFIG_LV_DISP_FULL_REFRESH
     #define CONFIG_LCD_FB_NUM            3
@@ -100,9 +100,9 @@
 #define LV_USE_LOG                      1
 
 //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
 //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
+#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
 //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
 //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
 

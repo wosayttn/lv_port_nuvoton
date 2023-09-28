@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>lvgl_n9h20</name>
+	<name>lvgl_n9h26</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -52,7 +52,7 @@
 		<link>
 			<name>Driver/Startup_GCC.S</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h20/BSP/Driver/Source/Startup_GCC.S</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h26/BSP/Driver/Source/Startup_GCC.S</locationURI>
 		</link>
 		<link>
 			<name>Src/main.c</name>

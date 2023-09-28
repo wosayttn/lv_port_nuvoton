@@ -11,9 +11,12 @@
 
 static void sys_init(void)
 {
-    sysInvalidCache();
-    sysEnableCache(CACHE_WRITE_BACK);
-    sysFlushCache(I_D_CACHE);
+    // Cache on.
+    if (! sysGetCacheState()) {
+        sysInvalidCache();
+        sysEnableCache(CACHE_WRITE_BACK);
+        sysFlushCache(I_D_CACHE);
+    }
 
     WB_UART_T uart =
     {
@@ -32,12 +35,7 @@ static void sys_init(void)
     sysSetTimerReferenceClock(CONFIG_SYS_TIMER, CONFIG_EXTERN_FREQUENCY);
     sysStartTimer(CONFIG_SYS_TIMER, CONFIG_TICK_PER_SECOND, PERIODIC_MODE);
 
-    LV_LOG_INFO("APLL: %d kHz\n", sysGetClock(eSYS_APLL));
-    LV_LOG_INFO("UPLL: %d kHz\n", sysGetClock(eSYS_UPLL));
-    LV_LOG_INFO("SYSTEM: %d kHz\n", sysGetClock(eSYS_SYSTEM));
-    LV_LOG_INFO("HCLK1: %d kHz\n", sysGetClock(eSYS_HCLK1));
-    LV_LOG_INFO("HCLK234: %d kHz\n", sysGetClock(eSYS_HCLK234));
-    LV_LOG_INFO("PCLK: %d kHz\n", sysGetClock(eSYS_PCLK));
+    sysSetLocalInterrupt (ENABLE_IRQ);  // Enable CPSR I bit
 }
 
 #if LV_USE_LOG

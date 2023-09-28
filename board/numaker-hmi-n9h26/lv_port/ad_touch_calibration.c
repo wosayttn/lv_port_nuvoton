@@ -326,28 +326,3 @@ int ad_touch_calibrate(void)
 
     return 0;
 }
-
-int ad_data_grab(void)
-{
-    uint32_t count = 0;
-
-    lv_indev_data_t sInDevData;
-
-    ad_touch_reset_calmat();
-
-    while (1)
-    {
-        if (!touchpad_device_read(&sInDevData))
-        {
-            continue;
-        }
-        else
-        {
-            sysprintf("[%d] [%d %d]\n",
-                      count,
-                      sInDevData.point.x,
-                      sInDevData.point.y);
-            count++;
-        }
-    }
-}

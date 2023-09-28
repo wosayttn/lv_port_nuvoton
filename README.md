@@ -25,7 +25,7 @@ git clone --recurse-submodules https://github.com/OpenNuvoton/lv_port_nuvoton
 | **NuMaker-HMI-N9H20** | ARM926EJS | [numaker-hmi-n9h20](./board/numaker-hmi-n9h20) |
 | **NuMaker-HMI-N9H26** | ARM926EJS | **Coming soon** |
 | **NuMaker-HMI-N9H30** | ARM926EJS | **Coming soon** |
-| **NuMaker-HMI-NUC980** | ARM926EJS | **Coming soon** |
+| **NuMaker-IIoT-NUC980G2D** | ARM926EJS | **Coming soon** |
 | **NuMaker-HMI-MA35D1-S1** | Cortex-A35 | **Coming soon** |
 | **NuMaker-HMI-M467** | Cortex-M4 | **Coming soon** |
 | **NuMaker-HMI-M2354** | Cortex-M23 | **Coming soon** |

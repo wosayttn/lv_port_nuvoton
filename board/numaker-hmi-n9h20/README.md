@@ -62,4 +62,4 @@ User can select listed **Build configurations** to build target execution using 
 
 ## **Resources**
 
-1. [TurboWriter](../../bsp/n9h20/Tools/PC_Tools)
+[TurboWriter](../../bsp/n9h20/Tools/PC_Tools)

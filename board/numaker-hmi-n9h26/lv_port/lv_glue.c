@@ -25,7 +25,7 @@ static int nuvoton_fs_init(void)
     /*  Init SD card                                                         */
     /*-----------------------------------------------------------------------*/
     /* clock from PLL */
-    sicIoctl(SIC_SET_CLOCK, sysGetPLLOutputKhz(eSYS_UPLL, CONFIG_EXTERN_FREQUENCY), 0, 0);
+    sicIoctl(SIC_SET_CLOCK, sysGetPLLOutputHz(eSYS_UPLL, CONFIG_EXTERN_FREQUENCY), 0, 0);
     sicOpen();
     LV_LOG_INFO("total sectors (%d)", sicSdOpen0());
 
@@ -98,7 +98,13 @@ int lcd_device_open(void)
     LCDFORMATEX lcdFormat = {0};
 
     /* Specify pixel format. */
+#if (LV_COLOR_DEPTH==16)
     lcdFormat.ucVASrcFormat = DRVVPOST_FRAME_RGB565;
+#elif (LV_COLOR_DEPTH==32)
+    lcdFormat.ucVASrcFormat = DRVVPOST_FRAME_RGBx888;
+#else
+#error "Wrong LV_COLOR_DEPTH definition. Please correct".
+#endif
 
     LV_ASSERT(vpostLCMInit(&lcdFormat, (UINT32 *)s_au8FrameBuf) == 0);
 
@@ -222,10 +228,8 @@ int touchpad_device_open(void)
 
     }
 #else
-    extern int ad_touch_calibrate(void);
+    //extern int ad_touch_calibrate(void);
     //ad_touch_calibrate();
-    //extern int ad_data_grab(void);
-    //ad_data_grab();
 #endif
 
     nuvoton_fs_fini();

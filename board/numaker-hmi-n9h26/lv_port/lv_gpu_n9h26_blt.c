@@ -149,8 +149,8 @@ static void lv_draw_n9h26_blt_blend_fill(lv_color_t *dest_buf, lv_coord_t dest_s
         clr_op.eDisplayFmt = eDRVBLT_DEST_RGB565;
         clr_op.i32Blend = 0;    // No alpha blending.
 #elif (LV_COLOR_DEPTH == 32)
-        clr_op.eDisplayFmt = eDRVBLT_DEST_RGB888;
-        clr_op.i32Blend = 1;    // No alpha blending.
+        clr_op.eDisplayFmt = eDRVBLT_DEST_ARGB8888;
+        clr_op.i32Blend = 0;    // No alpha blending.
 #endif
 
         bltFIFill(clr_op);
