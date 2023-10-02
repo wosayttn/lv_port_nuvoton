@@ -30,13 +30,13 @@ User can select listed **Target Name** to build target execution using uVision M
 
 ## **GCC project**
 
-User can select listed **Build configurations** to build target execution using uVision MDK4.
+User can select listed **Build configurations** to build target execution using Eclipse-base IDE.
 | Target | Description |
 |-|-|
 | N9H20K5_480x272 | Use 480x272 LCD panel and NAND  storage |
 | N9H20K5_SD_480x272 | Use 480x272 LCD panel and SD storage |
 
-## Compiling options
+## **Compiling options**
 
 - The porting given CONFIG_LV_DISP_FULL_REFRESH to 0 by default, partial update approach is applied.
 
