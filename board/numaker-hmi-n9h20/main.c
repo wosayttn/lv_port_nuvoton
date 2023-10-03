@@ -12,7 +12,8 @@
 static void sys_init(void)
 {
     // Cache on.
-    if (! sysGetCacheState()) {
+    if (! sysGetCacheState())
+    {
         sysInvalidCache();
         sysEnableCache(CACHE_WRITE_BACK);
         sysFlushCache(I_D_CACHE);
@@ -35,7 +36,7 @@ static void sys_init(void)
     sysSetTimerReferenceClock(CONFIG_SYS_TIMER, CONFIG_EXTERN_FREQUENCY);
     sysStartTimer(CONFIG_SYS_TIMER, CONFIG_TICK_PER_SECOND, PERIODIC_MODE);
 
-    sysSetLocalInterrupt (ENABLE_IRQ);  // Enable CPSR I bit
+    sysSetLocalInterrupt(ENABLE_IRQ);   // Enable CPSR I bit
 }
 
 #if LV_USE_LOG

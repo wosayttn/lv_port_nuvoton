@@ -15,7 +15,7 @@
 
 /* User can define ADC touch calibration matrix in board_dev.c. */
 #if defined(__800x480__)
-S_CALIBRATION_MATRIX g_sCalMat = { 13321, -53, -1069280, 96, 8461, -1863312, 65536  };
+S_CALIBRATION_MATRIX g_sCalMat = { 13292, 56, -1552344, -79, 8401, -1522648, 65536  };
 #endif
 
 static const S_CALIBRATION_MATRIX g_sCalZero = { 1, 0, 0, 0, 1, 0, 1 };
@@ -314,7 +314,13 @@ int ad_touch_calibrate(void)
 
         for (i = 0; i < DEF_CAL_POINT_NUM; i++)
         {
-            LV_LOG_INFO("[%d] - Disp:[%d, %d], ADC:[%d, %d]", i, sDispPoints[i].x, sDispPoints[i].y, sADCPoints[i].x, sADCPoints[i].y);
+            int32_t sumx, sumy;
+            sumx = (int32_t)sADCPoints[i].x;
+            sumy = (int32_t)sADCPoints[i].y;
+
+            ad_touch_map(&sumx, &sumy);
+
+            LV_LOG_INFO("[%d] - Disp:[%d, %d], ADC:[%d, %d] -> map[%d, %d]", i, sDispPoints[i].x, sDispPoints[i].y, sADCPoints[i].x, sADCPoints[i].y, sumx, sumy);
         }
     }
     else

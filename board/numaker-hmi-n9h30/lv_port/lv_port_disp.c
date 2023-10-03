@@ -23,6 +23,33 @@ static void lv_port_disp_partial_update(lv_disp_drv_t *disp_drv, const lv_area_t
     lv_color_t *pDisp = (lv_color_t *)((uint32_t)psLCDInfo->pvVramStartAddr | BIT31) + (LV_HOR_RES_MAX * area->y1 + area->x1);
 
     /* Update dirty region. */
+    /* Only catch full-screen case due to GDMA constraint(No stride feature). */
+    if ((lv_area_get_size(area) == (LV_HOR_RES_MAX * LV_VER_RES_MAX)))
+    {
+#define FULL_SCREEN_BYTE_COUNT (LV_HOR_RES_MAX * LV_VER_RES_MAX * sizeof(lv_color_t))
+
+        sys_cache_clean_dcache((uint32_t)color_p, FULL_SCREEN_BYTE_COUNT);
+
+        /* Disable/Reset GDMA Channel 0 */
+        outpw(REG_GDMA_CTL0,  0);
+
+        /* GDMA Channel 0 Source Base Address Register */
+        outpw(REG_GDMA_SRCB0, (uint32_t)color_p);
+
+        /* GDMA Channel 0 Destination Base Address Register */
+        outpw(REG_GDMA_DSTB0, (uint32_t)psLCDInfo->pvVramStartAddr);
+
+        /* GDMA Channel 0 Transfer byte count */
+        outpw(REG_GDMA_TCNT0, FULL_SCREEN_BYTE_COUNT >> 5);
+
+        /* Configurae GDMAEN, BME, TWS=2, SoftReq field of GDMA Channel 0.*/
+        outpw(REG_GDMA_CTL0, inpw(REG_GDMA_CTL0) | 0x12003);
+
+        while (!(inpw(REG_GDMA_INTCS) & 0x100));
+
+        outpw(REG_GDMA_INTCS, 0x100);
+    }
+    else
     {
         int32_t x, y;
 

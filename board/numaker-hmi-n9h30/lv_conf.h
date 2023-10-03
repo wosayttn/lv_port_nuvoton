@@ -18,7 +18,7 @@
     #define LV_VER_RES_MAX              480
     #define LV_COLOR_DEPTH              16
 
-    #define LV_DISP_DEF_REFR_PERIOD     33
+    #define LV_DISP_DEF_REFR_PERIOD     30
 #elif defined(__480x272__)
     #define LV_HOR_RES_MAX              480
     #define LV_VER_RES_MAX              272
@@ -44,7 +44,7 @@
    ii. lvgl keeps previous surface and redraw new dirty joined area, the do vsync-switch.
 */
 #define CONFIG_LV_DISP_FULL_REFRESH      0
-#define CONFIG_LV_GPU_USE_N9H30_2DGE     0
+#define CONFIG_LV_GPU_USE_N9H30_2DGE     1
 
 #if CONFIG_LV_DISP_FULL_REFRESH
     #define CONFIG_LCD_FB_NUM            3
@@ -90,8 +90,8 @@
 #define CONFIG_LV_LAYER_SIMPLE_BUF_SIZE (256*1024)
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
-#define LV_USE_DEMO_WIDGETS             1
-//#define LV_USE_DEMO_MUSIC               1
+//#define LV_USE_DEMO_WIDGETS             1
+#define LV_USE_DEMO_MUSIC               1
 
 #if LV_USE_DEMO_MUSIC
     #define LV_COLOR_SCREEN_TRANSP        1
@@ -99,15 +99,15 @@
 #endif
 
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      1
+#define LV_USE_LOG                      0
 
 #if LV_USE_LOG == 1
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
 #endif
 
 #endif
