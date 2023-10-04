@@ -1,11 +1,5 @@
 # **NuMaker-HMI-N9H26**
 
-Nuvoton offers the HMI platform which is embedded with Nuvoton N9H MPU. The N9H26 series with ARM926EJ-S core can operate at up to 240 MHz. It integrated TFT-LCD display controller, 2D graphics accelerator, H.264 and JPEG codec, supporting resolution up to 1024 x 768 pixels in parallel port, and the color depth up to 16.7 million colors ( 24-bit ) LCD screen output to deliver gorgeous display effects. It also offers built-in H.264 video decoder and voice decoder, which can streamline the peripheral circuits of HMI applications with sound playback. In addition, it embedded up to 64 MB DDR SDRAM, along with ample hardware storage and computing space for excellent design flexibility.
-
-<p align="center">
-<img src="https://direct.nuvoton.com/609-large_default/numaker-hmi-n9h26.jpg" alt="fishy" class="bg-primary">
-</p>
-
 ## **Folder Structure**
 
 | Folder Name | Description |
@@ -38,13 +32,13 @@ User can select listed **Build configurations** to build target execution using 
 
 - The porting given CONFIG_LV_DISP_FULL_REFRESH to 0 by default, partial update approach is applied.
 
-  ```bash
+  ```c
    #define CONFIG_LV_DISP_FULL_REFRESH      0
   ```
 
 - The porting given LV_USE_DEMO_WIDGETS to 1 by default, LVGL Widgets will executed at startup.
 
-  ```bash
+  ```c
   #define LV_USE_DEMO_WIDGETS             1
   //#define LV_USE_DEMO_MUSIC               1
 

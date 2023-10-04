@@ -1,11 +1,5 @@
 # **NuMaker-HMI-N9H20**
 
-Nuvoton offers the HMI platform which is embedded with Nuvoton N9H MPU. The N9H20 series with ARM926EJ-S core can operate at up to 200 MHz. It integrated TFT-LCD display controller, 2D graphics accelerator and JPEG codec, supporting resolution up to 1024x768 pixels in parallel port, and the color depth up to 16.7 million colors ( 24-bit ) LCD screen output to deliver gorgeous display effects. It also offers built-in voice decoder, which can streamline the peripheral circuits of HMI applications with sound playback. In addition, it embedded up to 32 MB DDR SDRAM, along with ample hardware storage and computing space for excellent design flexibility.
-
-<p align="center">
-<img src="https://www.nuvoton.com/export/sites/nuvoton/images/IoT-Solution/NuDesign_TFT_LCD4.3F.png_555322878.png" alt="fishy" class="bg-primary">
-</p>
-
 ## Folder Structure
 
 | Folder Name | Description |
@@ -40,13 +34,13 @@ User can select listed **Build configurations** to build target execution using 
 
 - The porting given CONFIG_LV_DISP_FULL_REFRESH to 0 by default, partial update approach is applied.
 
-  ```bash
+  ```c
    #define CONFIG_LV_DISP_FULL_REFRESH      0
   ```
 
 - The porting given LV_USE_DEMO_WIDGETS to 1 by default, LVGL Widgets will executed at startup.
 
-  ```bash
+  ```c
   #define LV_USE_DEMO_WIDGETS             1
   //#define LV_USE_DEMO_MUSIC               1
 
