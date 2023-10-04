@@ -9,7 +9,6 @@
 #define __LV_GLUE_H__
 
 #include "lvgl.h"
-#include "sys_cache_ex.h"
 #include "lcd.h"
 #include "adc.h"
 

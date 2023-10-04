@@ -28,7 +28,7 @@ static void lv_port_disp_partial_update(lv_disp_drv_t *disp_drv, const lv_area_t
     {
 #define FULL_SCREEN_BYTE_COUNT (LV_HOR_RES_MAX * LV_VER_RES_MAX * sizeof(lv_color_t))
 
-        sys_cache_clean_dcache((uint32_t)color_p, FULL_SCREEN_BYTE_COUNT);
+        sysCleanDcache((UINT32)color_p, FULL_SCREEN_BYTE_COUNT);
 
         /* Disable/Reset GDMA Channel 0 */
         outpw(REG_GDMA_CTL0,  0);
@@ -70,8 +70,7 @@ static void lv_port_disp_partial_update(lv_disp_drv_t *disp_drv, const lv_area_t
 static void *buf3_next = NULL;
 static void lv_port_disp_full_refresh(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color_p)
 {
-    //sysFlushCache(D_CACHE);
-    sys_cache_clean_dcache((uint32_t)color_p, lv_area_get_size(area)* sizeof(lv_color_t));
+    sysCleanDcache((UINT32)color_p, lv_area_get_size(area)* sizeof(lv_color_t));
 
     /* Use PANDISPLAY without H/W copying */
     LV_ASSERT(lcd_device_control(evLCD_CTRL_PAN_DISPLAY, (void *)color_p) == 0);

@@ -477,11 +477,6 @@
                 </FileArmAds>
               </FileOption>
             </File>
-            <File>
-              <FileName>sys_cache_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sys_cache_ex.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

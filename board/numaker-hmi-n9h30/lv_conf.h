@@ -37,7 +37,6 @@
 (1) Apply partial update:
     i. Higher FPS.
    ii. Easy tearing when sliding.
-  iii. Copy offline surface buffer to on-screen buffer.
 
 (2) Apply full-refresh:
     i. Tearingless by switching VRAM start address after receiving Vsync of VPOST.
@@ -90,8 +89,8 @@
 #define CONFIG_LV_LAYER_SIMPLE_BUF_SIZE (256*1024)
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
-//#define LV_USE_DEMO_WIDGETS             1
-#define LV_USE_DEMO_MUSIC               1
+#define LV_USE_DEMO_WIDGETS             1
+//#define LV_USE_DEMO_MUSIC               1
 
 #if LV_USE_DEMO_MUSIC
     #define LV_COLOR_SCREEN_TRANSP        1

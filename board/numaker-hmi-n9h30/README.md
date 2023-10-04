@@ -24,7 +24,6 @@ User can select listed **Target Name** to build target execution using uVision M
 | Target | Description |
 |-|-|
 | N9H30F6_800x480 | Use 800x480 LCD panel |
-| N9H30F6_SD_800x480 | Use 800x480 LCD panel and SD storage |
 
 ## **GCC project**
 
@@ -32,19 +31,18 @@ User can select listed **Build configurations** to build target execution using 
 | Target | Description |
 |-|-|
 | N9H30F6_800x480 | Use 800x480 LCD panel |
-| N9H30F6_SD_800x480 | Use 800x480 LCD panel and SD storage |
 
 ## **Compiling options**
 
 - The porting given CONFIG_LV_DISP_FULL_REFRESH to 0 by default, partial update approach is applied.
 
-  ```bash
+  ```c
    #define CONFIG_LV_DISP_FULL_REFRESH      0
   ```
 
 - The porting given LV_USE_DEMO_WIDGETS to 1 by default, LVGL Widgets will executed at startup.
 
-  ```bash
+  ```c
   #define LV_USE_DEMO_WIDGETS             1
   //#define LV_USE_DEMO_MUSIC               1
 
@@ -60,4 +58,4 @@ User can select listed **Build configurations** to build target execution using 
 
 ## **Resources**
 
-[TurboWriter](../../bsp/n9h30/Tools/PC_Tools)
+[NuWriter](https://github.com/OpenNuvoton/NUC970_NuWriter)
