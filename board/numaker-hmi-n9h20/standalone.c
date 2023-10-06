@@ -30,6 +30,7 @@ void _ttywrch(int ch)
 }
 
 
+#pragma import(__use_two_region_memory)
 __value_in_regs struct R0_R3
 {
     unsigned heap_base, stack_base, heap_limit, stack_limit;
@@ -41,6 +42,7 @@ __user_initial_stackheap(unsigned int R0, unsigned int SP, unsigned int R2, unsi
     //config.heap_base = 0x00060000;
     config.heap_base = (unsigned int)&Image$$ZI$$Limit;
     config.stack_base = SP;
+    config.heap_limit = SP - 0x8000;
 
     /*
     To place heap_base directly above the ZI area, use:

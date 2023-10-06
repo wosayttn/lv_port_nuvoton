@@ -21,6 +21,7 @@ User can select listed **Target Name** to build target execution using uVision M
 | N9H20K5_NAND_800x480 | Use 800x480 LCD panel and NAND  storage |
 | N9H20K5_SD_480x272 | Use 480x272 LCD panel and SD storage |
 | N9H20K5_SD_800x480 | Use 800x480 LCD panel and SD storage |
+| N9H20K5_NAND_480x272_FreeRTOS | Use 480x272 LCD panel, NAND storage and run on FreeRTOS environment |
 
 ## **GCC project**
 

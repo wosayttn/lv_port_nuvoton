@@ -10,7 +10,7 @@
 #include "lv_glue.h"
 
 #define DEF_CAL_POINT_NUM  5
-#define DEF_DOT_NUMBER    9
+#define DEF_DOT_NUMBER     9
 #define DOTS_NUMBER       (DEF_DOT_NUMBER*DEF_DOT_NUMBER)
 
 /* User can define ADC touch calibration matrix in board_dev.c. */

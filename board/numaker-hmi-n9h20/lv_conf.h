@@ -54,7 +54,11 @@
 
 #define LV_TICK_CUSTOM 1
 #define LV_TICK_CUSTOM_INCLUDE          LV_NUVOTON_INCLUDE
-#define LV_TICK_CUSTOM_SYS_TIME_EXPR    (sysGetTicks(CONFIG_SYS_TIMER))    /*Expression evaluating to current system time in ms*/
+#if defined(__FreeRTOS__)
+    #define LV_TICK_CUSTOM_SYS_TIME_EXPR    (xTaskGetTickCount())    /*Expression evaluating to current system time in ms*/
+#else
+    #define LV_TICK_CUSTOM_SYS_TIME_EXPR    (sysGetTicks(CONFIG_SYS_TIMER))    /*Expression evaluating to current system time in ms*/
+#endif
 
 #define LV_MEMCPY_MEMSET_STD            1
 
@@ -96,14 +100,16 @@
     #define LV_DEMO_MUSIC_AUTO_PLAY       1
 #endif
 
-#define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      1
+#define LV_USE_PERF_MONITOR               1
+#define LV_USE_LOG                        0
 
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
-#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
-//#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
+#if LV_USE_LOG
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
+#endif
 
 #endif

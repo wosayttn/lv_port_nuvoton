@@ -27,15 +27,15 @@ F_BIT		EQU		0x40
 ;----------------------------
  IF :DEF:N9H20K1
 RAM_Limit       EQU     0x200000          	; For unexpanded hardware board
- ENDIF 
+ ENDIF
 
  IF :DEF:N9H20K3
 RAM_Limit       EQU     0x800000          	; For unexpanded hardware board
- ENDIF 
-	 
+ ENDIF
+
  IF :DEF:N9H20K5
 RAM_Limit       EQU     0x2000000          	; For unexpanded hardware board
- ENDIF 
+ ENDIF
 
 UND_Stack		EQU		RAM_Limit
 Abort_Stack		EQU		RAM_Limit-256
@@ -46,6 +46,10 @@ USR_Stack		EQU		RAM_Limit
 
 
 	ENTRY
+ IF :DEF:__FreeRTOS__
+	IMPORT	vPortYieldProcessor
+	IMPORT	vPreemptiveTick
+ ENDIF
 	EXPORT  Reset_Go
 
 
@@ -63,11 +67,20 @@ Vector_Table
 
 Reset_Addr      DCD     Reset_Go
 Undefined_Addr  DCD     Undefined_Handler
+ IF :DEF:__FreeRTOS__
+SWI_Addr        DCD     vPortYieldProcessor
+ ELSE
 SWI_Addr        DCD     SWI_Handler1
+ ENDIF
+
 Prefetch_Addr   DCD     Prefetch_Handler
 Abort_Addr      DCD     Abort_Handler
 				DCD		0
+ IF :DEF:__FreeRTOS__
+IRQ_Addr        DCD     vPreemptiveTick
+ ELSE
 IRQ_Addr        DCD     IRQ_Handler
+ ENDIF
 FIQ_Addr        DCD     FIQ_Handler
 
 
@@ -81,7 +94,13 @@ FIQ_Addr        DCD     FIQ_Handler
 Undefined_Handler
         B       Undefined_Handler
 SWI_Handler1
+ IF :DEF:__FreeRTOS__
+ 		mov 	r0, #0
+		movs	pc, lr
+ ELSE
         B       SWI_Handler1
+ ENDIF
+
 Prefetch_Handler
         B       Prefetch_Handler
 Abort_Handler
