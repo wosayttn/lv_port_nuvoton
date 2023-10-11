@@ -186,7 +186,7 @@ static void _cleanscreen(void)
     static S_LCD_INFO sLcdInfo = {0};
     LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
 
-    volatile lv_color_t *plvColorStart = (volatile lv_color_t *)sLcdInfo.pvVramStartAddr;
+    volatile lv_color_t *plvColorStart = (volatile lv_color_t *)nc_ptr(sLcdInfo.pvVramStartAddr);
     for (i = 0; i < LV_HOR_RES_MAX * LV_VER_RES_MAX; i++)
     {
 #if (LV_COLOR_SIZE == 16)  //RGB565
@@ -211,7 +211,7 @@ static void _draw_bots(int x, int y)
 
 #if (LV_COLOR_SIZE == 16)  //RGB565
     {
-        uint16_t *pu16Start = (uint16_t *)((uint32_t)sLcdInfo.pvVramStartAddr + (start_y) * (LV_HOR_RES_MAX * sizeof(lv_color_t)) + (start_x * 2));
+        uint16_t *pu16Start = (uint16_t *)(nc_ptr(sLcdInfo.pvVramStartAddr) + (start_y) * (LV_HOR_RES_MAX * sizeof(lv_color_t)) + (start_x * 2));
         for (i = 0; i < DEF_DOT_NUMBER; i++)
         {
             for (j = 0; j < DEF_DOT_NUMBER; j++)
@@ -224,7 +224,7 @@ static void _draw_bots(int x, int y)
     }
 #elif (LV_COLOR_SIZE == 32)  //ARGB888
     {
-        uint32_t *pu32Start = (uint32_t *)((uint32_t)sLcdInfo.pvVramStartAddr + (start_y) * (LV_HOR_RES_MAX * sizeof(lv_color_t)) + (start_x * 4));
+        uint32_t *pu32Start = (uint32_t *)(nc_ptr(sLcdInfo.pvVramStartAddr) + (start_y) * (LV_HOR_RES_MAX * sizeof(lv_color_t)) + (start_x * 4));
         for (i = 0; i < DEF_DOT_NUMBER; i++)
         {
             for (j = 0; j < DEF_DOT_NUMBER; j++)

@@ -35,7 +35,7 @@
     i. Tearingless by switching VRAM start address after receiving Vsync of VPOST.
    ii. lvgl keeps previous surface and redraw new dirty joined area, the do vsync-switch.
 */
-#define CONFIG_LV_DISP_FULL_REFRESH      0
+#define CONFIG_LV_DISP_FULL_REFRESH      1
 
 #if CONFIG_LV_DISP_FULL_REFRESH
     #define CONFIG_LCD_FB_NUM            3
@@ -90,7 +90,7 @@
 #endif
 
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      0
+#define LV_USE_LOG                      1
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE

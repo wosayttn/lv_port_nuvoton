@@ -6,6 +6,8 @@
 |-|-|
 | GCC | GCC project file |
 | lv_port | lvgl porting files |
+| sls_files | User UI files SLS exported |
+| nuwriter_scripts | User UI files SLS exported |
 | lv_conf.h | Major lvgl configuration file |
 | main.c | main routine |
 
@@ -14,14 +16,14 @@
 User can select listed **Build configurations** to build target execution using Eclipse-base IDE.
 | Target | Description |
 |-|-|
-| MA35D1_800x480 | Use 800x480 LCD panel |
+| MA35D1_1024x600 | Use 1024x600 LCD panel |
 
 ## **Compiling options**
 
-- The porting given CONFIG_LV_DISP_FULL_REFRESH to 0 by default, partial update approach is applied.
+- The porting given CONFIG_LV_DISP_FULL_REFRESH to 1 by default.
 
   ```c
-   #define CONFIG_LV_DISP_FULL_REFRESH      0
+   #define CONFIG_LV_DISP_FULL_REFRESH      1
   ```
 
 - The porting given LV_USE_DEMO_WIDGETS to 1 by default, LVGL Widgets will executed at startup.
@@ -38,8 +40,8 @@ User can select listed **Build configurations** to build target execution using 
 
 ## **Purchase**
 
-[Nuvoton Direct](https://direct.nuvoton.com/en/numaker-hmi-ma35d1)
+[Nuvoton Direct](https://direct.nuvoton.com/en/numaker-hmi-ma35d1-s1)
 
 ## **Resources**
 
-[NuWriter](https://github.com/OpenNuvoton/NUC970_NuWriter)
+[NuWriter](https://github.com/OpenNuvoton/MA35D1_NuWriter)

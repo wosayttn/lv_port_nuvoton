@@ -6,6 +6,7 @@
 |-|-|
 | GCC | GCC project file |
 | KEIL | MDK4 project file |
+| sls_files | User UI files SLS exported |
 | lv_port | lvgl porting files |
 | lv_conf.h | Major lvgl configuration file |
 | main.c | main routine |

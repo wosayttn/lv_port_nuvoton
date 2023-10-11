@@ -62,5 +62,6 @@ int touchpad_device_open(void);
 int touchpad_device_read(lv_indev_data_t *psInDevData);
 void touchpad_device_close(void);
 int touchpad_device_control(int cmd, void *argv);
+void sysDelay(uint32_t ms);
 
 #endif /* __LV_GLUE_H__ */

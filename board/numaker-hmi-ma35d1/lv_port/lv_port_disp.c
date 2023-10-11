@@ -40,7 +40,7 @@ static void lv_port_disp_partial_update(lv_disp_drv_t *disp_drv, const lv_area_t
 static void *buf3_next = NULL;
 static void lv_port_disp_full_refresh(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color_p)
 {
-    //TODO sysCleanDcache((UINT32)color_p, lv_area_get_size(area)* sizeof(lv_color_t));
+    dcache_clean_by_mva(color_p, lv_area_get_size(area) * sizeof(lv_color_t));
 
     /* Use PANDISPLAY without H/W copying */
     LV_ASSERT(lcd_device_control(evLCD_CTRL_PAN_DISPLAY, (void *)color_p) == 0);
@@ -91,8 +91,8 @@ void lv_port_disp_init(void)
         disp_drv.flush_cb = lv_port_disp_full_refresh;
 
         buf1 = sLcdInfo.pvVramStartAddr;
-        buf2 = (void *)((uint64_t)buf1 + u32FBSize);
-        buf3_next = (void *)((uint64_t)buf2 + u32FBSize);
+        buf2 = buf1 + u32FBSize;
+        buf3_next = buf2 + u32FBSize;
 
         /*Initialize `disp_buf` with the buffer(s).*/
         lv_disp_draw_buf_init(&disp_buf, buf1, buf2, sLcdInfo.u32ResHeight * sLcdInfo.u32ResWidth);
@@ -103,7 +103,7 @@ void lv_port_disp_init(void)
     {
         disp_drv.flush_cb = lv_port_disp_partial_update;
 
-        buf1 = (void *)(((uint64_t)sLcdInfo.pvVramStartAddr) + u32FBSize);
+        buf1 = sLcdInfo.pvVramStartAddr + u32FBSize;
 
         /*Initialize `disp_buf` with the buffer(s).*/
         lv_disp_draw_buf_init(&disp_buf, buf1, NULL, sLcdInfo.u32ResHeight * sLcdInfo.u32ResWidth);

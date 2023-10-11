@@ -100,6 +100,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/uart.c</locationURI>
 		</link>
 		<link>
+			<name>Driver/adc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/adc.c</locationURI>
+		</link>
+		<link>
 			<name>Driver/clk.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/clk.c</locationURI>

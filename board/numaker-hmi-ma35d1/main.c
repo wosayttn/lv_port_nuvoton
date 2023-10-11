@@ -9,11 +9,6 @@
 #include "lvgl.h"
 #include "lv_glue.h"
 
-static void sysDelay(uint32_t ms)  {
-	volatile uint32_t tgtTicks = msTicks0 + ms;             // target tick count to delay
-    while (msTicks0 < tgtTicks);
-}
-
 static void sys_init(void)
 {
     uint32_t pixelclk;
@@ -27,15 +22,11 @@ static void sys_init(void)
     /* Select IP clock source */
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL2_UART0SEL_HXT, CLK_CLKDIV1_UART0(1));
 
-    /* Update System Core Clock */
-    /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock. */
-    SystemCoreClockUpdate();
-
     /* Set GPE multi-function pins for UART0 RXD and TXD */
     SYS->GPE_MFPH &= ~(SYS_GPE_MFPH_PE14MFP_Msk | SYS_GPE_MFPH_PE15MFP_Msk);
     SYS->GPE_MFPH |= (SYS_GPE_MFPH_PE14MFP_UART0_TXD | SYS_GPE_MFPH_PE15MFP_UART0_RXD);
 
-    /* Init UART to 115200-8n1 for print message */
+    /* Initial UART to 115200-8n1 for print message */
     UART_Open(UART0, 115200);
 
     global_timer_init();
@@ -62,8 +53,8 @@ int main(void)
     extern void lv_port_disp_init(void);
     lv_port_disp_init();
 
-    extern void lv_port_indev_init(void);
-    lv_port_indev_init();
+    //TODO: extern void lv_port_indev_init(void);
+    //TODO: lv_port_indev_init();
 
     extern void ui_init(void);
     ui_init();
