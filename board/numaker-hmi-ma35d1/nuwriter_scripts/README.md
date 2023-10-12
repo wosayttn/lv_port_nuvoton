@@ -67,6 +67,22 @@ Program header1, DDR timing setting and GCC\MA35D1_1024x600\lvgl_ma35d1.bin bina
 
 Program header1, DDR timing setting and GCC\MA35D1_1024x600\lvgl_ma35d1.bin binary file into SPI NOR flash.
 
+## **Program firmware using NuWriter**
+
+To switch SW4 dip-switch on NuMaker-BASE-MA35D1B1 to do corresponding actions as below.
+
+**Power-on Setting**
+L: OFF dip-switch
+H: ON dip-switch
+
+| Memory Storage | **Burn to** settings | **Boot from** settings |
+|--|--|--|
+| **DDR** | <ul><li>Switch 1(PG0) to ON.</li><li>Switch 3(PG2) to ON.</li><li>Switch 4(PG3) to ON.</li><li>Switch Others to OFF.</li></ul> |  |
+| **EMMC**<br>(Select eMMC1 device and 8-bit mode) | <ul><li>Switch 1(PG0) to ON.</li><li>Switch 3(PG2) to ON.</li><li>Switch 4(PG3) to ON.</li><li>Switch 7(PG6) to ON.</li><li>Switch 8(PG7) to ON.</li><li>Switch Others to OFF.</li></ul> | <ul><li>Switch 1(PG0) to ON.</li><li>Switch 3(PG2) to ON.</li><li>Switch 7(PG6) to ON.</li><li>Switch 8(PG7) to ON.</li><li>Switch Others to OFF.</li></ul> |
+| **Raw NAND**<br>(Select Ignore BCH and Page setting) | <ul><li>Switch 1(PG0) to ON.</li><li>Switch 3(PG2) to ON.</li><li>Switch 4(PG3) to ON.</li><li>Switch Others to OFF.</li></ul> | <ul><li>Switch 1(PG0) to ON.</li><li>Switch 4(PG3) to ON.</li><li>Switch Others to OFF.</li></ul> |
+| **Serial NAND**<br>(Select 4-bit mode) | <ul><li>Switch 1(PG0) to ON.</li><li>Switch 3(PG2) to ON.</li><li>Switch 4(PG3) to ON.</li><li>Switch 7(PG6) to ON.</li><li>Switch Others to OFF.</li></ul> | <ul><li>Switch 1(PG0) to ON.</li><li>Switch 7(PG6) to ON.</li><li>Switch Others to OFF.</li></ul> |
+| **Serial NOR**<br>(Select 4-bit mode) | <ul><li>Switch 1(PG0) to ON.</li><li>Switch 3(PG2) to ON.</li><li>Switch 4(PG3) to ON.</li><li>Switch 7(PG6) to ON.</li><li>Switch 8(PG7) to ON.</li><li>Switch Others to OFF.</li></ul> | <ul><li>Switch 1(PG0) to ON.</li><li>Switch 7(PG6) to ON.</li><li>Switch 8(PG7) to ON.</li><li>Switch Others to OFF.</li></ul> |
+
 ## **Troubleshoot**
 
 ### **Fail to create symbolic folder**
@@ -90,6 +106,7 @@ For example, the **nuwriter_ddr_download_and_run.bat** modification is as follow
 
 ```bash
 cd MA35D1_NuWriter
+
 :forever_develop
 NuWriter_MA35.exe -a ddrimg\enc_ddr3_winbond_256mb.bin
 IF %ERRORLEVEL% EQU 0 (

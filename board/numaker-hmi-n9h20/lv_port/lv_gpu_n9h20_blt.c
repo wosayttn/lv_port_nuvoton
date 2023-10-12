@@ -14,7 +14,6 @@
  *      INCLUDES
  *********************/
 #include <lvgl.h>
-#include "sys_cache_ex.h"
 #include "lv_gpu_n9h20_blt.h"
 /*********************
  *      DEFINES
@@ -124,8 +123,7 @@ static void lv_draw_n9h20_blt_blend_fill(lv_color_t *dest_buf, lv_coord_t dest_s
 
     LV_LOG_INFO("[%s] %d %d %08x color=%08x@%08x %d %d %dx%d", __func__, dest_stride, lv_area_get_size(fill_area), lv_color_to32(color),  color, dest_buf, fill_area->x1, fill_area->y1, fill_area_w, fill_area_h);
 
-    sys_cache_clean_invalidated_dcache((uint32_t)start_buf, dest_stride * fill_area_h);
-    //sysCleanInvalidatedDcache((UINT32)start_buf, (UINT32)dest_stride * fill_area_h);
+    sysCleanInvalidatedDcache((UINT32)start_buf, (UINT32)dest_stride * fill_area_h);
 
     // Fill color is non-premultiplied alpha.
     {

@@ -488,11 +488,6 @@
               <FilePath>..\standalone.c</FilePath>
             </File>
             <File>
-              <FileName>sys_cache_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sys_cache_ex.c</FilePath>
-            </File>
-            <File>
               <FileName>multithread.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\multithread.c</FilePath>
@@ -2460,11 +2455,6 @@
               <FileName>standalone.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\standalone.c</FilePath>
-            </File>
-            <File>
-              <FileName>sys_cache_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sys_cache_ex.c</FilePath>
             </File>
             <File>
               <FileName>multithread.c</FileName>
@@ -4436,11 +4426,6 @@
               <FilePath>..\standalone.c</FilePath>
             </File>
             <File>
-              <FileName>sys_cache_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sys_cache_ex.c</FilePath>
-            </File>
-            <File>
               <FileName>multithread.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\multithread.c</FilePath>
@@ -6410,11 +6395,6 @@
               <FilePath>..\standalone.c</FilePath>
             </File>
             <File>
-              <FileName>sys_cache_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sys_cache_ex.c</FilePath>
-            </File>
-            <File>
               <FileName>multithread.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\multithread.c</FilePath>
@@ -8382,11 +8362,6 @@
               <FileName>standalone.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\standalone.c</FilePath>
-            </File>
-            <File>
-              <FileName>sys_cache_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sys_cache_ex.c</FilePath>
             </File>
             <File>
               <FileName>multithread.c</FileName>

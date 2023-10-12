@@ -104,7 +104,12 @@ int main(void)
     while (1)
     {
         lv_task_handler();
+#if 1
         sysDelay(LV_DISP_DEF_REFR_PERIOD);
+#else
+        // Put your code here  __start.
+        // Put your code here  __eend.
+#endif
     }
 
     return 0;

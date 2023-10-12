@@ -9,7 +9,6 @@
 #define __LV_GLUE_H__
 
 #include "lvgl.h"
-#include "sys_cache_ex.h"
 
 #define NVT_ALIGN(size, align)      (((size) + (align) - 1) & ~((align) - 1))
 #define NVT_ALIGN_DOWN(size, align) ((size) & ~((align) - 1))

@@ -487,11 +487,6 @@
               <FileType>1</FileType>
               <FilePath>..\standalone.c</FilePath>
             </File>
-            <File>
-              <FileName>sys_cache_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sys_cache_ex.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -2252,11 +2247,6 @@
               <FileName>standalone.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\standalone.c</FilePath>
-            </File>
-            <File>
-              <FileName>sys_cache_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sys_cache_ex.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -4019,11 +4009,6 @@
               <FileType>1</FileType>
               <FilePath>..\standalone.c</FilePath>
             </File>
-            <File>
-              <FileName>sys_cache_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sys_cache_ex.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -5742,7 +5727,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__480x272__ STORAGE_SD LV_CONF_INCLUDE_SIMPLE</Define>
+              <Define>__320x240__ STORAGE_SD LV_CONF_INCLUDE_SIMPLE</Define>
               <Undefine></Undefine>
               <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h26\BSP\Driver\Include;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder</IncludePath>
             </VariousControls>
@@ -5853,11 +5838,6 @@
               <FileName>standalone.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\standalone.c</FilePath>
-            </File>
-            <File>
-              <FileName>sys_cache_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sys_cache_ex.c</FilePath>
             </File>
           </Files>
         </Group>
