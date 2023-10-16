@@ -274,8 +274,6 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
             psInDevData->point.y = ((int16_t)adc_y < 0) ? 0 :
                                    ((int16_t)adc_y >= LV_VER_RES_MAX) ? (LV_VER_RES_MAX - 1) :
                                    adc_y;
-
-            LV_LOG_INFO("[%d, %d]", psInDevData->point.x, psInDevData->point.y);
         }
         else
         {
@@ -286,8 +284,6 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
 
         sLastInDevData.point.x  = psInDevData->point.x;
         sLastInDevData.point.y  = psInDevData->point.y;
-
-        return 1;
     }
     else
     {
@@ -295,8 +291,9 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
         psInDevData->point.y = sLastInDevData.point.y;
     }
 
-
-    return 0;
+    LV_LOG_INFO("%s (%d, %d)", psInDevData->state?"Press":"Release", psInDevData->point.x, psInDevData->point.y);
+		
+    return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
 }
 
 int touchpad_device_control(int cmd, void *argv)
