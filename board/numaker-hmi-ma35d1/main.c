@@ -53,8 +53,8 @@ int main(void)
     extern void lv_port_disp_init(void);
     lv_port_disp_init();
 
-    //TODO: extern void lv_port_indev_init(void);
-    //TODO: lv_port_indev_init();
+    extern void lv_port_indev_init(void);
+    lv_port_indev_init();
 
     extern void ui_init(void);
     ui_init();

@@ -7,7 +7,7 @@
 | GCC | GCC project file |
 | lv_port | lvgl porting files |
 | sls_files | User UI files SLS exported |
-| nuwriter_scripts | User UI files SLS exported |
+| [nuwriter_scripts](./nuwriter_scripts) | User UI files SLS exported |
 | lv_conf.h | Major lvgl configuration file |
 | main.c | main routine |
 

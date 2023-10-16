@@ -49,6 +49,10 @@ void sysDelay(uint32_t ms)
     volatile uint32_t tgtTicks = msTicks0 + ms;
     while (msTicks0 < tgtTicks);
 }
+uint32_t sysGetCurrentTime(void)
+{
+    return msTicks0;
+}
 
 static int nuvoton_fs_init(void)
 {
@@ -207,6 +211,9 @@ int lcd_device_finalize(void)
 }
 
 #define Z_TH    20
+#define CONFIG_TRIGGER_PERIOD   20    //in ms
+#define adc_touch_antiglitch()  { sysDelay(1); ADC0->ISR=ADC0->ISR; }
+
 typedef enum
 {
     evADT_Idle,
@@ -218,49 +225,11 @@ typedef enum
 } E_ADT_Mode;
 
 static volatile E_ADT_Mode s_evADTMode = evADT_Idle;
-static volatile uint32_t adc_x = 0, adc_y = 0, adc_z = 0;
-
-#define adc_touch_antiglitch()       { sysDelay(1); ADC0->ISR=ADC0->ISR; }
 
 static void ADC0_IRQHandler(void)
 {
-#if 0
-    if (s_evADTMode == evADT_PDDetect)
-    {
-        // Clear interrupt flag
-        ADC_CLR_INT_FLAG(ADC0, ADC_ISR_PEDEF_Msk);
-        // Switch from detect pen down mode to convert X/Y value
-        ADC_DisableInt(ADC0, ADC_IER_PEDEIEN_Msk);
-        ADC_EnableInt(ADC0, ADC_IER_MIEN_Msk);
-        ADC_CONVERT_XY_MODE(ADC0);
-        s_evADTMode = evADT_XYConvert;
-        ADC_START_CONV(ADC0);
-    }
-    else if (s_evADTMode == evADT_XYConvert)
-    {
-        // Clear interrupt flag
-        ADC_CLR_INT_FLAG(ADC0, ADC_ISR_MF_Msk);
-
-        // Get ADC convert result
-        adc_x = ADC_GET_CONVERSION_XDATA(ADC0);
-        adc_y = ADC_GET_CONVERSION_YDATA(ADC0);
-        adc_z = ADC_GET_CONVERSION_Z1DATA(ADC0);
-
-        //sysprintf("Convert result: X=%d, Y=%d, Z=%d\n", adc_x, adc_y, adc_z);
-        if (adc_z  < Z_TH)
-        {
-            // Pen up, switch from convert X/Y value to detect pen down event
-            ADC_DisableInt(ADC0, ADC_IER_MIEN_Msk);
-            s_evADTMode = evADT_Idle;
-        }
-        else
-        {
-            ADC_START_CONV(ADC0);
-        }
-    }
-#else
     uint32_t u32ISR = ADC0->ISR;
-    if ((u32ISR & ADC_ISR_PEDEF_Msk)==ADC_ISR_PEDEF_Msk)
+    if ((u32ISR & ADC_ISR_PEDEF_Msk) == ADC_ISR_PEDEF_Msk)
     {
         // Clear interrupt flag
         ADC_CLR_INT_FLAG(ADC0, ADC_ISR_PEDEF_Msk);
@@ -268,29 +237,12 @@ static void ADC0_IRQHandler(void)
 
         s_evADTMode = evADT_PD_GOTO_XY;
     }
-    else if ((u32ISR & ADC_ISR_MF_Msk)==ADC_ISR_MF_Msk)
+    else if ((u32ISR & ADC_ISR_MF_Msk) == ADC_ISR_MF_Msk)
     {
         // Clear interrupt flag
         ADC_CLR_INT_FLAG(ADC0, ADC_ISR_MF_Msk);
-
-        // Get ADC convert result
-        adc_x = ADC_GET_CONVERSION_XDATA(ADC0);
-        adc_y = ADC_GET_CONVERSION_YDATA(ADC0);
-        adc_z = ADC_GET_CONVERSION_Z1DATA(ADC0);
-
-        adc_touch_antiglitch();
-
-        if (adc_z < Z_TH)
-        {
-            ADC_DisableInt(ADC0, ADC_IER_MIEN_Msk);
-        	s_evADTMode = evADT_Idle;
-        }
-        else
-        {
-        	s_evADTMode = evADT_XYConvert_Done;
-        }
+        s_evADTMode = evADT_XYConvert_Done;
     }
-#endif
 }
 
 
@@ -336,7 +288,7 @@ int touchpad_device_open(void)
     nuvoton_fs_init();
 
     extern int ad_touch_calibrate(void);
-    ad_touch_calibrate();
+    //ad_touch_calibrate();
 
     nuvoton_fs_fini();
 
@@ -360,8 +312,6 @@ static void adc_touch_pendown_detect(bool bStartDetect)
 
         // Start to detect pen down event
         ADC_DETECT_PD_MODE(ADC0);
-        adc_touch_antiglitch();
-
     }
     else
     {
@@ -370,8 +320,8 @@ static void adc_touch_pendown_detect(bool bStartDetect)
 
         /* Switch to XY coordination converting mode */
         ADC_CONVERT_XY_MODE(ADC0);
-        adc_touch_antiglitch();
     }
+    adc_touch_antiglitch();
 
     // Power on ADC
     ADC_POWER_ON(ADC0);
@@ -379,32 +329,87 @@ static void adc_touch_pendown_detect(bool bStartDetect)
     IRQ_Enable((IRQn_ID_t)ADC0_IRQn);
 }
 
-
-
 int touchpad_device_read(lv_indev_data_t *psInDevData)
 {
     static lv_indev_data_t sLastInDevData = {0};
+    static uint32_t u32NextTriggerTime = 0;
 
     LV_ASSERT(psInDevData);
 
-    psInDevData->state = LV_INDEV_STATE_RELEASED;
+    psInDevData->state   = sLastInDevData.state;
+    psInDevData->point.x = sLastInDevData.point.x;
+    psInDevData->point.y = sLastInDevData.point.y;
 
+    if (sysGetCurrentTime() < u32NextTriggerTime)
+    {
+        goto exit_touchpad_device_read;
+    }
+
+    psInDevData->state = LV_INDEV_STATE_RELEASED;
     switch (s_evADTMode)
     {
     case evADT_PD_GOTO_XY:
     {
         adc_touch_pendown_detect(false);
-    	s_evADTMode = evADT_XYConvert_Trigger;
-    	ADC_START_CONV(ADC0);
+        s_evADTMode = evADT_XYConvert_Trigger;
+        ADC_START_CONV(ADC0);
+        u32NextTriggerTime = sysGetCurrentTime() + CONFIG_TRIGGER_PERIOD;
     }
     break;
 
     // Convert X/Y value if touch detected
     case evADT_XYConvert_Done:
     {
-       	s_evADTMode = evADT_XYConvert_Trigger;
-       	ADC_START_CONV(ADC0);
-   	    psInDevData->state = LV_INDEV_STATE_PRESSED;
+        uint32_t adc_x = 0, adc_y = 0;
+
+        // Get ADC convert result
+        adc_x = ADC_GET_CONVERSION_XDATA(ADC0);
+        adc_y = ADC_GET_CONVERSION_YDATA(ADC0);
+
+        if (ADC_GET_CONVERSION_Z1DATA(ADC0) < Z_TH)
+        {
+            ADC_DisableInt(ADC0, ADC_IER_MIEN_Msk);
+            s_evADTMode = evADT_Idle;
+            adc_touch_antiglitch();
+        }
+        else
+        {
+            extern int ad_touch_map(int32_t *sumx, int32_t *sumy);
+            if (ad_touch_map((int32_t *)&adc_x, (int32_t *)&adc_y) == 0)
+            {
+
+                psInDevData->point.x = ((int16_t)adc_x < 0) ? 0 :
+                                       ((int16_t)adc_x >= LV_HOR_RES_MAX) ? (LV_HOR_RES_MAX - 1) :
+                                       adc_x;
+
+                psInDevData->point.y = ((int16_t)adc_y < 0) ? 0 :
+                                       ((int16_t)adc_y >= LV_VER_RES_MAX) ? (LV_VER_RES_MAX - 1) :
+                                       adc_y;
+            }
+            else
+            {
+                psInDevData->point.x = (int16_t)adc_x;
+
+                psInDevData->point.y = (int16_t)adc_y;
+            }
+
+            sLastInDevData.point.x  = psInDevData->point.x;
+            sLastInDevData.point.y  = psInDevData->point.y;
+            psInDevData->state = LV_INDEV_STATE_PRESSED;
+
+            s_evADTMode = evADT_XYConvert_Trigger;
+            ADC_START_CONV(ADC0);
+            u32NextTriggerTime = sysGetCurrentTime() + CONFIG_TRIGGER_PERIOD;
+        }
+    }
+    break;
+
+    case evADT_XYConvert_Trigger:
+    {
+        if (ADC_GET_CONVERSION_Z1DATA(ADC0) > Z_TH)
+        {
+            psInDevData->state = LV_INDEV_STATE_PRESSED;
+        }
     }
     break;
 
@@ -420,55 +425,25 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
 
     } //switch
 
+    sLastInDevData.state = psInDevData->state;
 
-    //LV_LOG_INFO("%d", s_evADTMode);
+    //LV_LOG_INFO("<-%d, %d, (%d, %d)", s_evADTMode, psInDevData->state, psInDevData->point.x, psInDevData->point.y);
 
-
-    if (psInDevData->state == LV_INDEV_STATE_PRESSED)
-    {
-        extern int ad_touch_map(int32_t *sumx, int32_t *sumy);
-        if (ad_touch_map((int32_t *)&adc_x, (int32_t *)&adc_y) == 0)
-        {
-
-            psInDevData->point.x = ((int16_t)adc_x < 0) ? 0 :
-                                   ((int16_t)adc_x >= LV_HOR_RES_MAX) ? (LV_HOR_RES_MAX - 1) :
-                                   adc_x;
-
-            psInDevData->point.y = ((int16_t)adc_y < 0) ? 0 :
-                                   ((int16_t)adc_y >= LV_VER_RES_MAX) ? (LV_VER_RES_MAX - 1) :
-                                   adc_y;
-        }
-        else
-        {
-            psInDevData->point.x = (int16_t)adc_x;
-
-            psInDevData->point.y = (int16_t)adc_y;
-        }
-
-        sLastInDevData.point.x  = psInDevData->point.x;
-        sLastInDevData.point.y  = psInDevData->point.y;
-    }
-    else
-    {
-        psInDevData->point.x = sLastInDevData.point.x;
-        psInDevData->point.y = sLastInDevData.point.y;
-    }
-
-    return (psInDevData->state == LV_INDEV_STATE_PRESSED)?1:0;
+exit_touchpad_device_read:
+    return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
 }
 
 int touchpad_device_control(int cmd, void *argv)
 {
-    IRQ_Disable((IRQn_ID_t)ADC0_IRQn);
-
-    // Disable channel 0
-    ADC_Close(ADC0);
-
     return 0;
 }
 
 void touchpad_device_close(void)
 {
+    IRQ_Disable((IRQn_ID_t)ADC0_IRQn);
+
+    // Disable channel 0
+    ADC_Close(ADC0);
 }
 
 int touchpad_device_finalize(void)

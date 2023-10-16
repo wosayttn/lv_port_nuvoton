@@ -90,7 +90,7 @@
 #endif
 
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      1
+#define LV_USE_LOG                      0
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
