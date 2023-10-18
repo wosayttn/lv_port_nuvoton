@@ -16,7 +16,6 @@
 #define CONFIG_EXTERN_FREQUENCY     (sysGetExternalClock()*1000)
 #define CONFIG_TICK_PER_SECOND      1000
 
-#define NVT_MEM_ALIGN()             1000
 
 typedef struct
 {

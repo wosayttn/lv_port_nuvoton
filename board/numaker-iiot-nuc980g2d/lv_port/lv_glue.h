@@ -24,10 +24,6 @@
 #define CONFIG_TICK_PER_SECOND      1000
 #define PORT_OFFSET                 0x40
 
-#define NVT_MEM_ALIGN()             1000
-
-
-
 typedef enum
 {
     /* SYS_AHBIPRST, SYS_BA + 0x060 */

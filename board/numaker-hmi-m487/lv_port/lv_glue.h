@@ -8,13 +8,16 @@
 #ifndef __LV_GLUE_H__
 #define __LV_GLUE_H__
 
+#include <stdio.h>
 #include "lvgl.h"
+#include "nu_bitutil.h"
+#include "nu_pin.h"
 
 #define NVT_ALIGN(size, align)      (((size) + (align) - 1) & ~((align) - 1))
 #define NVT_ALIGN_DOWN(size, align) ((size) & ~((align) - 1))
 
-#define CONFIG_EXTERN_FREQUENCY     sysGetExternalClock()
 #define CONFIG_TICK_PER_SECOND      1000
+#define PORT_OFFSET                 0x40
 
 typedef struct
 {
@@ -44,8 +47,7 @@ typedef struct
 typedef enum
 {
     evLCD_CTRL_GET_INFO,
-    evLCD_CTRL_PAN_DISPLAY,
-    evLCD_CTRL_WAIT_VSYNC,
+    evLCD_CTRL_RECT_UPDATE,
     evLCD_CTRL_CNT
 } E_LCD_CTRL;
 
@@ -61,5 +63,8 @@ int touchpad_device_open(void);
 int touchpad_device_read(lv_indev_data_t *psInDevData);
 void touchpad_device_close(void);
 int touchpad_device_control(int cmd, void *argv);
+void systick_init(void);
+void sysDelay(uint32_t ms);
+uint32_t sysGetCurrentTime(void);
 
 #endif /* __LV_GLUE_H__ */
