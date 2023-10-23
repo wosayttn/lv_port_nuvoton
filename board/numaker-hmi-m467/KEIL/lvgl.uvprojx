@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\bsp\m460\Library\CMSIS\Include;..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Include;..\..\..\bsp\m460\Library\StdDriver\inc;..\lv_port;..\sls_files;..\..\..\common;..\..\..\common\drv_disp\fsa506;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\m460\Library\CMSIS\Include;..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Include;..\..\..\bsp\m460\Library\StdDriver\inc;..\lv_port;..\sls_files;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1680,12 +1680,12 @@
             <File>
               <FileName>disp_fsa506.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\common\drv_disp\fsa506\disp_fsa506.c</FilePath>
+              <FilePath>..\..\..\common\drv_disp\disp_fsa506.c</FilePath>
             </File>
             <File>
               <FileName>fsa506_ebi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\common\drv_disp\fsa506\fsa506_ebi.c</FilePath>
+              <FilePath>..\..\..\common\drv_disp\fsa506_ebi.c</FilePath>
             </File>
           </Files>
         </Group>

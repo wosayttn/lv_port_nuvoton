@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\bsp\m031\Library\CMSIS\Include;..\..\..\bsp\m031\Library\Device\Nuvoton\M032\Include;..\..\..\bsp\m031\Library\StdDriver\inc;..\lv_port;..\sls_files;..\..\..\common;..\..\..\common\drv_disp\ili9341;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\m031\Library\CMSIS\Include;..\..\..\bsp\m031\Library\Device\Nuvoton\M032\Include;..\..\..\bsp\m031\Library\StdDriver\inc;..\lv_port;..\sls_files;..\..\..\common;..\..\..\common\drv_indev;..\..\..\common\drv_disp;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1688,14 +1688,24 @@
               <FilePath>..\lv_conf.h</FilePath>
             </File>
             <File>
+              <FileName>lv_glue.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\lv_port\lv_glue.h</FilePath>
+            </File>
+            <File>
               <FileName>disp_ili9341.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\common\drv_disp\ili9341\disp_ili9341.c</FilePath>
+              <FilePath>..\..\..\common\drv_disp\disp_ili9341.c</FilePath>
             </File>
             <File>
               <FileName>ili9341_uspi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\common\drv_disp\ili9341\ili9341_uspi.c</FilePath>
+              <FilePath>..\..\..\common\drv_disp\ili9341_uspi.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\touch_adc.c</FilePath>
             </File>
           </Files>
         </Group>

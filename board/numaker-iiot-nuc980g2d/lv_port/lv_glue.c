@@ -206,28 +206,6 @@ int lcd_device_open(void)
     return 0;
 }
 
-
-static void ili9341_fillrect(uint16_t *pixels, const lv_area_t *area)
-{
-    int32_t w = lv_area_get_width(area);
-    int32_t h = lv_area_get_height(area);
-
-    LV_LOG_INFO("%08x WxH=%dx%d (%d, %d) (%d, %d)",
-                pixels,
-                lv_area_get_width(area),
-                lv_area_get_height(area),
-                area->x1,
-                area->y1,
-                area->x2,
-                area->y2);
-
-    ili9341_set_column(area->x1, area->x2);
-    ili9341_set_page(area->y1, area->y2);
-    ili9341_send_cmd(0x2c);
-
-    ili9341_send_pixels(pixels, h * w * sizeof(uint16_t));
-}
-
 int lcd_device_control(int cmd, void *argv)
 {
     switch (cmd)

@@ -117,12 +117,12 @@
 		<link>
 			<name>lv_port/disp_ili9341.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/ili9341/disp_ili9341.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/disp_ili9341.c</locationURI>
 		</link>
 		<link>
 			<name>lv_port/ili9341_spi.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/ili9341/ili9341_spi.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/ili9341_spi.c</locationURI>
 		</link>
 		<link>
 			<name>lv_port/lv_demo.c</name>

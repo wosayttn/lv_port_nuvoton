@@ -24,6 +24,7 @@ void fsa506_write_reg(uint16_t reg, uint16_t data);
 void fsa506_set_column(uint16_t StartCol, uint16_t EndCol);
 void fsa506_set_page(uint16_t StartPage, uint16_t EndPage);
 void fsa506_send_pixels(uint16_t *pixels, int byte_len);
+void fsa506_fillrect(uint16_t *pixels, const lv_area_t *area);
 
 int disp_fsa506_init(void);
 

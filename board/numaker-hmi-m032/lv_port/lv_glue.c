@@ -9,6 +9,7 @@
 #include "lvgl.h"
 #include "lv_glue.h"
 #include "disp_ili9341.h"
+#include "touch_adc.h"
 
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * sizeof(lv_color_t)), 4)
 
@@ -101,28 +102,6 @@ int lcd_device_open(void)
     return 0;
 }
 
-
-static void ili9341_fillrect(uint16_t *pixels, const lv_area_t *area)
-{
-    int32_t w = lv_area_get_width(area);
-    int32_t h = lv_area_get_height(area);
-
-    LV_LOG_INFO("%08x WxH=%dx%d (%d, %d) (%d, %d)",
-                pixels,
-                lv_area_get_width(area),
-                lv_area_get_height(area),
-                area->x1,
-                area->y1,
-                area->x2,
-                area->y2);
-
-    ili9341_set_column(area->x1, area->x2);
-    ili9341_set_page(area->y1, area->y2);
-    ili9341_send_cmd(0x2c);
-
-    ili9341_send_pixels(pixels, h * w * sizeof(uint16_t));
-}
-
 int lcd_device_control(int cmd, void *argv)
 {
     switch (cmd)
@@ -163,40 +142,7 @@ int lcd_device_finalize(void)
     return 0;
 }
 
-#define NU_MFP_POS(PIN)                ((PIN % 8) * 4)
-#define NU_MFP_MSK(PIN)                (0xful << NU_MFP_POS(PIN))
-
-static void nu_pin_func(uint32_t pin, int data)
-{
-    uint32_t pin_index      = NU_GET_PIN(pin);
-    uint32_t port_index     = NU_GET_PORT(pin);
-    __IO uint32_t *GPx_MFPx = ((__IO uint32_t *) &SYS->GPA_MFPL) + port_index * 2 + (pin_index / 8);
-    uint32_t MFP_Msk        = NU_MFP_MSK(pin_index);
-
-    *GPx_MFPx  = (*GPx_MFPx & (~MFP_Msk)) | data;
-}
-
-static void tp_switch_to_analog(uint32_t pin)
-{
-    GPIO_T *port = (GPIO_T *)(PA_BASE + PORT_OFFSET * NU_GET_PORT(pin));
-
-    if ((pin == CONFIG_AD_PIN_YU) || (pin == CONFIG_AD_PIN_XR))
-        nu_pin_func(pin, (1 << NU_MFP_POS(NU_GET_PIN(pin))));
-
-    GPIO_DISABLE_DIGITAL_PATH(port, NU_GET_PIN_MASK(NU_GET_PIN(pin)));
-}
-
-static void tp_switch_to_digital(uint32_t pin)
-{
-    GPIO_T *port = (GPIO_T *)(PA_BASE + PORT_OFFSET * NU_GET_PORT(pin));
-
-    nu_pin_func(pin, 0);
-
-    /* Enable digital path on these EADC pins */
-    GPIO_ENABLE_DIGITAL_PATH(port, NU_GET_PIN_MASK(NU_GET_PIN(pin)));
-}
-
-static uint32_t nu_adc_sampling(uint32_t channel)
+uint32_t nu_adc_sampling(uint32_t channel)
 {
     ADC_Open(CONFIG_AD, ADC_ADCR_DIFFEN_SINGLE_END, ADC_ADCR_ADMD_SINGLE, (0x1 << channel));
 
@@ -211,62 +157,6 @@ static uint32_t nu_adc_sampling(uint32_t channel)
     while (ADC_GET_INT_FLAG(CONFIG_AD, ADC_ADF_INT) == 0);
 
     return ADC_GET_CONVERSION_DATA(CONFIG_AD, channel) & 0x0FFF;
-}
-
-static uint32_t get_adc_x(void)
-{
-    GPIO_T *PORT;
-
-    /*=== Get X from ADC input ===*/
-    PORT    = (GPIO_T *)(PA_BASE + (NU_GET_PORT(CONFIG_AD_PIN_XR) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_AD_PIN_XR)), GPIO_MODE_OUTPUT);
-
-    PORT    = (GPIO_T *)(PA_BASE + (NU_GET_PORT(CONFIG_AD_PIN_YD) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_AD_PIN_YD)), GPIO_MODE_INPUT);
-
-    PORT    = (GPIO_T *)(PA_BASE + (NU_GET_PORT(CONFIG_AD_PIN_XL) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_AD_PIN_XL)), GPIO_MODE_OUTPUT);
-
-    GPIO_PIN_DATA(NU_GET_PORT(CONFIG_AD_PIN_XR), NU_GET_PIN(CONFIG_AD_PIN_XR)) = 1;
-    GPIO_PIN_DATA(NU_GET_PORT(CONFIG_AD_PIN_XL), NU_GET_PIN(CONFIG_AD_PIN_XL)) = 0;
-
-    tp_switch_to_digital(CONFIG_AD_PIN_XR);
-    tp_switch_to_digital(CONFIG_AD_PIN_YD);
-    tp_switch_to_digital(CONFIG_AD_PIN_XL);
-
-    /* Disable the digital input path to avoid the leakage current. */
-    /* Configure the ADC analog input pins.  */
-    tp_switch_to_analog(CONFIG_AD_PIN_YU);
-
-    return nu_adc_sampling(NU_GET_PIN(CONFIG_AD_PIN_YU));
-}
-
-static uint32_t get_adc_y(void)
-{
-    GPIO_T *PORT;
-
-    /*=== Get Y from ADC input ===*/
-    PORT    = (GPIO_T *)(PA_BASE + (NU_GET_PORT(CONFIG_AD_PIN_YU) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_AD_PIN_YU)), GPIO_MODE_OUTPUT);
-
-    PORT    = (GPIO_T *)(PA_BASE + (NU_GET_PORT(CONFIG_AD_PIN_YD) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_AD_PIN_YD)), GPIO_MODE_OUTPUT);
-
-    PORT    = (GPIO_T *)(PA_BASE + (NU_GET_PORT(CONFIG_AD_PIN_XL) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_AD_PIN_XL)), GPIO_MODE_INPUT);
-
-    GPIO_PIN_DATA(NU_GET_PORT(CONFIG_AD_PIN_YU), NU_GET_PIN(CONFIG_AD_PIN_YU)) = 1;
-    GPIO_PIN_DATA(NU_GET_PORT(CONFIG_AD_PIN_YD), NU_GET_PIN(CONFIG_AD_PIN_YD)) = 0;
-
-    tp_switch_to_digital(CONFIG_AD_PIN_YU);
-    tp_switch_to_digital(CONFIG_AD_PIN_YD);
-    tp_switch_to_digital(CONFIG_AD_PIN_XL);
-
-    /* Disable the digital input path to avoid the leakage current. */
-    /* Configure the ADC analog input pins.  */
-    tp_switch_to_analog(CONFIG_AD_PIN_XR);
-
-    return nu_adc_sampling(NU_GET_PIN(CONFIG_AD_PIN_XR));
 }
 
 int touchpad_device_initialize(void)
@@ -309,8 +199,8 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
     }
 
     /* Get X, Y ADC converting data */
-    adc_x  = get_adc_x();
-    adc_y  = get_adc_y();
+    adc_x  = indev_touch_get_x();
+    adc_y  = indev_touch_get_y();
     u32NextTriggerTime = sysGetTicks(0) + CONFIG_TRIGGER_PERIOD;
 
     if ((adc_x < 4000) && (adc_y < 4000))

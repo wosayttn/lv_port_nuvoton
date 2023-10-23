@@ -25,8 +25,8 @@ void ili9341_send_cmd_parameter(uint8_t data);
 void ili9341_set_column(uint16_t StartCol, uint16_t EndCol);
 void ili9341_set_page(uint16_t StartPage, uint16_t EndPage);
 void ili9341_send_pixels(uint16_t *pixels, int byte_len);
+void ili9341_fillrect(uint16_t *pixels, const lv_area_t *area);
 
 int disp_ili9341_init(void);
-
 
 #endif /* __DISP_ILI9341_H__ */

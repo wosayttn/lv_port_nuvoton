@@ -19,6 +19,21 @@
 #define CONFIG_TICK_PER_SECOND      1000
 #define PORT_OFFSET                 0x40
 
+/* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
+#define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX)
+
+#if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
+    #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
+#endif
+
+/* FSA506 EBI */
+#define CONFIG_FSA506_EBI              EBI_BANK0
+#define CONFIG_FSA506_EBI_ADDR         (EBI_BANK0_BASE_ADDR+(CONFIG_FSA506_EBI*EBI_MAX_SIZE))
+
+#define CONFIG_FSA506_PIN_BACKLIGHT    NU_GET_PININDEX(evGG, 5)   //101
+#define CONFIG_FSA506_PIN_DC           NU_GET_PININDEX(evGH, 7)   //119
+#define CONFIG_FSA506_PIN_RESET        NU_GET_PININDEX(evGG, 7)   //103
+
 typedef struct
 {
     void *pvVramStartAddr;  // VRAM Start address

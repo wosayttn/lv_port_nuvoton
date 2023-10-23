@@ -24,6 +24,20 @@
 #define CONFIG_TICK_PER_SECOND      1000
 #define PORT_OFFSET                 0x40
 
+/* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
+#define CONFIG_DISP_LINE_BUFFER_NUMBER  LV_VER_RES_MAX
+
+#if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
+    #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
+#endif
+
+/* ILI9341 SPI */
+#define CONFIG_ILI9341_SPI              SPI0
+#define CONFIG_ILI9341_SPI_CLOCK        48000000
+#define CONFIG_ILI9341_PIN_BACKLIGHT    NU_GET_PININDEX(evGG, 7)   //103   //PG7
+#define CONFIG_ILI9341_PIN_DC           NU_GET_PININDEX(evGF, 9)   //89    //PF9
+#define CONFIG_ILI9341_PIN_RESET        NU_GET_PININDEX(evGF, 10)  //90    //PF10
+
 typedef enum
 {
     /* SYS_AHBIPRST, SYS_BA + 0x060 */
