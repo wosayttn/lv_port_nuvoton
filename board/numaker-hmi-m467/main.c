@@ -40,6 +40,9 @@ static void sys_init(void)
     /* Enable EBI module clock */
     CLK_EnableModuleClock(EBI_MODULE);
 
+    /* Enable I2C1 module clock */
+    CLK_EnableModuleClock(I2C1_MODULE);
+
     /* Enable SysTick module clock */
     CLK_EnableSysTick(CLK_CLKSEL0_STCLKSEL_HCLK, 0);
 
@@ -76,6 +79,12 @@ static void sys_init(void)
     GPIO_SetSlewCtl(PJ, (BIT8 | BIT9), GPIO_SLEWCTL_FAST);
     GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_FAST);
 
+    /* I2C1 */
+    SYS->GPB_MFP2 &= ~(SYS_GPB_MFP2_PB11MFP_Msk | SYS_GPB_MFP2_PB10MFP_Msk);
+    SYS->GPB_MFP2 |= (SYS_GPB_MFP2_PB11MFP_I2C1_SCL | SYS_GPB_MFP2_PB10MFP_I2C1_SDA);
+
+    GPIO_SetPullCtl(PB, BIT11 | BIT10, GPIO_PUSEL_PULL_UP);
+
     UART_Open(UART0, 115200);
 
     systick_init();
@@ -101,8 +110,8 @@ int main(void)
     extern void lv_port_disp_init(void);
     lv_port_disp_init();
 
-    //extern void lv_port_indev_init(void);
-    //lv_port_indev_init();
+    extern void lv_port_indev_init(void);
+    lv_port_indev_init();
 
     extern void ui_init(void);
     ui_init();

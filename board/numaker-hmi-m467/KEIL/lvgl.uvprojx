@@ -488,6 +488,11 @@
               <FileType>2</FileType>
               <FilePath>..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Source\ARM\startup_M460.s</FilePath>
             </File>
+            <File>
+              <FileName>i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m460\Library\StdDriver\src\i2c.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1686,6 +1691,16 @@
               <FileName>fsa506_ebi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_disp\fsa506_ebi.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_glue.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\lv_port\lv_glue.h</FilePath>
+            </File>
+            <File>
+              <FileName>touch_st1663i.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\touch_st1663i.c</FilePath>
             </File>
           </Files>
         </Group>

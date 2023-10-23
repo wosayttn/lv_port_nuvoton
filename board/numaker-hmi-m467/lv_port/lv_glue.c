@@ -9,6 +9,7 @@
 #include "lvgl.h"
 #include "lv_glue.h"
 #include "disp_fsa506.h"
+#include "touch_st1663i.h"
 
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * sizeof(lv_color_t)), 4)
 
@@ -105,9 +106,63 @@ int lcd_device_finalize(void)
     return 0;
 }
 
+#if defined(CONFIG_ST1663I_PIN_IRQ)
+
+static IRQn_Type au32GPIRQ[] =
+{
+    GPA_IRQn,
+    GPB_IRQn,
+    GPC_IRQn,
+    GPD_IRQn,
+    GPE_IRQn,
+    GPF_IRQn,
+    GPG_IRQn,
+    GPH_IRQn,
+    GPI_IRQn,
+    GPJ_IRQn,
+};
+
+static volatile lv_indev_data_t s_sInDevData = {0};
+
+// GPG ISR
+void GPG_IRQHandler(void)
+{
+    GPIO_T *PORT = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ST1663I_PIN_IRQ) * PORT_OFFSET));
+
+    /* To check if PC.5 interrupt occurred */
+    if (GPIO_GET_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ))))
+    {
+        GPIO_CLR_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ)));
+        indev_touch_get_data((lv_indev_data_t *)&s_sInDevData);
+    }
+    else
+    {
+        /* Un-expected interrupt. Just clear all PD interrupts */
+        volatile uint32_t u32temp = PORT->INTSRC;
+        PORT->INTSRC = u32temp;
+    }
+}
+
+#endif
+
 int touchpad_device_initialize(void)
 {
-    return 0;
+    GPIO_T *PORT;
+
+    /* Set GPIO OUTPUT mode for ST1663I pins. */
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ST1663I_PIN_RESET) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_RESET)), GPIO_MODE_OUTPUT);
+
+#if defined(CONFIG_ST1663I_PIN_IRQ)
+    /* Set GPIO INTPUT mode for ST1663I pins. */
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ST1663I_PIN_IRQ) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ)), GPIO_MODE_INPUT);
+    GPIO_SetPullCtl(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ)), GPIO_PUSEL_PULL_UP);
+    GPIO_EnableInt(PORT, NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ), GPIO_INT_FALLING);
+    NVIC_EnableIRQ(au32GPIRQ[NU_GET_PORT(CONFIG_ST1663I_PIN_IRQ)]);
+#endif
+
+    return indev_touch_init();
 }
 
 int touchpad_device_open(void)
@@ -117,12 +172,13 @@ int touchpad_device_open(void)
 
 int touchpad_device_read(lv_indev_data_t *psInDevData)
 {
-    psInDevData->point.x =  0;
-    psInDevData->point.y =  0;
-    psInDevData->state =  LV_INDEV_STATE_RELEASED;
-
-    LV_LOG_INFO("%s (%d, %d)", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
-
+#if defined(CONFIG_ST1663I_PIN_IRQ)
+    psInDevData->point.x = s_sInDevData.point.x;
+    psInDevData->point.y = s_sInDevData.point.y;
+    psInDevData->state = s_sInDevData.state;
+#else
+    indev_touch_get_data(psInDevData);
+#endif
     return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
 }
 
