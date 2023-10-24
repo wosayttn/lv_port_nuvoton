@@ -7,8 +7,9 @@
  *****************************************************************************/
 
 #include "disp_fsa506.h"
-
-//#define DEF_EBI_USE_PDMA
+#if defined(CONFIG_FSA506_EBI_USE_PDMA)
+    #include "drv_pdma.h"
+#endif
 
 #if !defined(CONFIG_FSA506_EBI_ADDR)
     #error "Please specify CONFIG_FSA506_EBI_ADDR in lv_conf.h"
@@ -60,7 +61,7 @@ void fsa506_send_pixels(uint16_t *pixels, int byte_len)
     FSA506_WRITE_REG(0xC1);
     SET_RS;
 
-#if defined(DEF_EBI_USE_PDMA)
+#if defined(CONFIG_FSA506_EBI_USE_PDMA)
     // PDMA-M2M feed
     if (count > 1024)
         nu_pdma_mempush((void *)(CONFIG_FSA506_EBI_ADDR + (FSA506_ADDR_DATA)), (void *)pixels, 16, count);

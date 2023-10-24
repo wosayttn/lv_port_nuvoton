@@ -43,6 +43,10 @@ static void sys_init(void)
     /* Enable I2C1 module clock */
     CLK_EnableModuleClock(I2C1_MODULE);
 
+    /* Enable PDMA0/PDMA1 module clock */
+    CLK_EnableModuleClock(PDMA0_MODULE);
+    CLK_EnableModuleClock(PDMA1_MODULE);
+
     /* Enable SysTick module clock */
     CLK_EnableSysTick(CLK_CLKSEL0_STCLKSEL_HCLK, 0);
 

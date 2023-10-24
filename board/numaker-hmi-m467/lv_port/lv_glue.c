@@ -52,7 +52,6 @@ int lcd_device_initialize(void)
     PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_FSA506_PIN_BACKLIGHT) * PORT_OFFSET));
     GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_FSA506_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
 
-
     /* Open EBI  */
     EBI_Open(CONFIG_FSA506_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_SLOW, EBI_OPMODE_CACCESS, EBI_CS_ACTIVE_LOW);
 
@@ -123,6 +122,7 @@ static IRQn_Type au32GPIRQ[] =
 };
 
 static volatile lv_indev_data_t s_sInDevData = {0};
+static volatile uint32_t s_u32LastIRQ = 0;
 
 // GPG ISR
 void GPG_IRQHandler(void)
@@ -133,7 +133,7 @@ void GPG_IRQHandler(void)
     if (GPIO_GET_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ))))
     {
         GPIO_CLR_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ)));
-        indev_touch_get_data((lv_indev_data_t *)&s_sInDevData);
+        s_u32LastIRQ = sysGetTicks(0);
     }
     else
     {
@@ -173,6 +173,14 @@ int touchpad_device_open(void)
 int touchpad_device_read(lv_indev_data_t *psInDevData)
 {
 #if defined(CONFIG_ST1663I_PIN_IRQ)
+    static uint32_t u32LastIRQ = 0;
+
+    if (u32LastIRQ != s_u32LastIRQ)
+    {
+        indev_touch_get_data((lv_indev_data_t *)&s_sInDevData);
+        u32LastIRQ = s_u32LastIRQ ;
+    }
+
     psInDevData->point.x = s_sInDevData.point.x;
     psInDevData->point.y = s_sInDevData.point.y;
     psInDevData->state = s_sInDevData.state;

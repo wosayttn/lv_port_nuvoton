@@ -13,8 +13,10 @@
 #include "nu_bitutil.h"
 #include "nu_pin.h"
 
-#define NVT_ALIGN(size, align)      (((size) + (align) - 1) & ~((align) - 1))
-#define NVT_ALIGN_DOWN(size, align) ((size) & ~((align) - 1))
+#define NVT_ALIGN(size, align)        (((size) + (align) - 1) & ~((align) - 1))
+#define NVT_ALIGN_DOWN(size, align)   ((size) & ~((align) - 1))
+#define NVT_INTERRUPT_DISABLE()       __disable_irq()
+#define NVT_INTERRUPT_ENABLE(level)   __set_PRIMASK(level)
 
 #define CONFIG_TICK_PER_SECOND      1000
 #define PORT_OFFSET                 0x40
@@ -28,6 +30,7 @@
 
 /* FSA506 EBI */
 #define CONFIG_FSA506_EBI              EBI_BANK0
+#define CONFIG_FSA506_EBI_USE_PDMA     1
 #define CONFIG_FSA506_EBI_ADDR         (EBI_BANK0_BASE_ADDR+(CONFIG_FSA506_EBI*EBI_MAX_SIZE))
 #define CONFIG_FSA506_PIN_BACKLIGHT    NU_GET_PININDEX(evGG, 5)   //101
 #define CONFIG_FSA506_PIN_DC           NU_GET_PININDEX(evGH, 7)   //119
