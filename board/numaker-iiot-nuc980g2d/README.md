@@ -10,7 +10,7 @@
 | sls_files | User UI files SLS exported |
 | lv_conf.h | Major lvgl configuration file |
 | main.c | main routine |
-|
+
 ## **KEIL project**
 
 User can select listed **Target Name** to build target execution using uVision MDK4.

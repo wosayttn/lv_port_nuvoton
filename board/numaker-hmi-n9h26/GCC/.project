@@ -85,6 +85,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/lv_port/lv_port_indev.c</locationURI>
 		</link>
 		<link>
+			<name>lv_port/nu_misc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/nu_misc.c</locationURI>
+		</link>
+		<link>
 			<name>lvgl/gifdec.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/extra/libs/gif/gifdec.c</locationURI>

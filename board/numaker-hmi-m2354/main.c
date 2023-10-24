@@ -66,6 +66,10 @@ static void sys_init(void)
     /* Enable SysTick module clock */
     CLK_EnableSysTick(CLK_CLKSEL0_STCLKSEL_HCLK, 0);
 
+    /* Enable PDMA0/PDMA1 module clock */
+    CLK_EnableModuleClock(PDMA0_MODULE);
+    CLK_EnableModuleClock(PDMA1_MODULE);
+
     UART_Open(UART0, 115200);
 
     /* Vref connect to internal */

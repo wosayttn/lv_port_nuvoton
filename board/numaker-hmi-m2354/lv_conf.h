@@ -18,28 +18,11 @@
 #define LV_DISP_DEF_REFR_PERIOD         16
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
-#define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX/4)
+#define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX/2)
 
 #if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
     #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
 #endif
-
-/* Alias */
-#define GPIO_PIN_DATA                   GPIO_PIN_DATA_S
-
-/* ILI9341 SPI */
-#define CONFIG_ILI9341_SPI              SPI1
-#define CONFIG_ILI9341_SPI_CLOCK        48000000
-#define CONFIG_ILI9341_PIN_BACKLIGHT    NU_GET_PININDEX(evGC, 11)  //43
-#define CONFIG_ILI9341_PIN_DC           NU_GET_PININDEX(evGA, 8)   //8
-#define CONFIG_ILI9341_PIN_RESET        NU_GET_PININDEX(evGA, 9)   //9
-
-/* SW ADC PINs */
-#define CONFIG_AD                       EADC_S
-#define CONFIG_AD_PIN_XL                NU_GET_PININDEX(evGB, 10)
-#define CONFIG_AD_PIN_YU                NU_GET_PININDEX(evGB, 11)
-#define CONFIG_AD_PIN_XR                NU_GET_PININDEX(evGB, 8)
-#define CONFIG_AD_PIN_YD                NU_GET_PININDEX(evGB, 9)
 
 #define LV_TICK_CUSTOM                  1
 #define LV_TICK_CUSTOM_INCLUDE          LV_NUVOTON_INCLUDE
@@ -58,8 +41,8 @@
 #define LV_FONT_MONTSERRAT_16           1
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
-//#define LV_USE_DEMO_WIDGETS             1
-#define LV_USE_DEMO_MUSIC               1
+#define LV_USE_DEMO_WIDGETS             1
+//#define LV_USE_DEMO_MUSIC               1
 
 #if LV_USE_DEMO_MUSIC
     #define LV_COLOR_SCREEN_TRANSP        1
@@ -67,13 +50,13 @@
 #endif
 
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      0
+#define LV_USE_LOG                      1
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
 #endif

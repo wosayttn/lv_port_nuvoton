@@ -6,13 +6,7 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include <stdlib.h>
 #include "drv_pdma.h"
-#include "nu_bitutil.h"
-#include "nu_module.h"
-
-/* Private define ---------------------------------------------------------------*/
-// RT_DEV_NAME_PREFIX pdma
 
 #ifndef NU_PDMA_MEMFUN_ACTOR_MAX
     #define NU_PDMA_MEMFUN_ACTOR_MAX (4)
@@ -198,56 +192,6 @@ static struct nu_pdma_memfun_actor nu_pdma_memfun_actor_arr[NU_PDMA_MEMFUN_ACTOR
 /* SG table pool */
 static DSCT_T nu_pdma_sgtbl_arr[NU_PDMA_SGTBL_POOL_SIZE] = { 0 };
 static uint32_t nu_pdma_sgtbl_token[NVT_ALIGN(NU_PDMA_SGTBL_POOL_SIZE, 32) / 32];
-
-void *nvt_malloc_align(uint32_t size, uint32_t align)
-{
-    void *ptr;
-    void *align_ptr;
-    int uintptr_size;
-    uint32_t align_size;
-
-    /* sizeof pointer */
-    uintptr_size = sizeof(void *);
-    uintptr_size -= 1;
-
-    /* align the alignment size to uintptr size byte */
-    align = ((align + uintptr_size) & ~uintptr_size);
-
-    /* get total aligned size */
-    align_size = ((size + uintptr_size) & ~uintptr_size) + align;
-    /* allocate memory block from heap */
-    ptr = malloc(align_size);
-    if (ptr != NULL)
-    {
-        /* the allocated memory block is aligned */
-        if (((uint32_t)ptr & (align - 1)) == 0)
-        {
-            align_ptr = (void *)((uint32_t)ptr + align);
-        }
-        else
-        {
-            align_ptr = (void *)(((uint32_t)ptr + (align - 1)) & ~(align - 1));
-        }
-
-        /* set the pointer before alignment pointer to the real pointer */
-        *((uint32_t *)((uint32_t)align_ptr - sizeof(void *))) = (uint32_t)ptr;
-
-        ptr = align_ptr;
-    }
-
-    return ptr;
-}
-
-void nvt_free_align(void *ptr)
-{
-    void *real_ptr;
-
-    /* NULL check */
-    if (ptr == NULL) return;
-
-    real_ptr = (void *) * (uint32_t *)((uint32_t)ptr - sizeof(void *));
-    free(real_ptr);
-}
 
 static int nu_pdma_check_is_nonallocated(uint32_t u32ChnId)
 {

@@ -10,15 +10,8 @@
 
 #include <stdio.h>
 #include "lvgl.h"
-#include "nu_bitutil.h"
-#include "nu_pin.h"
+#include "nu_misc.h"
 
-#define NVT_ALIGN(size, align)        (((size) + (align) - 1) & ~((align) - 1))
-#define NVT_ALIGN_DOWN(size, align)   ((size) & ~((align) - 1))
-#define NVT_INTERRUPT_DISABLE()       __disable_irq()
-#define NVT_INTERRUPT_ENABLE(level)   __set_PRIMASK(level)
-
-#define CONFIG_TICK_PER_SECOND      1000
 #define PORT_OFFSET                 0x40
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
@@ -40,27 +33,6 @@
 #define CONFIG_ST1663I_I2C             I2C1
 #define CONFIG_ST1663I_PIN_IRQ         NU_GET_PININDEX(evGG, 6)
 #define CONFIG_ST1663I_PIN_RESET       NU_GET_PININDEX(evGD, 10)
-
-typedef struct
-{
-    void *pvVramStartAddr;  // VRAM Start address
-
-    uint32_t u32VramSize;   // VRAM total size in byte
-
-    uint32_t u32ResWidth;   // Resolution - Width
-
-    uint32_t u32ResHeight;  // Resolution - Height
-
-    uint32_t u32BytePerPixel;  // Byte per Pixel
-
-} S_LCD_INFO;
-
-typedef enum
-{
-    evLCD_CTRL_GET_INFO,
-    evLCD_CTRL_RECT_UPDATE,
-    evLCD_CTRL_CNT
-} E_LCD_CTRL;
 
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);

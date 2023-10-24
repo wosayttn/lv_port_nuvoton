@@ -129,6 +129,11 @@
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/lv_port/lv_gpu_n9h30_2dge.c</locationURI>
 		</link>
+		<link>
+			<name>lv_port/nu_misc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/nu_misc.c</locationURI>
+		</link>
 	<link>
 		<name>lvgl/lv_disp.c</name>
 		<type>1</type>

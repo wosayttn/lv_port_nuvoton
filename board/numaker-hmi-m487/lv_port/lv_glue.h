@@ -10,13 +10,8 @@
 
 #include <stdio.h>
 #include "lvgl.h"
-#include "nu_bitutil.h"
-#include "nu_pin.h"
+#include "nu_misc.h"
 
-#define NVT_ALIGN(size, align)      (((size) + (align) - 1) & ~((align) - 1))
-#define NVT_ALIGN_DOWN(size, align) ((size) & ~((align) - 1))
-
-#define CONFIG_TICK_PER_SECOND      1000
 #define PORT_OFFSET                 0x40
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
@@ -28,6 +23,8 @@
 
 /* ILI9341 EBI */
 #define CONFIG_ILI9341_EBI              EBI_BANK0
+#define CONFIG_ILI9341_EBI_USE_PDMA     1
+
 #define CONFIG_ILI9341_EBI_ADDR         (EBI_BANK0_BASE_ADDR+(CONFIG_ILI9341_EBI*EBI_MAX_SIZE))
 
 #define CONFIG_ILI9341_PIN_BACKLIGHT    NU_GET_PININDEX(evGB, 7)   //23
@@ -40,38 +37,6 @@
 #define CONFIG_AD_PIN_YU                NU_GET_PININDEX(evGB, 8)
 #define CONFIG_AD_PIN_XR                NU_GET_PININDEX(evGB, 9)
 #define CONFIG_AD_PIN_YD                NU_GET_PININDEX(evGH, 5)
-
-typedef struct
-{
-    int32_t   a;
-    int32_t   b;
-    int32_t   c;
-    int32_t   d;
-    int32_t   e;
-    int32_t   f;
-    int32_t   div;
-} S_CALIBRATION_MATRIX;
-
-typedef struct
-{
-    void *pvVramStartAddr;  // VRAM Start address
-
-    uint32_t u32VramSize;   // VRAM total size in byte
-
-    uint32_t u32ResWidth;   // Resolution - Width
-
-    uint32_t u32ResHeight;  // Resolution - Height
-
-    uint32_t u32BytePerPixel;  // Byte per Pixel
-
-} S_LCD_INFO;
-
-typedef enum
-{
-    evLCD_CTRL_GET_INFO,
-    evLCD_CTRL_RECT_UPDATE,
-    evLCD_CTRL_CNT
-} E_LCD_CTRL;
 
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);

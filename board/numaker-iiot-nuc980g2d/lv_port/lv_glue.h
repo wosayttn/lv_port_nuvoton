@@ -15,13 +15,19 @@
 #include "gpio.h"
 #include "uart.h"
 #include "etimer.h"
-#include "nu_bitutil.h"
-#include "nu_pin.h"
+#include "pdma.h"
+#include "nu_misc.h"
 
-#define NVT_ALIGN(size, align)      (((size) + (align) - 1) & ~((align) - 1))
-#define NVT_ALIGN_DOWN(size, align) ((size) & ~((align) - 1))
+#if defined(NVT_INTERRUPT_ENABLE)
+    #undef NVT_INTERRUPT_ENABLE
+    #define NVT_INTERRUPT_ENABLE(x)   {sysSetLocalInterrupt(ENABLE_FIQ_IRQ); x=x;}
+#endif
 
-#define CONFIG_TICK_PER_SECOND      1000
+#if defined(NVT_INTERRUPT_DISABLE)
+    #undef NVT_INTERRUPT_DISABLE
+    #define NVT_INTERRUPT_DISABLE()   sysSetLocalInterrupt(DISABLE_FIQ_IRQ)
+#endif
+
 #define PORT_OFFSET                 0x40
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
@@ -34,6 +40,14 @@
 /* ILI9341 SPI */
 #define CONFIG_ILI9341_SPI              SPI0
 #define CONFIG_ILI9341_SPI_CLOCK        48000000
+#define CONFIG_ILI9341_SPI_USE_PDMA
+
+#if defined(CONFIG_ILI9341_SPI_USE_PDMA)
+    #define CONFIG_PDMA_SPI_TX          PDMA_SPI0_TX
+    #define CONFIG_PDMA_SPI_RX          PDMA_SPI0_RX
+    #define CONFIG_SPI_USE_PDMA
+#endif
+
 #define CONFIG_ILI9341_PIN_BACKLIGHT    NU_GET_PININDEX(evGG, 7)   //103   //PG7
 #define CONFIG_ILI9341_PIN_DC           NU_GET_PININDEX(evGF, 9)   //89    //PF9
 #define CONFIG_ILI9341_PIN_RESET        NU_GET_PININDEX(evGF, 10)  //90    //PF10
@@ -268,39 +282,6 @@ typedef enum
     SYS_IPCLK_CNT
 
 } E_SYS_IPCLK;
-
-
-typedef struct
-{
-    int32_t   a;
-    int32_t   b;
-    int32_t   c;
-    int32_t   d;
-    int32_t   e;
-    int32_t   f;
-    int32_t   div;
-} S_CALIBRATION_MATRIX;
-
-typedef struct
-{
-    void *pvVramStartAddr;  // VRAM Start address
-
-    uint32_t u32VramSize;   // VRAM total size in byte
-
-    uint32_t u32ResWidth;   // Resolution - Width
-
-    uint32_t u32ResHeight;  // Resolution - Height
-
-    uint32_t u32BytePerPixel;  // Byte per Pixel
-
-} S_LCD_INFO;
-
-typedef enum
-{
-    evLCD_CTRL_GET_INFO,
-    evLCD_CTRL_RECT_UPDATE,
-    evLCD_CTRL_CNT
-} E_LCD_CTRL;
 
 void nu_sys_ipclk_enable(E_SYS_IPCLK eIPClkIdx);
 void nu_sys_ipclk_disable(E_SYS_IPCLK eIPClkIdx);

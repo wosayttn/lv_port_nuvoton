@@ -82,15 +82,15 @@ void lv_draw_n9h30_2dge_blend(lv_draw_ctx_t *draw_ctx, const lv_draw_sw_blend_ds
     if (!_lv_area_intersect(&blend_area, dsc->blend_area, draw_ctx->clip_area)) return;
 
     blend_area_stride = lv_area_get_width(&blend_area) * sizeof(lv_color_t);
-	
+
 #if (LV_COLOR_DEPTH == 16)
-	  /* Check Hardware constraint: The stride must be a word-alignment. */
+    /* Check Hardware constraint: The stride must be a word-alignment. */
     bAlignedWord = ((blend_area_stride & 0x3) == 0) &&
                    (((blend_area.x1 * sizeof(lv_color_t)) & 0x3) == 0) ? true : false;
 #else
     bAlignedWord = false;
 #endif
-	
+
     LV_LOG_INFO("[%s] %d %d %d",     __func__, lv_area_get_size(&blend_area), (blend_area_stride & 0x3), (blend_area.x1 & 0x2));
 
     if ((lv_area_get_size(&blend_area) > 7200) &&

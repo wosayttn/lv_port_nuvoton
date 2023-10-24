@@ -65,65 +65,66 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/hal&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/misc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/widgets&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\arm2d&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\renesas&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\sdl&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\stm32_dma2d&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\sw&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\swm341_dma2d&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\nxp\pxp&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\nxp\vglite&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\layouts&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\themes&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\layouts\flex&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\layouts\grid&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\bmp&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\ffmpeg&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\freetype&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\fsdrv&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\gif&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\png&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\qrcode&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\rlottie&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\sjpg&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\fragment&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\gridnav&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\ime&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\imgfont&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\monkey&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\msg&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\snapshot&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\themes\basic&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\themes\default&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\themes\mono&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\animimg&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\calendar&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\chart&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\colorwheel&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\imgbtn&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\keyboard&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\led&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\list&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\menu&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\meter&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\msgbox&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\span&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\spinbox&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\spinner&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\tabview&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\tileview&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\win&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/arm2d&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/renesas&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/sdl&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/stm32_dma2d&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/sw&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/swm341_dma2d&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/nxp\pxp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/nxp\vglite&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/layouts&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/themes&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/layouts/flex&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/layouts/grid&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/bmp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/ffmpeg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/freetype&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/fsdrv&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/gif&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/png&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/qrcode&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/rlottie&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/sjpg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/fragment&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/gridnav&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/ime&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/imgfont&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/monkey&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/msg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/snapshot&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/themes/basic&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/themes/default&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/themes/mono&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/animimg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/calendar&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/chart&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/colorwheel&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/imgbtn&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/keyboard&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/led&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/list&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/menu&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/meter&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/msgbox&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/span&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/spinbox&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/spinner&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/tabview&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/tileview&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/win&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/benchmark&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/keypad_encoder&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/music&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/stress&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/widgets&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/music\assets&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/music/assets&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../sls_files&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1464253970" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="N9H20K5=1"/>
@@ -263,65 +264,66 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/hal&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/misc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/widgets&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\arm2d&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\renesas&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\sdl&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\stm32_dma2d&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\sw&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\swm341_dma2d&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\nxp\pxp&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw\nxp\vglite&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\layouts&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\themes&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\layouts\flex&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\layouts\grid&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\bmp&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\ffmpeg&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\freetype&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\fsdrv&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\gif&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\png&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\qrcode&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\rlottie&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\libs\sjpg&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\fragment&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\gridnav&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\ime&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\imgfont&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\monkey&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\msg&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\others\snapshot&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\themes\basic&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\themes\default&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\themes\mono&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\animimg&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\calendar&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\chart&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\colorwheel&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\imgbtn&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\keyboard&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\led&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\list&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\menu&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\meter&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\msgbox&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\span&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\spinbox&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\spinner&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\tabview&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\tileview&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra\widgets\win&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/arm2d&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/renesas&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/sdl&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/stm32_dma2d&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/sw&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/swm341_dma2d&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/nxp\pxp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/nxp\vglite&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/layouts&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/themes&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/layouts/flex&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/layouts/grid&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/bmp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/ffmpeg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/freetype&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/fsdrv&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/gif&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/png&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/qrcode&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/rlottie&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/libs/sjpg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/fragment&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/gridnav&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/ime&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/imgfont&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/monkey&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/msg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/others/snapshot&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/themes/basic&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/themes/default&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/themes/mono&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/animimg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/calendar&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/chart&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/colorwheel&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/imgbtn&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/keyboard&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/led&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/list&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/menu&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/meter&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/msgbox&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/span&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/spinbox&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/spinner&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/tabview&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/tileview&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/extra/widgets/win&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/benchmark&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/keypad_encoder&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/music&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/stress&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/widgets&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/music\assets&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/music/assets&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../sls_files&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1758450561" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="N9H20K5=1"/>

@@ -7,8 +7,9 @@
  *****************************************************************************/
 
 #include "disp_ili9341.h"
-
-//#define DEF_EBI_USE_PDMA
+#if defined(CONFIG_ILI9341_EBI_USE_PDMA)
+    #include "drv_pdma.h"
+#endif
 
 #if !defined(CONFIG_ILI9341_EBI_ADDR)
     #error "Please specify CONFIG_ILI9341_EBI_ADDR in lv_conf.h"
@@ -35,7 +36,7 @@ void ili9341_send_cmd_parameter(uint8_t data)
 void ili9341_send_pixels(uint16_t *pixels, int byte_len)
 {
     int count = byte_len / sizeof(uint16_t);
-#if defined(DEF_EBI_USE_PDMA)
+#if defined(CONFIG_ILI9341_EBI_USE_PDMA)
     // PDMA-M2M feed
     if (count > 1024)
         nu_pdma_mempush((void *)(CONFIG_ILI9341_EBI_ADDR + (ILI9341_ADDR_DATA)), (void *)pixels, 16, count);

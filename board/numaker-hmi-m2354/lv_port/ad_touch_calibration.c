@@ -31,14 +31,14 @@ void ad_touch_update_calmat(S_CALIBRATION_MATRIX *psNewCalMat)
     if (psNewCalMat->div != 0)
     {
         memcpy(&g_sCalMat, psNewCalMat, sizeof(S_CALIBRATION_MATRIX));
-        printf("Applied calibration data: %d, %d, %d, %d, %d, %d, %d\n",
-               g_sCalMat.a,
-               g_sCalMat.b,
-               g_sCalMat.c,
-               g_sCalMat.d,
-               g_sCalMat.e,
-               g_sCalMat.f,
-               g_sCalMat.div);
+        LV_LOG_USER("Applied calibration data: %d, %d, %d, %d, %d, %d, %d\n",
+                    g_sCalMat.a,
+                    g_sCalMat.b,
+                    g_sCalMat.c,
+                    g_sCalMat.d,
+                    g_sCalMat.e,
+                    g_sCalMat.f,
+                    g_sCalMat.div);
 
     }
 }

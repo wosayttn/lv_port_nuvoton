@@ -47,6 +47,9 @@ static void sys_init(void)
     /* Enable EBI module clock */
     CLK_EnableModuleClock(EBI_MODULE);
 
+    /* Enable PDMA module clock */
+    CLK_EnableModuleClock(PDMA_MODULE);
+
     /* Enable SysTick module clock */
     CLK_EnableSysTick(CLK_CLKSEL0_STCLKSEL_HCLK, 0);
 

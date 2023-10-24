@@ -10,13 +10,7 @@
 
 #include <stdio.h>
 #include "lvgl.h"
-#include "nu_bitutil.h"
-#include "nu_pin.h"
-
-#define NVT_ALIGN(size, align)         (((size) + (align) - 1) & ~((align) - 1))
-#define NVT_ALIGN_DOWN(size, align)    ((size) & ~((align) - 1))
-
-#define CONFIG_TICK_PER_SECOND         1000
+#include "nu_misc.h"
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
 #define CONFIG_DISP_LINE_BUFFER_NUMBER  24
@@ -32,6 +26,14 @@
 #define CONFIG_ILI9341_USPI             USPI0
 #define CONFIG_ILI9341_USPI_CLOCK       24000000
 #define CONFIG_ILI9341_USPI_SS_PIN      NU_GET_PININDEX(evGA, 8)
+#define CONFIG_ILI9341_USPI_USE_PDMA    1
+
+#if defined(CONFIG_ILI9341_USPI_USE_PDMA)
+    #define CONFIG_PDMA_USPI_TX         PDMA_USCI0_TX
+    #define CONFIG_PDMA_USPI_RX         PDMA_USCI0_RX
+    #define CONFIG_USPI_USE_PDMA
+#endif
+
 #define CONFIG_ILI9341_PIN_BACKLIGHT    NU_GET_PININDEX(evGA, 6)  //6
 #define CONFIG_ILI9341_PIN_DC           NU_GET_PININDEX(evGB, 2)  //18
 #define CONFIG_ILI9341_PIN_RESET        NU_GET_PININDEX(evGB, 3)  //19
@@ -42,38 +44,6 @@
 #define CONFIG_AD_PIN_YU                NU_GET_PININDEX(evGB, 7)
 #define CONFIG_AD_PIN_XR                NU_GET_PININDEX(evGB, 4)
 #define CONFIG_AD_PIN_YD                NU_GET_PININDEX(evGB, 5)
-
-typedef struct
-{
-    int32_t   a;
-    int32_t   b;
-    int32_t   c;
-    int32_t   d;
-    int32_t   e;
-    int32_t   f;
-    int32_t   div;
-} S_CALIBRATION_MATRIX;
-
-typedef struct
-{
-    void *pvVramStartAddr;  // VRAM Start address
-
-    uint32_t u32VramSize;   // VRAM total size in byte
-
-    uint32_t u32ResWidth;   // Resolution - Width
-
-    uint32_t u32ResHeight;  // Resolution - Height
-
-    uint32_t u32BytePerPixel;  // Byte per Pixel
-
-} S_LCD_INFO;
-
-typedef enum
-{
-    evLCD_CTRL_GET_INFO,
-    evLCD_CTRL_RECT_UPDATE,
-    evLCD_CTRL_CNT
-} E_LCD_CTRL;
 
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);

@@ -9,6 +9,7 @@
 #include "lvgl.h"
 #include "lv_glue.h"
 
+
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * LV_VER_RES_MAX * sizeof(lv_color_t) * CONFIG_LCD_FB_NUM), DEF_CACHE_LINE_SIZE)
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DEF_CACHE_LINE_SIZE)));
@@ -291,8 +292,8 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
         psInDevData->point.y = sLastInDevData.point.y;
     }
 
-    LV_LOG_INFO("%s (%d, %d)", psInDevData->state?"Press":"Release", psInDevData->point.x, psInDevData->point.y);
-		
+    LV_LOG_INFO("%s (%d, %d)", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
+
     return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
 }
 
