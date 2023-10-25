@@ -16,14 +16,14 @@
 User can select listed **Target Name** to build target execution using uVision MDK5.
 | Target | Description |
 |-|-|
-| M2354KJ_320x240 | Use ILI9431 EBI LCD panel with resistive touch screen |
+| M2354KJ_320x240 | Use ILI9431 SPI LCD panel with resistive touch screen |
 
 ## **GCC project**
 
 User can select listed **Build configurations** to build target execution using Eclipse-base IDE.
 | Target | Description |
 |-|-|
-| M2354KJ_320x240 | Use ILI9431 EBI LCD panel with resistive touch screen |
+| M2354KJ_320x240 | Use ILI9431 SPI LCD panel with resistive touch screen |
 
 ## **Compiling options**
 

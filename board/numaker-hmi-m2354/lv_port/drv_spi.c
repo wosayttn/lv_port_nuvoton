@@ -150,13 +150,10 @@ static int nu_spi_transmit_poll(struct nu_spi *psNuSPI, const uint8_t *tx, uint8
 
 static void nu_pdma_spi_rx_cb_event(void *pvUserData, uint32_t u32EventFilter)
 {
-    int result;
     struct nu_spi *psNuSPI = (struct nu_spi *)pvUserData;
 
     LV_ASSERT(psNuSPI);
 
-    //result = rt_sem_release(psNuSPI->m_psSemBus);
-    //LV_ASSERT(result == 0);
     psNuSPI->m_psSemBus = 1;
 }
 

@@ -15,6 +15,7 @@
  *********************/
 #include <lvgl.h>
 #include "2d.h"
+#include "sys.h"
 
 #include "lv_gpu_n9h30_2dge.h"
 /*********************

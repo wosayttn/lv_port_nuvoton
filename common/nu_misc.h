@@ -54,8 +54,6 @@ typedef struct
 
 #define NVT_ALIGN(size, align)        (((size) + (align) - 1) & ~((align) - 1))
 #define NVT_ALIGN_DOWN(size, align)   ((size) & ~((align) - 1))
-#define NVT_INTERRUPT_DISABLE()       __disable_irq()
-#define NVT_INTERRUPT_ENABLE(level)   __set_PRIMASK(level)
 #define CONFIG_TICK_PER_SECOND        1000
 
 void *nvt_malloc_align(uint32_t size, uint32_t align);

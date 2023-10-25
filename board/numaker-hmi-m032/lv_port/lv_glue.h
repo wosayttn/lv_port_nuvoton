@@ -9,8 +9,12 @@
 #define __LV_GLUE_H__
 
 #include <stdio.h>
+#include "NuMicro.h"
 #include "lvgl.h"
 #include "nu_misc.h"
+
+#define GPIOA_BASE                      PA_BASE
+#define PORT_OFFSET                     0x40
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
 #define CONFIG_DISP_LINE_BUFFER_NUMBER  24
@@ -19,8 +23,6 @@
     #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
 #endif
 
-#define GPIOA_BASE                      PA_BASE
-#define PORT_OFFSET                     0x40
 
 /* ILI9341 SPI */
 #define CONFIG_ILI9341_USPI             USPI0
@@ -59,6 +61,6 @@ void touchpad_device_close(void);
 int touchpad_device_control(int cmd, void *argv);
 void systick_init(void);
 void sysDelay(uint32_t ms);
-uint32_t sysGetCurrentTime(void);
+uint32_t sysGetTicks(uint32_t no);
 
 #endif /* __LV_GLUE_H__ */

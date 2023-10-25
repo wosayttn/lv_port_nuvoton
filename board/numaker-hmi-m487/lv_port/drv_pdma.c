@@ -58,7 +58,6 @@ struct nu_pdma_memfun_actor
 {
     int         m_i32ChannID;
     uint32_t    m_u32Result;
-//    rt_sem_t    m_psSemMemFun;
     volatile uint32_t    m_psSemMemFun;
 } ;
 typedef struct nu_pdma_memfun_actor *nu_pdma_memfun_actor_t;
@@ -86,8 +85,6 @@ static volatile uint32_t nu_pdma_chn_mask_arr[PDMA_CNT] = {0};
 static nu_pdma_chn_t nu_pdma_chn_arr[NU_PDMA_CH_MAX];
 static volatile uint32_t nu_pdma_memfun_actor_mask = 0;
 static volatile uint32_t nu_pdma_memfun_actor_maxnum = 0;
-//static rt_sem_t nu_pdma_memfun_actor_pool_sem = NULL;
-//static rt_mutex_t nu_pdma_memfun_actor_pool_lock = NULL;
 
 const static struct nu_module nu_pdma_arr[] =
 {
@@ -708,12 +705,9 @@ static void nu_pdma_sgtbls_token_free(nu_pdma_desc_t psSgtbls)
 void nu_pdma_sgtbls_free(nu_pdma_desc_t *ppsSgtbls, int num)
 {
     int i;
-    uint32_t level;
 
     LV_ASSERT(ppsSgtbls != NULL);
     LV_ASSERT(num <= NU_PDMA_SG_TBL_MAXSIZE);
-
-    level = NVT_INTERRUPT_DISABLE();
 
     for (i = 0; i < num; i++)
     {
@@ -723,19 +717,14 @@ void nu_pdma_sgtbls_free(nu_pdma_desc_t *ppsSgtbls, int num)
         }
         ppsSgtbls[i] = NULL;
     }
-
-    NVT_INTERRUPT_ENABLE(level);
 }
 
 int nu_pdma_sgtbls_allocate(nu_pdma_desc_t *ppsSgtbls, int num)
 {
     int i, idx;
-    uint32_t level;
 
     LV_ASSERT(ppsSgtbls);
     LV_ASSERT(num <= NU_PDMA_SG_TBL_MAXSIZE);
-
-    level = NVT_INTERRUPT_DISABLE();
 
     for (i = 0; i < num; i++)
     {
@@ -750,16 +739,12 @@ int nu_pdma_sgtbls_allocate(nu_pdma_desc_t *ppsSgtbls, int num)
         ppsSgtbls[i] = (nu_pdma_desc_t)&nu_pdma_sgtbl_arr[idx];
     }
 
-    NVT_INTERRUPT_ENABLE(level);
-
     return 0;
 
 fail_nu_pdma_sgtbls_allocate:
 
     /* Release allocated tables. */
     nu_pdma_sgtbls_free(ppsSgtbls, i);
-
-    //rt_hw_interrupt_enable(level);
 
     return -1;
 }
@@ -1050,8 +1035,6 @@ static void nu_pdma_memfun_actor_init(void)
         memset(&nu_pdma_memfun_actor_arr[i], 0, sizeof(struct nu_pdma_memfun_actor));
         if (-(1) != (nu_pdma_memfun_actor_arr[i].m_i32ChannID = nu_pdma_channel_allocate(PDMA_MEM)))
         {
-            //nu_pdma_memfun_actor_arr[i].m_psSemMemFun = rt_sem_create("memactor_sem", 0, RT_IPC_FLAG_FIFO);
-            //LV_ASSERT(nu_pdma_memfun_actor_arr[i].m_psSemMemFun != NULL);
             nu_pdma_memfun_actor_arr[i].m_psSemMemFun = 0;
         }
         else
@@ -1061,12 +1044,6 @@ static void nu_pdma_memfun_actor_init(void)
     {
         nu_pdma_memfun_actor_maxnum = i;
         nu_pdma_memfun_actor_mask = ~(((1 << i) - 1));
-
-        //nu_pdma_memfun_actor_pool_sem = rt_sem_create("mempool_sem", nu_pdma_memfun_actor_maxnum, RT_IPC_FLAG_FIFO);
-        //LV_ASSERT(nu_pdma_memfun_actor_pool_sem != NULL);
-
-        //nu_pdma_memfun_actor_pool_lock = rt_mutex_create("mempool_lock", RT_IPC_FLAG_PRIO);
-        //LV_ASSERT(nu_pdma_memfun_actor_pool_lock != NULL);
     }
 }
 
@@ -1081,9 +1058,6 @@ static void nu_pdma_memfun_cb(void *pvUserData, uint32_t u32Events)
 static int nu_pdma_memfun_employ(void)
 {
     int idx = -1;
-    uint32_t level;
-
-    level = NVT_INTERRUPT_DISABLE();
 
     /* Headhunter */
     {
@@ -1099,8 +1073,6 @@ static int nu_pdma_memfun_employ(void)
         }
     }
 
-    NVT_INTERRUPT_ENABLE(level);
-
     return idx;
 }
 
@@ -1111,8 +1083,6 @@ static int nu_pdma_memfun(void *dest, void *src, uint32_t u32DataWidth, unsigned
     nu_pdma_memfun_actor_t psMemFunActor = NULL;
     struct nu_pdma_chn_cb sChnCB;
     int idx, ret = 0;
-
-    uint32_t level;
 
     if (!i32memActorInited)
     {
@@ -1166,11 +1136,7 @@ static int nu_pdma_memfun(void *dest, void *src, uint32_t u32DataWidth, unsigned
         nu_pdma_channel_terminate(psMemFunActor->m_i32ChannID);
     }
 
-    level = NVT_INTERRUPT_DISABLE();
-
     nu_pdma_memfun_actor_mask &= ~(1 << idx);
-
-    NVT_INTERRUPT_ENABLE(level);
 
     return ret;
 }

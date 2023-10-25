@@ -9,8 +9,6 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
-#define LV_NUVOTON_INCLUDE     "MA35D1.h"
-#include LV_NUVOTON_INCLUDE
 
 #if defined(__1024x600__)
     #define LV_HOR_RES_MAX              1024
@@ -29,16 +27,10 @@
 #define CONFIG_LV_DISP_FULL_REFRESH     0
 
 #define LV_TICK_CUSTOM                  1
-#define LV_TICK_CUSTOM_INCLUDE          LV_NUVOTON_INCLUDE
-#define LV_TICK_CUSTOM_SYS_TIME_EXPR    (msTicks0)    /*Expression evaluating to current system time in ms*/
+#define LV_TICK_CUSTOM_INCLUDE          "lv_glue.h"
+#define LV_TICK_CUSTOM_SYS_TIME_EXPR    (sysGetTicks(0))    /*Expression evaluating to current system time in ms*/
 
 #define LV_MEMCPY_MEMSET_STD            1
-
-#define LV_SPRINTF_CUSTOM               1
-#define LV_SPRINTF_INCLUDE              LV_NUVOTON_INCLUDE
-#define lv_snprintf                     snprintf
-#define lv_vsnprintf                    vsnprintf
-#define LV_SPRINTF_USE_FLOAT            0
 
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_14           1

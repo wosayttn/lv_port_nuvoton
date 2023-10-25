@@ -9,7 +9,9 @@
 #define __LV_GLUE_H__
 
 #include <stdio.h>
+#include "NUC980.h"
 #include "lvgl.h"
+#include "sys.h"
 #include "adc.h"
 #include "spi.h"
 #include "gpio.h"
@@ -18,20 +20,10 @@
 #include "pdma.h"
 #include "nu_misc.h"
 
-#if defined(NVT_INTERRUPT_ENABLE)
-    #undef NVT_INTERRUPT_ENABLE
-    #define NVT_INTERRUPT_ENABLE(x)   {sysSetLocalInterrupt(ENABLE_FIQ_IRQ); x=x;}
-#endif
-
-#if defined(NVT_INTERRUPT_DISABLE)
-    #undef NVT_INTERRUPT_DISABLE
-    #define NVT_INTERRUPT_DISABLE()   sysSetLocalInterrupt(DISABLE_FIQ_IRQ)
-#endif
-
 #define PORT_OFFSET                 0x40
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
-#define CONFIG_DISP_LINE_BUFFER_NUMBER  LV_VER_RES_MAX
+#define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX)
 
 #if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
     #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
@@ -301,6 +293,6 @@ void touchpad_device_close(void);
 int touchpad_device_control(int cmd, void *argv);
 void systick_init(void);
 void sysDelay(uint32_t ms);
-uint32_t sysGetCurrentTime(void);
+uint32_t sysGetTicks(uint32_t no);
 
 #endif /* __LV_GLUE_H__ */

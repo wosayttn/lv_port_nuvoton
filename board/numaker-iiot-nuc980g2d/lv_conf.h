@@ -9,9 +9,6 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
-#define LV_NUVOTON_INCLUDE     "NUC980.h"
-#include LV_NUVOTON_INCLUDE
-#include "sys.h"
 
 #define LV_HOR_RES_MAX                  320
 #define LV_VER_RES_MAX                  240
@@ -22,17 +19,10 @@
 #define CONFIG_SYS_TIMER                5
 
 #define LV_TICK_CUSTOM                  1
-#define LV_TICK_CUSTOM_INCLUDE          LV_NUVOTON_INCLUDE
-
+#define LV_TICK_CUSTOM_INCLUDE          "lv_glue.h"
 #define LV_TICK_CUSTOM_SYS_TIME_EXPR    (sysGetTicks(CONFIG_SYS_TIMER))    /*Expression evaluating to current system time in ms*/
 
 #define LV_MEMCPY_MEMSET_STD            1
-
-#define LV_SPRINTF_CUSTOM               1
-#define LV_SPRINTF_INCLUDE              LV_NUVOTON_INCLUDE
-#define lv_snprintf                     snprintf
-#define lv_vsnprintf                    vsnprintf
-#define LV_SPRINTF_USE_FLOAT            0
 
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_14           1

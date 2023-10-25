@@ -54,7 +54,8 @@ void sysDelay(uint32_t ms)
     volatile uint32_t tgtTicks = msTicks0 + ms;
     while (msTicks0 < tgtTicks);
 }
-uint32_t sysGetCurrentTime(void)
+
+uint32_t sysGetTicks(uint32_t no)
 {
     return msTicks0;
 }
@@ -352,7 +353,7 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
     psInDevData->point.x = sLastInDevData.point.x;
     psInDevData->point.y = sLastInDevData.point.y;
 
-    if (sysGetCurrentTime() < u32NextTriggerTime)
+    if (sysGetTicks(0) < u32NextTriggerTime)
     {
         goto exit_touchpad_device_read;
     }
@@ -365,7 +366,7 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
         adc_touch_pendown_detect(false);
         s_evADTMode = evADT_XYConvert_Trigger;
         ADC_START_CONV(ADC0);
-        u32NextTriggerTime = sysGetCurrentTime() + CONFIG_TRIGGER_PERIOD;
+        u32NextTriggerTime = sysGetTicks(0) + CONFIG_TRIGGER_PERIOD;
     }
     break;
 
@@ -411,7 +412,7 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
 
             s_evADTMode = evADT_XYConvert_Trigger;
             ADC_START_CONV(ADC0);
-            u32NextTriggerTime = sysGetCurrentTime() + CONFIG_TRIGGER_PERIOD;
+            u32NextTriggerTime = sysGetTicks(0) + CONFIG_TRIGGER_PERIOD;
         }
     }
     break;

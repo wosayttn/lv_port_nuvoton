@@ -8,6 +8,8 @@
 #ifndef __LV_GLUE_H__
 #define __LV_GLUE_H__
 
+#include <stdio.h>
+#include "MA35D1.h"
 #include "lvgl.h"
 #include "displib.h"
 #include "adc.h"
@@ -35,5 +37,6 @@ int touchpad_device_read(lv_indev_data_t *psInDevData);
 void touchpad_device_close(void);
 int touchpad_device_control(int cmd, void *argv);
 void sysDelay(uint32_t ms);
+uint32_t sysGetTicks(uint32_t no);
 
 #endif /* __LV_GLUE_H__ */

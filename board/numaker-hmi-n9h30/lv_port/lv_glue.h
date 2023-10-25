@@ -8,7 +8,9 @@
 #ifndef __LV_GLUE_H__
 #define __LV_GLUE_H__
 
+#include <stdio.h>
 #include "lvgl.h"
+#include "sys.h"
 #include "lcd.h"
 #include "adc.h"
 #include "nu_misc.h"

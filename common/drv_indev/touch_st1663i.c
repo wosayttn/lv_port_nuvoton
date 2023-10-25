@@ -121,7 +121,7 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
 
     if (sStRegMap.u8Fingers > CONFIG_MAX_TOUCH)
     {
-        LV_LOG_ERROR("FW report max point:%d > panel info. max:%d", sStRegMap.u8Fingers, ST_MAX_TOUCH);
+        LV_LOG_ERROR("FW report max point:%d > panel info. max:%d", sStRegMap.u8Fingers, CONFIG_MAX_TOUCH);
         goto exit_indev_touch_get_data;
     }
 
