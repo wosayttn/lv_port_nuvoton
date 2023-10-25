@@ -43,13 +43,13 @@
 #endif
 
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      0
+#define LV_USE_LOG                      1
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
 #endif

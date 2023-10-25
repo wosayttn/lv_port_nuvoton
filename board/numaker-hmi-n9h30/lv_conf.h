@@ -45,12 +45,6 @@
 #define CONFIG_LV_DISP_FULL_REFRESH      0
 #define CONFIG_LV_GPU_USE_N9H30_2DGE     1
 
-#if CONFIG_LV_DISP_FULL_REFRESH
-    #define CONFIG_LCD_FB_NUM            3
-#else
-    #define CONFIG_LCD_FB_NUM            2
-#endif
-
 #define CONFIG_SYS_TIMER                TIMER0
 
 #define LV_TICK_CUSTOM                  1
@@ -98,13 +92,13 @@
 #endif
 
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      0
+#define LV_USE_LOG                      1
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
 #endif

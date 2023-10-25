@@ -14,7 +14,9 @@
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DEF_CACHE_LINE_SIZE)));
 
-extern S_CALIBRATION_MATRIX g_sCalMat;
+#if defined(__800x480__)
+S_CALIBRATION_MATRIX g_sCalMat = { 13292, 56, -1552344, -79, 8401, -1522648, 65536  };
+#endif
 
 static int nuvoton_fs_init(void)
 {
@@ -147,6 +149,7 @@ int lcd_device_control(int cmd, void *argv)
         psLCDInfo->u32ResWidth = LV_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = LV_VER_RES_MAX;
         psLCDInfo->u32BytePerPixel = sizeof(lv_color_t);
+        psLCDInfo->evLCDType = evLCD_TYPE_SYNC;
     }
     break;
 
@@ -168,6 +171,12 @@ int lcd_device_control(int cmd, void *argv)
     }
     break;
 #endif
+
+    case evLCD_CTRL_RECT_UPDATE:
+    {
+        sysCleanDcache((UINT32)s_au8FrameBuf, (UINT32)CONFIG_VRAM_TOTAL_ALLOCATED_SIZE);
+    }
+    break;
 
     default:
         LV_ASSERT(0);
@@ -223,7 +232,7 @@ int touchpad_device_open(void)
 
     nuvoton_fs_init();
 
-    //extern int ad_touch_calibrate(void);
+    extern int ad_touch_calibrate(void);
     //ad_touch_calibrate();
 
     nuvoton_fs_fini();

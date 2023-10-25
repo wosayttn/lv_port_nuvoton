@@ -13,10 +13,7 @@
 #define DEF_DOT_NUMBER    9
 #define DOTS_NUMBER       (DEF_DOT_NUMBER*DEF_DOT_NUMBER)
 
-/* User can define ADC touch calibration matrix in board_dev.c. */
-#if defined(__320x240__)
-S_CALIBRATION_MATRIX g_sCalMat = { -105, 6354, -3362552, 5086, -24, -2489744, 65536 };
-#endif
+extern S_CALIBRATION_MATRIX g_sCalMat;
 
 static const S_CALIBRATION_MATRIX g_sCalZero = { 1, 0, 0, 0, 1, 0, 1 };
 
@@ -31,7 +28,7 @@ void ad_touch_update_calmat(S_CALIBRATION_MATRIX *psNewCalMat)
     if (psNewCalMat->div != 0)
     {
         memcpy(&g_sCalMat, psNewCalMat, sizeof(S_CALIBRATION_MATRIX));
-        LV_LOG_USER("Applied calibration data: %d, %d, %d, %d, %d, %d, %d\n",
+        LV_LOG_INFO("Applied calibration data: %d, %d, %d, %d, %d, %d, %d",
                     g_sCalMat.a,
                     g_sCalMat.b,
                     g_sCalMat.c,
@@ -188,50 +185,122 @@ static void _cleanscreen(void)
 
     LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
 
-    while (line < LV_VER_RES_MAX)
+    switch (sLcdInfo.evLCDType)
+    {
+    case evLCD_TYPE_SYNC:
     {
         volatile lv_color_t *plvColorStart = (volatile lv_color_t *)sLcdInfo.pvVramStartAddr;
-
-        for (i = 0; i < LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER; i++)
+        for (i = 0; i < LV_HOR_RES_MAX * LV_VER_RES_MAX; i++)
         {
+#if (LV_COLOR_SIZE == 16)  //RGB565
             plvColorStart->full = 0xCADB;
+#elif (LV_COLOR_SIZE == 32)  //ARGB888
+            plvColorStart->full = (uint32_t)0xFF97CADB;
+#endif
             plvColorStart++;
         }
+    }
+    break;
 
-        area.x1 = 0;
-        area.y1 = line;
-        area.x2 = LV_HOR_RES_MAX - 1;
-        area.y2 = ((line + CONFIG_DISP_LINE_BUFFER_NUMBER) < LV_VER_RES_MAX) ? (line + CONFIG_DISP_LINE_BUFFER_NUMBER) - 1 : LV_VER_RES_MAX - 1;
+    case evLCD_TYPE_MPU:
+    {
+        while (line < LV_VER_RES_MAX)
+        {
+            volatile lv_color_t *plvColorStart = (volatile lv_color_t *)sLcdInfo.pvVramStartAddr;
 
-        /* Update dirty region. */
-        LV_ASSERT(lcd_device_control(evLCD_CTRL_RECT_UPDATE, (void *)&area) == 0);
+            for (i = 0; i < LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER; i++)
+            {
+                plvColorStart->full = 0xCADB;
+                plvColorStart++;
+            }
 
-        line += CONFIG_DISP_LINE_BUFFER_NUMBER;
+            area.x1 = 0;
+            area.y1 = line;
+            area.x2 = LV_HOR_RES_MAX - 1;
+            area.y2 = ((line + CONFIG_DISP_LINE_BUFFER_NUMBER) < LV_VER_RES_MAX) ? (line + CONFIG_DISP_LINE_BUFFER_NUMBER) - 1 : LV_VER_RES_MAX - 1;
+
+            /* Update dirty region. */
+            LV_ASSERT(lcd_device_control(evLCD_CTRL_RECT_UPDATE, (void *)&area) == 0);
+
+            line += CONFIG_DISP_LINE_BUFFER_NUMBER;
+        }
+    }
+    break;
+
+    default:
+        break;
     }
 }
 
 static void _draw_bots(int x, int y)
 {
-    /* Rendering */
     lv_area_t area;
-    int i;
+
+    /* Rendering */
     int start_x = x - (DEF_DOT_NUMBER / 2);
     int start_y = y - (DEF_DOT_NUMBER / 2);
 
     S_LCD_INFO sLcdInfo = {0};
     LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
 
-    uint16_t *pu16Start = (uint16_t *)sLcdInfo.pvVramStartAddr;
-    for (i = 0; i < DEF_DOT_NUMBER * DEF_DOT_NUMBER; i++)
+    switch (sLcdInfo.evLCDType)
     {
-        *pu16Start = 0x07E0; //RGB565
-        pu16Start++;
+    case evLCD_TYPE_SYNC:
+    {
+        int i, j;
+#if (LV_COLOR_SIZE == 16)  //RGB565
+        uint16_t *pu16Start = (uint16_t *)((uintptr_t)sLcdInfo.pvVramStartAddr + (start_y) * (LV_HOR_RES_MAX * sizeof(lv_color_t)) + (start_x * 2));
+        for (i = 0; i < DEF_DOT_NUMBER; i++)
+        {
+            for (j = 0; j < DEF_DOT_NUMBER; j++)
+            {
+                *pu16Start = 0x07E0; //RGB565
+                pu16Start++;
+            }
+            pu16Start += (LV_HOR_RES_MAX - DEF_DOT_NUMBER);
+        }
+#elif (LV_COLOR_SIZE == 32)  //ARGB888
+        uint32_t *pu32Start = (uint32_t *)((uintptr_t)sLcdInfo.pvVramStartAddr + (start_y) * (LV_HOR_RES_MAX * sizeof(lv_color_t)) + (start_x * 4));
+        for (i = 0; i < DEF_DOT_NUMBER; i++)
+        {
+            for (j = 0; j < DEF_DOT_NUMBER; j++)
+            {
+                *pu32Start = 0xFF001B48; //ARGB888
+                pu32Start++;
+            }
+            pu32Start += (LV_HOR_RES_MAX - DEF_DOT_NUMBER);
+        }
+#else
+        LV_LOG_ERROR("Not supported.");
+        return;
+#endif
     }
+    break;
 
-    area.x1 = start_x;
-    area.y1 = start_y;
-    area.x2 = start_x + DEF_DOT_NUMBER;
-    area.y2 = start_y + DEF_DOT_NUMBER;
+    case evLCD_TYPE_MPU:
+    {
+#if (LV_COLOR_SIZE == 16)  //RGB565
+        int i;
+        uint16_t *pu16Start = (uint16_t *)sLcdInfo.pvVramStartAddr;
+        for (i = 0; i < DEF_DOT_NUMBER * DEF_DOT_NUMBER; i++)
+        {
+            *pu16Start = 0x07E0; //RGB565
+            pu16Start++;
+        }
+
+        area.x1 = start_x;
+        area.y1 = start_y;
+        area.x2 = start_x + DEF_DOT_NUMBER;
+        area.y2 = start_y + DEF_DOT_NUMBER;
+#else
+        LV_LOG_ERROR("Not supported.");
+        return;
+#endif
+    }
+    break;
+    default:
+        break;
+    }
 
     /* Update dirty region. */
     LV_ASSERT(lcd_device_control(evLCD_CTRL_RECT_UPDATE, (void *)&area) == 0);

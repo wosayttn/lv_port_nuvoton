@@ -14,7 +14,11 @@
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DEF_CACHE_LINE_SIZE)));
 
-extern S_CALIBRATION_MATRIX g_sCalMat;
+#if defined(__320x240__)
+S_CALIBRATION_MATRIX g_sCalMat = { 5873, 41, -1646858, 17, -4398, 16618786, 65536 };
+#elif defined(__800x480__)
+S_CALIBRATION_MATRIX g_sCalMat = { 13605, -12, -2163964, -126, -8477, 32548474, 65536 };
+#endif
 
 static int nuvoton_fs_init(void)
 {
@@ -138,6 +142,7 @@ int lcd_device_control(int cmd, void *argv)
         psLCDInfo->u32ResWidth = LV_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = LV_VER_RES_MAX;
         psLCDInfo->u32BytePerPixel = sizeof(lv_color_t);
+        psLCDInfo->evLCDType = evLCD_TYPE_SYNC;
     }
     break;
 
@@ -155,6 +160,12 @@ int lcd_device_control(int cmd, void *argv)
         {
             //Wait next blank coming;
         }
+    }
+    break;
+
+    case evLCD_CTRL_RECT_UPDATE:
+    {
+        sysCleanDcache((UINT32)s_au8FrameBuf, (UINT32)CONFIG_VRAM_TOTAL_ALLOCATED_SIZE);
     }
     break;
 

@@ -9,12 +9,17 @@
 #include "lvgl.h"
 #include "lv_glue.h"
 
-
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * LV_VER_RES_MAX * sizeof(lv_color_t) * CONFIG_LCD_FB_NUM), DEF_CACHE_LINE_SIZE)
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DEF_CACHE_LINE_SIZE)));
 
 extern S_CALIBRATION_MATRIX g_sCalMat;
+
+#if defined(__480x272__)
+S_CALIBRATION_MATRIX g_sCalMat = { 35449, 105, -2482568, -79, -26579, 22557014, 65536 };
+#elif defined(__800x480__)
+S_CALIBRATION_MATRIX g_sCalMat = { 55392, 419, -2233488, -1037, -35995, 34183424, 65536 };
+#endif
 
 #if !defined(STORAGE_SD)
 
@@ -220,6 +225,7 @@ int lcd_device_control(int cmd, void *argv)
         psLCDInfo->u32ResWidth = LV_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = LV_VER_RES_MAX;
         psLCDInfo->u32BytePerPixel = sizeof(lv_color_t);
+        psLCDInfo->evLCDType = evLCD_TYPE_SYNC;
     }
     break;
 
@@ -237,6 +243,12 @@ int lcd_device_control(int cmd, void *argv)
         {
             //Wait next blank coming;
         }
+    }
+    break;
+
+    case evLCD_CTRL_RECT_UPDATE:
+    {
+        sysCleanDcache((UINT32)s_au8FrameBuf, (UINT32)CONFIG_VRAM_TOTAL_ALLOCATED_SIZE);
     }
     break;
 

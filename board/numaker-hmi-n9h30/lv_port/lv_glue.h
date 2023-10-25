@@ -13,6 +13,13 @@
 #include "adc.h"
 #include "nu_misc.h"
 
+#if CONFIG_LV_DISP_FULL_REFRESH
+    #define CONFIG_LCD_FB_NUM            3
+#else
+    #define CONFIG_LCD_FB_NUM            2
+#endif
+#define CONFIG_DISP_LINE_BUFFER_NUMBER   (CONFIG_LCD_FB_NUM * LV_VER_RES_MAX)
+
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);
 int lcd_device_open(void);

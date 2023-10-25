@@ -17,13 +17,6 @@
 #define LV_COLOR_DEPTH                  16
 #define LV_DISP_DEF_REFR_PERIOD         16
 
-/* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
-#define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX/2)
-
-#if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
-    #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
-#endif
-
 #define LV_TICK_CUSTOM                  1
 #define LV_TICK_CUSTOM_INCLUDE          LV_NUVOTON_INCLUDE
 
@@ -54,7 +47,7 @@
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    ////#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
     #define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER

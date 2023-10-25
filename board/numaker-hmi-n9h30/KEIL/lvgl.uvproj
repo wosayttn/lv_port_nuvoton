@@ -1717,11 +1717,6 @@
               <FilePath>..\lv_port\lv_glue.c</FilePath>
             </File>
             <File>
-              <FileName>ad_touch_calibration.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\lv_port\ad_touch_calibration.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_conf.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\lv_conf.h</FilePath>
@@ -1735,6 +1730,11 @@
               <FileName>nu_misc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\nu_misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_adc_calibration.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -13,22 +13,12 @@
 #include "adc.h"
 #include "nu_misc.h"
 
-/*
-(1) Apply partial update:
-    i. Higher FPS.
-   ii. Easy tearing when sliding.
-
-(2) Apply full-refresh:
-    i. Tearingless by switching VRAM start address after receiving Vsync of VPOST.
-   ii. lvgl keeps previous surface and redraw new dirty joined area, the do vsync-switch.
-*/
-#define CONFIG_LV_DISP_FULL_REFRESH      1
-
 #if CONFIG_LV_DISP_FULL_REFRESH
     #define CONFIG_LCD_FB_NUM            3
 #else
     #define CONFIG_LCD_FB_NUM            2
 #endif
+#define CONFIG_DISP_LINE_BUFFER_NUMBER   (CONFIG_LCD_FB_NUM * LV_VER_RES_MAX)
 
 #define CONFIG_SYS_TIMER                TIMER0
 

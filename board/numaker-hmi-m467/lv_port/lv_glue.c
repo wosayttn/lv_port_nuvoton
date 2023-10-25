@@ -81,6 +81,7 @@ int lcd_device_control(int cmd, void *argv)
         psLCDInfo->u32ResWidth = LV_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = LV_VER_RES_MAX;
         psLCDInfo->u32BytePerPixel = sizeof(lv_color_t);
+        psLCDInfo->evLCDType = evLCD_TYPE_MPU;
     }
     break;
 

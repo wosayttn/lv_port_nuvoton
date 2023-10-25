@@ -16,7 +16,9 @@
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(4)));
 
-extern S_CALIBRATION_MATRIX g_sCalMat;
+#if defined(__320x240__)
+S_CALIBRATION_MATRIX g_sCalMat = { -105, 6354, -3362552, 5086, -24, -2489744, 65536 };
+#endif
 
 static volatile uint32_t s_systick_count = 0;
 
@@ -112,6 +114,7 @@ int lcd_device_control(int cmd, void *argv)
         psLCDInfo->u32ResWidth = LV_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = LV_VER_RES_MAX;
         psLCDInfo->u32BytePerPixel = sizeof(lv_color_t);
+        psLCDInfo->evLCDType = evLCD_TYPE_MPU;
     }
     break;
 

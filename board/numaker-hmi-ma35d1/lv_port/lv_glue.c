@@ -14,6 +14,10 @@
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(128)));
 
+#if defined(__1024x600__)
+S_CALIBRATION_MATRIX g_sCalMat = { -17558, 1, 69298832, -10, 11142, -2549195, 65536 };
+#endif
+
 /* LCD attributes 1024x600 */
 #if defined(__1024x600__)
 const static DISP_LCD_INFO LcdPanelInfo =
@@ -167,6 +171,7 @@ int lcd_device_control(int cmd, void *argv)
         psLCDInfo->u32ResWidth = LV_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = LV_VER_RES_MAX;
         psLCDInfo->u32BytePerPixel = sizeof(lv_color_t);
+        psLCDInfo->evLCDType = evLCD_TYPE_SYNC;
     }
     break;
 
@@ -188,6 +193,12 @@ int lcd_device_control(int cmd, void *argv)
     }
     break;
 #endif
+
+    case evLCD_CTRL_RECT_UPDATE:
+    {
+        dcache_clean_by_mva(s_au8FrameBuf, CONFIG_VRAM_TOTAL_ALLOCATED_SIZE);
+    }
+    break;
 
     default:
         LV_ASSERT(0);

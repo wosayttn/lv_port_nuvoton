@@ -26,6 +26,8 @@
     #define LV_DISP_DEF_REFR_PERIOD     16
 #endif
 
+#define CONFIG_LV_DISP_FULL_REFRESH     0
+
 #define LV_TICK_CUSTOM                  1
 #define LV_TICK_CUSTOM_INCLUDE          LV_NUVOTON_INCLUDE
 #define LV_TICK_CUSTOM_SYS_TIME_EXPR    (msTicks0)    /*Expression evaluating to current system time in ms*/
@@ -71,13 +73,13 @@
 #endif
 
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      0
+#define LV_USE_LOG                      1
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
 #endif

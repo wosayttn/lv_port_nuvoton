@@ -14,6 +14,13 @@
 
 #define PORT_OFFSET                   0x40
 
+/* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
+#define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX/2)
+
+#if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
+    #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
+#endif
+
 /* Alias */
 #define GPIO_PIN_DATA                   GPIO_PIN_DATA_S
 

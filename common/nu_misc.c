@@ -17,16 +17,16 @@ void *nvt_malloc_align(uint32_t size, uint32_t align)
     {
         void *align_ptr;
 
-        if (((uint32_t)ptr & (align - 1)) == 0)
+        if (((uintptr_t)ptr & (align - 1)) == 0)
         {
-            align_ptr = (void *)((uint32_t)ptr + align);
+            align_ptr = (void *)((uintptr_t)ptr + align);
         }
         else
         {
-            align_ptr = (void *)NVT_ALIGN((uint32_t)ptr, align);
+            align_ptr = (void *)NVT_ALIGN((uintptr_t)ptr, align);
         }
 
-        *((uint32_t *)((uint32_t)align_ptr - sizeof(void *))) = (uint32_t)ptr;
+        *((uint32_t *)((uintptr_t)align_ptr - sizeof(void *))) = (uintptr_t)ptr;
 
         ptr = align_ptr;
     }
@@ -38,5 +38,5 @@ void nvt_free_align(void *ptr)
 {
     if (ptr == NULL) return;
 
-    free((void *) * ((uint32_t *)((uint32_t)ptr - sizeof(void *))));
+    free((void *) * ((uintptr_t *)((uintptr_t)ptr - sizeof(void *))));
 }

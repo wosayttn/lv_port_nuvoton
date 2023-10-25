@@ -100,9 +100,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/main.c</locationURI>
 		</link>
 		<link>
-			<name>lv_port/ad_touch_calibration.c</name>
+			<name>lv_port/touch_adc_calibration.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/lv_port/ad_touch_calibration.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_adc_calibration.c</locationURI>
 		</link>
 		<link>
 			<name>lv_port/lv_demo.c</name>

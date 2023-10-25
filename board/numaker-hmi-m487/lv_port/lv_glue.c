@@ -11,12 +11,14 @@
 #include "disp_ili9341.h"
 #include "touch_adc.h"
 
-
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * sizeof(lv_color_t)), 4)
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(4)));
 
-extern S_CALIBRATION_MATRIX g_sCalMat;
+/* User can define ADC touch calibration matrix in board_dev.c. */
+#if defined(__320x240__)
+S_CALIBRATION_MATRIX g_sCalMat = { -2920, 5128, 1259024, 5216, 115, -3184656, 65536 };
+#endif
 
 static volatile uint32_t s_systick_count = 0;
 
@@ -120,6 +122,7 @@ int lcd_device_control(int cmd, void *argv)
         psLCDInfo->u32ResWidth = LV_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = LV_VER_RES_MAX;
         psLCDInfo->u32BytePerPixel = sizeof(lv_color_t);
+        psLCDInfo->evLCDType = evLCD_TYPE_MPU;
     }
     break;
 
@@ -174,7 +177,7 @@ int touchpad_device_open(void)
     nuvoton_fs_init();
 
     extern int ad_touch_calibrate(void);
-    ad_touch_calibrate();
+    //ad_touch_calibrate();
 
     nuvoton_fs_fini();
 

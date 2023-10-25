@@ -60,6 +60,8 @@ static void sys_init(void)
     /* Enable SysTick module clock */
     CLK_EnableSysTick(CLK_CLKSEL0_STCLKSEL_HCLK, 0);
 
+    CLK_EnableModuleClock(PDMA_MODULE);
+
     UART_Open(UART0, 115200);
 
     systick_init();

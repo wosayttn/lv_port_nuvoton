@@ -25,9 +25,10 @@ static void tp_switch_to_analog(uint32_t pin)
 {
     GPIO_T *port = (GPIO_T *)(GPIOA_BASE + PORT_OFFSET * NU_GET_PORT(pin));
 
-    if ((pin == CONFIG_AD_PIN_YU) || (pin == CONFIG_AD_PIN_XR))
-        nu_pin_func(pin, (1 << NU_MFP_POS(NU_GET_PIN(pin))));
+    nu_pin_func(pin, (1 << NU_MFP_POS(NU_GET_PIN(pin))));
 
+    /* Disable the digital input path to avoid the leakage current. */
+    /* Disable digital path on these ADC pin */
     GPIO_DISABLE_DIGITAL_PATH(port, NU_GET_PIN_MASK(NU_GET_PIN(pin)));
 }
 
@@ -37,7 +38,7 @@ static void tp_switch_to_digital(uint32_t pin)
 
     nu_pin_func(pin, 0);
 
-    /* Enable digital path on these EADC pins */
+    /* Enable digital path on these ADC pin */
     GPIO_ENABLE_DIGITAL_PATH(port, NU_GET_PIN_MASK(NU_GET_PIN(pin)));
 }
 
@@ -68,11 +69,11 @@ uint32_t indev_touch_get_x(void)
     GPIO_PIN_DATA(NU_GET_PORT(CONFIG_AD_PIN_XR), NU_GET_PIN(CONFIG_AD_PIN_XR)) = 1;
     GPIO_PIN_DATA(NU_GET_PORT(CONFIG_AD_PIN_XL), NU_GET_PIN(CONFIG_AD_PIN_XL)) = 0;
 
+    /* Configure the digital input pins.  */
     tp_switch_to_digital(CONFIG_AD_PIN_XR);
     tp_switch_to_digital(CONFIG_AD_PIN_YD);
     tp_switch_to_digital(CONFIG_AD_PIN_XL);
 
-    /* Disable the digital input path to avoid the leakage current. */
     /* Configure the ADC analog input pins.  */
     tp_switch_to_analog(CONFIG_AD_PIN_YU);
 
@@ -96,11 +97,11 @@ uint32_t indev_touch_get_y(void)
     GPIO_PIN_DATA(NU_GET_PORT(CONFIG_AD_PIN_YU), NU_GET_PIN(CONFIG_AD_PIN_YU)) = 1;
     GPIO_PIN_DATA(NU_GET_PORT(CONFIG_AD_PIN_YD), NU_GET_PIN(CONFIG_AD_PIN_YD)) = 0;
 
+    /* Configure the digital input pins.  */
     tp_switch_to_digital(CONFIG_AD_PIN_YU);
     tp_switch_to_digital(CONFIG_AD_PIN_YD);
     tp_switch_to_digital(CONFIG_AD_PIN_XL);
 
-    /* Disable the digital input path to avoid the leakage current. */
     /* Configure the ADC analog input pins.  */
     tp_switch_to_analog(CONFIG_AD_PIN_XR);
 

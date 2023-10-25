@@ -39,6 +39,7 @@ static void sys_init(void)
 
     /* Enable UART0 module clock */
     CLK_EnableModuleClock(UART0_MODULE);
+    CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART0SEL_HXT, CLK_CLKDIV0_UART0(1));
 
     /* Enable EADC0 module clock */
     CLK_EnableModuleClock(EADC_MODULE);
@@ -55,9 +56,6 @@ static void sys_init(void)
 
     /* Update System Core Clock */
     SystemCoreClockUpdate();
-
-    /* Select UART clock source is HXT */
-    CLK->CLKSEL1 = (CLK->CLKSEL1 & ~CLK_CLKSEL1_UART0SEL_Msk) | (0x0 << CLK_CLKSEL1_UART0SEL_Pos);
 
     /* Set GPB multi-function pins for UART0 RXD and TXD */
     SYS->GPB_MFPH &= ~(SYS_GPB_MFPH_PB12MFP_Msk | SYS_GPB_MFPH_PB13MFP_Msk);
@@ -80,10 +78,8 @@ static void sys_init(void)
     SYS->GPH_MFPH |= (SYS_GPH_MFPH_PH11MFP_EBI_AD15 | SYS_GPH_MFPH_PH10MFP_EBI_AD14 | SYS_GPH_MFPH_PH9MFP_EBI_AD13 | SYS_GPH_MFPH_PH8MFP_EBI_AD12);
 
     /*EADC*/
-    SYS->GPB_MFPH &= ~(SYS_GPB_MFPH_PB14MFP_Msk | SYS_GPB_MFPH_PB9MFP_Msk | SYS_GPB_MFPH_PB8MFP_Msk);
-    SYS->GPB_MFPH |= (SYS_GPB_MFPH_PB14MFP_EADC0_CH14 | SYS_GPB_MFPH_PB9MFP_EADC0_CH9 | SYS_GPB_MFPH_PB8MFP_EADC0_CH8);
-    SYS->GPB_MFPL &= ~(SYS_GPB_MFPL_PB2MFP_Msk);
-    SYS->GPB_MFPL |= (SYS_GPB_MFPL_PB2MFP_EADC0_CH2);
+    SYS->GPB_MFPH &= ~(SYS_GPB_MFPH_PB9MFP_Msk | SYS_GPB_MFPH_PB8MFP_Msk);
+    SYS->GPB_MFPH |= (SYS_GPB_MFPH_PB9MFP_EADC0_CH9 | SYS_GPB_MFPH_PB8MFP_EADC0_CH8);
 
     UART_Open(UART0, 115200);
 
