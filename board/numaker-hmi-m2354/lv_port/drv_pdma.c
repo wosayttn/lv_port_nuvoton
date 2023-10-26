@@ -1063,8 +1063,6 @@ static void nu_pdma_memfun_actor_init(void)
 
 static void nu_pdma_memfun_cb(void *pvUserData, uint32_t u32Events)
 {
-    int result = 0;
-
     nu_pdma_memfun_actor_t psMemFunActor = (nu_pdma_memfun_actor_t)pvUserData;
     psMemFunActor->m_u32Result = u32Events;
 

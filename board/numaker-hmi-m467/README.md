@@ -6,6 +6,7 @@
 |-|-|
 | GCC | GCC project file |
 | KEIL | MDK5 project file |
+| IAR | IAR project file |
 | lv_port | lvgl porting files |
 | sls_files | User UI files SLS exported |
 | lv_conf.h | Major lvgl configuration file |
