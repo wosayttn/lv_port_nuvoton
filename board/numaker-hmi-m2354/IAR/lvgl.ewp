@@ -846,7 +846,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$/M2354.icf</state>
+                    <state>$PROJ_DIR$/M2354KJ.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>

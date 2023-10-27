@@ -77,22 +77,25 @@ void lv_draw_n9h30_2dge_ctx_deinit(lv_disp_drv_t *drv, lv_draw_ctx_t *draw_ctx)
 void lv_draw_n9h30_2dge_blend(lv_draw_ctx_t *draw_ctx, const lv_draw_sw_blend_dsc_t *dsc)
 {
     lv_area_t blend_area;
-    uint32_t blend_area_stride;
     bool bAlignedWord, done = false;
 
     if (!_lv_area_intersect(&blend_area, dsc->blend_area, draw_ctx->clip_area)) return;
 
-    blend_area_stride = lv_area_get_width(&blend_area) * sizeof(lv_color_t);
-
 #if (LV_COLOR_DEPTH == 16)
+
+    uint32_t blend_area_stride = lv_area_get_width(&blend_area) * sizeof(lv_color_t);
     /* Check Hardware constraint: The stride must be a word-alignment. */
     bAlignedWord = ((blend_area_stride & 0x3) == 0) &&
                    (((blend_area.x1 * sizeof(lv_color_t)) & 0x3) == 0) ? true : false;
-#else
-    bAlignedWord = false;
-#endif
 
     LV_LOG_INFO("[%s] %d %d %d",     __func__, lv_area_get_size(&blend_area), (blend_area_stride & 0x3), (blend_area.x1 & 0x2));
+
+#else
+
+    bAlignedWord = false;
+
+#endif
+
 
     if ((lv_area_get_size(&blend_area) > 7200) &&
             bAlignedWord &&
@@ -100,7 +103,6 @@ void lv_draw_n9h30_2dge_blend(lv_draw_ctx_t *draw_ctx, const lv_draw_sw_blend_ds
             (dsc->blend_mode == LV_BLEND_MODE_NORMAL))
     {
         lv_coord_t dest_stride = lv_area_get_width(draw_ctx->buf_area);  /*Width of the destination buffer*/
-
 
         /* Pointer to an image to blend. If set, color is ignored. If not set fill blend_area with color. */
         if (dsc->src_buf)
@@ -110,7 +112,8 @@ void lv_draw_n9h30_2dge_blend(lv_draw_ctx_t *draw_ctx, const lv_draw_sw_blend_ds
             lv_color_t *src_buf = (lv_color_t *)dsc->src_buf + (src_stride * (blend_area.y1 - dsc->blend_area->y1) + (blend_area.x1 -  dsc->blend_area->x1));
             lv_area_move(&blend_area, -draw_ctx->buf_area->x1, -draw_ctx->buf_area->y1);
 
-            done = lv_draw_n9h30_2dge_blend_map(draw_ctx->buf, &blend_area, dest_stride, src_buf, src_stride, dsc->opa);
+            if (src_stride == lv_area_get_width(&blend_area))
+                done = lv_draw_n9h30_2dge_blend_map(draw_ctx->buf, &blend_area, dest_stride, src_buf, src_stride, dsc->opa);
         }
         else if (dsc->opa >= LV_OPA_MAX)
         {

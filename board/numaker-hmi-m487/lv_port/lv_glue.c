@@ -17,7 +17,8 @@ static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((al
 
 /* User can define ADC touch calibration matrix in board_dev.c. */
 #if defined(__320x240__)
-S_CALIBRATION_MATRIX g_sCalMat = { -2920, 5128, 1259024, 5216, 115, -3184656, 65536 };
+/* Use ADVv4.1 board */
+S_CALIBRATION_MATRIX g_sCalMat = { 9, 6484, -4280144, -5183, -113, 19125360, 65536 };
 #endif
 
 static volatile uint32_t s_systick_count = 0;

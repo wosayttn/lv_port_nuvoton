@@ -272,7 +272,6 @@ static void _draw_bots(int x, int y)
         }
 #else
         LV_LOG_ERROR("Not supported.");
-        return;
 #endif
     }
     break;
@@ -294,7 +293,6 @@ static void _draw_bots(int x, int y)
         area.y2 = start_y + DEF_DOT_NUMBER;
 #else
         LV_LOG_ERROR("Not supported.");
-        return;
 #endif
     }
     break;

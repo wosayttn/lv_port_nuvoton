@@ -36,7 +36,8 @@
  *  STATIC PROTOTYPES
  **********************/
 
-static void lv_draw_n9h20_blt_blend_fill(lv_color_t *dest_buf, lv_coord_t dest_stride, const lv_area_t *fill_area, lv_color_t color);
+static bool lv_draw_n9h20_blt_blend_fill(lv_color_t *dest_buf, const lv_area_t *dest_area, const lv_area_t *fill_area, lv_color_t color);
+static bool lv_draw_n9h20_blt_blend_map(lv_color_t *dest_buf, const lv_area_t *dest_area, lv_color_t *src_buf, lv_coord_t src_stride, const lv_area_t *src_area, lv_opa_t opa);
 
 /**********************
  *  STATIC VARIABLES
@@ -72,40 +73,39 @@ void lv_draw_n9h20_blt_ctx_deinit(lv_disp_drv_t *drv, lv_draw_ctx_t *draw_ctx)
 void lv_draw_n9h20_blt_blend(lv_draw_ctx_t *draw_ctx, const lv_draw_sw_blend_dsc_t *dsc)
 {
     lv_area_t blend_area;
-    uint32_t blend_area_w, blend_area_stride, word_aligned;
-    bool done = false;
+    bool bAlignedWord, done = false;
 
     if (!_lv_area_intersect(&blend_area, dsc->blend_area, draw_ctx->clip_area)) return;
 
-    blend_area_w = lv_area_get_width(&blend_area);
-    blend_area_stride = blend_area_w * sizeof(lv_color_t);
+#if (LV_COLOR_DEPTH == 16)
+    {
+        uint32_t blend_area_w, blend_area_stride;
+        blend_area_w = lv_area_get_width(&blend_area);
+        blend_area_stride = blend_area_w * sizeof(lv_color_t);
 
-    word_aligned = ((blend_area_stride & 0x3) == 0) &&
-                   ((blend_area.x1 * (LV_COLOR_DEPTH / 8) & 0x3) == 0) ? 1 : 0;
+        bAlignedWord = ((blend_area_stride & 0x3) == 0) &&
+                       ((blend_area.x1 * (LV_COLOR_DEPTH / 8) & 0x3) == 0) ? true : false;
+    }
+#else
+    bAlignedWord = true;
+#endif
 
-    LV_LOG_INFO("[%s] %d %d %d",     __func__, lv_area_get_size(&blend_area), (blend_area_stride & 0x3), (blend_area.x1 & 0x2));
-
-    if ((lv_area_get_size(&blend_area) > 7200) &&
-            word_aligned &&
+    if ((lv_area_get_size(&blend_area) > 6400) &&
+            bAlignedWord &&
             (dsc->mask_buf == NULL) &&
             (dsc->blend_mode == LV_BLEND_MODE_NORMAL))
     {
-
-        lv_coord_t dest_stride = lv_area_get_width(draw_ctx->buf_area) * sizeof(lv_color_t);
-
-        const lv_color_t *src_buf = dsc->src_buf;
-
-        if (src_buf)
+        if (dsc->src_buf)
         {
-            // TODO: lv_draw_n9h20_blt_blend_map(lv_color_t *dest_buf, const lv_area_t *dest_area, lv_coord_t dest_stride, const lv_color_t *src_buf, lv_coord_t src_stride, lv_opa_t opa)
+            lv_color_t *src_buf = (lv_color_t *)dsc->src_buf + (lv_area_get_width(dsc->blend_area) * (blend_area.y1 - dsc->blend_area->y1) + (blend_area.x1 - dsc->blend_area->x1));
+            lv_area_move(&blend_area, -draw_ctx->buf_area->x1, -draw_ctx->buf_area->y1);
+            done = lv_draw_n9h20_blt_blend_map(draw_ctx->buf, draw_ctx->buf_area, (lv_color_t *)src_buf, (lv_coord_t)lv_area_get_width(dsc->blend_area), &blend_area, dsc->opa);
         }
         else if (dsc->opa >= LV_OPA_MAX) //Fill
         {
             lv_area_move(&blend_area, -draw_ctx->buf_area->x1, -draw_ctx->buf_area->y1);
 
-            lv_draw_n9h20_blt_blend_fill(draw_ctx->buf, dest_stride, &blend_area, dsc->color);
-
-            done = true;
+            done = lv_draw_n9h20_blt_blend_fill(draw_ctx->buf, draw_ctx->buf_area, &blend_area, dsc->color);
         }
     }
 
@@ -115,49 +115,183 @@ void lv_draw_n9h20_blt_blend(lv_draw_ctx_t *draw_ctx, const lv_draw_sw_blend_dsc
     }
 }
 
-static void lv_draw_n9h20_blt_blend_fill(lv_color_t *dest_buf, lv_coord_t dest_stride, const lv_area_t *fill_area, lv_color_t color)
+static bool lv_draw_n9h20_blt_blend_fill(lv_color_t *dest_buf, const lv_area_t *dest_area, const lv_area_t *fill_area, lv_color_t color)
 {
+#if 1
     int32_t fill_area_w = lv_area_get_width(fill_area);
     int32_t fill_area_h = lv_area_get_height(fill_area);
+    lv_coord_t dest_stride = lv_area_get_width(dest_area);
+
     lv_color_t *start_buf = dest_buf + (fill_area->y1 * dest_stride);
 
-    LV_LOG_INFO("[%s] %d %d %08x color=%08x@%08x %d %d %dx%d", __func__, dest_stride, lv_area_get_size(fill_area), lv_color_to32(color),  color, dest_buf, fill_area->x1, fill_area->y1, fill_area_w, fill_area_h);
-
-    sysCleanInvalidatedDcache((UINT32)start_buf, (UINT32)dest_stride * fill_area_h);
+    sysCleanInvalidatedDcache((UINT32)start_buf, (UINT32)(dest_stride * sizeof(lv_color_t) * fill_area_h));
 
     // Fill color is non-premultiplied alpha.
     {
-        S_FI_FILLOP clr_op;
         uint32_t u32Color = lv_color_to32(color);
 
-        clr_op.sRect.i16Xmin = fill_area->x1;
-        clr_op.sRect.i16Ymin = fill_area->y1;
-        clr_op.sRect.i16Xmax = fill_area->x2 + 1;
-        clr_op.sRect.i16Ymax = fill_area->y2 + 1;
 
-        clr_op.sARGB8.u8Blue  = (u32Color & 0x000000FF);
-        clr_op.sARGB8.u8Green = (u32Color & 0x0000FF00) >> 8;
-        clr_op.sARGB8.u8Red   = (u32Color & 0x00FF0000) >> 16;
-        clr_op.sARGB8.u8Alpha = (u32Color & 0xFF000000) >> 24;
+        S_DRVBLT_DEST_FB sDestFB;
+        S_DRVBLT_ARGB8   sARGB8;
 
-        clr_op.u32FBAddr = (uint32_t)dest_buf;
-        clr_op.i32Stride = dest_stride;
+        bltSetFillOP((E_DRVBLT_FILLOP) TRUE);
+
+        sARGB8.u8Blue   = (u32Color & 0x000000FF);
+        sARGB8.u8Green  = (u32Color & 0x0000FF00) >> 8;
+        sARGB8.u8Red    = (u32Color & 0x00FF0000) >> 16;
+        sARGB8.u8Alpha  = (u32Color & 0xFF000000) >> 24;
+        bltSetARGBFillColor(sARGB8);
+
+        sDestFB.i32Stride  = dest_stride * sizeof(lv_color_t);
+        sDestFB.i16Width   = fill_area->x2 + 1 - fill_area->x1;
+        sDestFB.i16Height  = fill_area->y2 + 1 - fill_area->y1;
+
+        sDestFB.u32FrameBufAddr = (uint32_t)dest_buf + fill_area->y1 * (dest_stride * sizeof(lv_color_t)) + fill_area->x1 * sizeof(lv_color_t);
+
+        sDestFB.i32XOffset = 0;
+        sDestFB.i32YOffset = 0;
+
+        bltSetDestFrameBuf(sDestFB);
 
 #if (LV_COLOR_DEPTH == 16)
-        clr_op.eDisplayFmt = eDRVBLT_DEST_RGB565;
-        clr_op.i32Blend = 0;    // No alpha blending.
+        bltSetDisplayFormat(eDRVBLT_DEST_RGB565);
 #elif (LV_COLOR_DEPTH == 32)
-        clr_op.eDisplayFmt = eDRVBLT_DEST_RGB888;
-        clr_op.i32Blend = 0;    // No alpha blending.
+        bltSetDisplayFormat(eDRVBLT_DEST_ARGB8888);
 #endif
 
-        bltFIFill(clr_op);
+        bltSetFillAlpha(0);
+
+        bltTrigger();   // Trigger FILL operation.
+
+        //bltFlush();   // Wait for complete.
+
     }
+
+    return true;
+
+#else
+    return false;
+#endif
+}
+
+static bool lv_draw_n9h20_blt_blend_map(lv_color_t *dest_buf, const lv_area_t *dest_area, lv_color_t *src_buf, lv_coord_t src_stride, const lv_area_t *src_area, lv_opa_t opa)
+{
+#if 1
+    int32_t src_x = src_area->x1;
+    int32_t src_y = src_area->y1;
+    int32_t src_w = lv_area_get_width(src_area);
+    int32_t src_h = lv_area_get_height(src_area);
+
+    int32_t dest_x = dest_area->x1;
+    int32_t dest_y = dest_area->y1;
+    int32_t dest_w = lv_area_get_width(dest_area);
+    int32_t dest_h = lv_area_get_height(dest_area);
+
+    const lv_color_t *dest_start_buf = dest_buf + (dest_y * dest_w) + dest_x;
+    const lv_color_t *src_start_buf = src_buf;
+
+
+    bltSetFillOP((E_DRVBLT_FILLOP) FALSE);  // Blit operation.
+
+#if (LV_COLOR_DEPTH == 16)
+    bltSetDisplayFormat(eDRVBLT_DEST_RGB565);   // Set destination format.
+    bltSetSrcFormat(eDRVBLT_SRC_RGB565);        // Set source image format to RGB565.
+#elif (LV_COLOR_DEPTH == 32)
+    bltSetDisplayFormat(eDRVBLT_DEST_ARGB8888);   // Set destination format.
+    bltSetSrcFormat(eDRVBLT_SRC_ARGB8888);      // Set source image format to RGB888/ARGB8888.
+#endif
+
+    bltSetRevealAlpha(eDRVBLT_NO_EFFECTIVE);    // Source image format is non-premultiplied alpha.
+
+    {
+        // Set transform matrix to identify matrix. So no scaling, no rotation, no shearing, etc.
+        S_DRVBLT_MATRIX xform_mx;
+
+        xform_mx.a  =   0x10000;
+        xform_mx.b  =   0;
+        xform_mx.c  =   0;
+        xform_mx.d  =   0x10000;
+
+        bltSetTransformMatrix(xform_mx);
+    }
+
+    {
+        // Set color multiplier for color transform.
+        S_DRVBLT_ARGB16 color_multiplier;
+
+        color_multiplier.i16Blue    =   0x100;
+        color_multiplier.i16Green   =   0x100;
+        color_multiplier.i16Red     =   0x100;
+        color_multiplier.i16Alpha   = (int16_t)(opa);
+
+        bltSetColorMultiplier(color_multiplier);
+    }
+
+    {
+        // Set color offset for color transform
+        S_DRVBLT_ARGB16 color_offset;
+
+        color_offset.i16Blue    =   0;
+        color_offset.i16Green   =   0;
+        color_offset.i16Red     =   0;
+        color_offset.i16Alpha   =   0;
+
+        bltSetColorOffset(color_offset);
+    }
+
+    // Apply color transformation on all 4 channels.
+    if (opa < LV_OPA_MAX)
+    {
+        bltSetTransformFlag(eDRVBLT_HASTRANSPARENCY | eDRVBLT_HASCOLORTRANSFORM);
+    }
+    else
+    {
+        bltSetTransformFlag(eDRVBLT_HASCOLORTRANSFORM);
+    }
+    bltSetFillStyle((E_DRVBLT_FILL_STYLE)(eDRVBLT_NONE_FILL | eDRVBLT_NOTSMOOTH));  // No smoothing.
+
+    {
+        // Set source image.
+        S_DRVBLT_SRC_IMAGE src_img = {0};
+
+        src_img.u32SrcImageAddr = (UINT32)src_buf;
+        src_img.i32XOffset = -src_x * 0x10000;     // 16.16
+        src_img.i32YOffset = -src_y * 0x10000;     // 16.16
+        src_img.i16Width   = src_w;
+        src_img.i16Height  = src_h;
+        src_img.i32Stride  = src_stride * sizeof(lv_color_t);
+
+        bltSetSrcImage(src_img);
+    }
+
+    {
+        // Set destination buffer.
+        S_DRVBLT_DEST_FB dst_img = {0};
+
+        dst_img.u32FrameBufAddr = (UINT32)dest_buf;
+        dst_img.i16Width   = dest_w;
+        dst_img.i16Height  = dest_h;
+        dst_img.i32Stride  = dest_w * sizeof(lv_color_t);
+
+        bltSetDestFrameBuf(dst_img);
+    }
+
+    sysCleanInvalidatedDcache((UINT32)dest_start_buf, sizeof(lv_color_t) * src_stride * src_h);
+    sysCleanDcache((uint32_t)src_start_buf, sizeof(lv_color_t) * (src_stride * src_h));
+
+    bltTrigger();   // Trigger Blit operation.
+
+    //bltFlush();   // Wait for complete.
+
+    return true;
+#else
+    return false;
+#endif
 }
 
 void lv_gpu_n9h20_blt_wait_cb(lv_draw_ctx_t *draw_ctx)
 {
-    lv_draw_sw_wait_for_finish(draw_ctx);
+    bltFlush();     // Wait for triggerd FILL or BLIT action.
 }
 
 /**********************

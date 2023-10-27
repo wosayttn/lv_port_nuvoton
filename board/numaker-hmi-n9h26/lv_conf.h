@@ -35,7 +35,7 @@
 (1) Apply partial update:
     i. Higher FPS.
    ii. Easy tearing when sliding.
-  iii.                Copy offline surface buffer to on-screen buffer.
+  iii. Copy offline surface buffer to on-screen buffer.
 
 (2) Apply full-refresh:
     i. Tearingless by switching VRAM start address after receiving Vsync of VPOST.

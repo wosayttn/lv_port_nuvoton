@@ -112,29 +112,30 @@ void lv_port_disp_init(void)
     disp_drv.ver_res = sLcdInfo.u32ResHeight;
     disp_drv.user_data = &sLcdInfo;
     disp_drv.full_refresh = CONFIG_LV_DISP_FULL_REFRESH;
+
+    buf1 = (void *)((uint32_t)sLcdInfo.pvVramStartAddr);
+    buf2 = (void *)((uint32_t)buf1 + u32FBSize);
+    buf3_next = (void *)((uint32_t)buf2 + u32FBSize);
+
     if (disp_drv.full_refresh)
     {
-        disp_drv.flush_cb = lv_port_disp_full_refresh;
+        LV_LOG_INFO("Use triple screen-size shadow buffer, buf1: 0x%08x, buf2: 0x%08x, buf3_next: 0x%08x", buf1, buf2, buf3_next);
 
-        buf1 = (void *)((uint32_t)sLcdInfo.pvVramStartAddr);
-        buf2 = (void *)((uint32_t)buf1 + u32FBSize);
-        buf3_next = (void *)((uint32_t)buf2 + u32FBSize);
+        disp_drv.flush_cb = lv_port_disp_full_refresh;
 
         /*Initialize `disp_buf` with the buffer(s).*/
         lv_disp_draw_buf_init(&disp_buf, buf1, buf2, sLcdInfo.u32ResHeight * sLcdInfo.u32ResWidth);
 
-        LV_LOG_INFO("Use triple screen-size shadow buffer, buf1: 0x%08x, buf2: 0x%08x, buf3_next: 0x%08x", buf1, buf2, buf3_next);
     }
     else
     {
+        LV_LOG_INFO("Use two screen-size shadow buffer, 0x%08x, 0x%08x.", buf2, buf3_next);
+
         disp_drv.flush_cb = lv_port_disp_partial_update;
 
-        buf1 = (void *)(((uint32_t)sLcdInfo.pvVramStartAddr) + u32FBSize);
-
         /*Initialize `disp_buf` with the buffer(s).*/
-        lv_disp_draw_buf_init(&disp_buf, buf1, NULL, sLcdInfo.u32ResHeight * sLcdInfo.u32ResWidth);
-
-        LV_LOG_INFO("Use one screen-size shadow buffer, buf1: 0x%08x", buf1);
+        lv_disp_draw_buf_init(&disp_buf, buf2, buf3_next, sLcdInfo.u32ResHeight * sLcdInfo.u32ResWidth);
+        //lv_disp_draw_buf_init(&disp_buf, buf1, NULL, sLcdInfo.u32ResHeight * sLcdInfo.u32ResWidth);
     }
 
     /*Set a display buffer*/
