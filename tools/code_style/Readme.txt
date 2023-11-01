@@ -1,1 +1,0 @@
-Drag formatted folder and drop it on AStyle.bat on window.
