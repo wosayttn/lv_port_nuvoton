@@ -26,14 +26,17 @@ void fsa506_write_reg(uint16_t reg, uint16_t data)
     // Register
     CLR_RS;
     FSA506_WRITE_REG(reg & 0xFF);
+    __DSB();
     SET_RS;
 
     // Data
     FSA506_WRITE_DATA(data & 0xFF);
+    __DSB();
 
     // Done
     CLR_RS;
     FSA506_WRITE_REG(0x80);
+    __DSB();
     SET_RS;
 }
 
@@ -59,6 +62,7 @@ void fsa506_send_pixels(uint16_t *pixels, int byte_len)
 
     CLR_RS;
     FSA506_WRITE_REG(0xC1);
+    __DSB();	
     SET_RS;
 
 #if defined(CONFIG_FSA506_EBI_USE_PDMA)
@@ -73,11 +77,13 @@ void fsa506_send_pixels(uint16_t *pixels, int byte_len)
         while (i < count)
         {
             FSA506_WRITE_DATA(pixels[i]);
+            __DSB();
             i++;
         }
     }
 
     CLR_RS;
     FSA506_WRITE_REG(0x80);
+    __DSB();		
     SET_RS;
 }
