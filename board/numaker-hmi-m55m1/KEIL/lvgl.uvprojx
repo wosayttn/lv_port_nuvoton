@@ -329,8 +329,8 @@
             <uC99>1</uC99>
             <uGnu>1</uGnu>
             <useXO>0</useXO>
-            <v6Lang>5</v6Lang>
-            <v6LangP>3</v6LangP>
+            <v6Lang>6</v6Lang>
+            <v6LangP>4</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE NVT_DCACHE_ON</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\bsp\m55m1\Library\CMSIS\Include;..\..\..\bsp\m55m1\Library\CMSIS\Core\Include;..\..\..\bsp\m55m1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\m55m1\Library\StdDriver\inc;..\lv_port;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\m55m1\Library\CMSIS\Include;..\..\..\bsp\m55m1\Library\CMSIS\Core\Include;..\..\..\bsp\m55m1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\m55m1\Library\StdDriver\inc;..\lv_port;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\lvgl\src\draw\arm2d;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\thirdparty\arm2d\Library\Include;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1654,6 +1654,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\demos\widgets\assets\img_lvgl_logo.c</FilePath>
             </File>
+            <File>
+              <FileName>lv_gpu_arm2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\arm2d\lv_gpu_arm2d.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1717,6 +1722,256 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>arm2d</GroupName>
+          <Files>
+            <File>
+              <FileName>__arm_2d_alpha_blending_wrapper.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_alpha_blending_wrapper.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_colour_filling_with_alpha.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_colour_filling_with_alpha.c</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_conversion_helium.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_conversion_helium.c</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_copy_mirror_wrapper.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_copy_mirror_wrapper.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_copy_with_colour_keying_and_mirror_wrapper.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_copy_with_colour_keying_and_mirror_wrapper.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_copy_with_mask_and_mirror_wrapper.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_copy_with_mask_and_mirror_wrapper.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_alpha_blending.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_alpha_blending.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_alpha_mask.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_alpha_mask.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_alpha_mask_helium.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_alpha_mask_helium.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_colour_filling_with_alpha.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_colour_filling_with_alpha.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_copy.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_copy.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_copy_helium.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_copy_helium.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_draw_pattern.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_draw_pattern.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_draw_pattern_helium.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_draw_pattern_helium.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_fill_colour.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_fill_colour.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_fill_colour_helium.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_fill_colour_helium.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_meta_copy_and_fill.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_meta_copy_and_fill.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_meta_copy_with_masks.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_meta_copy_with_masks.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_meta_copy_with_masks_helium.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_meta_copy_with_masks_helium.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_meta_trans_with_masks.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_meta_trans_with_masks.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_meta_trans_with_masks_helium.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_meta_trans_with_masks_helium.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_transform.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_transform.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_ll_transform_helium.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_ll_transform_helium.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_meta_copy_mirror.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_meta_copy_mirror.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_meta_copy_with_colour_keying_and_mirror.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_meta_copy_with_colour_keying_and_mirror.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_meta_copy_with_des_mask_and_mirror.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_meta_copy_with_des_mask_and_mirror.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_meta_copy_with_masks_and_mirror.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_meta_copy_with_masks_and_mirror.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_meta_copy_with_src_mask_and_mirror.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_meta_copy_with_src_mask_and_mirror.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_meta_fill_mirror.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_meta_fill_mirror.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_meta_fill_with_colour_keying_and_mirror.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_meta_fill_with_colour_keying_and_mirror.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_meta_fill_with_des_mask_and_mirror.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_meta_fill_with_des_mask_and_mirror.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_meta_fill_with_masks_and_mirror.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_meta_fill_with_masks_and_mirror.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_meta_fill_with_src_mask_and_mirror.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_meta_fill_with_src_mask_and_mirror.inc</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_tile.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_tile.c</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_transform_helium.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_transform_helium.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_alpha_blending.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_alpha_blending.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_async.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_async.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_conversion.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_conversion.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_draw.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_draw.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helium.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_helium.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_transform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_transform.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>cmsis_dsp</GroupName>
+          <Files>
+            <File>
+              <FileName>arm_cos_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_cos_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_cos_q31.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_cos_q31.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_sin_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_sin_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_sin_q31.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_sin_q31.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_common_tables.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\CommonTables\arm_common_tables.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>sls_ui</GroupName>
         </Group>
       </Groups>
@@ -1728,5 +1983,14 @@
     <components/>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>lvgl</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>

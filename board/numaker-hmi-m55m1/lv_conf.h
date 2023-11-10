@@ -15,6 +15,8 @@
 #define LV_COLOR_DEPTH                  16
 #define LV_DISP_DEF_REFR_PERIOD         30
 
+#define LV_USE_GPU_ARM2D                1
+
 #define LV_TICK_CUSTOM                  1
 #define LV_TICK_CUSTOM_INCLUDE          "lv_glue.h"
 #define LV_TICK_CUSTOM_SYS_TIME_EXPR    (sysGetTicks(0))    /*Expression evaluating to current system time in ms*/
@@ -25,8 +27,8 @@
 #define LV_FONT_MONTSERRAT_16           1
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
-//#define LV_USE_DEMO_WIDGETS             1
-#define LV_USE_DEMO_MUSIC               1
+#define LV_USE_DEMO_WIDGETS             1
+//#define LV_USE_DEMO_MUSIC               1
 
 #if LV_USE_DEMO_MUSIC
     #define LV_COLOR_SCREEN_TRANSP        1

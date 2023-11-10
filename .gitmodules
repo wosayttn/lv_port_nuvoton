@@ -38,3 +38,6 @@
 	path = bsp/nuc980
 	url = https://github.com/OpenNuvoton/NUC980_NonOS_BSP
 	branch = master
+[submodule "thirdparty/arm2d"]
+	path = thirdparty/arm2d
+	url = https://github.com/ARM-software/Arm-2D
