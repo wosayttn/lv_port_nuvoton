@@ -137,7 +137,7 @@
             <DriverSelection>4102</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
-          <Flash2>BIN\UL2V8M.DLL</Flash2>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
@@ -338,7 +338,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE</Define>
+              <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE NVT_DCACHE_ON</Define>
               <Undefine></Undefine>
               <IncludePath>..\;..\..\..\bsp\m55m1\Library\CMSIS\Include;..\..\..\bsp\m55m1\Library\CMSIS\Core\Include;..\..\..\bsp\m55m1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\m55m1\Library\StdDriver\inc;..\lv_port;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
@@ -371,7 +371,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\m55m1\Library\Device\Nuvoton\M55M1\Source\ARM\M55M1.scatter</ScatterFile>
+            <ScatterFile>.\M55M1.scatter</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -1708,57 +1708,6 @@
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\lv_port\drv_pdma.c</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>0</IncludeInBuild>
-                  <AlwaysBuild>0</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
             </File>
             <File>
               <FileName>nu_misc.c</FileName>

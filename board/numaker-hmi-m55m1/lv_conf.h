@@ -25,8 +25,8 @@
 #define LV_FONT_MONTSERRAT_16           1
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
-#define LV_USE_DEMO_WIDGETS             1
-//#define LV_USE_DEMO_MUSIC               1
+//#define LV_USE_DEMO_WIDGETS             1
+#define LV_USE_DEMO_MUSIC               1
 
 #if LV_USE_DEMO_MUSIC
     #define LV_COLOR_SCREEN_TRANSP        1

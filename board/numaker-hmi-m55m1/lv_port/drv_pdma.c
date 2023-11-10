@@ -92,13 +92,13 @@ const static struct nu_module nu_pdma_arr[] =
     {
         .name = "pdma0",
         .m_pvBase = (void *)PDMA0,
-        .u32RstId = PDMA0_RST,
+        .u32RstId = SYS_PDMA0RST,
         .eIRQn = PDMA0_IRQn
     },
     {
         .name = "pdma1",
         .m_pvBase = (void *)PDMA1,
-        .u32RstId = PDMA1_RST,
+        .u32RstId = SYS_PDMA1RST,
         .eIRQn = PDMA1_IRQn
     },
 };
@@ -107,80 +107,6 @@ static const nu_pdma_periph_ctl_t g_nu_pdma_peripheral_ctl_pool[ ] =
 {
     // M2M
     { PDMA_MEM, eMemCtl_SrcInc_DstInc },
-
-    // M2P
-    { PDMA_USB_TX,   eMemCtl_SrcInc_DstFix },
-
-    { PDMA_UART0_TX, eMemCtl_SrcInc_DstFix },
-    { PDMA_UART1_TX, eMemCtl_SrcInc_DstFix },
-    { PDMA_UART2_TX, eMemCtl_SrcInc_DstFix },
-    { PDMA_UART3_TX, eMemCtl_SrcInc_DstFix },
-    { PDMA_UART4_TX, eMemCtl_SrcInc_DstFix },
-    { PDMA_UART5_TX, eMemCtl_SrcInc_DstFix },
-    { PDMA_UART6_TX, eMemCtl_SrcInc_DstFix },
-    { PDMA_UART7_TX, eMemCtl_SrcInc_DstFix },
-    { PDMA_UART8_TX, eMemCtl_SrcInc_DstFix },
-    { PDMA_UART9_TX, eMemCtl_SrcInc_DstFix },
-
-    { PDMA_USCI0_TX, eMemCtl_SrcInc_DstFix },
-
-    { PDMA_QSPI0_TX, eMemCtl_SrcInc_DstFix },
-    { PDMA_QSPI1_TX, eMemCtl_SrcInc_DstFix },
-
-    { PDMA_SPI0_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_SPI1_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_SPI2_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_SPI3_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_SPI4_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_SPI5_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_SPI6_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_SPI7_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_SPI8_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_SPI9_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_SPI10_TX,  eMemCtl_SrcInc_DstFix },
-
-    { PDMA_I2S0_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_I2S1_TX,  eMemCtl_SrcInc_DstFix },
-
-    { PDMA_DAC0_TX,  eMemCtl_SrcInc_DstFix },
-    { PDMA_DAC1_TX,  eMemCtl_SrcInc_DstFix },
-
-    // P2M
-    { PDMA_USB_RX, eMemCtl_SrcFix_DstInc },
-
-    { PDMA_UART0_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_UART1_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_UART2_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_UART3_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_UART4_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_UART5_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_UART6_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_UART7_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_UART8_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_UART9_RX, eMemCtl_SrcFix_DstInc },
-
-    { PDMA_USCI0_RX, eMemCtl_SrcFix_DstInc },
-
-    { PDMA_QSPI0_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_QSPI1_RX, eMemCtl_SrcFix_DstInc },
-
-    { PDMA_SPI0_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_SPI1_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_SPI2_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_SPI3_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_SPI4_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_SPI5_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_SPI6_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_SPI7_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_SPI8_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_SPI9_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_SPI10_RX, eMemCtl_SrcFix_DstInc },
-
-    { PDMA_I2S0_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_I2S1_RX, eMemCtl_SrcFix_DstInc },
-
-    { PDMA_EADC0_RX, eMemCtl_SrcFix_DstInc },
-    { PDMA_EADC1_RX, eMemCtl_SrcFix_DstInc },
 };
 #define NU_PERIPHERAL_SIZE ( sizeof(g_nu_pdma_peripheral_ctl_pool) / sizeof(g_nu_pdma_peripheral_ctl_pool[0]) )
 
@@ -245,8 +171,6 @@ static void nu_pdma_init(void)
         /* Enable PDMA interrupt */
         NVIC_EnableIRQ(nu_pdma_arr[i].eIRQn);
 
-        /* Assign first SG table address as PDMA SG table base address */
-        psPDMA->SCATBA = (uint32_t)&nu_pdma_sgtbl_arr[0];
     }
 
     /* Initialize token pool. */
@@ -324,7 +248,7 @@ static int nu_pdma_timeout_set(int i32ChannID, int i32Timeout_us)
 
     if (i32Timeout_us)
     {
-        uint32_t u32ToClk_Max = 1000000 / (CLK_GetHCLKFreq() / (1 << 8));
+        uint32_t u32ToClk_Max = 1000000 / (CLK_GetHCLK0Freq() / (1 << 8));
         uint32_t u32Divider     = (i32Timeout_us / u32ToClk_Max) / (1 << 16);
         uint32_t u32TOutCnt     = (i32Timeout_us / u32ToClk_Max) % (1 << 16);
 
@@ -665,7 +589,7 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
     {
         /* Link to Next and modify to scatter-gather DMA mode. */
         dma_desc->CTL = (dma_desc->CTL & ~PDMA_DSCT_CTL_OPMODE_Msk) | PDMA_OP_SCATTER;
-        dma_desc->NEXT = (uint32_t)next - (PDMA->SCATBA);
+        dma_desc->NEXT = (uint32_t)next;
     }
 
     /* Be silent */
@@ -757,33 +681,58 @@ fail_nu_pdma_sgtbls_allocate:
 }
 
 
-static int nu_pdma_sgtbls_valid(nu_pdma_desc_t head)
-{
-    uint32_t node_addr;
-    nu_pdma_desc_t node = head;
-
-    do
-    {
-        node_addr = (uint32_t)node;
-        if ((node_addr < PDMA0->SCATBA) || (node_addr - PDMA0->SCATBA) >= NU_PDMA_SG_LIMITED_DISTANCE)
-        {
-            printf("The distance is over %lu between 0x%08x and 0x%08x. \n", NU_PDMA_SG_LIMITED_DISTANCE, PDMA0->SCATBA, (uint32_t)node);
-            printf("Please use nu_pdma_sgtbl_allocate to allocate valid sg-table.\n");
-            return -1;
-        }
-
-        node = (nu_pdma_desc_t)(node->NEXT + PDMA0->SCATBA);
-
-    }
-    while (((uint32_t)node != PDMA0->SCATBA) && (node != head));
-
-    return 0;
-}
-
 static void _nu_pdma_transfer(int i32ChannID, uint32_t u32Peripheral, nu_pdma_desc_t head, uint32_t u32IdleTimeout_us)
 {
     PDMA_T *PDMA = NU_PDMA_GET_BASE(i32ChannID);
     nu_pdma_chn_t *psPdmaChann = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos];
+
+#if defined(NVT_DCACHE_ON)
+    /* Writeback data in dcache to memory before transferring. */
+    {
+        static uint32_t bNonCacheAlignedWarning = 1;
+        nu_pdma_desc_t next = head;
+        while (next != NULL)
+        {
+            uint32_t u32TxCnt     = ((next->CTL & PDMA_DSCT_CTL_TXCNT_Msk) >> PDMA_DSCT_CTL_TXCNT_Pos) + 1;
+            uint32_t u32DataWidth = (1 << ((next->CTL & PDMA_DSCT_CTL_TXWIDTH_Msk) >> PDMA_DSCT_CTL_TXWIDTH_Pos));
+            uint32_t u32SrcCtl    = (next->CTL & PDMA_DSCT_CTL_SAINC_Msk);
+            uint32_t u32DstCtl    = (next->CTL & PDMA_DSCT_CTL_DAINC_Msk);
+            uint32_t u32FlushLen  = u32TxCnt * u32DataWidth;
+
+            /* Flush Src buffer into memory. */
+            if ((u32SrcCtl == PDMA_SAR_INC)) // for M2P, M2M
+                SCB_CleanInvalidateDCache_by_Addr((volatile void *)next->SA, (int32_t)u32FlushLen);
+
+            /* Flush Dst buffer into memory. */
+            if ((u32DstCtl == PDMA_DAR_INC)) // for P2M, M2M
+                SCB_CleanInvalidateDCache_by_Addr((volatile void *)next->DA, (int32_t)u32FlushLen);
+
+            /* Flush descriptor into memory */
+            if (!((uint32_t)next & BIT31))
+                SCB_CleanInvalidateDCache_by_Addr((volatile void *)next, sizeof(DSCT_T));
+
+            if (bNonCacheAlignedWarning)
+            {
+                if ((u32FlushLen & (DCACHE_LINE_SIZE - 1)) ||
+                        (next->SA & (DCACHE_LINE_SIZE - 1)) ||
+                        (next->DA & (DCACHE_LINE_SIZE - 1)) ||
+                        ((uint32_t)next & (DCACHE_LINE_SIZE - 1)))
+                {
+                    /*
+                        Race-condition avoidance between DMA-transferring and DCache write-back:
+                        Source, destination, DMA descriptor address and length should be aligned at len(CACHE_LINE_SIZE)
+                    */
+                    bNonCacheAlignedWarning = 0;
+                    printf("[PDMA-W]\n");
+                }
+            }
+
+            next = (nu_pdma_desc_t)next->NEXT;
+
+            if (next == head) break;
+        }
+    }
+#endif
 
     PDMA_DisableTimeout(PDMA,  1 << NU_PDMA_GET_MOD_CHIDX(i32ChannID));
 
@@ -792,6 +741,7 @@ static void _nu_pdma_transfer(int i32ChannID, uint32_t u32Peripheral, nu_pdma_de
     nu_pdma_timeout_set(i32ChannID, u32IdleTimeout_us);
 
     /* Set scatter-gather mode and head */
+    /* Take care the head structure, you should make sure cache-coherence. */
     PDMA_SetTransferMode(PDMA,
                          NU_PDMA_GET_MOD_CHIDX(i32ChannID),
                          u32Peripheral,
@@ -931,8 +881,6 @@ int nu_pdma_sg_transfer(int i32ChannID, nu_pdma_desc_t head, uint32_t u32IdleTim
     if (!head)
         goto exit_nu_pdma_sg_transfer;
     else if (nu_pdma_check_is_nonallocated(i32ChannID))
-        goto exit_nu_pdma_sg_transfer;
-    else if ((ret = nu_pdma_sgtbls_valid(head)) != 0) /* Check SG-tbls. */
         goto exit_nu_pdma_sg_transfer;
 
     psPeriphCtl = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_spPeripCtl;

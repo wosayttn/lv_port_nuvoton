@@ -103,7 +103,7 @@ static void sys_init(void)
 
     CLK_EnableModuleClock(GPIOA_MODULE);
     CLK_EnableModuleClock(GPIOB_MODULE);
-		CLK_EnableModuleClock(GPIOC_MODULE);
+    CLK_EnableModuleClock(GPIOC_MODULE);
     CLK_EnableModuleClock(GPIOD_MODULE);
     CLK_EnableModuleClock(GPIOE_MODULE);
     CLK_EnableModuleClock(GPIOF_MODULE);
@@ -139,13 +139,16 @@ static void sys_init(void)
     GPIO_SetSlewCtl(PE, (BIT0 | BIT1), GPIO_SLEWCTL_HIGH);
     GPIO_SetSlewCtl(PH, (BIT8 | BIT9 | BIT10 | BIT11), GPIO_SLEWCTL_HIGH);
     GPIO_SetSlewCtl(PJ, (BIT8 | BIT9), GPIO_SLEWCTL_HIGH);
-    GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_HIGH);	
+    GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_HIGH);
 
     /* Enable I2C1 clock */
     CLK_EnableModuleClock(I2C1_MODULE);
-		SET_I2C1_SDA_PB10();
-		SET_I2C1_SCL_PB11();
+    SET_I2C1_SDA_PB10();
+    SET_I2C1_SCL_PB11();
 
+    /* Enable PDMA clock */
+    CLK_EnableModuleClock(PDMA0_MODULE);
+    CLK_EnableModuleClock(PDMA1_MODULE);
 
     /* Enable UART0 module clock */
     SetDebugUartCLK();
@@ -162,6 +165,41 @@ static void sys_init(void)
     systick_init();
 }
 
+#if defined(NVT_DCACHE_ON)
+/* Cache policy function */
+enum { NonCache_index, WTRA_index, WBWARA_index };
+static void mpu_init(void)
+{
+    /* Initialize attributes corresponding to the enums defined in mpu.hpp */
+    const uint8_t WTRA = ARM_MPU_ATTR_MEMORY_(1, 0, 1, 0); // Non-transient, Write-Through, Read-allocate, Not Write-allocate
+    const uint8_t WBWARA = ARM_MPU_ATTR_MEMORY_(1, 1, 1, 1); // Non-transient, Write-Back, Read-allocate, Write-allocate
+
+    ARM_MPU_Region_t const mpuConfig[] =
+    {
+        {
+            // EBI address space.
+            ARM_MPU_RBAR((unsigned int)EBI_BANK0_BASE_ADDR,        // Base
+                         ARM_MPU_SH_NON,    // Non-shareable
+                         0,                 // Read-only
+                         1,                 // Non-Privileged
+                         1),                // eXecute Never enabled
+            ARM_MPU_RLAR((((unsigned int)EBI_BANK0_BASE_ADDR) + EBI_MAX_SIZE - 1),        // Limit
+                         NonCache_index) // Attribute index - Write-Through, Read-allocate
+        }
+    };
+
+    ARM_MPU_SetMemAttr(NonCache_index, ARM_MPU_ATTR(ARM_MPU_ATTR_NON_CACHEABLE, ARM_MPU_ATTR_NON_CACHEABLE));
+    ARM_MPU_SetMemAttr(WTRA_index, ARM_MPU_ATTR(WTRA, WTRA));
+    ARM_MPU_SetMemAttr(WBWARA_index, ARM_MPU_ATTR(WBWARA, WBWARA));
+
+    ARM_MPU_Load(0, &mpuConfig[0], sizeof(mpuConfig) / sizeof(ARM_MPU_Region_t));
+
+    // Enable MPU with default priv access to all other regions
+    ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);
+
+}
+#endif
+
 #if LV_USE_LOG
 static void lv_nuvoton_log(const char *buf)
 {
@@ -172,6 +210,10 @@ static void lv_nuvoton_log(const char *buf)
 int main(void)
 {
     sys_init();
+
+#if defined(NVT_DCACHE_ON)
+    mpu_init();
+#endif
 
 #if LV_USE_LOG
     lv_log_register_print_cb(lv_nuvoton_log);
