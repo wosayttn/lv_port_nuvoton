@@ -18,15 +18,17 @@
 #define FSA506_ADDR_CMD  0x0
 #define FSA506_ADDR_DATA 0x0
 
-#define FSA506_WRITE_REG(u32RegAddr)    { \
-                                            (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_CMD))) = (u32RegAddr)); \
-                                            __DSB(); \
-                                        }
+#define FSA506_WRITE_REG(u32RegAddr) \
+        { \
+            (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_CMD))) = (u32RegAddr)); \
+            __DSB(); \
+        }
 
-#define FSA506_WRITE_DATA(u32Data)      { \
-                                            (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_DATA))) = (u32Data)); \
-                                            __DSB(); \
-                                        }
+#define FSA506_WRITE_DATA(u32Data) \
+        { \
+            (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_DATA))) = (u32Data)); \
+            __DSB(); \
+        }
 
 void fsa506_write_reg(uint16_t reg, uint16_t data)
 {

@@ -15,7 +15,7 @@
 User can select listed **Target Name** to build target execution using uVision MDK5.
 | Target | Description |
 |-|-|
-| TC8263_480x272 | Use FSA506 EBI LCD panel with resistive touch screen |
+| M55M1_480x272 | Use FSA506 EBI LCD panel with resistive touch screen |
 
 ## **Compiling options**
 
