@@ -8,94 +8,74 @@
 
 #include "lv_glue.h"
 
+#if defined(NVT_DCACHE_ON)
+/* Cache policy function */
+enum { NonCache_index, WTRA_index, WBWARA_index };
+static void mpu_init(void)
+{
+    /* Initialize attributes corresponding to the enums defined in mpu.hpp */
+    const uint8_t WTRA = ARM_MPU_ATTR_MEMORY_(1, 0, 1, 0); // Non-transient, Write-Through, Read-allocate, Not Write-allocate
+    const uint8_t WBWARA = ARM_MPU_ATTR_MEMORY_(1, 1, 1, 1); // Non-transient, Write-Back, Read-allocate, Write-allocate
+
+    ARM_MPU_Region_t const mpuConfig[] =
+    {
+        {
+            // EBI address space.
+            ARM_MPU_RBAR((unsigned int)EBI_BANK0_BASE_ADDR,        // Base
+                         ARM_MPU_SH_NON,    // Non-shareable
+                         0,                 // Read-only
+                         1,                 // Non-Privileged
+                         1),                // eXecute Never enabled
+            ARM_MPU_RLAR((((unsigned int)EBI_BANK0_BASE_ADDR) + EBI_MAX_SIZE - 1),        // Limit
+                         NonCache_index) // Attribute index - Write-Through, Read-allocate
+        }
+    };
+
+    ARM_MPU_SetMemAttr(NonCache_index, ARM_MPU_ATTR(ARM_MPU_ATTR_NON_CACHEABLE, ARM_MPU_ATTR_NON_CACHEABLE));
+    ARM_MPU_SetMemAttr(WTRA_index, ARM_MPU_ATTR(WTRA, WTRA));
+    ARM_MPU_SetMemAttr(WBWARA_index, ARM_MPU_ATTR(WBWARA, WBWARA));
+
+    ARM_MPU_Load(0, &mpuConfig[0], sizeof(mpuConfig) / sizeof(ARM_MPU_Region_t));
+
+    // Enable MPU with default priv access to all other regions
+    ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);
+
+}
+#endif
+
 static void sys_init(void)
 {
     /* Unlock protected registers */
     SYS_UnlockReg();
-#if 0
-    /* Enable clock source */
-    CLK_EnableXtalRC(CLK_PWRCTL_HIRCEN_Msk | CLK_PWRCTL_LXTEN_Msk | CLK_PWRCTL_HXTEN_Msk);
 
-    /* Waiting for clock source ready */
-    CLK_WaitClockReady(CLK_STATUS_HIRCSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HXTSTB_Msk);
+#if defined(NVT_DCACHE_ON)
+    mpu_init();
+#endif
 
-    /* Set core clock to 192MHz */
-    CLK_SetCoreClock(FREQ_192MHZ);
+    /* Unlock protected registers */
+    SYS_UnlockReg();
 
-    /* Set PCLK-related clock */
-    CLK->PCLKDIV = (CLK_PCLKDIV_PCLK0DIV2 | CLK_PCLKDIV_PCLK1DIV2);
+    /* Enable Internal RC 12MHz clock */
+    CLK->HIRC48MCTL |= CLK_HIRC48MCTL_HIRC48MFDIS_Msk;
+    CLK_EnableXtalRC(CLK_SRCCTL_HIRCEN_Msk);
+    CLK_WaitClockReady(CLK_STATUS_HIRCSTB_Msk);
 
-    /* Enable all GPIO clock */
-    CLK->AHBCLK0 |= CLK_AHBCLK0_GPACKEN_Msk | CLK_AHBCLK0_GPBCKEN_Msk | CLK_AHBCLK0_GPCCKEN_Msk | CLK_AHBCLK0_GPDCKEN_Msk |
-                    CLK_AHBCLK0_GPECKEN_Msk | CLK_AHBCLK0_GPFCKEN_Msk | CLK_AHBCLK0_GPGCKEN_Msk | CLK_AHBCLK0_GPHCKEN_Msk;
-    CLK->AHBCLK1 |= CLK_AHBCLK1_GPICKEN_Msk | CLK_AHBCLK1_GPJCKEN_Msk;
+    /* Enable HXT clock */
+    CLK_EnableXtalRC(CLK_SRCCTL_HXTEN_Msk);
+    CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk);
+    CLK_EnableAPLL(CLK_APLLCTL_APLLSRC_HXT, FREQ_180MHZ, CLK_APLL0_SELECT);
 
-    /* Set XT1_OUT(PF.2) and XT1_IN(PF.3) to input mode */
-    PF->MODE &= ~(GPIO_MODE_MODE2_Msk | GPIO_MODE_MODE3_Msk);
-
-    /* Enable UART0 module clock */
-    CLK_EnableModuleClock(UART0_MODULE);
-    CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART0SEL_HXT, CLK_CLKDIV0_UART0(1));
-
-    /* Enable EBI module clock */
-    CLK_EnableModuleClock(EBI_MODULE);
-
-    /* Enable I2C1 module clock */
-    CLK_EnableModuleClock(I2C1_MODULE);
-
-    /* Enable PDMA0/PDMA1 module clock */
-    CLK_EnableModuleClock(PDMA0_MODULE);
-    CLK_EnableModuleClock(PDMA1_MODULE);
-
-    /* Enable SysTick module clock */
-    CLK_EnableSysTick(CLK_CLKSEL0_STCLKSEL_HCLK, 0);
-
-    /* Update System Core Clock */
-    SystemCoreClockUpdate();
-
-    /* Set GPB multi-function pins for UART0 RXD and TXD */
-    SYS->GPB_MFP3 &= ~(SYS_GPB_MFP3_PB13MFP_Msk | SYS_GPB_MFP3_PB12MFP_Msk);
-    SYS->GPB_MFP3 |= (SYS_GPB_MFP3_PB13MFP_UART0_TXD | SYS_GPB_MFP3_PB12MFP_UART0_RXD);
-
-    /* EBI */
-    SYS->GPC_MFP0 &= ~(SYS_GPC_MFP0_PC3MFP_Msk | SYS_GPC_MFP0_PC2MFP_Msk | SYS_GPC_MFP0_PC1MFP_Msk | SYS_GPC_MFP0_PC0MFP_Msk);
-    SYS->GPC_MFP0 |= (SYS_GPC_MFP0_PC3MFP_EBI_AD3 | SYS_GPC_MFP0_PC2MFP_EBI_AD2 | SYS_GPC_MFP0_PC1MFP_EBI_AD1 | SYS_GPC_MFP0_PC0MFP_EBI_AD0);
-    SYS->GPC_MFP1 &= ~(SYS_GPC_MFP1_PC5MFP_Msk | SYS_GPC_MFP1_PC4MFP_Msk);
-    SYS->GPC_MFP1 |= (SYS_GPC_MFP1_PC5MFP_EBI_AD5 | SYS_GPC_MFP1_PC4MFP_EBI_AD4);
-    SYS->GPD_MFP2 &= ~(SYS_GPD_MFP2_PD9MFP_Msk | SYS_GPD_MFP2_PD8MFP_Msk);
-    SYS->GPD_MFP2 |= (SYS_GPD_MFP2_PD9MFP_EBI_AD7 | SYS_GPD_MFP2_PD8MFP_EBI_AD6);
-    SYS->GPD_MFP3 &= ~(SYS_GPD_MFP3_PD14MFP_Msk);
-    SYS->GPD_MFP3 |= (SYS_GPD_MFP3_PD14MFP_EBI_nCS0);
-    SYS->GPE_MFP0 &= ~(SYS_GPE_MFP0_PE1MFP_Msk | SYS_GPE_MFP0_PE0MFP_Msk);
-    SYS->GPE_MFP0 |= (SYS_GPE_MFP0_PE1MFP_EBI_AD10 | SYS_GPE_MFP0_PE0MFP_EBI_AD11);
-    SYS->GPE_MFP3 &= ~(SYS_GPE_MFP3_PE15MFP_Msk | SYS_GPE_MFP3_PE14MFP_Msk);
-    SYS->GPE_MFP3 |= (SYS_GPE_MFP3_PE15MFP_EBI_AD9 | SYS_GPE_MFP3_PE14MFP_EBI_AD8);
-    SYS->GPH_MFP2 &= ~(SYS_GPH_MFP2_PH11MFP_Msk | SYS_GPH_MFP2_PH10MFP_Msk | SYS_GPH_MFP2_PH9MFP_Msk | SYS_GPH_MFP2_PH8MFP_Msk);
-    SYS->GPH_MFP2 |= (SYS_GPH_MFP2_PH11MFP_EBI_AD15 | SYS_GPH_MFP2_PH10MFP_EBI_AD14 | SYS_GPH_MFP2_PH9MFP_EBI_AD13 | SYS_GPH_MFP2_PH8MFP_EBI_AD12);
-    SYS->GPJ_MFP2 &= ~(SYS_GPJ_MFP2_PJ9MFP_Msk | SYS_GPJ_MFP2_PJ8MFP_Msk);
-    SYS->GPJ_MFP2 |= (SYS_GPJ_MFP2_PJ9MFP_EBI_nWR | SYS_GPJ_MFP2_PJ8MFP_EBI_nRD);
-
-    GPIO_SetSlewCtl(PC, (BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PD, (BIT8 | BIT9), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PE, (BIT14 | BIT15), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PE, (BIT0 | BIT1), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PH, (BIT8 | BIT9 | BIT10 | BIT11), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PJ, (BIT8 | BIT9), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_FAST);
-
-    /* I2C1 */
-    SYS->GPB_MFP2 &= ~(SYS_GPB_MFP2_PB11MFP_Msk | SYS_GPB_MFP2_PB10MFP_Msk);
-    SYS->GPB_MFP2 |= (SYS_GPB_MFP2_PB11MFP_I2C1_SCL | SYS_GPB_MFP2_PB10MFP_I2C1_SDA);
-
-    GPIO_SetPullCtl(PB, BIT11 | BIT10, GPIO_PUSEL_PULL_UP);
-
-    UART_Open(UART0, 115200);
-#else
-    /*---------------------------------------------------------------------------------------------------------*/
-    /* Init System Clock                                                                                       */
-    /*---------------------------------------------------------------------------------------------------------*/
     /* Enable PLL0 180MHz clock from HIRC and switch SCLK clock source to PLL0 */
-    CLK_SetBusClock(CLK_SCLKSEL_SCLKSEL_APLL0, FREQ_180MHZ);
+    CLK_SetSCLK(CLK_SCLKSEL_SCLKSEL_APLL0);
+
+    /* Set HCLK2 divide 2 */
+    CLK_SET_HCLK2DIV(2);
+    /* Set PCLKx divide 2 */
+    CLK_SET_PCLK0DIV(2);
+    CLK_SET_PCLK1DIV(2);
+    CLK_SET_PCLK2DIV(2);
+    CLK_SET_PCLK3DIV(2);
+    CLK_SET_PCLK4DIV(2);
 
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock. */
@@ -150,55 +130,25 @@ static void sys_init(void)
     CLK_EnableModuleClock(PDMA0_MODULE);
     CLK_EnableModuleClock(PDMA1_MODULE);
 
-    /* Enable UART0 module clock */
-    SetDebugUartCLK();
-
-    /*---------------------------------------------------------------------------------------------------------*/
-    /* Init I/O Multi-function                                                                                 */
-    /*---------------------------------------------------------------------------------------------------------*/
-    SetDebugUartMFP();
-
     /* Enable SysTick clock */
-    CLK_EnableSysTick(CLK_STSEL_ST0SEL_HIRC_DIV2, 0);
+    CLK_EnableSysTick(CLK_STSEL_ST0SEL_HXT_DIV2, 0);
 
-#endif
+    /* Enable UART0 module clock (use HXT) */
+    CLK_SetModuleClock(UART0_MODULE, CLK_UARTSEL0_UART0SEL_HXT, CLK_UARTDIV0_UART0DIV(1));
+    /* Enable UART clock */
+    CLK_EnableModuleClock(UART0_MODULE);
+    /* Reset UART module */
+    SYS_ResetModule(SYS_UART0RST);
+
+    /* Set GPB12 as UART0 RXD and GPB13 as UART0 TXD */
+    SET_UART0_RXD_PB12();
+    SET_UART0_TXD_PB13();
+
+    /* Init Debug UART to 115200-8N1 for print message */
+    UART_Open(UART0, 115200);
+
     systick_init();
 }
-
-#if defined(NVT_DCACHE_ON)
-/* Cache policy function */
-enum { NonCache_index, WTRA_index, WBWARA_index };
-static void mpu_init(void)
-{
-    /* Initialize attributes corresponding to the enums defined in mpu.hpp */
-    const uint8_t WTRA = ARM_MPU_ATTR_MEMORY_(1, 0, 1, 0); // Non-transient, Write-Through, Read-allocate, Not Write-allocate
-    const uint8_t WBWARA = ARM_MPU_ATTR_MEMORY_(1, 1, 1, 1); // Non-transient, Write-Back, Read-allocate, Write-allocate
-
-    ARM_MPU_Region_t const mpuConfig[] =
-    {
-        {
-            // EBI address space.
-            ARM_MPU_RBAR((unsigned int)EBI_BANK0_BASE_ADDR,        // Base
-                         ARM_MPU_SH_NON,    // Non-shareable
-                         0,                 // Read-only
-                         1,                 // Non-Privileged
-                         1),                // eXecute Never enabled
-            ARM_MPU_RLAR((((unsigned int)EBI_BANK0_BASE_ADDR) + EBI_MAX_SIZE - 1),        // Limit
-                         NonCache_index) // Attribute index - Write-Through, Read-allocate
-        }
-    };
-
-    ARM_MPU_SetMemAttr(NonCache_index, ARM_MPU_ATTR(ARM_MPU_ATTR_NON_CACHEABLE, ARM_MPU_ATTR_NON_CACHEABLE));
-    ARM_MPU_SetMemAttr(WTRA_index, ARM_MPU_ATTR(WTRA, WTRA));
-    ARM_MPU_SetMemAttr(WBWARA_index, ARM_MPU_ATTR(WBWARA, WBWARA));
-
-    ARM_MPU_Load(0, &mpuConfig[0], sizeof(mpuConfig) / sizeof(ARM_MPU_Region_t));
-
-    // Enable MPU with default priv access to all other regions
-    ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);
-
-}
-#endif
 
 #if LV_USE_LOG
 static void lv_nuvoton_log(const char *buf)
@@ -210,10 +160,6 @@ static void lv_nuvoton_log(const char *buf)
 int main(void)
 {
     sys_init();
-
-#if defined(NVT_DCACHE_ON)
-    mpu_init();
-#endif
 
 #if LV_USE_LOG
     lv_log_register_print_cb(lv_nuvoton_log);

@@ -23,6 +23,10 @@
     extern void lv_demo_music(void);
     lv_demo_music();
 
+#elif (LV_USE_DEMO_BENCHMARK)
+    extern void lv_demo_benchmark(void);
+    lv_demo_benchmark();
+
 #endif
 
 }

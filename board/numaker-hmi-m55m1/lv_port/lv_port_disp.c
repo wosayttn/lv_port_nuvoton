@@ -42,7 +42,7 @@ void lv_port_disp_init(void)
     /*Initialize `disp_buf` with the buffer(s).*/
     lv_disp_draw_buf_init(&disp_buf, buf1, NULL, sLcdInfo.u32VramSize / sizeof(lv_color_t));
 
-    LV_LOG_INFO("Use one screen-size shadow buffer, buf1: 0x%08x", buf1);
+    LV_LOG_INFO("Use one screen-size shadow buffer, buf1: %p", buf1);
 
     /*Set a display buffer*/
     disp_drv.draw_buf = &disp_buf;
