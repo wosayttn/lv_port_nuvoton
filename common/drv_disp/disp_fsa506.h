@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include "lv_glue.h"
 
+#if defined(CONFIG_FSA506_EBI)
+
 #define SET_RS                   GPIO_PIN_DATA(NU_GET_PORT(CONFIG_FSA506_PIN_DC), NU_GET_PIN(CONFIG_FSA506_PIN_DC)) = 1
 #define CLR_RS                   GPIO_PIN_DATA(NU_GET_PORT(CONFIG_FSA506_PIN_DC), NU_GET_PIN(CONFIG_FSA506_PIN_DC)) = 0
 #define SET_RST                  GPIO_PIN_DATA(NU_GET_PORT(CONFIG_FSA506_PIN_RESET), NU_GET_PIN(CONFIG_FSA506_PIN_RESET)) = 1
@@ -28,5 +30,6 @@ void fsa506_fillrect(uint16_t *pixels, const lv_area_t *area);
 
 int disp_fsa506_init(void);
 
+#endif
 
 #endif /* __DISP_FSA506_H__ */
