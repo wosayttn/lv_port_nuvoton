@@ -10,36 +10,40 @@
 
 #if defined(NVT_DCACHE_ON)
 /* Cache policy function */
-enum { NonCache_index, WTRA_index, WBWARA_index };
+ARM_MPU_Region_t const mpuConfig[] =
+{
+    {
+        /* EBI address space. */
+        ARM_MPU_RBAR((uint32_t)EBI_BANK0_BASE_ADDR,          // Base
+                     ARM_MPU_SH_NON,    // Non-shareable
+                     0,                 // Read-only
+                     1,                 // Non-Privileged
+                     1),                // eXecute Never enabled
+        ARM_MPU_RLAR((uint32_t)EBI_BANK0_BASE_ADDR + EBI_MAX_SIZE - 1,          // Limit
+                     DEVICE_MEMORY_IDX) // Attribute index - Write-Through, Read-allocate
+    }
+};
+
 static void mpu_init(void)
 {
+    enum { DEVICE_IDX, CODE_IDX, DATA_IDX, DEVICE_MEMORY_IDX };
+
     /* Initialize attributes corresponding to the enums defined in mpu.hpp */
     const uint8_t WTRA = ARM_MPU_ATTR_MEMORY_(1, 0, 1, 0); // Non-transient, Write-Through, Read-allocate, Not Write-allocate
     const uint8_t WBWARA = ARM_MPU_ATTR_MEMORY_(1, 1, 1, 1); // Non-transient, Write-Back, Read-allocate, Write-allocate
 
-    ARM_MPU_Region_t const mpuConfig[] =
-    {
-        {
-            // EBI address space.
-            ARM_MPU_RBAR((unsigned int)EBI_BANK0_BASE_ADDR,        // Base
-                         ARM_MPU_SH_NON,    // Non-shareable
-                         0,                 // Read-only
-                         1,                 // Non-Privileged
-                         1),                // eXecute Never enabled
-            ARM_MPU_RLAR((((unsigned int)EBI_BANK0_BASE_ADDR) + EBI_MAX_SIZE - 1),        // Limit
-                         NonCache_index) // Attribute index - Write-Through, Read-allocate
-        }
-    };
+    ARM_MPU_Disable();
 
-    ARM_MPU_SetMemAttr(NonCache_index, ARM_MPU_ATTR(ARM_MPU_ATTR_NON_CACHEABLE, ARM_MPU_ATTR_NON_CACHEABLE));
-    ARM_MPU_SetMemAttr(WTRA_index, ARM_MPU_ATTR(WTRA, WTRA));
-    ARM_MPU_SetMemAttr(WBWARA_index, ARM_MPU_ATTR(WBWARA, WBWARA));
+    ARM_MPU_SetMemAttr(DEVICE_IDX, ARM_MPU_ATTR(ARM_MPU_ATTR_NON_CACHEABLE, ARM_MPU_ATTR_NON_CACHEABLE));
+    ARM_MPU_SetMemAttr(CODE_IDX, ARM_MPU_ATTR(WTRA, WTRA));
+    ARM_MPU_SetMemAttr(DATA_IDX, ARM_MPU_ATTR(WBWARA, WBWARA));
+    ARM_MPU_SetMemAttr(DEVICE_MEMORY_IDX, ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE_nGnRnE, ARM_MPU_ATTR_DEVICE_nGnRnE));
+    /* See https://developer.arm.com/documentation/den0024/a/Memory-Ordering/Memory-types/Device-memory */
 
     ARM_MPU_Load(0, &mpuConfig[0], sizeof(mpuConfig) / sizeof(ARM_MPU_Region_t));
 
-    // Enable MPU with default priv access to all other regions
+    /* Enable MPU with default priv access to all other regions */
     ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);
-
 }
 #endif
 
@@ -51,9 +55,6 @@ static void sys_init(void)
 #if defined(NVT_DCACHE_ON)
     mpu_init();
 #endif
-
-    /* Unlock protected registers */
-    SYS_UnlockReg();
 
     /* Enable Internal RC 12MHz clock */
     CLK->HIRC48MCTL |= CLK_HIRC48MCTL_HIRC48MFDIS_Msk;
