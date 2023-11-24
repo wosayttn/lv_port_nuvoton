@@ -9,8 +9,10 @@
 #include "lv_glue.h"
 
 #if defined(NVT_DCACHE_ON)
+enum { DEVICE_IDX, CODE_IDX, DATA_IDX, DEVICE_MEMORY_IDX };
+
 /* Cache policy function */
-ARM_MPU_Region_t const mpuConfig[] =
+static ARM_MPU_Region_t const mpuConfig[] =
 {
     {
         /* EBI address space. */
@@ -26,7 +28,6 @@ ARM_MPU_Region_t const mpuConfig[] =
 
 static void mpu_init(void)
 {
-    enum { DEVICE_IDX, CODE_IDX, DATA_IDX, DEVICE_MEMORY_IDX };
 
     /* Initialize attributes corresponding to the enums defined in mpu.hpp */
     const uint8_t WTRA = ARM_MPU_ATTR_MEMORY_(1, 0, 1, 0); // Non-transient, Write-Through, Read-allocate, Not Write-allocate
