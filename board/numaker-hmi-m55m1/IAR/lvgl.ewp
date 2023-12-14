@@ -125,12 +125,12 @@
                 <option>
                     <name>FPU2</name>
                     <version>0</version>
-                    <state>0</state>
+                    <state>7</state>
                 </option>
                 <option>
                     <name>NrRegs</name>
                     <version>0</version>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>NEON</name>
@@ -184,7 +184,7 @@
                 </option>
                 <option>
                     <name>TrustZone</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>TrustZoneModes</name>
@@ -258,7 +258,7 @@
                 </option>
                 <option>
                     <name>CCDiagSuppress</name>
-                    <state>Pa089,Pa082,Pe236,Pa118,Pe111,Pe188,Pe546,Pe144,Pe177,Pe513</state>
+                    <state>Pa089,Pa082,Pe236,Pa118,Pe111,Pe188,Pe546,Pe144,Pe177,Pe513,Pe1757</state>
                 </option>
                 <option>
                     <name>CCDiagRemark</name>
@@ -736,7 +736,7 @@
             <data>
                 <extensions></extensions>
                 <cmdline></cmdline>
-                <hasPrio>224</hasPrio>
+                <hasPrio>1</hasPrio>
                 <buildSequence>inputOutputBased</buildSequence>
             </data>
         </settings>

@@ -57,31 +57,15 @@ static void sys_init(void)
     mpu_init();
 #endif
 
-    /* Enable Internal RC 12MHz clock */
-    CLK->HIRC48MCTL |= CLK_HIRC48MCTL_HIRC48MFDIS_Msk;
-    CLK_EnableXtalRC(CLK_SRCCTL_HIRCEN_Msk);
-    CLK_WaitClockReady(CLK_STATUS_HIRCSTB_Msk);
-
-    /* Enable HXT clock */
-    CLK_EnableXtalRC(CLK_SRCCTL_HXTEN_Msk);
-    CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk);
-    CLK_EnableAPLL(CLK_APLLCTL_APLLSRC_HXT, FREQ_180MHZ, CLK_APLL0_SELECT);
-
     /* Enable PLL0 180MHz clock from HIRC and switch SCLK clock source to PLL0 */
-    CLK_SetSCLK(CLK_SCLKSEL_SCLKSEL_APLL0);
-
-    /* Set HCLK2 divide 2 */
-    CLK_SET_HCLK2DIV(2);
-    /* Set PCLKx divide 2 */
-    CLK_SET_PCLK0DIV(2);
-    CLK_SET_PCLK1DIV(2);
-    CLK_SET_PCLK2DIV(2);
-    CLK_SET_PCLK3DIV(2);
-    CLK_SET_PCLK4DIV(2);
+    CLK_SetBusClock(CLK_SCLKSEL_SCLKSEL_APLL0, FREQ_180MHZ);
 
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock. */
     SystemCoreClockUpdate();
+
+    /* Enable UART0 module clock */
+    SetDebugUartCLK();
 
     CLK_EnableModuleClock(GPIOA_MODULE);
     CLK_EnableModuleClock(GPIOB_MODULE);
@@ -133,21 +117,11 @@ static void sys_init(void)
     CLK_EnableModuleClock(PDMA1_MODULE);
 
     /* Enable SysTick clock */
-    CLK_EnableSysTick(CLK_STSEL_ST0SEL_HXT_DIV2, 0);
+    CLK_EnableSysTick(CLK_STSEL_ST0SEL_HIRC_DIV2, 0);
 
-    /* Enable UART0 module clock (use HXT) */
-    CLK_SetModuleClock(UART0_MODULE, CLK_UARTSEL0_UART0SEL_HXT, CLK_UARTDIV0_UART0DIV(1));
-    /* Enable UART clock */
-    CLK_EnableModuleClock(UART0_MODULE);
-    /* Reset UART module */
-    SYS_ResetModule(SYS_UART0RST);
+    SetDebugUartMFP();
 
-    /* Set GPB12 as UART0 RXD and GPB13 as UART0 TXD */
-    SET_UART0_RXD_PB12();
-    SET_UART0_TXD_PB13();
-
-    /* Init Debug UART to 115200-8N1 for print message */
-    UART_Open(UART0, 115200);
+    InitDebugUart();
 
     systick_init();
 }
