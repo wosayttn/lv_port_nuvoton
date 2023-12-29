@@ -1,8 +1,9 @@
-# ** tools **
+# **tools**
 
-## ** pack_gzip.sh **
+## **pack_gzip.sh**
 
 You can execute pack_gzip.sh script in git-bash shell to pack an u-boot header and compressed execution binary for spiloader_gzip loader.
+
 ```bash
 $ ./pack_gzip.sh
 + gzip -f -9 -c ../KEIL/NAND_Data_FreeRTOS/lvgl_demo_nand_freertos.bin
