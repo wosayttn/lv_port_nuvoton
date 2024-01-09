@@ -513,6 +513,8 @@ __STATIC_INLINE void DMIC_VAD_SetBIQCoeff(VAD_T *vad, DMIC_VAD_BIQ_T *psBIQCoeff
     vad->BIQCTL2 = (vad->BIQCTL2 & ~VAD_BIQCTL2_BIQB2_Msk) | ((psBIQCoeff->u16BIQCoeffB2 << VAD_BIQCTL2_BIQB2_Pos)&VAD_BIQCTL2_BIQB2_Msk);
 }
 
+void DMIC_Open(DMIC_T *dmic);
+void DMIC_Close(DMIC_T *dmic);
 void DMIC_SetDSPGainVolume(DMIC_T *dmic, uint32_t u32ChMsk, int16_t i16ChVolume);
 void DMIC_ClearFIFO(DMIC_T *dmic);
 uint32_t DMIC_SetSampleRate(DMIC_T *dmic, uint32_t u32SampleRate);

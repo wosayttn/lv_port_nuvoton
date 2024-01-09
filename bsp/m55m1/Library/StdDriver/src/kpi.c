@@ -126,6 +126,9 @@ NVT_ITCM void KPI_IRQHandler()
             }
         }
     }
+
+    // CPU read interrupt flag register to wait write(clear) instruction completement.
+    status = KPI->STATUS;
 }
 
 

@@ -56,7 +56,9 @@ extern "C"
 #define ACMP_CTL_NEGSEL_CRV          (1UL << ACMP_CTL_NEGSEL_Pos)  /*!< ACMP_CTL setting for selecting internal comparator reference voltage as the source of ACMP V-. \hideinitializer */
 #define ACMP_CTL_NEGSEL_VBG          (2UL << ACMP_CTL_NEGSEL_Pos)  /*!< ACMP_CTL setting for selecting internal Band-gap voltage as the source of ACMP V-. \hideinitializer */
 #define ACMP_CTL_NEGSEL_DAC0         (3UL << ACMP_CTL_NEGSEL_Pos)  /*!< ACMP_CTL setting for selecting DAC0 output voltage as the source of ACMP V-. \hideinitializer */
+#if ! defined (TESTCHIP_ONLY)
 #define ACMP_CTL_NEGSEL_DAC1         (4UL << ACMP_CTL_NEGSEL_Pos)  /*!< ACMP_CTL setting for selecting DAC1 output voltage as the source of ACMP V-. \hideinitializer */
+#endif
 
 #define ACMP_CTL_HYSTERESIS_40MV     (4UL << ACMP_CTL_HYSSEL_Pos)  /*!< ACMP_CTL setting for enabling the hysteresis function at 40mV. \hideinitializer */
 #define ACMP_CTL_HYSTERESIS_20MV     (2UL << ACMP_CTL_HYSSEL_Pos)  /*!< ACMP_CTL setting for enabling the hysteresis function at 20mV. \hideinitializer */
@@ -437,7 +439,7 @@ extern int32_t g_ACMP_i32ErrCode;
 /* Function prototype declaration */
 void ACMP_Open(ACMP_T *acmp, uint32_t u32ChNum, uint32_t u32NegSrc, uint32_t u32HysSel);
 void ACMP_Close(ACMP_T *acmp, uint32_t u32ChNum);
-
+void ACMP_Calibration(ACMP_T *acmp);
 /** @} end of group ACMP_EXPORTED_FUNCTIONS */
 
 /** @} end of group ACMP_Driver */

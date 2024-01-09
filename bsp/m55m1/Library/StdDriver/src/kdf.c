@@ -46,7 +46,6 @@ int32_t  g_KDF_i32ErrCode = eKDF_ERRCODE_SUCCESS;   /*!< KDF global error code *
   */
 int32_t KDF_GetKeyBitSize(uint32_t u32KeySizeSel)
 {
-    int32_t  i;
     uint32_t au32KeyBitLenTbl[] = { 128, 163, 192, 224, 233, 255, 256, 283, 384, 409, 512, 521, 571 };
 
     if (u32KeySizeSel >= (sizeof(au32KeyBitLenTbl) / sizeof(au32KeyBitLenTbl[0])))
@@ -135,10 +134,10 @@ void KDF_SetContext(const uint8_t pu8Context[], uint32_t u32ByteCnt)
   */
 int32_t KDF_DeriveKey(E_KDF_MODE eMode, uint32_t u32DeriveKeyParam, uint32_t u32KeyBitSize, uint32_t *pu32KeyOut)
 {
-    int32_t  i, j;
-    uint32_t u32Idx = 0, u32NotAlignByte;
+    int32_t  i;
+    uint32_t u32Idx = 0;
     int32_t  i32LeftKeyBitSize = u32KeyBitSize;
-    uint32_t u32TimeOutCount, u32ByteCnt, u32WordCnt;
+    uint32_t u32TimeOutCount, u32ByteCnt;
 
     KDF->CTL   = eMode | u32DeriveKeyParam;
     KDF->KLEN  = u32KeyBitSize;
@@ -186,6 +185,7 @@ int32_t KDF_DeriveKey(E_KDF_MODE eMode, uint32_t u32DeriveKeyParam, uint32_t u32
     KDF->CTL |= KDF_CTL_FINISH_Msk;
     /* Wait until KDF become idle */
     u32TimeOutCount = KDF_TIMEOUT;
+
     while (KDF->STS & (KDF_STS_BUSY_Msk | KDF_STS_HMACBUSY_Msk))
     {
         if (--u32TimeOutCount == 0)

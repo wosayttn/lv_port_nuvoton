@@ -557,6 +557,7 @@ extern int32_t g_LPADC_i32ErrCode;
 #define LPADC_CLEAR_Compare_1_WAKEUP_FLAG(lpadc)    ((lpadc)->AUTOSTS = LPADC_AUTOSTS_CMP1WKF_Msk)
 
 void LPADC_Open(LPADC_T *lpadc, uint32_t u32InputMode, uint32_t u32OpMode, uint32_t u32ChMask);
+void LPADC_Calibration(LPADC_T *lpadc);
 void LPADC_Close(LPADC_T *lpadc);
 void LPADC_EnableHWTrigger(LPADC_T *lpadc, uint32_t u32Source,uint32_t u32Param);
 void LPADC_DisableHWTrigger(LPADC_T *lpadc);

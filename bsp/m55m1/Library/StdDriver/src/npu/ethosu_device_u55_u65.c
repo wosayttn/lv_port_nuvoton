@@ -195,10 +195,9 @@ void ethosu_dev_run_command_stream(struct ethosu_device *dev,
 
 void ethosu_dev_print_err_status(struct ethosu_device *dev)
 {
-    LOG_ERR("NPU status=0x%08" PRIx32 ", qread=%" PRIu32 ", cmd_end_reached=%d",
-            dev->reg->STATUS.word,
-            dev->reg->QREAD.word,
-            dev->reg->STATUS.cmd_end_reached);
+    LOG_ERR("NPU status=0x%08" PRIx32 "", dev->reg->STATUS.word);
+    LOG_ERR("NPU qread=%" PRIu32 "", dev->reg->QREAD.word);
+    LOG_ERR("NPU cmd_end_reached=%d",dev->reg->STATUS.cmd_end_reached);
 }
 
 bool ethosu_dev_handle_interrupt(struct ethosu_device *dev)

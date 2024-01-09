@@ -61,10 +61,12 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /*  MIRC constant definitions.                                                                             */
 /*---------------------------------------------------------------------------------------------------------*/
+#if 0   // TESTCHIP_ONLY not support
 #define CLK_MIRCCTL_MIRCFSEL_1MHZ    (0x0UL << CLK_MIRCCTL_MIRCFSEL_Pos)          /*!< Select MIRC clock to 1 MHz \hideinitializer */
 #define CLK_MIRCCTL_MIRCFSEL_2MHZ    (0x1UL << CLK_MIRCCTL_MIRCFSEL_Pos)          /*!< Select MIRC clock to 1 MHz \hideinitializer */
 #define CLK_MIRCCTL_MIRCFSEL_4MHZ    (0x2UL << CLK_MIRCCTL_MIRCFSEL_Pos)          /*!< Select MIRC clock to 1 MHz \hideinitializer */
 #define CLK_MIRCCTL_MIRCFSEL_8MHZ    (0x3UL << CLK_MIRCCTL_MIRCFSEL_Pos)          /*!< Select MIRC clock to 1 MHz \hideinitializer */
+#endif
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  CLKSEL constant definitions.  (Write-protection)                                                       */
@@ -403,8 +405,6 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /*  CLKDIV constant definitions.                                                                          */
 /*---------------------------------------------------------------------------------------------------------*/
-#define CLK_HCLKDIV_HCLK0DIV(x)             (((x) - 1UL) << CLK_HCLKDIV_HCLK0DIV_Pos)       /*!< HCLKDIV Setting for HCLK0 clock divider. It could be 1~16 \hideinitializer */
-#define CLK_HCLKDIV_HCLK1DIV(x)             (((x) - 1UL) << CLK_HCLKDIV_HCLK1DIV_Pos)       /*!< HCLKDIV Setting for HCLK1 clock divider. It could be 1~16 \hideinitializer */
 #define CLK_HCLKDIV_HCLK2DIV(x)             (((x) - 1UL) << CLK_HCLKDIV_HCLK2DIV_Pos)       /*!< HCLKDIV Setting for HCLK2 clock divider. It could be 1~16 \hideinitializer */
 
 #define CLK_PCLKDIV_PCLK0DIV(x)             (((x) - 1UL) << CLK_PCLKDIV_PCLK0DIV_Pos)       /*!< PCLKDIV Setting for PCLK0 clock divider. It could be 1~16 \hideinitializer */
@@ -997,21 +997,6 @@ extern "C"
   @{
 */
 
-/**
-  * @brief      Set HCLK0 Divider
-  * @param      u32Hclk0Div is HCLK0 clock divider.  It could be 1~16
-  * @return     None
-  * @details    This macro set HCLK0 clock divider
-  */
-#define CLK_SET_HCLK0DIV(u32Hclk0Div)        (CLK->HCLKDIV = (CLK->HCLKDIV & (~CLK_HCLKDIV_HCLK0DIV_Msk)) | CLK_HCLKDIV_HCLK0DIV(u32Hclk0Div))
-
-/**
-  * @brief      Set HCLK1 Divider
-  * @param      u32Hclk1Div is HCLK1 clock divider.  It could be 1~16
-  * @return     None
-  * @details    This macro set HCLK1 clock divider
-  */
-#define CLK_SET_HCLK1DIV(u32Hclk1Div)        (CLK->HCLKDIV = (CLK->HCLKDIV & (~CLK_HCLKDIV_HCLK1DIV_Msk)) | CLK_HCLKDIV_HCLK1DIV(u32Hclk1Div))
 
 /**
   * @brief      Set HCLK2 Divider
@@ -1061,76 +1046,6 @@ extern "C"
   */
 #define CLK_SET_PCLK4DIV(u32PCLK4Div)        (CLK->PCLKDIV = (CLK->PCLKDIV & (~CLK_PCLKDIV_PCLK4DIV_Msk)) | CLK_PCLKDIV_PCLK4DIV(u32PCLK4Div))
 
-/*---------------------------------------------------------------------------------------------------------*/
-/* static inline functions                                                                                 */
-/*---------------------------------------------------------------------------------------------------------*/
-/* Declare these inline functions here to avoid MISRA C 2004 rule 8.1 error */
-__STATIC_INLINE void CLK_SysTickDelay(uint32_t us);
-__STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us);
-
-/**
-  * @brief      This function execute delay function.
-  * @param[in]  us  Delay time. The Max value is 2^24 / CPU Clock(MHz). Ex:
-  *                             200MHz => 83886us, 180MHz => 93206us ...
-  * @return     None
-  * @details    Use the SysTick to generate the delay time and the unit is in us.
-  *             The SysTick clock source is from HCLK, i.e the same as system core clock.
-  *             User can use SystemCoreClockUpdate() to calculate CyclesPerUs automatically before using this function.
-  */
-__STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
-{
-    SysTick->LOAD = us * CyclesPerUs;
-    SysTick->VAL  = 0x0UL;
-    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
-
-    /* Waiting for down-count to zero */
-    while ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0UL)
-    {
-    }
-
-    /* Disable SysTick counter */
-    SysTick->CTRL = 0UL;
-}
-
-/**
-  * @brief      This function execute long delay function.
-  * @param[in]  us  Delay time.
-  * @return     None
-  * @details    Use the SysTick to generate the long delay time and the UNIT is in us.
-  *             The SysTick clock source is from HCLK, i.e the same as system core clock.
-  *             User can use SystemCoreClockUpdate() to calculate CyclesPerUs automatically before using this function.
-  */
-__STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
-{
-    uint32_t u32Delay;
-
-    /* It should <= 65536us for each delay loop */
-    u32Delay = 65536UL;
-
-    do
-    {
-        if (us > u32Delay)
-        {
-            us -= u32Delay;
-        }
-        else
-        {
-            u32Delay = us;
-            us = 0UL;
-        }
-
-        SysTick->LOAD = u32Delay * CyclesPerUs;
-        SysTick->VAL  = (0x0UL);
-        SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
-
-        /* Waiting for down-count to zero */
-        while ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0UL);
-
-        /* Disable SysTick counter */
-        SysTick->CTRL = 0UL;
-    } while (us > 0UL);
-}
-
 
 void CLK_DisableCKO(void);
 void CLK_EnableCKO(uint32_t u32ClkSrc, uint32_t u32ClkDiv, uint32_t u32ClkDivBy1En);
@@ -1152,7 +1067,7 @@ __NONSECURE_ENTRY_WEAK uint32_t CLK_GetPCLK4Freq(void);
 __NONSECURE_ENTRY_WEAK uint32_t CLK_GetPCLK5Freq(void);
 uint32_t CLK_SetCoreClock(uint32_t u32Aclk);
 void CLK_SetSCLK(uint32_t u32ClkSrc);
-uint32_t CLK_SetBusClock(uint32_t u32SCLKSrc, uint32_t u32PllFreq);
+uint32_t CLK_SetBusClock(uint32_t u32SCLKSrc, uint32_t u32PllClkSrc, uint32_t u32PllFreq);
 void CLK_SetModuleClock(uint64_t u64ModuleIdx, uint32_t u32ClkSrc, uint32_t u32ClkDiv);
 void CLK_SetSysTickClockSrc(uint32_t u32ClkSrc);
 void CLK_EnableXtalRC(uint32_t u32ClkMask);
@@ -1173,6 +1088,8 @@ __NONSECURE_ENTRY_WEAK uint32_t CLK_GetAPLL1ClockFreq(void);
 __NONSECURE_ENTRY_WEAK uint32_t CLK_GetModuleClockSource(uint64_t u64ModuleIdx);
 __NONSECURE_ENTRY_WEAK uint32_t CLK_GetModuleClockDivider(uint64_t u64ModuleIdx);
 __NONSECURE_ENTRY_WEAK uint32_t CLK_SystemClockUpdate(void);
+void CLK_SysTickDelay(uint32_t us);
+void CLK_SysTickLongDelay(uint32_t us);
 
 /** @} end of group CLK_EXPORTED_FUNCTIONS */
 

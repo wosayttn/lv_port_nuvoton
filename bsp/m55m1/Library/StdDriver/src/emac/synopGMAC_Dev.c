@@ -81,7 +81,9 @@ s32 synopGMAC_read_phy_reg(u32 RegBase, u32 PhyBase, u32 RegOffset, u16 *data)
 {
     u32 addr;
     u32 loop_variable;
-    addr = ((PhyBase << GmiiDevShift) & GmiiDevMask) | ((RegOffset << GmiiRegShift) & GmiiRegMask);
+
+    addr = synopGMACReadReg(RegBase, GmacGmiiAddr) & GmiiCsrClkMask;
+    addr |= ((PhyBase << GmiiDevShift) & GmiiDevMask) | ((RegOffset << GmiiRegShift) & GmiiRegMask);
     addr = addr | GmiiBusy ; //Gmii busy bit
     synopGMACWriteReg(RegBase, GmacGmiiAddr, addr); //write the address from where the data to be read in GmiiGmiiAddr register of synopGMAC ip
 
@@ -119,11 +121,11 @@ s32 synopGMAC_write_phy_reg(u32 RegBase, u32 PhyBase, u32 RegOffset, u16 data)
 
     synopGMACWriteReg(RegBase, GmacGmiiData, data); // write the data in to GmacGmiiData register of synopGMAC ip
 
-    addr = ((PhyBase << GmiiDevShift) & GmiiDevMask) | ((RegOffset << GmiiRegShift) & GmiiRegMask) | GmiiWrite;
-
-    addr = addr | GmiiBusy ; //set Gmii clk to 20-35 Mhz and Gmii busy bit
-
+    addr = synopGMACReadReg(RegBase, GmacGmiiAddr) & GmiiCsrClkMask;
+    addr |= ((PhyBase << GmiiDevShift) & GmiiDevMask) | ((RegOffset << GmiiRegShift) & GmiiRegMask) | GmiiWrite;
+    addr = addr | GmiiBusy ; //Gmii busy bit
     synopGMACWriteReg(RegBase, GmacGmiiAddr, addr);
+
     for (loop_variable = 0; loop_variable < DEFAULT_LOOP_VARIABLE; loop_variable++)
     {
         if (!(synopGMACReadReg(RegBase, GmacGmiiAddr) & GmiiBusy))
@@ -1105,11 +1107,11 @@ s32 synopGMAC_mac_init(synopGMACdevice *gmacdev)
         synopGMAC_rx_flow_control_disable(gmacdev);
         synopGMAC_tx_flow_control_disable(gmacdev);
 
-        /*To set PHY register to enable CRS on Transmit*/
-        synopGMACWriteReg(gmacdev->MacBase, GmacGmiiAddr, GmiiBusy | 0x00000408);
-        PHYreg = synopGMACReadReg(gmacdev->MacBase, GmacGmiiData);
-        synopGMACWriteReg(gmacdev->MacBase, GmacGmiiData, PHYreg   | 0x00000800);
-        synopGMACWriteReg(gmacdev->MacBase, GmacGmiiAddr, GmiiBusy | 0x0000040a);
+        ///*To set PHY register to enable CRS on Transmit*/
+        //synopGMACWriteReg(gmacdev->MacBase, GmacGmiiAddr, GmiiBusy | 0x00000408);
+        //PHYreg = synopGMACReadReg(gmacdev->MacBase, GmacGmiiData);
+        //synopGMACWriteReg(gmacdev->MacBase, GmacGmiiData, PHYreg   | 0x00000800);
+        //synopGMACWriteReg(gmacdev->MacBase, GmacGmiiAddr, GmiiBusy | 0x0000040a);
     }
     return 0;
 }

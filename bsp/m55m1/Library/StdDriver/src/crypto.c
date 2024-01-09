@@ -31,7 +31,6 @@
 
 /** @cond HIDDEN_SYMBOLS */
 static uint32_t g_AES_CTL[4];
-static uint32_t g_TDES_CTL[4];
 static char  hex_char_tbl[] = "0123456789abcdef";
 static void dump_ecc_reg(char *str, uint32_t volatile regs[], int32_t count);
 static char get_Nth_nibble_char(uint32_t val32, uint32_t idx);
@@ -194,15 +193,38 @@ void AES_SetKey(CRYPTO_T *crypto, uint32_t u32Channel, uint32_t au32Keys[], uint
 {
     uint32_t  i, wcnt;
     void   * key_reg_addr;
+	  uint32_t * u32p_key_reg;
 
-    key_reg_addr = (void *)((uint64_t)&crypto->AES_KEY[0] + (u32Channel * 0x3CUL));
+    key_reg_addr = (void *)((uint32_t)&crypto->AES_KEY[0] + (u32Channel * 0x3CUL));
     wcnt = 4UL + u32KeySize*2UL;
-
+    u32p_key_reg = (uint32_t*)key_reg_addr;
     for (i = 0U; i < wcnt; i++)
     {
-        outpw(key_reg_addr, au32Keys[i]);
-        key_reg_addr += 4UL;
+        outpw(u32p_key_reg, au32Keys[i]);
+        u32p_key_reg++;
     }
+}
+
+
+
+
+/**
+  * @brief  Set AES keys index of Key Store
+  * @param[in]  crpt        The pointer of CRYPTO module
+  * @param[in]  mem         Memory type of Key Store key. it could be:
+  *                              - \ref KS_SRAM
+  *                              - \ref KS_FLASH
+  *                              - \ref KS_OTP
+  * @param[in]  i32KeyIdx   Index of the key in Key Store.
+  * @details    AES could use the key in Key Store. This function is used to set the key index of Key Store.
+  */
+void AES_SetKey_KS(CRYPTO_T *crypto, KS_MEM_Type mem, int32_t i32KeyIdx)
+{
+    /* Use key in key store */
+    crypto->AES_KSCTL = CRYPTO_AES_KSCTL_RSRC_Msk /* use KS */  |
+                      (uint32_t)((int)mem << CRYPTO_AES_KSCTL_RSSRC_Pos) /* KS Memory type */ |
+                      (uint32_t)i32KeyIdx /* key num */ ;
+
 }
 
 /**
@@ -216,13 +238,13 @@ void AES_SetInitVect(CRYPTO_T *crypto, uint32_t u32Channel, uint32_t au32IV[])
 {
     uint32_t  i;
     void  * key_reg_addr;
-
-    key_reg_addr = (void *)((uint64_t)&crypto->AES_IV[0] + (u32Channel * 0x3CUL));
-
+    uint32_t * u32p_key_reg;
+    key_reg_addr = (void *)((uint32_t)&crypto->AES_IV[0] + (u32Channel * 0x3CUL));
+    u32p_key_reg = (uint32_t*)key_reg_addr;
     for (i = 0U; i < 4U; i++)
     {
-        outpw(key_reg_addr, au32IV[i]);
-        key_reg_addr += 4UL;
+        outpw(u32p_key_reg, au32IV[i]);
+        u32p_key_reg++;
     }
 }
 
@@ -240,13 +262,13 @@ void AES_SetDMATransfer(CRYPTO_T *crypto, uint32_t u32Channel, uint32_t u32SrcAd
 {
     void * reg_addr;
 
-    reg_addr = (void *)((uint64_t)&crypto->AES_SADDR + (u32Channel * 0x3CUL));
+    reg_addr = (void *)((uint32_t)&crypto->AES_SADDR + (u32Channel * 0x3CUL));
     outpw(reg_addr, u32SrcAddr);
 
-    reg_addr = (void *)((uint64_t)&crypto->AES_DADDR + (u32Channel * 0x3CUL));
+    reg_addr = (void *)((uint32_t)&crypto->AES_DADDR + (u32Channel * 0x3CUL));
     outpw(reg_addr, u32DstAddr);
 
-    reg_addr = (void *)((uint64_t)&crypto->AES_CNT + (u32Channel * 0x3CUL));
+    reg_addr = (void *)((uint32_t)&crypto->AES_CNT + (u32Channel * 0x3CUL));
     outpw(reg_addr, u32TransCnt);
 }
 
@@ -343,12 +365,9 @@ void SHA_Read(CRYPTO_T *crypto, uint32_t u32Digest[])
         wcnt = 16UL;
     }
 
-    reg_addr = (void *)((uint64_t)&(crypto->HMAC_DGST[0]));
-    for (i = 0UL; i < wcnt; i++)
-    {
-        u32Digest[i] = inpw(reg_addr);
-        reg_addr += 4UL;
-    }
+    reg_addr = (void *)((uint32_t)&(crypto->HMAC_DGST[0]));
+    
+    memcpy((void *)reg_addr, (void *)u32Digest, wcnt);
 }
 
 /** @cond HIDDEN_SYMBOLS */
@@ -1092,9 +1111,10 @@ void ECC_Start(uint32_t ecc_ctl)
 {
     g_ECC_done = g_ECCERR_done = 0UL;
     CRYPTO->ECC_CTL |= ecc_ctl;
-    while ((g_ECC_done | g_ECCERR_done) == 0UL)
+    
+    while ((g_ECC_done== 0UL) && (g_ECCERR_done== 0UL))
     {
-        printf("ECC_start - CTL = 0x%x, STS = 0x%x\n",  CRYPTO->ECC_CTL, CRYPTO->ECC_STS);
+        printf("ECC_start\n");
     }
 }
 
@@ -1202,9 +1222,9 @@ int32_t  ECC_GeneratePublicKey(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, char *pr
         crypto->ECC_CTL |= ((uint32_t)pCurve->key_len << CRYPTO_ECC_CTL_CURVEM_Pos) |
                            ECCOP_POINT_MUL | CRYPTO_ECC_CTL_PFA2C_Msk | CRYPTO_ECC_CTL_START_Msk;
 
-        while ((g_ECC_done | g_ECCERR_done) == 0UL)
+        while ((g_ECC_done== 0UL) && (g_ECCERR_done== 0UL))
         {
-            //printf("ECC_CTL = 0x%x, ECC_STS = 0x%x\n",  crypto->ECC_CTL, crypto->ECC_STS);
+            printf("ECC_start\n");
         }
 
         Reg2Hex(pCurve->Echar, crypto->ECC_X1, public_k1);
@@ -1281,7 +1301,7 @@ int32_t  ECC_GeneratePublicKey_KS(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, int k
         crypto->ECC_CTL |= ((uint32_t)pCurve->key_len << CRYPTO_ECC_CTL_CURVEM_Pos) |
                            ECCOP_POINT_MUL | CRYPTO_ECC_CTL_START_Msk;
 
-        while ((g_ECC_done | g_ECCERR_done) == 0UL)
+        while ((g_ECC_done== 0UL) && (g_ECCERR_done== 0UL))
         {
         }
         crypto->ECC_KSCTL = 0;
@@ -1341,7 +1361,7 @@ int32_t  ECC_Mutiply(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, char x1[], char y1
         crypto->ECC_CTL |= ((uint32_t)pCurve->key_len << CRYPTO_ECC_CTL_CURVEM_Pos) |
                            ECCOP_POINT_MUL | CRYPTO_ECC_CTL_START_Msk;
 
-        while ((g_ECC_done | g_ECCERR_done) == 0UL)
+        while ((g_ECC_done== 0UL) && (g_ECCERR_done== 0UL))
         {
         }
 
@@ -1450,7 +1470,7 @@ int32_t  ECC_Mutiply_KS(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, int x1_ksnum, c
         crypto->ECC_CTL |= ((uint32_t)pCurve->key_len << CRYPTO_ECC_CTL_CURVEM_Pos) |
                            ECCOP_POINT_MUL | CRYPTO_ECC_CTL_START_Msk;
 
-        while ((g_ECC_done | g_ECCERR_done) == 0UL)
+        while ((g_ECC_done== 0UL) && (g_ECCERR_done== 0UL))
         {
         }
         crypto->ECC_KSCTL = 0;
@@ -1525,7 +1545,7 @@ int32_t  ECC_GenerateSecretZ(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, char *priv
         crypto->ECC_CTL |= ((uint32_t)pCurve->key_len << CRYPTO_ECC_CTL_CURVEM_Pos) |
                            ECCOP_POINT_MUL | CRYPTO_ECC_CTL_START_Msk;
 
-        while ((g_ECC_done | g_ECCERR_done) == 0UL)
+        while ((g_ECC_done== 0UL) && (g_ECCERR_done== 0UL))
         {
         }
 
@@ -1640,7 +1660,7 @@ int32_t  ECC_GenerateSecretZ_KS(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, int k_k
                        ECCOP_POINT_MUL | CRYPTO_ECC_CTL_START_Msk;
 
 
-    while ((g_ECC_done | g_ECCERR_done) == 0UL)
+    while ((g_ECC_done== 0UL) && (g_ECCERR_done== 0UL))
     {
     }
     crypto->ECC_KSCTL = 0;
@@ -1687,7 +1707,7 @@ static void run_ecc_codec(CRYPTO_T *crypto, uint32_t mode, int enable_scap)
     }
 
     crypto->ECC_CTL |= ((uint32_t)pCurve->key_len << CRYPTO_ECC_CTL_CURVEM_Pos) | mode | CRYPTO_ECC_CTL_START_Msk;
-    while ((g_ECC_done | g_ECCERR_done) == 0UL)
+    while ((g_ECC_done== 0UL) && (g_ECCERR_done== 0UL))
     {
     }
 
@@ -3380,7 +3400,6 @@ void CHAPOLY_Complete(CRYPTO_T *crypto)
 void CHA_SetKeyandNonce(CRYPTO_T *crypto,  unsigned char *key, unsigned char *nonce, int counter)
 {
     int i;
-    uint32_t  data32, ctrl = 0;
     for (i = 0; i < 8; i++)
     {
         crypto->CHAPOLY_KEY[i] = *(uint32_t *)(&key[i * 4]);
@@ -3411,8 +3430,6 @@ void CHA_SetDMATransfer(CRYPTO_T *crypto, uint8_t* u8pInputData,  uint8_t* u8pOu
 
     memset(&u8pInputData[src_len], 0, 4);  // for non-4-bytes-aligned do_swap_to
 
-//	  memset(&source[src_len], 0, 4);  // for non-4-bytes-aligned do_swap_to
-//	  memcpy(u8pInputData, source, src_len);
 }
 
 
@@ -3424,8 +3441,7 @@ void CHA_SetDMATransfer(CRYPTO_T *crypto, uint8_t* u8pInputData,  uint8_t* u8pOu
   */
 void CHA_Start(CRYPTO_T *crypto, int is_encrypt)
 {
-    int   i;
-    uint32_t  data32, ctrl = 0;
+    uint32_t  ctrl = 0;
     g_CHAPOLY_done = 0;
 
     __DSB();
@@ -3461,7 +3477,6 @@ void CHA_Start(CRYPTO_T *crypto, int is_encrypt)
 void POLY1305_SetKeyandClearNonce(CRYPTO_T *crypto,  unsigned char *key)
 {
     int  i;
-    uint32_t  ctrl = 0;
 
     memcpy((void*)(crypto->CHAPOLY_KEY), key, 32);
     for (i = 0; i < 8; i++)

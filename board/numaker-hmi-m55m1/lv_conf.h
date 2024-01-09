@@ -25,24 +25,27 @@
 
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_16           1
+#define LV_USE_FONT_COMPRESSED          1
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
-#define LV_USE_DEMO_WIDGETS             1
-//#define LV_USE_DEMO_MUSIC               1
+//#define LV_USE_DEMO_WIDGETS             1
+#define LV_USE_DEMO_MUSIC               1
 //#define LV_USE_DEMO_BENCHMARK           1
 
+#define LV_MEM_SIZE                 (64*1024)
+
 #if LV_USE_DEMO_MUSIC
-    #define LV_COLOR_SCREEN_TRANSP        1
     #define LV_DEMO_MUSIC_AUTO_PLAY       1
+    #define LV_COLOR_SCREEN_TRANSP        1
 #endif
 
 #define LV_USE_PERF_MONITOR             1
 #define LV_USE_LOG                      1
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
 #endif

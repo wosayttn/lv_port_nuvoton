@@ -211,7 +211,7 @@ extern "C"
 *       The clock of BPWM counter is divided by (u32Prescaler + 1).
 * \hideinitializer
 */
-#define BPWM_GET_PRESCALER(bpwm, u32ChannelNum) (bpwm)->CLKPSC
+#define BPWM_GET_PRESCALER(bpwm, u32ChannelNum) ((bpwm)->CLKPSC)
 
 /**
  * @brief This macro set the duty of the selected channel

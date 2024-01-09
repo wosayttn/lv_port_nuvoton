@@ -648,6 +648,10 @@ int ethosu_invoke_async(struct ethosu_driver *drv,
 
     drv->status_error = false;
 
+    struct opt_cfg_s *opt_cfg_p;
+    void *command_stream;
+    int cms_length;
+
     // Parse Custom Operator Payload data
     while (data_ptr < data_end)
     {
@@ -655,7 +659,7 @@ int ethosu_invoke_async(struct ethosu_driver *drv,
         {
         case OPTIMIZER_CONFIG:
             LOG_DEBUG("OPTIMIZER_CONFIG");
-            struct opt_cfg_s *opt_cfg_p = (struct opt_cfg_s *)data_ptr;
+            opt_cfg_p = (struct opt_cfg_s *)data_ptr;
 
             if (handle_optimizer_config(drv, opt_cfg_p) < 0)
             {
@@ -666,8 +670,8 @@ int ethosu_invoke_async(struct ethosu_driver *drv,
         case COMMAND_STREAM:
             // Vela only supports putting one COMMAND_STREAM per op
             LOG_DEBUG("COMMAND_STREAM");
-            void *command_stream = (uint8_t *)(data_ptr) + sizeof(struct cop_data_s);
-            int cms_length       = (data_ptr->reserved << 16) | data_ptr->length;
+            command_stream = (uint8_t *)(data_ptr) + sizeof(struct cop_data_s);
+            cms_length       = (data_ptr->reserved << 16) | data_ptr->length;
 
             if (handle_command_stream(drv, command_stream, cms_length) < 0)
             {

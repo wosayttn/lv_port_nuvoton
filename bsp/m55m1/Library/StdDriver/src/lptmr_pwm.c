@@ -35,7 +35,7 @@
 uint32_t LPTPWM_ConfigOutputFreqAndDuty(LPTMR_T *lptmr, uint32_t u32Frequency, uint32_t u32DutyCycle)
 {
     uint32_t u32PWMClockFreq, u32TargetFreq = 0UL, u32Src = 0UL;
-    uint32_t u32Prescaler = 0x100UL, u32Period, u32CMP;
+    uint32_t u32Prescaler = 0x100UL, u32Period;
     const uint32_t au32Clk[] = {0UL, __LXT, __LIRC, __MIRC, __HIRC, 0UL};
 
     if (lptmr == LPTMR0)
@@ -90,17 +90,8 @@ uint32_t LPTPWM_ConfigOutputFreqAndDuty(LPTMR_T *lptmr, uint32_t u32Frequency, u
     LPTPWM_SET_PRESCALER(lptmr, (u32Prescaler - 1UL));
 
     LPTPWM_SET_PERIOD(lptmr, (u32Period - 1UL));
+    LPTPWM_SET_CMPDAT(lptmr, (u32DutyCycle * u32Period) / 100UL);
 
-    if (u32DutyCycle)
-    {
-        u32CMP = (u32DutyCycle * u32Period) / 100UL;
-    }
-    else
-    {
-        u32CMP = 0UL;
-    }
-
-    LPTPWM_SET_CMPDAT(lptmr, u32CMP);
     return (u32TargetFreq);
 }
 

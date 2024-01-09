@@ -41,16 +41,12 @@ enum
 /*---------------------------------------------------------------------------------------------------------*/
 #define PMC_PLCTL_PLSEL_PL0     (0x0UL<<PMC_PLCTL_PLSEL_Pos)   /*!< Set power level to power level 0. Supports system clock up to 96MHz. */
 #define PMC_PLCTL_PLSEL_PL1     (0x1UL<<PMC_PLCTL_PLSEL_Pos)   /*!< Set power level to power level 1. Supports system clock up to 84MHz. */
-#define PMC_PLCTL_PLSEL_PL2     (0x2UL<<PMC_PLCTL_PLSEL_Pos)   /*!< Set power level to power level 2. Supports system clock up to 48MHz. */
-#define PMC_PLCTL_PLSEL_PL3     (0x3UL<<PMC_PLCTL_PLSEL_Pos)   /*!< Set power level to power level 3. Supports system clock up to 4MHz. */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  PLSTS constant definitions. (Write-Protection Register)                                                */
 /*---------------------------------------------------------------------------------------------------------*/
 #define PMC_PLSTS_PLSTATUS_PL0  (0x0UL<<PMC_PLSTS_PLSTATUS_Pos) /*!< Power level is power level 0. Supports system clock up to 96MHz. */
 #define PMC_PLSTS_PLSTATUS_PL1  (0x1UL<<PMC_PLSTS_PLSTATUS_Pos) /*!< Power level is power level 1. Supports system clock up to 84MHz. */
-#define PMC_PLSTS_PLSTATUS_PL2  (0x2UL<<PMC_PLSTS_PLSTATUS_Pos) /*!< Power level is power level 2. Supports system clock up to 48MHz. */
-#define PMC_PLSTS_PLSTATUS_PL3  (0x3UL<<PMC_PLSTS_PLSTATUS_Pos) /*!< Power level is power level 3. Supports system clock up to 4MHz. */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  VRCTL constant definitions. (Write-Protection Register)                                                */
@@ -88,14 +84,19 @@ enum
 /*---------------------------------------------------------------------------------------------------------*/
 #define PMC_NPD0        0x0UL   /*!< Select NPD0 as power down mode */
 #define PMC_NPD1        0x1UL   /*!< Select NPD1 as power down mode */
+#if 0   // TESTCHIP_ONLY not support
 #define PMC_NPD2        0x2UL   /*!< Select NPD2 as power down mode */
 #define PMC_NPD3        0x3UL   /*!< Select NPD3 as power down mode */
 #define PMC_NPD4        0x4UL   /*!< Select NPD4 as power down mode */
+#endif
 #define PMC_SPD0        0x5UL   /*!< Select SPD0 as power down mode */
+#if 0   // TESTCHIP_ONLY not support
 #define PMC_SPD1        0x6UL   /*!< Select SPD1 as power down mode */
+#endif
 #define PMC_DPD0        0x7UL   /*!< Select DPD0 as power down mode */
+#if 0   // TESTCHIP_ONLY not support
 #define PMC_DPD1        0x8UL   /*!< Select DPD1 as power down mode */
-
+#endif
 /*---------------------------------------------------------------------------------------------------------*/
 /*  TG Pin Rising/Falling Edge Wake-up Enable constant definitions.                                        */
 /*---------------------------------------------------------------------------------------------------------*/

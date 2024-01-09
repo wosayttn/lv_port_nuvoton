@@ -544,7 +544,6 @@ s32 synop_handle_received_data(synopGMACdevice *gmacdev, PKT_FRAME_T **ppsPktFra
     return 0;
 }
 
-// mode 0: 1000Mbps, 1: 100Mbps, 2: 10Mbps
 void synopGMAC_set_mode(synopGMACdevice *gmacdev, int mode)
 {
     // Must stop Tx/Rx before change speed/mode
@@ -552,19 +551,16 @@ void synopGMAC_set_mode(synopGMACdevice *gmacdev, int mode)
     synopGMAC_rx_disable(gmacdev);
     switch (mode)
     {
-        case 0:
+        case SPEED1000:
             synopGMACClearBits(gmacdev->MacBase, GmacConfig, GmacMiiGmii);
-            gmacdev->Speed = SPEED1000;
             break;
-        case 1:
+        case SPEED100:
             synopGMACSetBits(gmacdev->MacBase, GmacConfig, GmacMiiGmii);
             synopGMACSetBits(gmacdev->MacBase, GmacConfig, GmacFESpeed100);
-            gmacdev->Speed = SPEED100;
             break;
-        case 2:
+        case SPEED10:
             synopGMACSetBits(gmacdev->MacBase, GmacConfig, GmacMiiGmii);
             synopGMACClearBits(gmacdev->MacBase, GmacConfig, GmacFESpeed100);
-            gmacdev->Speed = SPEED10;
         default:
             break;
     }

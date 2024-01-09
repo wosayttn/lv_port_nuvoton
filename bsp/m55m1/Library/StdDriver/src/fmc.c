@@ -298,8 +298,7 @@ int32_t FMC_WriteMultiple(uint32_t u32Addr, uint32_t pu32Buf[], uint32_t u32Byte
 
             FMC->MPDAT2 = pu32Buf[i32Idx++];
             FMC->MPDAT3 = pu32Buf[i32Idx++];
-        }
-        while ((i32Idx * 4) % FMC_MULTI_WORD_PROG_LEN);
+        } while ((i32Idx * 4) % FMC_MULTI_WORD_PROG_LEN);
 
         i32TimeOutCnt = FMC_TIMEOUT_WRITE;
 
@@ -321,8 +320,7 @@ int32_t FMC_WriteMultiple(uint32_t u32Addr, uint32_t pu32Buf[], uint32_t u32Byte
                 u32Addr += FMC_MULTI_WORD_PROG_LEN;
             }
         }
-    }
-    while (u32ByteLen >= 8);
+    } while (u32ByteLen >= 8);
 
     return i32RetVal;
 }
@@ -591,6 +589,28 @@ int32_t FMC_Erase_Bank(uint32_t u32BankAddr)
 }
 
 /**
+  * @brief     Config NPU XOM Region and only XOMR3 supports NPU XOM
+  * @param[in] u32XomBase   The XOM region base address.
+  * @param[in] u8XomPageCnt The XOM page count of region size.
+  * @param[in] u32DRBound   The data region boundary in NPU XOM region
+  *
+  * @retval   FMC_OK   Success
+  * @retval   1   XOM is has already actived.
+  * @retval   -1  Program failed.
+  * @retval   -2  Invalid XOM number.
+  *
+  * @details  Program NPU XOM base address, XOM size (page count) and data region boundary
+  * @note     Global error code g_FMC_i32ErrCode
+  *           FMC_ERR_TIMEOUT  Program failed or program time-out
+  *           -2  Invalid XOM number.
+  */
+int32_t FMC_ConfigNPUXOM(uint32_t u32XomBase, uint8_t u8XomPageCnt, uint32_t u32DRBound)
+{
+    // TESTCHIP_ONLY not support
+    return 0;
+}
+
+/**
   * @brief     Config XOM Region
   * @param[in] u32XomNum    The XOM number(0~3)
   * @param[in] u32XomBase   The XOM region base address.
@@ -767,26 +787,26 @@ int32_t FMC_EraseXOM(uint32_t u32XomNum)
         {
             switch (u32XomNum)
             {
-            case 0u:
-                u32Addr = (FMC->XOMR0STS & 0xFFFFFF00u) >> 8u;
-                break;
+                case 0u:
+                    u32Addr = (FMC->XOMR0STS & 0xFFFFFF00u) >> 8u;
+                    break;
 
-            case 1u:
-                u32Addr = (FMC->XOMR1STS & 0xFFFFFF00u) >> 8u;
-                break;
+                case 1u:
+                    u32Addr = (FMC->XOMR1STS & 0xFFFFFF00u) >> 8u;
+                    break;
 
-            case 2u:
-                u32Addr = (FMC->XOMR2STS & 0xFFFFFF00u) >> 8u;
-                break;
+                case 2u:
+                    u32Addr = (FMC->XOMR2STS & 0xFFFFFF00u) >> 8u;
+                    break;
 
-            case 3u:
-                u32Addr = (FMC->XOMR3STS & 0xFFFFFF00u) >> 8u;
-                break;
+                case 3u:
+                    u32Addr = (FMC->XOMR3STS & 0xFFFFFF00u) >> 8u;
+                    break;
 
-            default:
-                /* Should not be here */
-                i32RetCode = FMC_ERR_INVALID_PARAM;
-                goto lexit;
+                default:
+                    /* Should not be here */
+                    i32RetCode = FMC_ERR_INVALID_PARAM;
+                    goto lexit;
             }
 
             FMC->ISPCMD  = FMC_ISPCMD_PAGE_ERASE;
@@ -1176,7 +1196,7 @@ int32_t  FMC_ConfigSecureConceal(uint32_t u32Base, uint32_t u32PageCnt, uint32_t
   *           FMC_ERR_TIMEOUT        Run/Read check sum time-out failed
   *           FMC_ERR_INVALID_PARAM  u32Addr or u32count must be aligned with 8 KB page alignment
   */
-#if 0   // TESTCHIP_ONLY not support
+#ifndef TESTCHIP_ONLY   // TESTCHIP_ONLY not support
 uint32_t  FMC_GetChkSum(uint32_t u32Addr, uint32_t u32count)
 {
     int32_t i32RetCode;
@@ -1240,7 +1260,7 @@ uint32_t  FMC_GetChkSum(uint32_t u32Addr, uint32_t u32count)
   * @note     Global error code g_FMC_i32ErrCode
   *           -1  RUN_ALL_ONE or CHECK_ALL_ONE commands time-out
   */
-#if 0   // TESTCHIP_ONLY not support
+#ifndef TESTCHIP_ONLY   // TESTCHIP_ONLY not support
 uint32_t  FMC_CheckAllOne(uint32_t u32Addr, uint32_t u32count)
 {
     int32_t i32RetCode = READ_ALLONE_CMD_FAIL;
@@ -1291,8 +1311,7 @@ uint32_t  FMC_CheckAllOne(uint32_t u32Addr, uint32_t u32count)
             {
                 g_FMC_i32ErrCode = FMC_ERR_TIMEOUT;
             }
-        }
-        while ((FMC->ISPDAT == 0UL) && (g_FMC_i32ErrCode == FMC_OK));
+        } while ((FMC->ISPDAT == 0UL) && (g_FMC_i32ErrCode == FMC_OK));
     }
 
     if (g_FMC_i32ErrCode == FMC_OK)

@@ -42,9 +42,9 @@ extern "C"
 //#define SPIM_DMM0_NSADDR                    (0x92000000UL)  /*!< SPIM1 DMM mode memory map base non secure address    \hideinitializer */
 
 // TESTCHIP_ONLY
-#define SPIM_DMM1_SADDR                     0//(0x82000000UL)  /*!< SPIM1 DMM mode memory map base secure address    \hideinitializer */
+#define SPIM_DMM1_SADDR                     (0x82000000UL)  /*!< SPIM1 DMM mode memory map base secure address    \hideinitializer */
 // TESTCHIP_ONLY
-#define SPIM_DMM1_NSADDR                    0//(0x92000000UL)  /*!< SPIM1 DMM mode memory map base non secure address    \hideinitializer */
+#define SPIM_DMM1_NSADDR                    (0x92000000UL)  /*!< SPIM1 DMM mode memory map base non secure address    \hideinitializer */
 
 #if defined (SCU_INIT_D0PNS2_VAL) && (SCU_INIT_D0PNS2_VAL & SCU_D0PNS2_SPIM0_Msk)
 #define SPIM_DMM0_ADDR                      SPIM_DMM0_NSADDR
@@ -59,9 +59,9 @@ extern "C"
 #define SPIM_DMM1_ADDR                      SPIM_DMM1_SADDR
 #endif
 
-#define SPIM_DMM_SIZE                       (0x2000000UL - 1)       /*!< DMM mode memory mapping size        \hideinitializer */
+#define SPIM_DMM_SIZE                       (0x2000000UL)       /*!< DMM mode memory mapping size        \hideinitializer */
 
-#define SPIM_MAX_DLL_LATENCY                (0x05)              /*!< Maximum DLL training number        \hideinitializer */
+#define SPIM_MAX_DLL_LATENCY                (0x1F)              /*!< Maximum DLL training number        \hideinitializer */
 
 #define SPIM_DTR_ON                         (0x01)              /* Double data rate mode enable */
 #define SPIM_DTR_OFF                        (0x00)              /* Double data rate mode disable */
@@ -261,7 +261,7 @@ typedef enum
 #define SCUR_4BYTE              (0x04U) /* 4-byte u32Address mode */
 
 /* SPIM Wait State Timeout Counter. */
-#define SPIM_TIMEOUT            SystemCoreClock /*!< SPIM time-out counter (1 second time-out) */
+#define SPIM_TIMEOUT            0xFFFF //SystemCoreClock /*!< SPIM time-out counter (1 second time-out) */
 
 /** @endcond HIDDEN_SYMBOLS */
 
@@ -1480,7 +1480,7 @@ __STATIC_INLINE uint32_t SPIM_GetDMMAddress(SPIM_T *spim);
  */
 __STATIC_INLINE void SPIM_ENABLE_CIPHER(SPIM_T *spim)
 {
-    spim->CTL0 = (spim->CTL0 & ~(SPIM_CTL0_CIPHOFF_Msk)) /*| SPIM_CTL0_BALEN_Msk*/;
+    spim->CTL0 &= ~(SPIM_CTL0_CIPHOFF_Msk | SPIM_CTL0_BALEN_Msk);
 
     SPIM_SET_DMM_DESELTIM(spim, 0x12);
 }
@@ -1494,7 +1494,7 @@ __STATIC_INLINE void SPIM_ENABLE_CIPHER(SPIM_T *spim)
  */
 __STATIC_INLINE void SPIM_DISABLE_CIPHER(SPIM_T *spim)
 {
-    spim->CTL0 |= /*(spim->CTL0 & ~(SPIM_CTL0_BALEN_Msk)) |*/ (SPIM_CTL0_CIPHOFF_Msk);
+    spim->CTL0 |= (SPIM_CTL0_BALEN_Msk | SPIM_CTL0_CIPHOFF_Msk);
 
     SPIM_SET_DMM_DESELTIM(spim, 0x08);
 }
@@ -1508,10 +1508,10 @@ __STATIC_INLINE void SPIM_DISABLE_CIPHER(SPIM_T *spim)
  */
 __STATIC_INLINE void SPIM_DISABLE_CACHE(SPIM_T *spim)
 {
-    #if (SPIM_REG_CACHE == 1) //TESTCHIP_ONLY not support
+#if (SPIM_REG_CACHE == 1) //TESTCHIP_ONLY not support
     (spim->CTL1 |= SPIM_CTL1_CACHEOFF_Msk);
-#endif 
-    
+#endif
+
     /* Cipher Disabled Set Deselect Time 0x01 */
     if (((spim->CTL0 & SPIM_CTL0_CIPHOFF_Msk) >> SPIM_CTL0_CIPHOFF_Pos) != SPIM_OP_DISABLE)
     {
@@ -1519,7 +1519,6 @@ __STATIC_INLINE void SPIM_DISABLE_CACHE(SPIM_T *spim)
     }
 }
 
-#if (SPIM_REG_CACHE == 1) // TESTCHIP_ONLY not support
 /**
  * @brief   Enable cache.
  *
@@ -1529,6 +1528,7 @@ __STATIC_INLINE void SPIM_DISABLE_CACHE(SPIM_T *spim)
  */
 __STATIC_INLINE void SPIM_ENABLE_CACHE(SPIM_T *spim)
 {
+#if (SPIM_REG_CACHE == 1) // TESTCHIP_ONLY not support
     (spim->CTL1 &= ~(SPIM_CTL1_CACHEOFF_Msk));
 
     /* Cipher Disabled Set Deselect Time 0x04 */
@@ -1536,8 +1536,9 @@ __STATIC_INLINE void SPIM_ENABLE_CACHE(SPIM_T *spim)
     {
         SPIM_SET_DMM_DESELTIM(spim, 0x4);
     }
-}
+
 #endif
+}
 
 /**
   * @brief      Get Direct Map Address.
@@ -1552,10 +1553,10 @@ __STATIC_INLINE uint32_t SPIM_GetDMMAddress(SPIM_T *spim)
     {
         u32DMMAddr = SPIM_DMM0_ADDR;
     }
-    //else if (spim == SPIM1) // TESTCHIP_ONLY
-    //{
-    //    u32DMMAddr = SPIM_DMM1_ADDR;
-    //}
+    else if (spim == SPIM1) // TESTCHIP_ONLY
+    {
+        u32DMMAddr = SPIM_DMM1_ADDR;
+    }
 
     return u32DMMAddr;
 }
@@ -1578,6 +1579,7 @@ typedef struct
     uint32_t u32DataPhase;      /*!< Data phase mode */
     uint32_t u32ByteOrder;      /*!< Data Byte Order */
     uint32_t u32DataDTR;        /*!< Data use DTR mode */
+    uint32_t u32RDQS;           /*!< Receive data from SPI Flash when read DQS*/
 
     uint32_t u32DcNum;          /*!< Dummy `cycle count */
 
@@ -1589,7 +1591,6 @@ typedef struct
     uint32_t u32RdModeDTR;      /*!< Read mode use DTR mode */
 
 } SPIM_PHASE_T;  /*!< Structure holds SPIM IO phase info */
-
 
 /** @addtogroup SPIM HYPER_EXPORTED_CONSTANTS HYPER Exported Constants
   @{
@@ -1615,7 +1616,7 @@ int32_t SPIM_Is4ByteModeEnable(SPIM_T *spim, uint32_t u32NBit);
 int32_t SPIM_SetWrapAroundEnable(SPIM_T *spim, int isEn);
 void SPIM_SetWriteEnable(SPIM_T *spim, int isEn, uint32_t u32NBit);
 
-void SPIM_ReadStatusRegister(SPIM_T *spim, uint8_t dataBuf[],uint32_t u32NRx, uint32_t u32NBit);
+void SPIM_ReadStatusRegister(SPIM_T *spim, uint8_t dataBuf[], uint32_t u32NRx, uint32_t u32NBit);
 void SPIM_ReadConfigRegister(SPIM_T *spim, uint8_t u8RdCMD, uint32_t u32Addr, uint8_t *pu8DataBuf, uint32_t u32NRx, uint32_t u32NBit);
 void SPIM_WriteConfigRegister(SPIM_T *spim, uint8_t u8CMD, uint32_t u32Addr, uint8_t u8Data, uint32_t u32NBit);
 

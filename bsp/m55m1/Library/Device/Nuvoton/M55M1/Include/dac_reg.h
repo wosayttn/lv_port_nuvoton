@@ -69,7 +69,7 @@ typedef struct
      * |        |          |00 = data is 12 bits.
      * |        |          |01 = data is 8 bits.
      * |        |          |Others = reserved.
-     * |[16]    |GRPEN     |DAC Group Mode Enable Bit
+     * |[16]    |GRPEN     |DAC Group Mode Enable Bit (Not support in TESTCHIP_ONLY)
      * |        |          |0 = DAC0 and DAC1 are not grouped.
      * |        |          |1 = DAC0 and DAC1 are grouped.
      * |[17]    |GPIOEN    |GPIO Mode Enable Bit
@@ -145,7 +145,7 @@ typedef struct
      * |        |          |12 bit right alignment: user has to load data into DAC_GRPDAT[11:0] bits.
      * |        |          |Note: In group mode, the advantage of writing 12-bit conversion data in DAC_GRPDAT[15:0] is that can share one PDMA transfer mechanism.
      * |        |          |Note: After set GRPEN(DAC0_CTL[16]), user can write 12-bit conversion data for DAC0 in DAC_GRPDAT[15:0]
-     * |[31:16] |DAC1DAT   |DAC1 12-bit Holding Data
+     * |[31:16] |DAC1DAT   |DAC1 12-bit Holding Data (DAC1 is not support in TESTCHIP_ONLY)
      * |        |          |In group mode, user can write these bits for DAC1 12-bit conversion data
      * |        |          |The unused bits (DAC_GRPDAT[3:0] in left-alignment mode and DAC_GRPDAT[15:12] in right alignment mode) are ignored by DAC controller hardware.
      * |        |          |12 bit left alignment: user has to load data into DAC_GRPDAT[15:4] bits.
@@ -229,8 +229,10 @@ typedef struct
 #define DAC_GRPDAT_DAC0DAT_Pos           (0)                                               /*!< DAC_T::GRPDAT: DAC0DAT Position          */
 #define DAC_GPRDAT_DAC0DAT_Msk           (0xfffful << DAC_GRPDAT_DAC0DAT_Pos)              /*!< DAC_T::GRPDAT: DAC0DAT Mask              */
 
-#define DAC_GRPDAT_DAC1DAT_Pos           (16)                                              /*!< DAC_T::GRPDAT: DAC1DAT Position          */
-#define DAC_GPRDAT_DAC1DAT_Msk           (0xfffful << DAC_GRPDAT_DAC1DAT_Pos)              /*!< DAC_T::GRPDAT: DAC1DAT Mask              */
+#if ! defined (TESTCHIP_ONLY)
+    #define DAC_GRPDAT_DAC1DAT_Pos           (16)                                              /*!< DAC_T::GRPDAT: DAC1DAT Position          */
+    #define DAC_GPRDAT_DAC1DAT_Msk           (0xfffful << DAC_GRPDAT_DAC1DAT_Pos)              /*!< DAC_T::GRPDAT: DAC1DAT Mask              */
+#endif
 
 /** @} DAC_CONST */
 /** @} end of DAC register group */

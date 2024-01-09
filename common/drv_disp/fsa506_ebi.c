@@ -73,7 +73,10 @@ void fsa506_send_pixels(uint16_t *pixels, int byte_len)
 #if defined(CONFIG_FSA506_EBI_USE_PDMA)
     // PDMA-M2M feed
     if (count > 1024)
-        nu_pdma_mempush((void *)(CONFIG_FSA506_EBI_ADDR + (FSA506_ADDR_DATA)), (void *)pixels, 16, count);
+    {
+        uint32_t Odd = count & 0x1;
+        nu_pdma_mempush((void *)(CONFIG_FSA506_EBI_ADDR + FSA506_ADDR_DATA), (void *)pixels, (Odd ? 16:32), (Odd ? count:(count/2)) );
+    }
     else
 #endif
     {

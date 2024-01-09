@@ -29,10 +29,7 @@
  */
 static void RNG_BasicConfig()
 {
-    int32_t i;
-    int32_t timeout = 0x1000000;
     uint32_t retry_count;
-	
 
     /* TRNG & PRNG clock enable and module reset*/
     CLK_EnableModuleClock(CRYPTO0_MODULE);
@@ -335,13 +332,15 @@ int32_t RNG_EntropyPoll(uint32_t* pu32Out, int32_t i32Len)
         /* TRNG is not in active */
         return -1;
     }
-
-    /* Trigger entropy generate */
-    TRNG->CTL |= TRNG_CTL_TRNGEN_Msk;
-
-    for(i = 0; i < i32Len; i++)
+    
+		/* Trigger entropy generate */
+    TRNG->CTL |= (TRNG_CTL_TRNGEN_Msk | TRNG_CTL_DVIEN_Msk);
+    for(i = 0; i < i32Len; i+=4)
     {
-        timeout = SystemCoreClock;
+         /* Trigger entropy generate */
+        TRNG->CTL |=  TRNG_CTL_START_Msk ;
+			
+			  timeout = SystemCoreClock;
         while((TRNG->CTL & TRNG_STS_DVIF_Msk) == 0)
         {
             if(timeout-- <= 0)
@@ -350,8 +349,9 @@ int32_t RNG_EntropyPoll(uint32_t* pu32Out, int32_t i32Len)
                 return -1;
             }
         }
-        /* Get one byte entroy */
-        *pu32Out++ = TRNG->DATA_OUT[0];
+        /* Get one word entroy */
+        *pu32Out++ = (uint32_t)(TRNG->DATA_OUT[0]);
+        CLK_SysTickDelay(100000);//Do NOT remove this line
     }
 
     return i32Len;

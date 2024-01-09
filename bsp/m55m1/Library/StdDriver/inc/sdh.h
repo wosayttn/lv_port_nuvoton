@@ -71,9 +71,9 @@ extern "C"
 #define SDH_TIMEOUT_CNT       2000000      /*!< SDH time-out counter (1 second time-out) \hideinitializer */
 
 /* SDH Define Error Code */
-#define SDH_OK              ( 0L)          /*!< SDH operation OK \hideinitializer */
-#define SDH_ERR_FAIL        (-1L)          /*!< SDH operation failed \hideinitializer */
-#define SDH_ERR_TIMEOUT     (-2L)          /*!< SDH operation abort due to timeout error \hideinitializer */
+#define SDH_OK              ( 0L)             /*!< SDH operation OK \hideinitializer */
+#define SDH_ERR_FAIL        (SDH_ERR_DEVICE)  /*!< SDH operation failed \hideinitializer */
+#define SDH_ERR_TIMEOUT     (SDH_TIMEOUT)     /*!< SDH operation abort due to timeout error \hideinitializer */
 
 /* SDH Define Block Size */
 #define SDH_BLOCK_SIZE        (512ul)

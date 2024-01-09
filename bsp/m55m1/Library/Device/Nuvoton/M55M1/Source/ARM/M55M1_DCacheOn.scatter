@@ -89,6 +89,8 @@
 #define SRAM_SIZE       0x00150000
 #define SRAM_NONCACHEABLE_START	(SRAM_START + SRAM_CACHEABLE_SIZE)
 #define SRAM_NONCACHEABLE_SIZE	(SRAM_SIZE - SRAM_CACHEABLE_SIZE)
+#define LPSRAM_START    0x20310000
+#define LPSRAM_SIZE     0x00002000
 
 /*--------------------- Stack / Heap Configuration ---------------------------
 ; <h> Stack / Heap Configuration
@@ -205,6 +207,11 @@ LR_ROM __RO_BASE __RO_SIZE  {                       ; load region size_region
     SRAM_NONCACHEABLE_END (SRAM_NONCACHEABLE_START + SRAM_NONCACHEABLE_SIZE)
     {
         .ANY (SRAM_NONCACHEABLE_END)
+    }
+
+    LPSRAM LPSRAM_START LPSRAM_SIZE
+    {
+        .ANY (.lpSram)
     }
 
     ARM_LIB_STACK __STACK_TOP EMPTY - STACK_SIZE {}     ; Reserve empty region for stack
