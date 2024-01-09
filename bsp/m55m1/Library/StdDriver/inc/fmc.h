@@ -388,6 +388,7 @@ extern int32_t  FMC_WriteConfig(uint32_t u32ConfigAddr, uint32_t u32ConfigVal);
 extern int32_t  FMC_EraseConfig(uint32_t u32ConfigAddr);
 extern int32_t  FMC_RemapBank(uint32_t u32Bank);
 extern int32_t  FMC_Erase_Bank(uint32_t u32BankAddr);
+extern int32_t  FMC_ConfigNPUXOM(uint32_t u32XomBase, uint8_t u8XomPageCnt, uint32_t u32DRBound);
 extern int32_t  FMC_ConfigXOM(uint32_t u32XomNum, uint32_t u32XomBase, uint8_t u8XomPageCnt);
 extern int32_t  FMC_GetXOMState(uint32_t u32XomNum);
 extern int32_t  FMC_EraseXOM(uint32_t u32XomNum);

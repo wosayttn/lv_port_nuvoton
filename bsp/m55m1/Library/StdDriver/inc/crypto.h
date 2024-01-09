@@ -468,6 +468,7 @@ void AES_SetKey(CRYPTO_T *crypto, uint32_t u32Channel, uint32_t au32Keys[], uint
 void AES_SetInitVect(CRYPTO_T *crypto, uint32_t u32Channel, uint32_t au32IV[]);
 void AES_SetDMATransfer(CRYPTO_T *crypto, uint32_t u32Channel, uint32_t u32SrcAddr, uint32_t u32DstAddr, uint32_t u32TransCnt);
 void AES_Start_KS(CRYPTO_T *crypto, uint32_t u32Channel, uint32_t u32DMAMode, int ksel, int knum);
+void AES_SetKey_KS(CRYPTO_T *crypto, KS_MEM_Type mem, int32_t i32KeyIdx);
 
 void CHA_SetKeyandNonce(CRYPTO_T *crypto,  unsigned char *key, unsigned char *nonce, int counter);
 void CHA_SetDMATransfer(CRYPTO_T *crypto, uint8_t* u8pInputData,  uint8_t* u8pOutputData, int src_len);
@@ -500,6 +501,21 @@ int32_t ECC_VerifySignature_KS(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, char *me
 int32_t ECC_GenerateSignature_KS(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, char *message,  int d_ksnum, int k_ksnum, char *R, char *S);
 int32_t ECC_GetCurve(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, ECC_CURVE *curve);
 int32_t ECC_VerifySignature_KS(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, char *message, int x_ksnum, int y_ksnum, char *R, char *S);
+void Hex2Reg(char input[], uint32_t volatile reg[]);
+void Reg2Hex(int32_t count, uint32_t volatile reg[], char output[]);
+void Hex2RegEx(char input[], uint32_t volatile reg[], int shift);
+int32_t ECC_GetCurve(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, ECC_CURVE *curve);
+int ecc_strcmp(char *s1, char *s2);
+int32_t  ECC_VerifySignature_KS(CRYPTO_T *crypto, E_ECC_CURVE ecc_curve, char *message, int x_ksnum, int y_ksnum, char *R, char *S);
+int32_t RSA_Open(CRYPTO_T *crpt, uint32_t u32OpMode, uint32_t u32KeySize,void *psRSA_Buf, uint32_t u32BufSize, uint32_t u32UseKS);
+int32_t RSA_SetKey(CRYPTO_T *crpt, char *Key);
+int32_t RSA_SetDMATransfer(CRYPTO_T *crpt, char *Src, char *n, char *P, char *Q);
+void RSA_Start(CRYPTO_T *crpt);
+int32_t RSA_Read(CRYPTO_T *crpt, char *Output);
+int32_t RSA_SetKey_KS(CRYPTO_T *crpt, uint32_t u32KeyNum, uint32_t u32KSMemType, uint32_t u32BlindKeyNum);
+int32_t RSA_SetDMATransfer_KS(CRYPTO_T *crpt, char *Src, char *n, uint32_t u32PNum,
+                              uint32_t u32QNum, uint32_t u32CpNum, uint32_t u32CqNum, uint32_t u32DpNum,
+                              uint32_t u32DqNum, uint32_t u32RpNum, uint32_t u32RqNum);
 /** @} end of group CRYPTO_EXPORTED_FUNCTIONS */
 /** @} end of group CRYPTO_Driver */
 /** @} end of group Standard_Driver */

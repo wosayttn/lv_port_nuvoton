@@ -27,6 +27,35 @@ extern "C"
 */
 
 /**
+  * @brief      Start DMIC module
+  * @param[in]  dmic The base address of DMIC module.
+  * @return     None.
+  */
+void DMIC_Open(DMIC_T *dmic)
+{
+    uint32_t u32Delay;
+    dmic->DIV |= DMIC_DIV_FCLR_Msk;
+    u32Delay = SystemCoreClock >> 3;
+
+    while (((dmic->DIV & DMIC_DIV_FCLR_Msk) == DMIC_DIV_FCLR_Msk) && (--u32Delay))
+    {
+        __NOP();
+    }
+
+    dmic->CTL |= DMIC_CTL_SWRST_Msk;
+}
+
+/**
+  * @brief      Stop DMIC module
+  * @param[in]  dmic The base address of DMIC module.
+  * @return     None.
+  */
+void DMIC_Close(DMIC_T *dmic)
+{
+    DMIC_DISABLE_CHANNEL(dmic, DMIC_CTL_CHEN0_Msk | DMIC_CTL_CHEN1_Msk | DMIC_CTL_CHEN2_Msk | DMIC_CTL_CHEN3_Msk);
+}
+
+/**
   * @brief      Set DMIC DSP Gain Volume.
   * @param[in]  dmic The base address of DMIC module
   * @param[in]  u32ChMsk Select channel.

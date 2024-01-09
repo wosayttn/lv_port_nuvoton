@@ -76,3 +76,20 @@ long __lseek(int handle, long offset, int whence)
 {
     return -1;
 }
+
+void __exit(int x)
+{
+    while (1)
+    {
+    }
+}
+
+int __close(int handle)
+{
+  return 0;
+}
+
+int remove(const char * filename)
+{
+  return 0;
+}

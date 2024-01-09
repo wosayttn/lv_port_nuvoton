@@ -378,6 +378,7 @@ const VECTOR_TABLE_Type DTCM_VECTOR_TABLE[] NVT_DTCM_VTOR =
     0,                                        /*!<     Reserved                                         */
     0,                                        /*!<     Reserved                                         */
     LPADC0_IRQHandler,                        /*!< 134 Low Power ADC 0 Interrupt Handler                */
+    // DAC1 is not support in TESTCHIP_ONLY
     DAC01_IRQHandler,                         /*!< 135 DAC0 and DAC1 Interrupt Handler                  */
     0,                                        /*!<     Reserved                                         */
     EQEI0_IRQHandler,                         /*!< 137 EQEI0 Interrupt Handler                          */
@@ -442,6 +443,13 @@ __NO_RETURN void Reset_Handler_Main(void)
             SYS->REGLCTL = 0x88UL;
         } while (SYS->REGLCTL == 0UL);
 
+#ifdef TESTCHIP_ONLY
+        if (!(SYS->RSTSTS & SYS_RSTSTS_PORF_Msk))
+        {
+            SYS_ResetChip();
+        }
+#endif
+
         // Switch SRAM0 to normal power mode
         if (PMC->SYSRB0PC != 0)
         {
@@ -485,7 +493,7 @@ __NO_RETURN void Reset_Handler_Main(void)
     /* PDEPU ON, Clock OFF */
     PWRMODCTL->CPDLPSTATE |= 0x1 << PWRMODCTL_CPDLPSTATE_ELPSTATE_Pos;
 #endif
-	
+
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
     __TZ_set_STACKSEAL_S((uint32_t *)(&__STACK_SEAL));
 #endif

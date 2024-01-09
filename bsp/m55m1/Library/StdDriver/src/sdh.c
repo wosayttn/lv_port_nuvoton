@@ -802,7 +802,6 @@ uint32_t SDH_Init(SDH_T *sdh)
     return Successful;
 }
 
-
 uint32_t SDH_SwitchToHighSpeed(SDH_T *sdh, SDH_INFO_T *pSD)
 {
     uint32_t volatile status = 0ul;
@@ -1123,6 +1122,50 @@ void SDH_Get_SD_info(SDH_T *sdh)
     pSD->sectorSize = (int)512;
 }
 
+static uint32_t SDH_ResetCard(SDH_T *sdh)
+{
+    uint32_t volatile i;
+    SDH_INFO_T *pSD;
+    uint32_t u32TimeOutCount;
+
+    sdh->GINTEN = 0ul;
+    sdh->CTL &= ~SDH_CTL_SDNWR_Msk;
+    sdh->CTL |=  0x09ul << SDH_CTL_SDNWR_Pos;   /* set SDNWR = 9 */
+    sdh->CTL &= ~SDH_CTL_BLKCNT_Msk;
+    sdh->CTL |=  0x01ul << SDH_CTL_BLKCNT_Pos;  /* set BLKCNT = 1 */
+    sdh->CTL &= ~SDH_CTL_DBW_Msk;               /* SD 1-bit data bus */
+
+    if (sdh == SDH0)
+    {
+        pSD = &SD0;
+    }
+    else
+    {
+        pSD = &SD1;
+    }
+
+    pSD->i32ErrCode = 0;
+
+    /* set the clock to 300KHz */
+    SDH_Set_clock(sdh, 300ul);
+
+    /* power ON 74 clock */
+    sdh->CTL |= SDH_CTL_CLK74OEN_Msk;
+
+    u32TimeOutCount = SDH_TIMEOUT_CNT;
+
+    while ((sdh->CTL & SDH_CTL_CLK74OEN_Msk) == SDH_CTL_CLK74OEN_Msk)
+    {
+        if (--u32TimeOutCount == 0)
+        {
+            pSD->i32ErrCode = SDH_ERR_TIMEOUT;
+            return SDH_ERR_TIMEOUT;
+        }
+    }
+
+    return SDH_SDCommand(sdh, 0ul, 0ul);
+}
+
 /** @endcond HIDDEN_SYMBOLS */
 
 /**
@@ -1252,6 +1295,12 @@ void SDH_Open(SDH_T *sdh, uint32_t u32CardDetSrc)
             pSD->i32ErrCode = SDH_ERR_TIMEOUT;
             break;
         }
+    }
+
+    if ((u32CardDetSrc & CardDetect_From_DAT3) == CardDetect_From_DAT3)
+    {
+        /* Forcefully reset the SD card state to idle to prevent DAT3 voltage in an unexpected level due to transmission terminated. */
+        SDH_ResetCard(sdh);
     }
 }
 

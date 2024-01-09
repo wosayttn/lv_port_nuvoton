@@ -103,7 +103,7 @@ uint32_t EPWM_ConfigCaptureChannel(EPWM_T *epwm, uint32_t u32ChannelNum, uint32_
     EPWM_SET_PRESCALER(epwm, u32ChannelNum, u16Prescale);
 
     /* set EPWM to down count type(edge aligned) */
-    (epwm)->CTL1 = ((epwm)->CTL1 & ~(EPWM_CTL1_CNTTYPE0_Msk << (u32ChannelNum << 1U))) | (1UL << (u32ChannelNum << 1U));
+    (epwm)->CTL1 = ((epwm)->CTL1 & ~(EPWM_CTL1_CNTTYPE0_Msk << (u32ChannelNum << 1U))) | (EPWM_DOWN_COUNTER << (u32ChannelNum << 1U));
     /* set EPWM to auto-reload mode */
     (epwm)->CTL1 &= ~(EPWM_CTL1_CNTMODE0_Msk << u32ChannelNum);
     EPWM_SET_CNR(epwm, u32ChannelNum, u16CNR);
@@ -112,7 +112,7 @@ uint32_t EPWM_ConfigCaptureChannel(EPWM_T *epwm, uint32_t u32ChannelNum, uint32_
 }
 
 /**
- * @brief This function Configure EPWM generator and get the nearest frequency in edge aligned(up counter type) auto-reload mode
+ * @brief This function Configure EPWM generator and get the nearest frequency in up counter type auto-reload mode
  * @param[in] epwm The pointer of the specified EPWM module
  *                - EPWM0 : EPWM Group 0
  *                - EPWM1 : EPWM Group 1
@@ -177,8 +177,10 @@ uint32_t EPWM_ConfigOutputChannel(EPWM_T *epwm, uint32_t u32ChannelNum, uint32_t
     /* convert to real register value */
     u32Prescale -= 1U;
     EPWM_SET_PRESCALER(epwm, u32ChannelNum, u32Prescale);
-    /* set EPWM to up counter type(edge aligned) and auto-reload mode */
-    (epwm)->CTL1 = ((epwm)->CTL1 & ~((EPWM_CTL1_CNTTYPE0_Msk << (u32ChannelNum << 1U)) | ((1UL << EPWM_CTL1_CNTMODE0_Pos) << u32ChannelNum)));
+    /* set EPWM to up count type */
+    (epwm)->CTL1 = ((epwm)->CTL1 & ~(EPWM_CTL1_CNTTYPE0_Msk << (u32ChannelNum << 1U)));
+    /* set EPWM to auto-reload mode */
+    (epwm)->CTL1 &= ~(EPWM_CTL1_CNTMODE0_Msk << u32ChannelNum);
 
     u32CNR -= 1U;
     EPWM_SET_CNR(epwm, u32ChannelNum, u32CNR);

@@ -31,7 +31,7 @@
  * | Ethos-U55     |   | Cortex-M55    +--+ ITCM (64 KB)             |
  * |               |   |               |  +--------------------------+
  * |               |   |               |
- * |               |   |               |  +--------------------------+ 
+ * |               |   |               |  +--------------------------+
  * |  M1      M0   |   |               +--+ DTCM (128 KB)            |
  * +---+-------+---+   +-------+-------+  +--------------------------+
  *     |       |               |
@@ -43,7 +43,7 @@
  * | AMBA AHB     | | SRAM0 | | SRAM2 |
  * +---+----------+ | SRAM1 | +-------+
  *     |            +-------+
- * +---+---+ 
+ * +---+---+
  * | FLASH |
  * +-------+
  *
@@ -96,6 +96,8 @@
 #define SRAM01_SIZE     0x00100000
 #define SRAM2_START     0x20200000
 #define SRAM2_SIZE      0x00050000
+#define LPSRAM_START    0x20310000
+#define LPSRAM_SIZE     0x00002000
 
 /* Set ITCM start address to 8 to prevent NULL address access */
 #define ITCM_START      0x00000008
@@ -160,6 +162,11 @@ APP_IMAGE FLASH_START FLASH_SIZE
 #else
         * (.bss.ethosu_scratch)
 #endif
+    }
+
+    LPSRAM LPSRAM_START LPSRAM_SIZE
+    {
+        .ANY (.lpSram)
     }
 
     ARM_LIB_HEAP  (STACK_HEAP - STACK_SIZE - __STACKSEAL_SIZE - HEAP_SIZE) EMPTY ALIGN 8 HEAP_SIZE {}

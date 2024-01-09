@@ -826,7 +826,6 @@ static void spim_enable_spansion_quad_mode(SPIM_T *spim, int isEn)
 
     SPIM_SetWriteEnable(spim, 0, 1UL);
 
-
     cmdBuf[0] = 0x35U;                           /* Read Configuration Register-1 */
 
     SPIM_SET_SS_EN(spim, 1);
@@ -1726,7 +1725,7 @@ void SPIM_IO_SendDataPhase(SPIM_T *spim, uint32_t u32OPMode, uint8_t *pu8TRxBuf,
 
     SPIM_SET_SS_EN(spim, SPIM_OP_DISABLE);          /* CS Deactivated. */
     SPIM_SET_DTR_MODE(spim, SPIM_OP_DISABLE);       /* DTR Deactivated. */
-    SPIM_SET_RDQS_MODE(spim, SPIM_OP_DISABLE);
+    //SPIM_SET_RDQS_MODE(spim, SPIM_OP_DISABLE);
 }
 
 /**
@@ -1893,6 +1892,8 @@ static void SPIM_WriteInPageDataByPhaseIO(SPIM_T *spim, SPIM_PHASE_T *psPhaseTab
                           u32RdSize,
                           psPhaseTable->u32DataPhase,
                           psPhaseTable->u32DataDTR);
+
+    spim_wait_writedone(spim, SPIM_PhaseModeToNBit(psPhaseTable->u32CMDPhase));
 }
 
 void SPIM_IO_WritePhase(SPIM_T *spim, SPIM_PHASE_T *psPhaseTable,

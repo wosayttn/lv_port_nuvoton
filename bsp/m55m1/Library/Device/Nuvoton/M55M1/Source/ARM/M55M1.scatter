@@ -87,6 +87,8 @@
  *----------------------------------------------------------------------------*/
 #define SRAM_START      0x20100000
 #define SRAM_SIZE       0x00150000
+#define LPSRAM_START    0x20310000
+#define LPSRAM_SIZE     0x00002000
 
 /*--------------------- Stack / Heap Configuration ---------------------------
 ; <h> Stack / Heap Configuration
@@ -191,6 +193,11 @@ LR_ROM __RO_BASE __RO_SIZE  {                       ; load region size_region
     }
 
     ScatterAssert((ImageLength(DTCM_VTOR) + ImageLength(DTCM)) < (DTCM_SIZE - STACK_SIZE - __STACKSEAL_SIZE))	; ImageLength is uncompressed size
+
+    LPSRAM LPSRAM_START LPSRAM_SIZE
+    {
+        .ANY (.lpSram)
+    }
 
     ARM_LIB_STACK __STACK_TOP EMPTY - STACK_SIZE {}     ; Reserve empty region for stack
 

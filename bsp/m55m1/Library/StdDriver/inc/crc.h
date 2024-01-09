@@ -105,6 +105,7 @@ extern "C"
 #define CRC_SET_DMA_SADDR(crc, Addr)         ((crc)->SADDR = (Addr)) //less than 0xE0000000
 #define CRC_SET_DMACNT_WORD(crc, Word)       ((crc)->DMACNT = ((Word)<<CRC_DMACNT_DMACNT_Pos))
 #define CRC_GET_STATUS(crc)                  ((crc)->DMASTS)
+#define CRC_SET_POLYNOMIAL(u32Polynomial)   (CRC->POLYNOMIAL = (u32Polynomial))
 
 void CRC_Open(uint32_t u32Mode, uint32_t u32Attribute, uint32_t u32Seed, uint32_t u32DataLen);
 uint32_t CRC_GetChecksum(void);

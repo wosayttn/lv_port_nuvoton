@@ -11,7 +11,7 @@
 #define __PDMA_REG_H__
 
 #if defined ( __CC_ARM   )
-#pragma anon_unions
+    #pragma anon_unions
 #endif
 
 /**
@@ -664,7 +664,7 @@ typedef struct
      * |        |          |64 = Channel connects to EDAC0_RX.
      * |        |          |65 = Channel connects to EDAC1_RX.
      * |        |          |66 = Channel connects to DAC0_TX.
-     * |        |          |67 = Channel connects to DAC1_TX.
+     * |        |          |67 = Channel connects to DAC1_TX.   (DAC1 is not support in TESTCHIP_ONLY)
      * |        |          |68 = Channel connects to EPWM0_CH0_TX.
      * |        |          |69 = Channel connects to EPWM0_CH1_TX.
      * |        |          |70 = Channel connects to EPWM0_CH2_TX.
@@ -1792,7 +1792,7 @@ typedef struct
 /** @} end of REGISTER group */
 
 #if defined ( __CC_ARM   )
-#pragma no_anon_unions
+    #pragma no_anon_unions
 #endif
 
 #endif /* __PDMA_REG_H__ */

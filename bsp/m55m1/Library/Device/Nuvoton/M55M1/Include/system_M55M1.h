@@ -22,8 +22,14 @@ extern "C" {
 /* Macro Definition                                                                                        */
 /*---------------------------------------------------------------------------------------------------------*/
 #ifndef DEBUG_PORT
-#define DEBUG_PORT      UART0             /*!< Set default Debug UART Port used for retarget.c to output debug message */
+#define DEBUG_PORT              UART6             /*!< Set default Debug UART Port used for retarget.c to output debug message */
 #endif
+
+#define DEBUG_PORT_MODULE       UART6##_MODULE
+#define DEBUG_PORT_IRQn         UART6##_IRQn
+#define DEBUG_PORT_IRQHandler   UART6##_IRQHandler
+#define DEBUG_PORT_RST          SYS_##UART6##RST
+#define DEBUG_PORT_FIFO_SIZE    UART6##_FIFO_SIZE
 
 #define ICACHE_LINE_SIZE                        (__SCB_ICACHE_LINE_SIZE)    /*!< ICache line byte size              */
 #define DCACHE_LINE_SIZE                        (__SCB_DCACHE_LINE_SIZE)    /*!< DCache line byte size              */
@@ -37,13 +43,14 @@ extern "C" {
 #define NVT_DTCM                                __attribute__((section(".bss.DTCM.ZeroInit")))          /*!< Placed declaration data in DTCM region */
 #define NVT_NONCACHEABLE                        __attribute__((section(".bss.NonCacheable.ZeroInit")))  /*!< Placed declaration data in NonCacheable region */
 #define NVT_DTCM_VTOR                           __attribute__((section("DTCM.VTOR")))
+#define NVT_UNUSED(x)                           (void)(x)
 
 #define __PC()                                              \
-  __extension__({                                           \
-    register unsigned int current_pc;                       \
-    __asm volatile("mov %0, pc" : "=r"(current_pc) : : );   \
-    current_pc;                                             \
-  })    /*!< Current program counter            */
+    __extension__({                                           \
+        register unsigned int current_pc;                       \
+        __asm volatile("mov %0, pc" : "=r"(current_pc) : : );   \
+        current_pc;                                             \
+    })    /*!< Current program counter            */
 
 /*----------------------------------------------------------------------------
   Define clocks
@@ -63,7 +70,7 @@ extern "C" {
 
 #define __HIRC      (12000000UL)          /*!< Internal 12 MHz RC Oscillator Frequency */
 #define __HIRC48M   (48000000UL)          /*!< Internal 48 MHz RC Oscillator Frequency */
-#define __MIRC      (4000000UL)           /*!< Internal 4 MHz RC Oscillator Frequency */
+#define __MIRC      (1000000UL)           /*!< Internal 1 MHz RC Oscillator Frequency */
 #define __LIRC      (32000UL)             /*!< Internal 32 KHz RC Oscillator Frequency */
 
 #define __SYS_OSC_CLK     (    ___HSI)    /*!< Main oscillator frequency */
@@ -144,6 +151,16 @@ extern void SetDebugUartCLK(void);
  * @details  Initialize debug UART to 115200-8n1
  */
 extern void InitDebugUart(void);
+
+/**
+ * @brief    Init MPU Region
+ *
+ * @param    psMPURegion        User defined MPU region configuration table
+ * @return   u32RegionCnt       Region count of psMPURegion
+ *
+ * @details  Initialize MPU Region according to mpu_config_M55M1.h
+ */
+extern int32_t InitPreDefMPURegion(const ARM_MPU_Region_t *psMPURegion, uint32_t u32RegionCnt);
 
 /**
  * @brief    Setup MPC configuration

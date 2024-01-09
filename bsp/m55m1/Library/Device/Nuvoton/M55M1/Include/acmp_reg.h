@@ -53,7 +53,7 @@ typedef struct
      * |        |          |001 = Internal comparator reference voltage (CRV0/2).
      * |        |          |010 = Band-gap voltage.
      * |        |          |011 = DAC0 output.
-     * |        |          |100 = DAC1 output.
+     * |        |          |100 = DAC1 output.  (DAC1 is not support in TESTCHIP_ONLY)
      * |        |          |Note: NEGSEL must select 0x1 in calibration mode.
      * |[10:8]  |POSSEL    |ACMP Positive Input Selection
      * |        |          |000 = ACMP0_P0 or ACMP2_P0 pin.
@@ -127,7 +127,7 @@ typedef struct
      * |        |          |001 = Internal comparator reference voltage (CRV1/3).
      * |        |          |010 = Band-gap voltage.
      * |        |          |011 = DAC0 output.
-     * |        |          |100 = DAC1 output.
+     * |        |          |100 = DAC1 output.  (DAC1 is not support in TESTCHIP_ONLY)
      * |        |          |Note: NEGSEL must select 0x1 in calibration mode.
      * |[10:8]  |POSSEL    |ACMP Positive Input Selection
      * |        |          |000 = ACMP1_P0 or ACMP3_P0 pin.

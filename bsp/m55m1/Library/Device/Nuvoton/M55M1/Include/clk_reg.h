@@ -3,15 +3,15 @@
  * @version  V1.00
  * @brief    CLK register definition header file
  *
- * @copyright SPDX-License-Identifier: Apache-2.0
- * @copyright Copyright (C) 2023 Nuvoton Technology Corp. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ * @copyright (C) 2022 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
 #ifndef __CLK_REG_H__
 #define __CLK_REG_H__
 
 #if defined ( __CC_ARM   )
-#pragma anon_unions
+    #pragma anon_unions
 #endif
 
 /** @addtogroup REGISTER Control Register
@@ -26,2687 +26,2297 @@
     @addtogroup CLK System Clock Controller(CLK)
     Memory Mapped Structure for CLK Controller
 @{ */
- 
+
 typedef struct
 {
 
 
-/**
- * @var CLK_T::SRCCTL
- * Offset: 0x00  Clock Source Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |LIRCEN    |LIRC Enable Bit (Write Protect)
- * |        |          |0 = 32 kHz internal low speed RC oscillator (LIRC) Disabled.
- * |        |          |1 = 32 kHz internal low speed RC oscillator (LIRC) Enabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D4 power is turned off.
- * |[1]     |LXTEN     |LXT Enable Bit (Write Protect)
- * |        |          |0 = 32.768 kHz external low speed crystal (LXT) Disabled.
- * |        |          |1 = 32.768 kHz external low speed crystal (LXT) Enabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D5 power is turned off.
- * |[2]     |MIRCEN    |MIRC Enable Bit (Write Protect)
- * |        |          |0 = 1~8 MHz internal middle speed RC oscillator (MIRC) Disabled.
- * |        |          |1 = 1~8 MHz internal middle speed RC oscillator (MIRC) Enabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |        |          |Note 3: This bit is write ignore when SCLKSEL(CLK_SCLKSEL[2:0]) is set to MIRC.
- * |[3]     |HIRCEN    |HIRC Enable Bit (Write Protect)
- * |        |          |0 = 12 MHz internal high speed RC oscillator (HIRC) Disabled.
- * |        |          |1 = 12 MHz internal high speed RC oscillator (HIRC) Enabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |        |          |Note 3: This bit is write ignore when SCLKSEL(CLK_SCLKSEL[2:0]) is set to HIRC.
- * |[4]     |HXTEN     |HXT Enable Bit (Write Protect)
- * |        |          |0 = 4~32 MHz external high speed crystal (HXT) Disabled.
- * |        |          |1 = 4~32 MHz external high speed crystal (HXT) Enabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |        |          |Note 3: This bit is write ignore when SCLKSEL(CLK_SCLKSEL[2:0]) is set to HXT.
- * |[5]     |HIRC48MEN |HIRC48M Enable Bit (Write Protect)
- * |        |          |0 = 48 MHz internal high speed RC oscillator (HIRC48M) Disabled.
- * |        |          |1 = 48 MHz internal high speed RC oscillator (HIRC48M) Enabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |        |          |Note 3: This bit is write ignore when SCLKSEL(CLK_SCLKSEL[2:0]) is set to HIRC48M.
- * |[6]     |APLL0EN   |APLL0 Enable Bit (Write Protect)
- * |        |          |0 = APLL0 Disabled.
- * |        |          |1 = APLL0 Enabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |        |          |Note 3: This bit is write ignore when SCLKSEL(CLK_SCLKSEL[2:0]) is set to APLL0.
- * |[7]     |APLL1EN   |APLL1 Enable Bit (Write Protect)
- * |        |          |0 = APLL1 Disabled.
- * |        |          |1 = APLL1 Enabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * @var CLK_T::STATUS
- * Offset: 0x04  Clock Status Monitor Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |LIRCSTB   |LIRC Clock Source Stable Flag (Read Only)
- * |        |          |0 = 32 kHz internal low speed RC oscillator (LIRC) clock is not stable or disabled.
- * |        |          |1 = 32 kHz internal low speed RC oscillator (LIRC) clock is stable and enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[1]     |LXTSTB    |LXT Clock Source Stable Flag (Read Only)
- * |        |          |0 = 32.768 kHz external low speed crystal oscillator (LXT) clock is not stable or disabled.
- * |        |          |1 = 32.768 kHz external low speed crystal oscillator (LXT) clock is stabled and enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[2]     |MIRCSTB   |MIRC Clock Source Stable Flag (Read Only)
- * |        |          |0 = Internal middle speed RC oscillator (MIRC) clock is not stable or disabled.
- * |        |          |1 = Internal middle speed RC oscillator (MIRC) clock is stable and enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[3]     |HIRCSTB   |HIRC Clock Source Stable Flag (Read Only)
- * |        |          |0 = 12 MHz internal high speed RC oscillator (HIRC) clock is not stable or disabled.
- * |        |          |1 = 12 MHz internal high speed RC oscillator (HIRC) clock is stable and enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[4]     |HXTSTB    |HXT Clock Source Stable Flag (Read Only)
- * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock is not stable or disabled.
- * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock is stable and enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[5]     |HIRC48MSTB|HIRC48M Clock Source Stable Flag (Read Only)
- * |        |          |0 = 48 MHz internal high speed RC oscillator (HIRC48M) clock is not stable or disabled.
- * |        |          |1 = 48 MHz internal high speed RC oscillator (HIRC48M) clock is stable and enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[6]     |APLL0STB  |Internal APLL0 Clock Source Stable Flag (Read Only)
- * |        |          |0 = Internal APLL0 clock is not stable or disabled.
- * |        |          |1 = Internal APLL0 clock is stable and enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[7]     |APLL1STB  |Internal APLL1 Clock Source Stable Flag (Read Only)
- * |        |          |0 = Internal APLL1 clock is not stable or disabled.
- * |        |          |1 = Internal APLL1 clock is stable and enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[8]     |SCLKSWF   |System Clock Switching Finish Flag (Read Only)
- * |        |          |This bit is updated when software switches system clock source
- * |        |          |If switch target clock is stable, this bit will be set to 1
- * |        |          |If switch target clock is not stable, this bit will be set to 0.
- * |        |          |0 = Clock switching not finish.
- * |        |          |1 = Clock switching finish.
- * |        |          |Note 1: This bit is read only
- * |        |          |After selected clock source is stable, hardware will switch system clock to selected clock automatically, and SCLKSWF will be setted automatically by hardware.
- * |        |          |Note 2: This bit is lose when D0 power is turned off.
- * @var CLK_T::MIRCCTL
- * Offset: 0x08  MIRC Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |MIRC1MSTBS|MIRC1M Stable Count Select (Write Protect)
- * |        |          |00 = MIRC1M stable count is 9 clocks and clock output deviation about 2%.
- * |        |          |01 = MIRC1M stable count is 8 clocks and clock output deviation about 5%
- * |        |          |10 = MIRC1M stable count = 6 clocks and clock output deviation is 7%.
- * |        |          |11 = MIRC1M stable count = 1 clocks.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |[5:4]   |MIRC2MSTBS|MIRC2M Stable Count Select (Write Protect)
- * |        |          |00 = MIRC2M stable count is 10 clocks and clock output deviation about 2%.
- * |        |          |01 = MIRC2M stable count is 6 clocks and clock output deviation about 5%
- * |        |          |10 = MIRC2M stable count = 4 clocks and clock output deviation is 7%.
- * |        |          |11 = MIRC2M stable count = 1 clocks.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |[9:8]   |MIRC4MSTBS|MIRC4M Stable Count Select (Write Protect)
- * |        |          |00 = MIRC4M stable count is 12 clocks and clock output deviation about 2%.
- * |        |          |01 = MIRC4M stable count is 10 clocks and clock output deviation about 5%
- * |        |          |10 = MIRC4M stable count = 9 clocks and clock output deviation is 7%.
- * |        |          |11 = MIRC4M stable count = 1 clocks.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |[13:12] |MIRC8MSTBS|MIRC8M Stable Count Select (Write Protect)
- * |        |          |00 = MIRC8M stable count is 24 clocks and clock output deviation about 2%.
- * |        |          |01 = MIRC8M stable count is 21 clocks and clock output deviation about 5%
- * |        |          |10 = MIRC8M stable count = 20 clocks and clock output deviation is 7%.
- * |        |          |11 = MIRC8M stable count = 1 clocks.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |[17:16] |MIRCFSEL  |MIRC Frequency Select Bits (Write Protect)
- * |        |          |00 = Internal middle speed RC oscillator frerquency is 1 MHz.
- * |        |          |01 = Internal middle speed RC oscillator frerquency is 2 MHz.
- * |        |          |10 = Internal middle speed RC oscillator frerquency is 4 MHz.
- * |        |          |11 = Internal middle speed RC oscillator frerquency is 8 MHz.
- * |        |          |Others = Reserved.
- * |        |          |Note: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |[20]    |MIRCFDIS  |MIRC Clock Filter Disable Bit
- * |        |          |0 = MIRC Filter enabled.
- * |        |          |1 = MIRC Filter disabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * @var CLK_T::HIRCCTL
- * Offset: 0x0C  HIRC Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |HIRCSTBS  |HIRC Stable Count Select (Write Protect)
- * |        |          |00 = HIRC stable count is 64 clocks.
- * |        |          |01 = HIRC stable count is 24 clocks.
- * |        |          |10 = HIRC stable count = 8 clocks.
- * |        |          |11 = HIRC stable count = 2 clocks.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D3 power is turned off.
- * |[4]     |HIRCFDIS  |HIRC Clock Filter Disable Bit
- * |        |          |0 = HIRC Filter enabled.
- * |        |          |1 = HIRC Filter disabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * @var CLK_T::HXTCTL
- * Offset: 0x10  HXT Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |HXTGAIN   |HXT Gain Control Bit (Write Protect)
- * |        |          |The default value is set by Flash controller user configuration register XT1XSG (CONFIG0 [18:16]).
- * |        |          |Gain control is used to enlarge the gain of crystal to make sure crystal work normally.
- * |        |          |000 = HXT frequency is from 4 MHz to 8MHz.
- * |        |          |001 = HXT frequency is from 8 MHz to 12 MHz.
- * |        |          |010 = HXT frequency is from 12 MHz to 16 MHz.
- * |        |          |011 = HXT frequency is from 16 MHz to 24 MHz.
- * |        |          |100 = HXT frequency is from 24 MHz to 32 MHz.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |        |          |Note 3: The default value is set by UCFG0[18:16].
- * |[4]     |HXTSELTYP |HXT Crystal Type Select Bit (Write Protect)
- * |        |          |0 = Select INV type.
- * |        |          |1 = Select GM type.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |[5]     |HXTMD     |HXT Mode Selection (Write Protect)
- * |        |          |This is a protected register. Please refer to open lock sequence to program it.
- * |        |          |0 = HXT work as crystal mode. PF.2 and PF.3 are configured as external high speed crystal (HXT) pins.
- * |        |          |1 = HXT works as external clock mode. PF.3 is configured as external clock input pin.
- * |        |          |Note 1: When HXTMD = 1, PF.3 MFP should be setting as GPIO mode
- * |        |          |The DC characteristic of XT1_IN is the same as GPIO.(This issue is fixed in M55M1)
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGCTL register.
- * |        |          |Note 2: When external clock mode enable, HXTSELTYP(CLK_HXTCTL[4]) must be set as GM type.
- * |        |          |Note 3: This bit is lose when D2 power is turned off.
- * |[6]     |HXTFDIS   |HXT Clock Filter Disable Bit (Write Protect)
- * |        |          |0 = HXT Filter enabled.
- * |        |          |1 = HXT Filter disabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |[7]     |HXTFSEL   |HXT Filter Select (Write Protect)
- * |        |          |0 = HXT frequency is > 4 MHz.
- * |        |          |1 = HXT frequency is <= 32 MHz.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * @var CLK_T::HIRC48MCTL
- * Offset: 0x14  HIRC48M Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |HIRC48MSTBS|HIRC48M Stable Count Select (Write Protect)
- * |        |          |00 = HIRC48M stable count = 1024 clocks.
- * |        |          |01 = HIRC48M stable count = 512 clocks.
- * |        |          |10 = HIRC48M stable count = 256 clocks.
- * |        |          |11 = HIRC48M stable count = 16 clocks.
- * |        |          |Others: Reserved
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |[4]     |HIRC48MFDIS|HIRC48M Clock Filter Disable Bit
- * |        |          |0 = HIRC48M Filter enabled.
- * |        |          |1 = HIRC48M Filter disabled.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * @var CLK_T::APLL0CTL
- * Offset: 0x18  APLL0 Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[8:0]   |FBDIV     |APLL0 Feedback Divider Control (Write Protect)
- * |        |          |Refer to the formulas below the table.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
- * |[13:9]  |INDIV     |APLL0 Input Divider Control (Write Protect)
- * |        |          |Refer to the formulas below the table.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
- * |[15:14] |OUTDIV    |APLL0 Output Divider Control (Write Protect)
- * |        |          |Refer to the formulas below the table.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
- * |[27:16] |FRDIV     |APLL0 Fractional Divider Control (Write Protect)
- * |        |          |Refer to the formulas below the table.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
- * |[29:28] |STBSEL    |APLL0 Stable Counter Selection (Write Protect)
- * |        |          |00 = APLL0 stable time is 800 APLL0 source clock (source clock is equal to 4M).
- * |        |          |01 = APLL0 stable time is 2400 APLL0 source clock (4MHz < source clock <=12 MHz).
- * |        |          |10 = APLL0 stable time is 4800 APLL0 source clock (12MHz < source clock <=24 MHz).
- * |        |          |11 = APLL0 stable time is 6400 APLL0 source clock (24MHz < source clock <=32 MHz).
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
- * |        |          |Note 4: APLL lock time is 200 us under T40 process
- * |[30]    |BP        |APLL0 Bypass Control (Write Protect)
- * |        |          |0 = APLL0 is in normal mode (default).
- * |        |          |1 = APLL0 clock output is same as APLL0 input clock FIN.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |        |          |Note 3: This bit is write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
- * |[31]    |PLLFEN    |APLL0 Clock Filter Enable Bit
- * |        |          |0 = APLL0 Filter Disable.
- * |        |          |1 = APLL0 Filter Enable.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |        |          |Note 3: This bit is write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
- * @var CLK_T::APLL0SEL
- * Offset: 0x1C  APLL0 Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |APLLSRC   |APLL0 Source Clock Selection (Write Protect)
- * |        |          |00 = APLL0 source clock from 4~32 MHz external high-speed crystal oscillator (HXT).
- * |        |          |01 = APLL0 source clock from 12 MHz internal high-speed oscillator (HIRC).
- * |        |          |10 = APLL0 source clock from 48 MHz internal high-speed oscillator (HIRC48M/4).
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
- * @var CLK_T::APLL1CTL
- * Offset: 0x20  APLL1 Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[8:0]   |FBDIV     |APLL1 Feedback Divider Control (Write Protect)
- * |        |          |Refer to the formulas below the table.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
- * |[13:9]  |INDIV     |APLL1 Input Divider Control (Write Protect)
- * |        |          |Refer to the formulas below the table.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
- * |[15:14] |OUTDIV    |APLL1 Output Divider Control (Write Protect)
- * |        |          |Refer to the formulas below the table.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
- * |[27:16] |FRDIV     |APLL1 Fractional Divider Control (Write Protect)
- * |        |          |Refer to the formulas below the table.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
- * |[29:28] |STBSEL    |APLL1 Stable Counter Selection (Write Protect)
- * |        |          |00 = APLL1 stable time is 800 APLL1 source clock (source clock is equal to 4M).
- * |        |          |01 = APLL1 stable time is 2400 APLL1 source clock (4MHz < source clock <=12 MHz).
- * |        |          |10 = APLL1 stable time is 4800 APLL1 source clock (12MHz < source clock <=24 MHz).
- * |        |          |11 = APLL1 stable time is 6400 APLL1 source clock (24MHz < source clock <=32 MHz).
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
- * |        |          |Note 3: APLL lock time is 200 us under T40 process
- * |[30]    |BP        |APLL1 Bypass Control (Write Protect)
- * |        |          |0 = APLL1 is in normal mode (default).
- * |        |          |1 = APLL1 clock output is same as APLL1 input clock FIN.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |        |          |Note 3: This bit is write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
- * |[31]    |PLLFEN    |APLL1 Clock Filter Enable Bit
- * |        |          |0 = APLL1 Filter Disable.
- * |        |          |1 = APLL1 Filter Enable.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * |        |          |Note 3: This bit is write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
- * @var CLK_T::APLL1SEL
- * Offset: 0x24  APLL1 Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |APLLSRC   |APLL1 Source Clock Selection (Write Protect)
- * |        |          |00 = APLL1 source clock from 4~32 MHz external high-speed crystal oscillator (HXT).
- * |        |          |01 = APLL1 source clock from 12 MHz internal high-speed oscillator (HIRC).
- * |        |          |10 = APLL1 source clock from 48 MHz internal high-speed oscillator (HIRC48M/4).
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
- * @var CLK_T::CLKOCTL
- * Offset: 0x28  Clock Output Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |FREQSEL   |Clock Output Frequency Selection
- * |        |          |The formula of output frequency is
- * |        |          |Fout = Fin/2(N+1).
- * |        |          |Fin is the input clock frequency.
- * |        |          |Fout is the frequency of divider output clock.
- * |        |          |N is the 4-bit value of FREQSEL[3:0].
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * |[4]     |CLKOEN    |Clock Output Enable Bit
- * |        |          |0 = Clock Output function Disabled.
- * |        |          |1 = Clock Output function Enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[5]     |DIV1EN    |Clock Output Divide One Enable Bit
- * |        |          |0 = Clock Output will output clock with source frequency divided by FREQSEL.
- * |        |          |1 = Clock Output will output clock with source frequency.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[6]     |CLK1HZEN  |Clock Output 1Hz Enable Bit
- * |        |          |0 = 1 Hz clock output for 32.768 kHz frequency compensation Disabled.
- * |        |          |1 = 1 Hz clock output for 32.768 kHz frequency compensation Enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * @var CLK_T::CLKDCTL
- * Offset: 0x30  Clock Fail Detector Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[4]     |HXTFDEN   |HXT Clock Fail Detector Enable Bit
- * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector Disabled.
- * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector Enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[5]     |HXTFIEN   |HXT Clock Fail Interrupt Enable Bit
- * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail interrupt Disabled.
- * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail interrupt Enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[6]     |HXTFDSEL  |HXT Clock Fail Detector Selection
- * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector after HXT stable.
- * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector bypass HXT stable.
- * |        |          |Note1: When HXT Clock Fail Detector Selection is set, detector will keep detect whether HXT is stable or not, prevent HXT fail before stable.
- * |        |          |Note2: This bit is lose when D2 power is turned off.
- * |[12]    |LXTFDEN   |LXT Clock Fail Detector Enable Bit
- * |        |          |0 = 32.768 kHz external low speed crystal oscillator (LXT) clock fail detector Disabled.
- * |        |          |1 = 32.768 kHz external low speed crystal oscillator (LXT) clock fail detector Enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[13]    |LXTFIEN   |LXT Clock Fail Interrupt Enable Bit
- * |        |          |0 = 32.768 kHz external low speed crystal oscillator (LXT) clock fail interrupt Disabled.
- * |        |          |1 = 32.768 kHz external low speed crystal oscillator (LXT) clock fail interrupt Enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[16]    |HXTFQDEN  |HXT Clock Frequency Range Detector Enable Bit
- * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector Disabled.
- * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector Enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[17]    |HXTFQIEN  |HXT Clock Frequency Range Detector Interrupt Enable Bit
- * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector fail interrupt Disabled.
- * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector fail interrupt Enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[18]    |HXTFQASW  |HXT Clock Frequency Range Detector Event Auto Switch Enable Bit
- * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector fail event happened and HCLK will not switch to HIRC automatically.
- * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector fail event happened and HCLK will switch to HIRC automatically.
- * |        |          |Note 1: This bit should be set before HXTFQDEN(CLK_CLKDCTL[16]).
- * |        |          |Note 2: This bit is lose when D2 power is turned off.
- * @var CLK_T::CLKDSTS
- * Offset: 0x34  Clock Fail Detector Status Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[4]     |HXTFDST   |HXT Clock Fail Detector Status Bit
- * |        |          |0 = Indicate 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector already disabled.
- * |        |          |1 = Indicate 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector already enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[5]     |HXTFIF    |HXT Clock Fail Interrupt Flag (Write Protect)
- * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock is normal.
- * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock stops.
- * |        |          |Note 1: Write 1 to clear this bit to 0.
- * |        |          |Note 2: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 3: This bit is lose when D2 power is turned off.
- * |[12]    |LXTFDST   |LXT Clock Fail Detector Status Bit
- * |        |          |0 = Indicate 32.768 kHz external low speed crystal oscillator (LXT) clock fail detector already disabled.
- * |        |          |1 = Indicate 32.768 kHz external low speed crystal oscillator (LXT) clock fail detector already enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[13]    |LXTFIF    |LXT Clock Fail Interrupt Flag (Write Protect)
- * |        |          |0 = 32.768 kHz external low speed crystal oscillator (LXT) clock is normal.
- * |        |          |1 = 32.768 kHz external low speed crystal oscillator (LXT) stops.
- * |        |          |Note 1: Write 1 to clear this bit to 0.
- * |        |          |Note 2: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 3: This bit is lose when D2 power is turned off.
- * |[17]    |HXTFQIF   |HXT Clock Frequency Range Detector Interrupt Flag (Write Protect)
- * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency is normal.
- * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency is abnormal.
- * |        |          |Note 1: Write 1 to clear this bit to 0.
- * |        |          |Note 2: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 3: This bit is lose when D2 power is turned off.
- * @var CLK_T::CDUPB
- * Offset: 0x38  Clock Frequency Range Detector Upper Boundary Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[9:0]   |UPERBD    |HXT Clock Frequency Range Detector Upper Boundary Value
- * |        |          |The bits define the high value of frequency monitor window.
- * |        |          |When HXT frequency monitor value higher than this register, the HXT frequency detect fail interrupt flag will set to 1.
- * |        |          |Frequency out of range will be asserted when ((HIRC48M_period*512) / HXT_period)-1 > CLK_UPERBD.
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::CDLOWB
- * Offset: 0x3C  Clock Frequency Range Detector Lower Boundary Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[9:0]   |LOWERBD   |HXT Clock Frequency Range Detector Lower Boundary Value
- * |        |          |The bits define the low value of frequency monitor window.
- * |        |          |When HXT frequency monitor value lower than this register, the HXT frequency detect fail interrupt flag will set to 1.
- * |        |          |Frequency out of range will be asserted when ((HIRC48M_period*512) / HXT_period)-1 < CLK_CDLOWB.
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::STOPREQ
- * Offset: 0x40  Clock Stop Request Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |CANFD0STR |CANFD0 Clock Stop Request
- * |        |          |This bit is used to stop CANFD0 clock.
- * |        |          |0 = CANFD0 clock is not stopped by this bit. (default)
- * |        |          |1 = Set this bit and check the CANFD0STA(CLK_STOPACK[0]) is 1, then CANFD0 clock stop.
- * |        |          |Note: This bit is lose when D1 power is turned off.
- * |[1]     |CANFD1STR |CANFD1 Clock Stop Request
- * |        |          |This bit is used to stop CANFD1 clock.
- * |        |          |0 = CANFD1 clock is not stopped by this bit. (default)
- * |        |          |1 = Set this bit and check the CANFD1STA(CLK_STOPACK[1]) is 1, then CANFD1 clock stop.
- * |        |          |Note: This bit is lose when D1 power is turned off.
- * @var CLK_T::STOPACK
- * Offset: 0x44  Clock Stop Acknowledge Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |CANFD0STA |CANFD0 Clock Stop Acknowledge (Read Only)
- * |        |          |This bit is used to check CANFD0 clock stop by setting CANFD0STR(CLK_STOPREQ[0]).
- * |        |          |0 = CANFD0 clock not stopped.
- * |        |          |1 = CANFD0 clock stopped.
- * |        |          |Note: This bit is lose when D1 power is turned off.
- * |[1]     |CANFD1STA |CANFD1 Clock Stop Acknowledge (Read Only)
- * |        |          |This bit is used to check CANFD1 clock stop by setting CANFD1STR(CLK_STOPREQ[1]).
- * |        |          |0 = CANFD1 clock not stopped.
- * |        |          |1 = CANFD1 clock stopped.
- * |        |          |Note: This bit is lose when D1 power is turned off.
- * @var CLK_T::ACMPCTL
- * Offset: 0x200  ACMP Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |ACMP01CKEN|ACMP0/1 Clock Enable Bit
- * |        |          |0 = ACMP0/1 clock Disabled.
- * |        |          |1 = ACMP0/1 clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |ACMP23CKEN|ACMP2/3 Clock Enable Bit
- * |        |          |0 = ACMP2/3 clock Disabled.
- * |        |          |1 = ACMP2/3 clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |ACMP Clock Stable Flag (Read Only)
- * |        |          |0 = ACMP clock is not stable.
- * |        |          |1 = ACMP clock is stable.
- * @var CLK_T::AWFCTL
- * Offset: 0x204  AWF Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |AWF0CKEN  |AWFx Clock Enable Bit
- * |        |          |0 = AWFx clock Disabled.
- * |        |          |1 = AWFx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |AWF Clock Stable Flag (Read Only)
- * |        |          |0 = AWF clock is not stable.
- * |        |          |1 = AWF clock is stable.
- * @var CLK_T::BPWMCTL
- * Offset: 0x208  BPWM Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |BPWM0CKEN |BPWMx Clock Enable Bit
- * |        |          |0 = BPWMx clock Disabled.
- * |        |          |1 = BPWMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |BPWM1CKEN |BPWMx Clock Enable Bit
- * |        |          |0 = BPWMx clock Disabled.
- * |        |          |1 = BPWMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |BPWM Clock Stable Flag (Read Only)
- * |        |          |0 = BPWM clock is not stable.
- * |        |          |1 = BPWM clock is stable.
- * @var CLK_T::CANFDCTL
- * Offset: 0x20C  CANFD Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |CANFD0CKEN|CANFDx Clock Enable Bit
- * |        |          |0 = CANFDx clock Disabled.
- * |        |          |1 = CANFDx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |CANFD1CKEN|CANFDx Clock Enable Bit
- * |        |          |0 = CANFDx clock Disabled.
- * |        |          |1 = CANFDx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[16]    |CANRM0CKEN|CANFD0 Message SRAM Clock Enable Bit
- * |        |          |0 = CANFD0 Message SRAM clock Disabled.
- * |        |          |1 = CANFD0 Message SRAM clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[17]    |CANRM1CKEN|CANFD1 Message SRAM Clock Enable Bit
- * |        |          |0 = CANFD1 Message SRAM clock Disabled.
- * |        |          |1 = CANFD1 Message SRAM clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |CANFD Clock Stable Flag (Read Only)
- * |        |          |0 = CANFD clock is not stable.
- * |        |          |1 = CANFD clock is stable.
- * @var CLK_T::CCAPCTL
- * Offset: 0x210  CCAP Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |CCAP0CKEN |CCAPx Clock Enable Bit
- * |        |          |0 = CCAPx clock Disabled.
- * |        |          |1 = CCAPx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |CCAP Clock Stable Flag (Read Only)
- * |        |          |0 = CCAP clock is not stable.
- * |        |          |1 = CCAP clock is stable.
- * @var CLK_T::CRCCTL
- * Offset: 0x214  CRC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |CRC0CKEN  |CRCx Clock Enable Bit
- * |        |          |0 = CRCx clock Disabled.
- * |        |          |1 = CRCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |CRC Clock Stable Flag (Read Only)
- * |        |          |0 = CRC clock is not stable.
- * |        |          |1 = CRC clock is stable.
- * @var CLK_T::CRYPTOCTL
- * Offset: 0x218  CRYPTO Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |CRYPTO0CKEN|CRYPTOx Clock Enable Bit
- * |        |          |0 = CRYPTOx clock Disabled.
- * |        |          |1 = CRYPTOx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |CRYPTO Clock Stable Flag (Read Only)
- * |        |          |0 = CRYPTO clock is not stable.
- * |        |          |1 = CRYPTO clock is stable.
- * @var CLK_T::DACCTL
- * Offset: 0x21C  DAC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |DAC01CKEN |DAC0/DAC1 Clock Enable Bit
- * |        |          |0 = DAC0/1 clock Disabled.
- * |        |          |1 = DAC0/1 clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |DAC Clock Stable Flag (Read Only)
- * |        |          |0 = DAC clock is not stable.
- * |        |          |1 = DAC clock is stable.
- * @var CLK_T::DMICCTL
- * Offset: 0x220  DMIC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |DMIC0CKEN |DMICx Clock Enable Bit
- * |        |          |0 = DMICx clock Disabled.
- * |        |          |1 = DMICx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |DMIC Clock Stable Flag (Read Only)
- * |        |          |0 = DMIC clock is not stable.
- * |        |          |1 = DMIC clock is stable.
- * @var CLK_T::EADCCTL
- * Offset: 0x224  EADC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |EADC0CKEN |EADCx Clock Enable Bit
- * |        |          |0 = EADCx clock Disabled.
- * |        |          |1 = EADCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |EADC1CKEN |EADCx Clock Enable Bit
- * |        |          |0 = EADCx clock Disabled.
- * |        |          |1 = EADCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |EADC Clock Stable Flag (Read Only)
- * |        |          |0 = EADC clock is not stable.
- * |        |          |1 = EADC clock is stable.
- * @var CLK_T::EBICTL
- * Offset: 0x228  EBI Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |EBI0CKEN  |EBIx Clock Enable Bit
- * |        |          |0 = EBIx clock Disabled.
- * |        |          |1 = EBIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |EBI Clock Stable Flag (Read Only)
- * |        |          |0 = EBI clock is not stable.
- * |        |          |1 = EBI clock is stable.
- * @var CLK_T::ECAPCTL
- * Offset: 0x22C  ECAP Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |ECAP0CKEN |ECAPx Clock Enable Bit
- * |        |          |0 = ECAPx clock Disabled.
- * |        |          |1 = ECAPx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |ECAP1CKEN |ECAPx Clock Enable Bit
- * |        |          |0 = ECAPx clock Disabled.
- * |        |          |1 = ECAPx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[2]     |ECAP2CKEN |ECAPx Clock Enable Bit
- * |        |          |0 = ECAPx clock Disabled.
- * |        |          |1 = ECAPx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[3]     |ECAP3CKEN |ECAPx Clock Enable Bit
- * |        |          |0 = ECAPx clock Disabled.
- * |        |          |1 = ECAPx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |ECAP Clock Stable Flag (Read Only)
- * |        |          |0 = ECAP clock is not stable.
- * |        |          |1 = ECAP clock is stable.
- * @var CLK_T::EMACCTL
- * Offset: 0x230  EMAC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |EMAC0CKEN |EMACx Clock Enable Bit
- * |        |          |0 = EMACx clock Disabled.
- * |        |          |1 = EMACx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |EMAC Clock Stable Flag (Read Only)
- * |        |          |0 = EMAC clock is not stable.
- * |        |          |1 = EMAC clock is stable.
- * @var CLK_T::EPWMCTL
- * Offset: 0x234  EPWM Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |EPWM0CKEN |EPWMx Clock Enable Bit
- * |        |          |0 = EPWMx clock Disabled.
- * |        |          |1 = EPWMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |EPWM1CKEN |EPWMx Clock Enable Bit
- * |        |          |0 = EPWMx clock Disabled.
- * |        |          |1 = EPWMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |EPWM Clock Stable Flag (Read Only)
- * |        |          |0 = EPWM clock is not stable.
- * |        |          |1 = EPWM clock is stable.
- * @var CLK_T::EQEICTL
- * Offset: 0x238  EQEI Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |EQEI0CKEN |EQEIx Clock Enable Bit
- * |        |          |0 = EQEIx clock Disabled.
- * |        |          |1 = EQEIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |EQEI1CKEN |EQEIx Clock Enable Bit
- * |        |          |0 = EQEIx clock Disabled.
- * |        |          |1 = EQEIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[2]     |EQEI2CKEN |EQEIx Clock Enable Bit
- * |        |          |0 = EQEIx clock Disabled.
- * |        |          |1 = EQEIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[3]     |EQEI3CKEN |EQEIx Clock Enable Bit
- * |        |          |0 = EQEIx clock Disabled.
- * |        |          |1 = EQEIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |EQEI Clock Stable Flag (Read Only)
- * |        |          |0 = EQEI clock is not stable.
- * |        |          |1 = EQEI clock is stable.
- * @var CLK_T::FMCCTL
- * Offset: 0x23C  FMC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |FMC0CKEN  |FMCx Clock Enable Bit
- * |        |          |0 = FMC clock Disabled when chip is under IDLE mode.
- * |        |          |1 = FMC clock Enabled when chip is under IDLE mode.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[16]    |ISP0CKEN  |ISPx Clock Enable Bit
- * |        |          |0 = ISPx clock Disabled.
- * |        |          |1 = ISPx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * @var CLK_T::GDMACTL
- * Offset: 0x240  GDMA Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |GDMA0CKEN |GDMAx Clock Enable Bit
- * |        |          |0 = GDMAx clock Disabled.
- * |        |          |1 = GDMAx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |GDMA Clock Stable Flag (Read Only)
- * |        |          |0 = GDMA clock is not stable.
- * |        |          |1 = GDMA clock is stable.
- * @var CLK_T::GPIOCTL
- * Offset: 0x244  GPIO Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |GPIOACKEN |GPIOA Clock Enable Bit
- * |        |          |0 = GPIOA clock Disabled.
- * |        |          |1 = GPIOA clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |GPIOBCKEN |GPIOB Clock Enable Bit
- * |        |          |0 = GPIOB clock Disabled.
- * |        |          |1 = GPIOB clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[2]     |GPIOCCKEN |GPIOC Clock Enable Bit
- * |        |          |0 = GPIOC clock Disabled.
- * |        |          |1 = GPIOC clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[3]     |GPIODCKEN |GPIOD Clock Enable Bit
- * |        |          |0 = GPIOD clock Disabled.
- * |        |          |1 = GPIOD clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[4]     |GPIOECKEN |GPIOE Clock Enable Bit
- * |        |          |0 = GPIOE clock Disabled.
- * |        |          |1 = GPIOE clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[5]     |GPIOFCKEN |GPIOF Clock Enable Bit
- * |        |          |0 = GPIOF clock Disabled.
- * |        |          |1 = GPIOF clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[6]     |GPIOGCKEN |GPIOG Clock Enable Bit
- * |        |          |0 = GPIOG clock Disabled.
- * |        |          |1 = GPIOG clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[7]     |GPIOHCKEN |GPIOH Clock Enable Bit
- * |        |          |0 = GPIOH clock Disabled.
- * |        |          |1 = GPIOH clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[8]     |GPIOICKEN |GPIOI Clock Enable Bit
- * |        |          |0 = GPIOI clock Disabled.
- * |        |          |1 = GPIOI clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[9]     |GPIOJCKEN |GPIOJ Clock Enable Bit
- * |        |          |0 = GPIOJ clock Disabled.
- * |        |          |1 = GPIOJ clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |GPIO Clock Stable Flag (Read Only)
- * |        |          |0 = GPIO clock is not stable.
- * |        |          |1 = GPIO clock is stable.
- * @var CLK_T::HSOTGCTL
- * Offset: 0x248  HSOTG Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |HSOTG0CKEN|HSOTGx Clock Enable Bit
- * |        |          |0 = HSOTGx clock Disabled.
- * |        |          |1 = HSOTGx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |HSOTG Clock Stable Flag (Read Only)
- * |        |          |0 = HSOTG clock is not stable.
- * |        |          |1 = HSOTG clock is stable.
- * @var CLK_T::HSUSBDCTL
- * Offset: 0x24C  HSUSBD Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |HSUSBD0CKEN|HSUSBDx Clock Enable Bit
- * |        |          |0 = HSUSBDx clock Disabled.
- * |        |          |1 = HSUSBDx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |HSUSBD Clock Stable Flag (Read Only)
- * |        |          |0 = HSUSBD clock is not stable.
- * |        |          |1 = HSUSBD clock is stable.
- * @var CLK_T::HSUSBHCTL
- * Offset: 0x250  HSUSBH Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |HSUSBH0CKEN|HSUSBHx Clock Enable Bit
- * |        |          |0 = HSUSBHx clock Disabled.
- * |        |          |1 = HSUSBHx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |HSUSBH Clock Stable Flag (Read Only)
- * |        |          |0 = HSUSBH clock is not stable.
- * |        |          |1 = HSUSBH clock is stable.
- * @var CLK_T::I2CCTL
- * Offset: 0x254  I2C Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |I2C0CKEN  |I2Cx Clock Enable Bit
- * |        |          |0 = I2Cx clock Disabled.
- * |        |          |1 = I2Cx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |I2C1CKEN  |I2Cx Clock Enable Bit
- * |        |          |0 = I2Cx clock Disabled.
- * |        |          |1 = I2Cx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[2]     |I2C2CKEN  |I2Cx Clock Enable Bit
- * |        |          |0 = I2Cx clock Disabled.
- * |        |          |1 = I2Cx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[3]     |I2C3CKEN  |I2Cx Clock Enable Bit
- * |        |          |0 = I2Cx clock Disabled.
- * |        |          |1 = I2Cx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |I2C Clock Stable Flag (Read Only)
- * |        |          |0 = I2C clock is not stable.
- * |        |          |1 = I2C clock is stable.
- * @var CLK_T::I2SCTL
- * Offset: 0x258  I2S Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |I2S0CKEN  |I2Sx Clock Enable Bit
- * |        |          |0 = I2Sx clock Disabled.
- * |        |          |1 = I2Sx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |I2S1CKEN  |I2Sx Clock Enable Bit
- * |        |          |0 = I2Sx clock Disabled.
- * |        |          |1 = I2Sx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |I2S Clock Stable Flag (Read Only)
- * |        |          |0 = I2S clock is not stable.
- * |        |          |1 = I2S clock is stable.
- * @var CLK_T::I3CCTL
- * Offset: 0x25C  I3C Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |I3C0CKEN  |I3Cx Clock Enable Bit
- * |        |          |0 = I3Cx clock Disabled.
- * |        |          |1 = I3Cx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |I3C Clock Stable Flag (Read Only)
- * |        |          |0 = I3C clock is not stable.
- * |        |          |1 = I3C clock is stable.
- * @var CLK_T::KDFCTL
- * Offset: 0x260  KDF Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |KDF0CKEN  |KDFx Clock Enable Bit
- * |        |          |0 = KDFx clock Disabled.
- * |        |          |1 = KDFx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |KDF Clock Stable Flag (Read Only)
- * |        |          |0 = KDF clock is not stable.
- * |        |          |1 = KDF clock is stable.
- * @var CLK_T::KPICTL
- * Offset: 0x264  KPI Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |KPI0CKEN  |KPIx Clock Enable Bit
- * |        |          |0 = KPIx clock Disabled.
- * |        |          |1 = KPIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |KPI Clock Stable Flag (Read Only)
- * |        |          |0 = KPI clock is not stable.
- * |        |          |1 = KPI clock is stable.
- * @var CLK_T::KSCTL
- * Offset: 0x268  KS Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |KS0CKEN   |KSx Clock Enable Bit
- * |        |          |0 = KSx clock Disabled.
- * |        |          |1 = KSx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |KS Clock Stable Flag (Read Only)
- * |        |          |0 = KS clock is not stable.
- * |        |          |1 = KS clock is stable.
- * @var CLK_T::LPADCCTL
- * Offset: 0x26C  Low Power ADC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |LPADC0CKEN|LPADCx Clock Enable Bit
- * |        |          |0 = LPADCx clock Disabled.
- * |        |          |1 = LPADCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |LPADC Clock Stable Flag (Read Only)
- * |        |          |0 = LPADC clock is not stable.
- * |        |          |1 = LPADC clock is stable.
- * @var CLK_T::LPPDMACTL
- * Offset: 0x270  Low Power PDMA Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |LPPDMA0CKEN|LPPDMAx Clock Enable Bit
- * |        |          |0 = LPPDMAx clock Disabled.
- * |        |          |1 = LPPDMAx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |LPPDMA Clock Stable Flag (Read Only)
- * |        |          |0 = LPPDMA clock is not stable.
- * |        |          |1 = LPPDMA clock is stable.
- * @var CLK_T::LPGPIOCTL
- * Offset: 0x274  Low Power GPIO Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |LPGPIO0CKEN|LPGPIOx Clock Enable Bit
- * |        |          |0 = LPGPIOx clock Disabled.
- * |        |          |1 = LPGPIOx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |LPGPIO Clock Stable Flag (Read Only)
- * |        |          |0 = LPGPIO clock is not stable.
- * |        |          |1 = LPGPIO clock is stable.
- * @var CLK_T::LPI2CCTL
- * Offset: 0x278  Low Power I2C Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |LPI2C0CKEN|LPI2Cx Clock Enable Bit
- * |        |          |0 = LPI2Cx clock Disabled.
- * |        |          |1 = LPI2Cx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |LPI2C Clock Stable Flag (Read Only)
- * |        |          |0 = LPI2C clock is not stable.
- * |        |          |1 = LPI2C clock is stable.
- * @var CLK_T::LPSPICTL
- * Offset: 0x27C  Low Power SPI Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |LPSPI0CKEN|LPSPIx Clock Enable Bit
- * |        |          |0 = LPSPIx clock Disabled.
- * |        |          |1 = LPSPIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |LPSPI Clock Stable Flag (Read Only)
- * |        |          |0 = LPSPI clock is not stable.
- * |        |          |1 = LPSPI clock is stable.
- * @var CLK_T::LPSRAMCTL
- * Offset: 0x280  Low Power SRAM Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |LPSRAM0CKEN|LPSRAMx Clock Enable Bit
- * |        |          |0 = LPSRAMx clock Disabled.
- * |        |          |1 = LPSRAMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |LPSRAM Clock Stable Flag (Read Only)
- * |        |          |0 = LPSRAM clock is not stable.
- * |        |          |1 = LPSRAM clock is stable.
- * @var CLK_T::LPTMRCTL
- * Offset: 0x284  Low Power Timer Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |LPTMR0CKEN|LPTMRx Clock Enable Bit
- * |        |          |0 = LPTMRx clock Disabled.
- * |        |          |1 = LPTMRx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |LPTMR1CKEN|LPTMRx Clock Enable Bit
- * |        |          |0 = LPTMRx clock Disabled.
- * |        |          |1 = LPTMRx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |LPTMR Clock Stable Flag (Read Only)
- * |        |          |0 = LPTMR clock is not stable.
- * |        |          |1 = LPTMR clock is stable.
- * @var CLK_T::LPUARTCTL
- * Offset: 0x288  Low Power UART Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |LPUART0CKEN|LPUARTx Clock Enable Bit
- * |        |          |0 = LPUARTx clock Disabled.
- * |        |          |1 = LPUARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |LPUART Clock Stable Flag (Read Only)
- * |        |          |0 = LPUART clock is not stable.
- * |        |          |1 = LPUART clock is stable.
- * @var CLK_T::NPUCTL
- * Offset: 0x28C  NPU Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |NPU0CKEN  |NPUx Clock Enable Bit
- * |        |          |0 = NPUx clock Disabled.
- * |        |          |1 = NPUx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |NPU Clock Stable Flag (Read Only)
- * |        |          |0 = NPU clock is not stable.
- * |        |          |1 = NPU clock is stable.
- * @var CLK_T::OTFCCTL
- * Offset: 0x294  OTFC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |OTFC0CKEN |OTFCx Clock Enable Bit
- * |        |          |0 = OTFCx clock Disabled.
- * |        |          |1 = OTFCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |OTFC1CKEN |OTFCx Clock Enable Bit
- * |        |          |0 = OTFCx clock Disabled.
- * |        |          |1 = OTFCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |OTFC Clock Stable Flag (Read Only)
- * |        |          |0 = OTFC clock is not stable.
- * |        |          |1 = OTFC clock is stable.
- * @var CLK_T::OTGCTL
- * Offset: 0x298  OTG Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |OTG0CKEN  |OTGx Clock Enable Bit
- * |        |          |0 = OTGx clock Disabled.
- * |        |          |1 = OTGx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |OTG Clock Stable Flag (Read Only)
- * |        |          |0 = OTG clock is not stable.
- * |        |          |1 = OTG clock is stable.
- * @var CLK_T::PDMACTL
- * Offset: 0x29C  PDMA Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |PDMA0CKEN |PDMAx Clock Enable Bit
- * |        |          |0 = PDMAx clock Disabled.
- * |        |          |1 = PDMAx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |PDMA1CKEN |PDMAx Clock Enable Bit
- * |        |          |0 = PDMAx clock Disabled.
- * |        |          |1 = PDMAx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |PDMA Clock Stable Flag (Read Only)
- * |        |          |0 = PDMA clock is not stable.
- * |        |          |1 = PDMA clock is stable.
- * @var CLK_T::PSIOCTL
- * Offset: 0x2A0  PSIO Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |PSIO0CKEN |PSIOx Clock Enable Bit
- * |        |          |0 = PSIOx clock Disabled.
- * |        |          |1 = PSIOx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |PSIO Clock Stable Flag (Read Only)
- * |        |          |0 = PSIO clock is not stable.
- * |        |          |1 = PSIO clock is stable.
- * @var CLK_T::QSPICTL
- * Offset: 0x2A4  QSPI Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |QSPI0CKEN |QSPIx Clock Enable Bit
- * |        |          |0 = QSPIx clock Disabled.
- * |        |          |1 = QSPIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |QSPI1CKEN |QSPIx Clock Enable Bit
- * |        |          |0 = QSPIx clock Disabled.
- * |        |          |1 = QSPIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |QSPI Clock Stable Flag (Read Only)
- * |        |          |0 = QSPI clock is not stable.
- * |        |          |1 = QSPI clock is stable.
- * @var CLK_T::RTCCTL
- * Offset: 0x2A8  RTC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |RTC0CKEN  |RTCx Clock Enable Bit
- * |        |          |0 = RTCx clock Disabled.
- * |        |          |1 = RTCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |RTC Clock Stable Flag (Read Only)
- * |        |          |0 = RTC clock is not stable.
- * |        |          |1 = RTC clock is stable.
- * @var CLK_T::SCCTL
- * Offset: 0x2AC  SC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |SC0CKEN   |SCx Clock Enable Bit
- * |        |          |0 = SCx clock Disabled.
- * |        |          |1 = SCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |SC1CKEN   |SCx Clock Enable Bit
- * |        |          |0 = SCx clock Disabled.
- * |        |          |1 = SCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[2]     |SC2CKEN   |SCx Clock Enable Bit
- * |        |          |0 = SCx clock Disabled.
- * |        |          |1 = SCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |SC Clock Stable Flag (Read Only)
- * |        |          |0 = SC clock is not stable.
- * |        |          |1 = SC clock is stable.
- * @var CLK_T::SCUCTL
- * Offset: 0x2B0  SCU Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |SCU0CKEN  |SCUx Clock Enable Bit
- * |        |          |0 = SCUx clock Disabled.
- * |        |          |1 = SCUx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |SCU Clock Stable Flag (Read Only)
- * |        |          |0 = SCU clock is not stable.
- * |        |          |1 = SCU clock is stable.
- * @var CLK_T::SDHCTL
- * Offset: 0x2B4  SDH Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |SDH0CKEN  |SDHx Clock Enable Bit
- * |        |          |0 = SDHx clock Disabled.
- * |        |          |1 = SDHx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |SDH1CKEN  |SDHx Clock Enable Bit
- * |        |          |0 = SDHx clock Disabled.
- * |        |          |1 = SDHx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |SDH Clock Stable Flag (Read Only)
- * |        |          |0 = SDH clock is not stable.
- * |        |          |1 = SDH clock is stable.
- * @var CLK_T::SPICTL
- * Offset: 0x2B8  SPI Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |SPI0CKEN  |SPIx Clock Enable Bit
- * |        |          |0 = SPIx clock Disabled.
- * |        |          |1 = SPIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |SPI1CKEN  |SPIx Clock Enable Bit
- * |        |          |0 = SPIx clock Disabled.
- * |        |          |1 = SPIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[2]     |SPI2CKEN  |SPIx Clock Enable Bit
- * |        |          |0 = SPIx clock Disabled.
- * |        |          |1 = SPIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[3]     |SPI3CKEN  |SPIx Clock Enable Bit
- * |        |          |0 = SPIx clock Disabled.
- * |        |          |1 = SPIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |SPI Clock Stable Flag (Read Only)
- * |        |          |0 = SPI clock is not stable.
- * |        |          |1 = SPI clock is stable.
- * @var CLK_T::SPIMCTL
- * Offset: 0x2BC  SPIM Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |SPIM0CKEN |SPIMx Clock Enable Bit
- * |        |          |0 = SPIMx clock Disabled.
- * |        |          |1 = SPIMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |SPIM1CKEN |SPIMx Clock Enable Bit
- * |        |          |0 = SPIMx clock Disabled.
- * |        |          |1 = SPIMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |SPIM Clock Stable Flag (Read Only)
- * |        |          |0 = SPIM clock is not stable.
- * |        |          |1 = SPIM clock is stable.
- * @var CLK_T::SRAMCTL
- * Offset: 0x2C0  System SRAM Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |SRAM0CKEN |SRAMx Clock Enable Bit
- * |        |          |0 = SRAMx clock Disabled.
- * |        |          |1 = SRAMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |SRAM1CKEN |SRAMx Clock Enable Bit
- * |        |          |0 = SRAMx clock Disabled.
- * |        |          |1 = SRAMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[2]     |SRAM2CKEN |SRAMx Clock Enable Bit
- * |        |          |0 = SRAMx clock Disabled.
- * |        |          |1 = SRAMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[3]     |SRAM3CKEN |SRAMx Clock Enable Bit
- * |        |          |0 = SRAMx clock Disabled.
- * |        |          |1 = SRAMx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |SRAM Clock Stable Flag (Read Only)
- * |        |          |0 = SRAM clock is not stable.
- * |        |          |1 = SRAM clock is stable.
- * @var CLK_T::SWDHCTL
- * Offset: 0x2C4  SWDH Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |SWDH0CKEN |SWDHx Clock Enable Bit
- * |        |          |0 = SWDHx clock Disabled.
- * |        |          |1 = SWDHx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |SWDH Clock Stable Flag (Read Only)
- * |        |          |0 = SWDH clock is not stable.
- * |        |          |1 = SWDH clock is stable.
- * @var CLK_T::SWODECCTL
- * Offset: 0x2C8  SWODEC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |SWODEC0CKEN|SWODECx Clock Enable Bit
- * |        |          |0 = SWODECx clock Disabled.
- * |        |          |1 = SWODECx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |SWODEC Clock Stable Flag (Read Only)
- * |        |          |0 = SWODEC clock is not stable.
- * |        |          |1 = SWODEC clock is stable.
- * @var CLK_T::STCTL
- * Offset: 0x2CC  System Tick Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |ST0CKEN   |SYSTICKx Clock Enable Bit
- * |        |          |0 = SYSTICKx clock Disabled.
- * |        |          |1 = SYSTICKx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |SYSTICK Clock Stable Flag (Read Only)
- * |        |          |0 = SYSTICK clock is not stable.
- * |        |          |1 = SYSTICK clock is stable.
- * @var CLK_T::TAMPERCTL
- * Offset: 0x2D0  TAMPER Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |TAMPER0CKEN|TAMPERx Clock Enable Bit
- * |        |          |0 = TAMPERx clock Disabled.
- * |        |          |1 = TAMPERx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |TAMPER Clock Stable Flag (Read Only)
- * |        |          |0 = TAMPER clock is not stable.
- * |        |          |1 = TAMPER clock is stable.
- * @var CLK_T::TMRCTL
- * Offset: 0x2D4  Timer Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |TMR0CKEN  |TIMERx Clock Enable Bit
- * |        |          |0 = TIMERx clock Disabled.
- * |        |          |1 = TIMERx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |TMR1CKEN  |TIMERx Clock Enable Bit
- * |        |          |0 = TIMERx clock Disabled.
- * |        |          |1 = TIMERx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[2]     |TMR2CKEN  |TIMERx Clock Enable Bit
- * |        |          |0 = TIMERx clock Disabled.
- * |        |          |1 = TIMERx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[3]     |TMR3CKEN  |TIMERx Clock Enable Bit
- * |        |          |0 = TIMERx clock Disabled.
- * |        |          |1 = TIMERx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |TIMER Clock Stable Flag (Read Only)
- * |        |          |0 = TIMER clock is not stable.
- * |        |          |1 = TIMER clock is stable.
- * @var CLK_T::TRNGCTL
- * Offset: 0x2D8  TRNG Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |TRNG0CKEN |TRNGx Clock Enable Bit
- * |        |          |0 = TRNGx clock Disabled.
- * |        |          |1 = TRNGx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |TRNG Clock Stable Flag (Read Only)
- * |        |          |0 = TRNG clock is not stable.
- * |        |          |1 = TRNG clock is stable.
- * @var CLK_T::TTMRCTL
- * Offset: 0x2DC  Tick Timer Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |TTMR0CKEN |TTMRx Clock Enable Bit
- * |        |          |0 = TTMRx clock Disabled.
- * |        |          |1 = TTMRx clock Enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[1]     |TTMR1CKEN |TTMRx Clock Enable Bit
- * |        |          |0 = TTMRx clock Disabled.
- * |        |          |1 = TTMRx clock Enabled.
- * |        |          |Note: This bit is lose when D2 power is turned off.
- * |[31]    |CLKSTB    |TTMR Clock Stable Flag (Read Only)
- * |        |          |0 = TTMR clock is not stable.
- * |        |          |1 = TTMR clock is stable.
- * @var CLK_T::UARTCTL
- * Offset: 0x2E0  UART Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |UART0CKEN |UARTx Clock Enable Bit
- * |        |          |0 = UARTx clock Disabled.
- * |        |          |1 = UARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[1]     |UART1CKEN |UARTx Clock Enable Bit
- * |        |          |0 = UARTx clock Disabled.
- * |        |          |1 = UARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[2]     |UART2CKEN |UARTx Clock Enable Bit
- * |        |          |0 = UARTx clock Disabled.
- * |        |          |1 = UARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[3]     |UART3CKEN |UARTx Clock Enable Bit
- * |        |          |0 = UARTx clock Disabled.
- * |        |          |1 = UARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[4]     |UART4CKEN |UARTx Clock Enable Bit
- * |        |          |0 = UARTx clock Disabled.
- * |        |          |1 = UARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[5]     |UART5CKEN |UARTx Clock Enable Bit
- * |        |          |0 = UARTx clock Disabled.
- * |        |          |1 = UARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[6]     |UART6CKEN |UARTx Clock Enable Bit
- * |        |          |0 = UARTx clock Disabled.
- * |        |          |1 = UARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[7]     |UART7CKEN |UARTx Clock Enable Bit
- * |        |          |0 = UARTx clock Disabled.
- * |        |          |1 = UARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[8]     |UART8CKEN |UARTx Clock Enable Bit
- * |        |          |0 = UARTx clock Disabled.
- * |        |          |1 = UARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[9]     |UART9CKEN |UARTx Clock Enable Bit
- * |        |          |0 = UARTx clock Disabled.
- * |        |          |1 = UARTx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |UART Clock Stable Flag (Read Only)
- * |        |          |0 = UART clock is not stable.
- * |        |          |1 = UART clock is stable.
- * @var CLK_T::USBDCTL
- * Offset: 0x2E4  USBD Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |USBD0CKEN |USBDx Clock Enable Bit
- * |        |          |0 = USBDx clock Disabled.
- * |        |          |1 = USBDx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |USBD Clock Stable Flag (Read Only)
- * |        |          |0 = USBD clock is not stable.
- * |        |          |1 = USBD clock is stable.
- * @var CLK_T::USBHCTL
- * Offset: 0x2E8  USBH Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |USBH0CKEN |USBHx Clock Enable Bit
- * |        |          |0 = USBHx clock Disabled.
- * |        |          |1 = USBHx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |USBH Clock Stable Flag (Read Only)
- * |        |          |0 = USBH clock is not stable.
- * |        |          |1 = USBH clock is stable.
- * @var CLK_T::USCICTL
- * Offset: 0x2EC  USCI Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |USCI0CKEN |USCIx Clock Enable Bit
- * |        |          |0 = USCIx clock Disabled.
- * |        |          |1 = USCIx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |USCI Clock Stable Flag (Read Only)
- * |        |          |0 = USCI clock is not stable.
- * |        |          |1 = USCI clock is stable.
- * @var CLK_T::UTCPDCTL
- * Offset: 0x2F0  UTCPD Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |UTCPD0CKEN|UTCPDx Clock Enable Bit
- * |        |          |0 = UTCPDx clock Disabled.
- * |        |          |1 = UTCPDx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |UTCPD Clock Stable Flag (Read Only)
- * |        |          |0 = UTCPD clock is not stable.
- * |        |          |1 = UTCPD clock is stable.
- * @var CLK_T::WDTCTL
- * Offset: 0x2F4  WDT Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |WDT0CKEN  |WDTx Clock Enable Bit
- * |        |          |0 = WDTx clock Disabled.
- * |        |          |1 = WDTx clock Enabled.
- * |        |          |Note 1: This bit is only reset by POR reset.
- * |        |          |Note 2: This bit is lose when D0 power is turned off.
- * |[1]     |WDT1CKEN  |WDTx Clock Enable Bit
- * |        |          |0 = WDTx clock Disabled.
- * |        |          |1 = WDTx clock Enabled.
- * |        |          |Note 1: This bit is only reset by POR reset.
- * |        |          |Note 2: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |WDT Clock Stable Flag (Read Only)
- * |        |          |0 = WDT clock is not stable.
- * |        |          |1 = WDT clock is stable.
- * @var CLK_T::WWDTCTL
- * Offset: 0x2F8  WWDT Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |WWDT0CKEN |WWDTx Clock Enable Bit
- * |        |          |0 = WWDTx clock Disabled.
- * |        |          |1 = WWDTx clock Enabled.
- * |        |          |Note 1: This bit is only reset by POR reset.
- * |        |          |Note 2: This bit is lose when D0 power is turned off.
- * |[1]     |WWDT1CKEN |WWDTx Clock Enable Bit
- * |        |          |0 = WWDTx clock Disabled.
- * |        |          |1 = WWDTx clock Enabled.
- * |        |          |Note 1: This bit is only reset by POR reset.
- * |        |          |Note 2: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |WWDT Clock Stable Flag (Read Only)
- * |        |          |0 = WWDT clock is not stable.
- * |        |          |1 = WWDT clock is stable.
- * @var CLK_T::ETMCCTL
- * Offset: 0x2FC  ETMC Clock Enable Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |ETMC0CKEN |ETMCx Clock Enable Bit
- * |        |          |0 = ETMCx clock Disabled.
- * |        |          |1 = ETMCx clock Enabled.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |CLKSTB    |ETMC Clock Stable Flag (Read Only)
- * |        |          |0 = ETMC clock is not stable.
- * |        |          |1 = ETMC clock is stable.
- * @var CLK_T::SCLKSEL
- * Offset: 0x400  System Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |SCLKSEL   |System Clock Source Selection (Write Protect)
- * |        |          |The system clock source is defined by SCLKSEL.
- * |        |          |000 = Clock source from HIRC.
- * |        |          |001 = Clock source from MIRC.
- * |        |          |010 = Clock source from HIRC48M.
- * |        |          |011 = Clock source from HXT.
- * |        |          |100 = Clock source from APLL0.
- * |        |          |Others = Reserved.
- * |        |          |Note: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::BPWMSEL
- * Offset: 0x404  BPWM Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |BPWM0SEL  |BPWM0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of BPWM0 is defined by BPWM0SEL.
- * |        |          |0 = Clock source from PCLK0.
- * |        |          |1 = Clock source from HCLK0.
- * |        |          |Note 0: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: These bits are lose when D1 power is turned off.
- * |[4]     |BPWM1SEL  |BPWM1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of BPWM1 is defined by BPWM1SEL.
- * |        |          |0 = Clock source from PCLK2.
- * |        |          |1 = Clock source from HCLK0.
- * |        |          |Note 0: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: These bits are lose when D1 power is turned off.
- * @var CLK_T::CANFDSEL
- * Offset: 0x408  CANFD Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |CANFD0SEL |CANFD0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of CANFD0 is defined by CANFD0SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL0/2.
- * |        |          |010 = Clock source from HCLK0.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: These bits are lose when D1 power is turned off.
- * |[6:4]   |CANFD1SEL |CANFD1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of CANFD1 is defined by CANFD1SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL0/2.
- * |        |          |010 = Clock source from HCLK0.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: These bits are lose when D1 power is turned off.
- * @var CLK_T::CCAPSEL
- * Offset: 0x40C  CCAP Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |CCAP0SEL  |CCAP Sensor Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of CCAP is defined by CCAP0SEL.
- * |        |          |000 = Clock source from MIRC.
- * |        |          |001 = Clock source from HCLK2.
- * |        |          |010 = Clock source from HIRC.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HXT.
- * |        |          |Others = Reserved.
- * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: These bits are lose when D2 power is turned off.
- * @var CLK_T::CLKOSEL
- * Offset: 0x410  Clock Output Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |CLKOSEL   |Clock Output Clock Source Selection (Write Protect)
- * |        |          |0000 = Clock source from SYSCLK.
- * |        |          |0001 = Clock source from ACLK.
- * |        |          |0010 = Clock source from HCLK0.
- * |        |          |0011 = Clock source from HCLK1.
- * |        |          |0100 = Clock source from HCLK2.
- * |        |          |0101 = Clock source from APLL0/2.
- * |        |          |0110 = Clock source from APLL1/2.
- * |        |          |0111 = Clock source from HIRC48M.
- * |        |          |1000 = Clock source from HXT.
- * |        |          |1001 = Clock source from HIRC.
- * |        |          |1010 = Clock source from MIRC.
- * |        |          |1011 = Clock source from LXT.
- * |        |          |1100 = Clock source from LIRC.
- * |        |          |1101 = Clock source from USB start of frame (SOF).
- * |        |          |Others = Reserved.
- * |        |          |Note: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::DMICSEL
- * Offset: 0x414  DMIC Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |DMIC0SEL  |DMIC Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of DIMC0 is defined by DMIC0SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL1/2.
- * |        |          |010 = Clock source from MIRC.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |101 = Clock source from PCLK4.
- * |        |          |Others = Reserved.
- * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: These bits are lose when D2 power is turned off.
- * |[5:4]   |VAD0SEL   |VAD Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock VAD source of DIMC0 is defined by VAD0SEL.
- * |        |          |00 = Clock source from PCLK4.
- * |        |          |01 = Clock source from MIRC.
- * |        |          |10 = Clock source from HIRC.
- * |        |          |Others = Reserved.
- * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: These bits are lose when D2 power is turned off.
- * @var CLK_T::EADCSEL
- * Offset: 0x418  EADC Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |EADC0SEL  |EADC0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of EADC0 is defined by EADC0SEL.
- * |        |          |00 = Clock source from APLL1/2.
- * |        |          |01 = Clock source from APLL0/2.
- * |        |          |10 = PCLK0.
- * |        |          |Others = Reserved.
- * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: These bits are lose when D1 power is turned off.
- * |[5:4]   |EADC1SEL  |EADC1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of EADC0 is defined by EADC1SEL.
- * |        |          |00 = Clock source from APLL1/2.
- * |        |          |01 = Clock source from APLL0/2.
- * |        |          |10 = PCLK2.
- * |        |          |Others = Reserved.
- * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: These bits are lose when D1 power is turned off.
- * @var CLK_T::EPWMSEL
- * Offset: 0x41C  EPWM Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |EPWM0SEL  |EPWM0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of EPWM0 is defined by EPWM0SEL.
- * |        |          |0 = Clock source from PCLK0.
- * |        |          |1 = Clock source from HCLK0.
- * |        |          |Note 0: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: This bit is lose when D1 power is turned off.
- * |[4]     |EPWM1SEL  |EPWM1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of EPWM0 is defined by EPWM1SEL.
- * |        |          |0 = Clock source from PCLK2.
- * |        |          |1 = Clock source from HCLK0.
- * |        |          |Note 0: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: This bit is lose when D1 power is turned off.
- * @var CLK_T::FMCSEL
- * Offset: 0x420  FMC Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |FMC0SEL   |FMC0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of FMC0 is defined by FMC0SEL.
- * |        |          |0 = Clock source from HIRC.
- * |        |          |1 = Clock source from HIRC48M/4.
- * |        |          |Note 0: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 1: This bit is lose when D0 power is turned off.
- * @var CLK_T::I2SSEL
- * Offset: 0x424  I2S Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |I2S0SEL   |I2S0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of I2S0 is defined by I2S0SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL1/2.
- * |        |          |010 = Clock source from APLL0/2.
- * |        |          |011 = Clock source from PCLK1.
- * |        |          |100 = Clock source from HIRC.
- * |        |          |101 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[6:4]   |I2S1SEL   |I2S1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of I2S1 is defined by I2S1SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL1/2.
- * |        |          |010 = Clock source from APLL0/2.
- * |        |          |011 = Clock source from PCLK3.
- * |        |          |100 = Clock source from HIRC.
- * |        |          |101 = Clock source from HIRC48M.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::I3CSEL
- * Offset: 0x428  I3C Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |I3C0SEL   |I3C0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of I3C0 is defined by I3C0SEL.
- * |        |          |0 = Clock source from HCLK0.
- * |        |          |1 = Clock source from APLL1.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: This bit is lose when D1 power is turned off.
- * @var CLK_T::KPISEL
- * Offset: 0x42C  KPI Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |KPI0SEL   |KPI0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of KPI0 is defined by KPI0SEL.
- * |        |          |00 = Clock source from HIRC48M/4.
- * |        |          |01 = Clock source from HIRC.
- * |        |          |10 = Clock source from LIRC.
- * |        |          |11 = Clock source from HXT.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::LPADCSEL
- * Offset: 0x430  Low Power ADC Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |LPADC0SEL |LPADC0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of LPADC0 is defined by LPADC0SEL.
- * |        |          |00 = Clock source from PCLK4.
- * |        |          |01 = Clock source from LXT.
- * |        |          |10 = Clock source from MIRC.
- * |        |          |11 = Clock source from HIRC.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * @var CLK_T::LPSPISEL
- * Offset: 0x434  Low Power SPI Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |LPSPI0SEL |LPSPI0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of LPSPI0 is defined by LPSPI0SEL.
- * |        |          |00 = Clock source from PCLK4.
- * |        |          |01 = Clock source from MIRC.
- * |        |          |10 = Clock source from HIRC.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * @var CLK_T::LPTMRSEL
- * Offset: 0x438  Low Power Timer Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |LPTMR0SEL |LPTMR0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of LPTMR0 is defined by LPTMR0SEL.
- * |        |          |000 = Clock source from PCLK4.
- * |        |          |001 = Clock source from LXT.
- * |        |          |010 = Clock source from LIRC.
- * |        |          |011 = Clock source from MIRC.
- * |        |          |100 = Clock source from HIRC.
- * |        |          |101 = Clock source from external clock TM0 pin.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |[6:4]   |LPTMR1SEL |LPTMR1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of LPTMR1 is defined by LPTMR1SEL.
- * |        |          |000 = Clock source from PCLK4.
- * |        |          |001 = Clock source from LXT.
- * |        |          |010 = Clock source from LIRC.
- * |        |          |011 = Clock source from MIRC.
- * |        |          |100 = Clock source from HIRC.
- * |        |          |101 = Clock source from external clock TM1 pin.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * @var CLK_T::LPUARTSEL
- * Offset: 0x43C  Low Power UART Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |LPUART0SEL|LPUART0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of LPUART0 is defined by LPUART0SEL.
- * |        |          |00 = Clock source from PCLK4.
- * |        |          |01 = Clock source from LXT.
- * |        |          |10 = Clock source from MIRC.
- * |        |          |11 = Clock source from HIRC.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * @var CLK_T::PSIOSEL
- * Offset: 0x440  PSIO Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |PSIO0SEL  |PSIO0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of PSIO0 is defined by PSIO0SEL.
- * |        |          |000 = Clock source from LXT.
- * |        |          |001 = Clock source from HXT.
- * |        |          |010 = Clock source from LIRC.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M/4.
- * |        |          |101 = Clock source from PCLK1.
- * |        |          |110 = Clock source from APLL0/2.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::QSPISEL
- * Offset: 0x444  QSPI Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |QSPI0SEL  |QSPI0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of QSPI0 is defined by QSPI0SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL0/2.
- * |        |          |010 = Clock source from PCLK0.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[6:4]   |QSPI1SEL  |QSPI1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of QSPI1 is defined by QSPI1SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL0/2.
- * |        |          |010 = Clock source from PCLK2.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::SCSEL
- * Offset: 0x448  SC Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |SC0SEL    |SC0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of SC0 is defined by SC0SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL0/2.
- * |        |          |010 = Clock source from PCLK1.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[6:4]   |SC1SEL    |SC1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of SC1 is defined by SC1SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL0/2.
- * |        |          |010 = Clock source from PCLK3.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[10:8]  |SC2SEL    |SC2 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of SC2 is defined by SC2SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL0/2.
- * |        |          |010 = Clock source from PCLK1.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::SDHSEL
- * Offset: 0x44C  SDH Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |SDH0SEL   |SDH0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of SDH0 is defined by SDH0SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL1/2.
- * |        |          |010 = Clock source from HCLK0.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[6:4]   |SDH1SEL   |SDH1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of SDH1 is defined by SDH1SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL1/2.
- * |        |          |010 = Clock source from HCLK0.
- * |        |          |011 = Clock source from HIRC.
- * |        |          |100 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::SPISEL
- * Offset: 0x450  SPI Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |SPI0SEL   |SPI0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of SPI0 is defined by SPI0SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL1/2.
- * |        |          |010 = Clock source from APLL0/2.
- * |        |          |011 = Clock source from PCLK0.
- * |        |          |100 = Clock source from HIRC.
- * |        |          |101 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[6:4]   |SPI1SEL   |SPI1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of SPI1 is defined by SPI1SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL1/2.
- * |        |          |010 = Clock source from APLL0/2.
- * |        |          |011 = Clock source from PCLK2.
- * |        |          |100 = Clock source from HIRC.
- * |        |          |101 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[10:8]  |SPI2SEL   |SPI2 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of SPI2 is defined by SPI2SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL1/2.
- * |        |          |010 = Clock source from APLL0/2.
- * |        |          |011 = Clock source from PCLK0.
- * |        |          |100 = Clock source from HIRC.
- * |        |          |101 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[14:12] |SPI3SEL   |SPI3 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of SPI3 is defined by SPI3SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from APLL1/2.
- * |        |          |010 = Clock source from APLL0/2.
- * |        |          |011 = Clock source from PCLK2.
- * |        |          |100 = Clock source from HIRC.
- * |        |          |101 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::STSEL
- * Offset: 0x454  System Tick Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |ST0SEL    |Cortex-M55 SysTick 0 Clock Source Selection (Write Protect)
- * |        |          |If SYST_CTRL[2]=0, SysTick uses listed clock source below.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from LXT.
- * |        |          |010 = Clock source from HXT/2.
- * |        |          |011 = Clock source from ACLK/2.
- * |        |          |100 = Clock source from HIRC/2.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: if SysTick clock source is not from HCLK (i.e
- * |        |          |SYST_CTRL[2] = 0), SysTick needs to enable ST0CKEN(CLK_STCTL [0])
- * |        |          |SysTick clock source must less than or equal to ACLK/2.
- * |        |          |Note 2: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 3: These bits are lose when D0 power is turned off.
- * @var CLK_T::TMRSEL
- * Offset: 0x458  Timer Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |TMR0SEL   |Timer 0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of TMR0 is defined by TMR0SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from LXT.
- * |        |          |010 = Clock source from PCLK1.
- * |        |          |011 = Clock source from external clock TM0 pin.
- * |        |          |100 = Clock source from LIRC.
- * |        |          |101 = Clock source from HIRC.
- * |        |          |110 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[6:4]   |TMR1SEL   |Timer 1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of TMR1 is defined by TMR1SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from LXT.
- * |        |          |010 = Clock source from PCLK1.
- * |        |          |011 = Clock source from external clock TM1 pin.
- * |        |          |100 = Clock source from LIRC.
- * |        |          |101 = Clock source from HIRC.
- * |        |          |110 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[10:8]  |TMR2SEL   |Timer 2 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of TMR2 is defined by TMR2SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from LXT.
- * |        |          |010 = Clock source from PCLK3.
- * |        |          |011 = Clock source from external clock TM2 pin.
- * |        |          |100 = Clock source from LIRC.
- * |        |          |101 = Clock source from HIRC.
- * |        |          |110 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[14:12] |TMR3SEL   |Timer 3 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of TMR3 is defined by TMR3SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from LXT.
- * |        |          |010 = Clock source from PCLK3.
- * |        |          |011 = Clock source from external clock TM3 pin.
- * |        |          |100 = Clock source from LIRC.
- * |        |          |101 = Clock source from HIRC.
- * |        |          |110 = Clock source from HIRC48M/4.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::TTMRSEL
- * Offset: 0x45C  Tick Timer Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |TTMR0SEL  |Tick Timer 0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of TTMR0 is defined by TTMR0SEL.
- * |        |          |000 = Clock source from PCLK4.
- * |        |          |001 = Clock source from LXT.
- * |        |          |010 = Clock source from LIRC.
- * |        |          |011 = Clock source from MIRC.
- * |        |          |100 = Clock source from HIRC.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |[6:4]   |TTMR1SEL  |Tick Timer 1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of TTMR1 is defined by TTMR1SEL.
- * |        |          |000 = Clock source from PCLK4.
- * |        |          |001 = Clock source from LXT.
- * |        |          |010 = Clock source from LIRC.
- * |        |          |011 = Clock source from MIRC.
- * |        |          |100 = Clock source from HIRC.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * @var CLK_T::UARTSEL0
- * Offset: 0x460  UART Clock Source Select Control Register 0
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |UART0SEL  |UART 0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of UART0 is defined by UART0SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from HIRC.
- * |        |          |010 = Clock source from LXT.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[6:4]   |UART1SEL  |UART 1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of UART1 is defined by UART1SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from HIRC.
- * |        |          |010 = Clock source from LXT.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[10:8]  |UART2SEL  |UART 2 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of UART2 is defined by UART2SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from HIRC.
- * |        |          |010 = Clock source from LXT.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[14:12] |UART3SEL  |UART 3 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of UART3 is defined by UART3SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from HIRC.
- * |        |          |010 = Clock source from LXT.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[18:16] |UART4SEL  |UART 4 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of UART4 is defined by UART4SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from HIRC.
- * |        |          |010 = Clock source from LXT.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[22:20] |UART5SEL  |UART 5 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of UART5 is defined by UART5SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from HIRC.
- * |        |          |010 = Clock source from LXT.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[26:24] |UART6SEL  |UART 6 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of UART6 is defined by UART6SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from HIRC.
- * |        |          |010 = Clock source from LXT.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[30:28] |UART7SEL  |UART 7 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of UART7 is defined by UART7SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from HIRC.
- * |        |          |010 = Clock source from LXT.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::UARTSEL1
- * Offset: 0x464  UART Clock Source Select Control Register 1
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[2:0]   |UART8SEL  |UART 8 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of UART8 is defined by UART8SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from HIRC.
- * |        |          |010 = Clock source from LXT.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[6:4]   |UART9SEL  |UART 9 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of UART9 is defined by UART9SEL.
- * |        |          |000 = Clock source from HXT.
- * |        |          |001 = Clock source from HIRC.
- * |        |          |010 = Clock source from LXT.
- * |        |          |011 = Clock source from APLL0/2.
- * |        |          |100 = Clock source from HIRC48M.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::USBSEL
- * Offset: 0x468  USB Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |USBSEL    |USB Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of USBH, USBD and OTG is defined by USBSEL.
- * |        |          |0 = Clock source from HIRC48M.
- * |        |          |1 = Clock source from APLL1/2.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::WDTSEL
- * Offset: 0x46C  WDT Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[1:0]   |WDT0SEL   |WDT0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of WDT0 is defined by WDT0SEL.
- * |        |          |00 = Clock source from LXT.
- * |        |          |01 = Clock source from HCLK2/2048.
- * |        |          |10 = Clock source from LIRC.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note: This bit is only reset by nRESET pin reset.
- * |[5:4]   |WDT1SEL   |WDT1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of WDT1 is defined by WDT1SEL.
- * |        |          |00 = Clock source from LXT.
- * |        |          |01 = Clock source from HCLK2/2048.
- * |        |          |10 = Clock source from LIRC.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D2 power is turned off.
- * |        |          |Note: This bit is only reset by nRESET pin reset.
- * @var CLK_T::WWDTSEL
- * Offset: 0x470  WWDT Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |WWDT0SEL  |WWDT0 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of WWDT0 is defined by WWDT0SEL.
- * |        |          |0 = Clock source from HCLK0/2048.
- * |        |          |1 = Clock source from LIRC.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: This bit are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * |[4]     |WWDT1SEL  |WWDT1 Clock Source Selection (Write Protect)
- * |        |          |The peripheral clock source of WWDT1 is defined by WWDT1SEL.
- * |        |          |0 = Clock source from HCLK0/2048.
- * |        |          |1 = Clock source from LIRC.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: This bit are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D1 power is turned off.
- * @var CLK_T::DLLSEL
- * Offset: 0x474  DLL Clock Source Select Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[0]     |DLL0SEL   |DLL0 Clock Source Selection (Write Protect)
- * |        |          |0 = Clock source from APLL0.
- * |        |          |1 = Clock source from APLL1.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: This bit are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D0 power is turned off.
- * |[4]     |DLL1SEL   |DLL1 Clock Source Selection (Write Protect)
- * |        |          |0 = Clock source from APLL0.
- * |        |          |1 = Clock source from APLL1.
- * |        |          |Others = Reserved.
- * |        |          |Note 1: This bit are write protected. Refer to the SYS_REGLCTL register.
- * |        |          |Note 2: These bits are lose when D0 power is turned off.
- * @var CLK_T::SCLKDIV
- * Offset: 0x500  SCLK Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |SCLKDIV   |SCLK Clock Divide Number from SCLK Clock Source
- * |        |          |SCLK clock frequency = (SCLK clock source frequency) / (SCLKDIV + 1).
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::ACLKDIV
- * Offset: 0x504  ACLK Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |ACLKDIV   |ACLK Clock Divide Number from ACLK Clock Source
- * |        |          |ACLK clock frequency = (ACLK clock source frequency) / (ACLKDIV + 1).
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::HCLKDIV
- * Offset: 0x508  HCLK Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |HCLK0DIV  |HCLK0 Clock Divide Number from HCLK0 Clock Source
- * |        |          |HCLK0 clock frequency = (HCLK0 clock source frequency) / (HCLK0DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[7:4]   |HCLK1DIV  |HCLK1 Clock Divide Number from HCLK1 Clock Source
- * |        |          |HCLK1 clock frequency = (HCLK1 clock source frequency) / (HCLK1DIV + 1).
- * |        |          |Note: These bits are lose when D0 power is turned off.
- * |[11:8]  |HCLK2DIV  |HCLK2 Clock Divide Number from HCLK2 Clock Source
- * |        |          |HCLK2 clock frequency = (HCLK2 clock source frequency) / (HCLK2DIV + 1).
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::PCLKDIV
- * Offset: 0x50C  PCLK Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |PCLK0DIV  |PCLK0 Clock Divide Number from PCLK0 Clock Source
- * |        |          |PCLK0 clock frequency = (PCLK0 clock source frequency) / (PCLK0DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[7:4]   |PCLK1DIV  |PCLK1 Clock Divide Number from PCLK1 Clock Source
- * |        |          |PCLK1 clock frequency = (PCLK1 clock source frequency) / (PCLK1DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[11:8]  |PCLK2DIV  |PCLK2 Clock Divide Number from PCLK2 Clock Source
- * |        |          |PCLK2 clock frequency = (PCLK2 clock source frequency) / (PCLK2DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[15:12] |PCLK3DIV  |PCLK3 Clock Divide Number from PCLK3 Clock Source
- * |        |          |PCLK3 clock frequency = (PCLK3 clock source frequency) / (PCLK3DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[19:16] |PCLK4DIV  |PCLK4 Clock Divide Number from PCLK4 Clock Source
- * |        |          |PCLK4 clock frequency = (PCLK4 clock source frequency) / (PCLK4DIV + 1).
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::CANFDDIV
- * Offset: 0x510  CANFD Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |CANFD0DIV |CANFD0 Clock Divide Number from CANFD0 Clock Source
- * |        |          |CANFD0 clock frequency = (CANFD0 clock source frequency) / (CANFD0DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[15:8]  |CANFD1DIV |CANFD1 Clock Divide Number from CANFD1 Clock Source
- * |        |          |CANFD1 clock frequency = (CANFD1 clock source frequency) / (CANFD1DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * @var CLK_T::DMICDIV
- * Offset: 0x514  DMIC Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |DMIC0DIV  |CANFD0 Clock Divide Number from CANFD0 Clock Source
- * |        |          |DMIC0 clock frequency = (DMIC0DIV clock source frequency) / (DMIC0DIV + 1).
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::EADCDIV
- * Offset: 0x518  EADC Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |EADC0DIV  |EADC0 Clock Divide Number from EADC0 Clock Source
- * |        |          |EADC0 clock frequency = (EADC0 clock source frequency) / (EADC0DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[15:8]  |EADC1DIV  |EADC1 Clock Divide Number from EADC1 Clock Source
- * |        |          |EADC1 clock frequency = (EADC1 clock source frequency) / (EADC1DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * @var CLK_T::I2SDIV
- * Offset: 0x51C  I2S Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |I2S0DIV   |I2S0 Clock Divide Number from I2S0 Clock Source
- * |        |          |I2S0 clock frequency = (I2S0 clock source frequency) / (I2S0DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[15:8]  |I2S1DIV   |I2S1 Clock Divide Number from I2S1 Clock Source
- * |        |          |I2S1 clock frequency = (I2S1 clock source frequency) / (I2S1DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * @var CLK_T::KPIDIV
- * Offset: 0x520  KPI Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |KPI0DIV   |KPI0 Clock Divide Number from KPI0 Clock Source
- * |        |          |KPI0 clock frequency = (KPI0 clock source frequency) / (KPI0DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * @var CLK_T::LPADCDIV
- * Offset: 0x524  Low Power ADC Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |LPADC0DIV |LPADC0 Clock Divide Number from LPADC0 Clock Source
- * |        |          |LPADC0 clock frequency = (LPADC0 clock source frequency) / (LPADC0DIV + 1).
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::LPUARTDIV
- * Offset: 0x528  Low Power UART Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |LPUART0DIV|LPUART0 Clock Divide Number from LPUART0 Clock Source
- * |        |          |LPUART0 clock frequency = (LPUART0 clock source frequency) / (LPUART0DIV + 1).
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::PSIODIV
- * Offset: 0x52C  PSIO Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |PSIO0DIV  |PSIO0 Clock Divide Number from PSIO0 Clock Source
- * |        |          |PSIO0 clock frequency = (PSIO0 clock source frequency) / (PSIO0DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * @var CLK_T::SCDIV
- * Offset: 0x530  SC Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |SC0DIV    |SC0 Clock Divide Number from SC0 Clock Source
- * |        |          |SC0 clock frequency = (SC0 clock source frequency) / (SC0DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[15:8]  |SC1DIV    |SC1 Clock Divide Number from SC1 Clock Source
- * |        |          |SC1 clock frequency = (SC1 clock source frequency) / (SC1DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[23:16] |SC2DIV    |SC2 Clock Divide Number from SC2 Clock Source
- * |        |          |SC2 clock frequency = (SC2 clock source frequency) / (SC2DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * @var CLK_T::SDHDIV
- * Offset: 0x534  SDH Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |SDH0DIV   |SDH0 Clock Divide Number from SDH0 Clock Source
- * |        |          |SDH0 clock frequency = (SDH0 clock source frequency) / (SDH0DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[15:8]  |SDH1DIV   |SDH1 Clock Divide Number from SDH1 Clock Source
- * |        |          |SDH1 clock frequency = (SDH1 clock source frequency) / (SDH1DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * @var CLK_T::STDIV
- * Offset: 0x538  System Tick Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |ST0DIV    |System Tick 0 Clock Divide Number from System Tick 0 Clock Source
- * |        |          |ST0 clock frequency = (ST0 clock source frequency) / (ST0DIV + 1).
- * |        |          |Note: These bits are lose when D0 power is turned off.
- * @var CLK_T::UARTDIV0
- * Offset: 0x53C  UART Clock Divider Control Register 0
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |UART0DIV  |UART0 Clock Divide Number from UART0 Clock Source
- * |        |          |UART0 clock frequency = (UART0 clock source frequency) / (UART0DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[7:4]   |UART1DIV  |UART1 Clock Divide Number from UART1 Clock Source
- * |        |          |UART1 clock frequency = (UART1 clock source frequency) / (UART1DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[11:8]  |UART2DIV  |UART2 Clock Divide Number from UART2 Clock Source
- * |        |          |UART2 clock frequency = (UART2 clock source frequency) / (UART2DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[15:12] |UART3DIV  |UART3 Clock Divide Number from UART3 Clock Source
- * |        |          |UART3 clock frequency = (UART3 clock source frequency) / (UART3DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[19:16] |UART4DIV  |UART4 Clock Divide Number from UART4 Clock Source
- * |        |          |UART4 clock frequency = (UART4 clock source frequency) / (UART4DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[23:20] |UART5DIV  |UART5 Clock Divide Number from UART5 Clock Source
- * |        |          |UART5 clock frequency = (UART5 clock source frequency) / (UART5DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[27:24] |UART6DIV  |UART6 Clock Divide Number from UART6 Clock Source
- * |        |          |UART6 clock frequency = (UART6 clock source frequency) / (UART6DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[31:28] |UART7DIV  |UART7 Clock Divide Number from UART7 Clock Source
- * |        |          |UART7 clock frequency = (UART7 clock source frequency) / (UART7DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * @var CLK_T::UARTDIV1
- * Offset: 0x540  UART Clock Divider Control Register 1
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |UART8DIV  |UART8 Clock Divide Number from UART8 Clock Source
- * |        |          |UART8 clock frequency = (UART8 clock source frequency) / (UART8DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * |[7:4]   |UART9DIV  |UART9 Clock Divide Number from UART9 Clock Source
- * |        |          |UART9 clock frequency = (UART9 clock source frequency) / (UART9DIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * @var CLK_T::USBDIV
- * Offset: 0x544  USB Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |USBDIV    |USB Clock Divide Number from USB Clock Source
- * |        |          |USB clock frequency = (USB clock source frequency) / (USBDIV + 1).
- * |        |          |Note: These bits are lose when D1 power is turned off.
- * @var CLK_T::VSENSEDIV
- * Offset: 0x548  Video Pixel Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[3:0]   |VSENSEDIV |Video Pixel Clock Divide Number from Video Pixel Clock Source
- * |        |          |VSENSE clock frequency = (VSENSE clock source frequency) / (VSENSEDIV + 1).
- * |        |          |Note: These bits are lose when D2 power is turned off.
- * @var CLK_T::TPIUDIV
- * Offset: 0x54C  TPIU Clock Divider Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[7:0]   |TPIUDIV   |TPIU Clock Divide Number from TPIU Clock Source
- * |        |          |TPIU clock frequency = (TPIU clock source frequency) / (TPIUDIV + 1).
- * |        |          |Note: These bits are lose when D0 power is turned off.
- * @var CLK_T::TESTCLK
- * Offset: 0xF00  Test Clock Control Register
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[15:0]  |TCLKSEL   |Test Clock Source Selection
- * |        |          |(For real chip)
- * |        |          |16'b0000_0000_0000 : iTEST_CLK = LIRC without filter;.
- * |        |          |16'b0000_0000_0001 : iTEST_CLK = LXT without filter;.
- * |        |          |16'b0000_0000_0010 : iTEST_CLK = MIRC without filter;.
- * |        |          |16'b0000_0000_0011 : iTEST_CLK = HIRC without filter;.
- * |        |          |16'b0000_0000_0100 : iTEST_CLK = HXT without filter;.
- * |        |          |16'b0000_0000_0101 : iTEST_CLK = HIRC48M without filter;.
- * |        |          |16'b0000_0000_0110 : iTEST_CLK = APLL0 without filter;.
- * |        |          |16'b0000_0000_0111 : iTEST_CLK = APLL1 without filter;.
- * |        |          |16'b0000_0000_1000 : iTEST_CLK = MIRC with filter;.
- * |        |          |16'b0000_0000_1001 : iTEST_CLK = HIRC with filter;.
- * |        |          |16'b0000_0000_1010 : iTEST_CLK = HXT4M with filter;.
- * |        |          |16'b0000_0000_1011 : iTEST_CLK = HXT32M with filter;.
- * |        |          |16'b0000_0000_1100 : iTEST_CLK = HXT with filter;.
- * |        |          |16'b0000_0000_1101 : iTEST_CLK = HIRC48M with filter;.
- * |        |          |16'b0000_0000_1110 : iTEST_CLK = LIRC unstable;.
- * |        |          |16'b0000_0000_1111 : iTEST_CLK = LXT unstable;.
- * |        |          |16'b0000_0001_0000 : iTEST_CLK = MIRC unstable;.
- * |        |          |16'b0000_0001_0001 : iTEST_CLK = HIRC unstable;.
- * |        |          |16'b0000_0001_0010 : iTEST_CLK = HXT unstable;.
- * |        |          |16'b0000_0001_0011 : iTEST_CLK = HIRC48M unstable;.
- * |        |          |16'b0000_0001_0100 : iTEST_CLK = APLL0 unstable;.
- * |        |          |16'b0000_0001_0101 : iTEST_CLK = APLL1 unstable;.
- * |        |          |16'b0000_0001_0110 : iTEST_CLK = LIRC stable;.
- * |        |          |16'b0000_0001_0111 : iTEST_CLK = LXT stable;.
- * |        |          |16'b0000_0001_1000 : iTEST_CLK = MIRC stable;.
- * |        |          |16'b0000_0001_1001 : iTEST_CLK = HIRC stable;.
- * |        |          |16'b0000_0001_1010 : iTEST_CLK = HXT stable;.
- * |        |          |16'b0000_0001_1011 : iTEST_CLK = HIRC48M stable;.
- * |        |          |16'b0000_0001_1100 : iTEST_CLK = APLL0 stable;.
- * |        |          |16'b0000_0001_1101 : iTEST_CLK = APLL1 stable;.
- * |        |          |//SCLK
- * |        |          |16'b0000_0001_1110 : iTEST_CLK = SCLK;.
- * |        |          |//ACLK
- * |        |          |16'b0000_0001_1111 : iTEST_CLK = ACLK;.
- * |        |          |16u2019b0000_0010_0000 : iTEST_CLK = ACLK_APB5;.
- * |        |          |16u2019b0000_0010_0001 : iTEST_CLK = ACLK_CPU;.
- * |        |          |16u2019b0000_0010_0010 : iTEST_CLK = DCLK_CPU;.
- * |        |          |16u2019b0000_0010_0011 : iTEST_CLK = ACLK_NPU;.
- * |        |          |16u2019b0000_0010_0100 : iTEST_CLK = ACLK_FMC;.
- * |        |          |16u2019b0000_0010_0101 : iTEST_CLK = ACLK_GDMA;.
- * |        |          |16u2019b0000_0010_0110 : iTEST_CLK = ACLK_SRAM0;.
- * |        |          |16u2019b0000_0010_0111 : iTEST_CLK = ACLK_SRAM1;.
- * |        |          |16u2019b0000_0010_1000 : iTEST_CLK = ACLK_SRAM2;.
- * |        |          |16u2019b0000_0010_1001 : iTEST_CLK = ACLK_SISTICK;.
- * |        |          |//HCLK
- * |        |          |16u2019b0000_0010_1010 : iTEST_CLK = HCLK0;.
- * |        |          |16u2019b0000_0010_1011 : iTEST_CLK = HCLK1;.
- * |        |          |16u2019b0000_0010_1100 : iTEST_CLK = HCLK2;.
- * |        |          |16u2019b0000_0010_1101 : iTEST_CLK = HCLK_AHB0;.
- * |        |          |16u2019b0000_0010_1110 : iTEST_CLK = HCLK_APB0;.
- * |        |          |16u2019b0000_0010_1111 : iTEST_CLK = HCLK_APB1;.
- * |        |          |16u2019b0000_0011_0000 : iTEST_CLK = HCLK_APB2;.
- * |        |          |16u2019b0000_0011_0001 : iTEST_CLK = HCLK_APB3;.
- * |        |          |16u2019b0000_0011_0010 : iTEST_CLK = HCLK_APB4;.
- * |        |          |16u2019b0000_0011_0011 : iTEST_CLK = HCLK_CRC;.
- * |        |          |16u2019b0000_0011_0100 : iTEST_CLK = HCLK_EBI;.
- * |        |          |16u2019b0000_0011_0101 : iTEST_CLK = HCLK_EBI inverse;.
- * |        |          |16u2019b0000_0011_0110 : iTEST_CLK = HCLK_EMAC;.
- * |        |          |16u2019b0000_0011_0111 : iTEST_CLK = HCLK_GPIO;.
- * |        |          |16u2019b0000_0011_1000 : iTEST_CLK = HCLK_GPA;.
- * |        |          |16u2019b0000_0011_1001 : iTEST_CLK = HCLK_GPB;.
- * |        |          |16u2019b0000_0011_1010 : iTEST_CLK = HCLK_GPC;.
- * |        |          |16u2019b0000_0011_1011 : iTEST_CLK = HCLK_GPD;.
- * |        |          |16u2019b0000_0011_1100 : iTEST_CLK = HCLK_GPE;.
- * |        |          |16u2019b0000_0011_1101 : iTEST_CLK = HCLK_GPF;.
- * |        |          |16u2019b0000_0011_1110 : iTEST_CLK = HCLK_GPG;.
- * |        |          |16u2019b0000_0011_1111 : iTEST_CLK = HCLK_GPH;.
- * |        |          |16u2019b0000_0100_0000 : iTEST_CLK = HCLK_GPI;.
- * |        |          |16u2019b0000_0100_0001 : iTEST_CLK = HCLK_GPJ;.
- * |        |          |16u2019b0000_0100_0010 : iTEST_CLK = HCLK_HSUSBD;.
- * |        |          |16u2019b0000_0100_0011 : iTEST_CLK = HCLK_HSUSBH;.
- * |        |          |16u2019b0000_0100_0100 : iTEST_CLK = HCLK_USBH;.
- * |        |          |16u2019b0000_0100_0101 : iTEST_CLK = HCLK_CRYPTO;.
- * |        |          |16u2019b0000_0100_0110 : iTEST_CLK = HCLK_KDF;.
- * |        |          |16u2019b0000_0100_0111 : iTEST_CLK = HCLK_KS;.
- * |        |          |16u2019b0000_0100_1000 : iTEST_CLK = HCLK_KS_WRITER;.
- * |        |          |16u2019b0000_0100_1001 : iTEST_CLK = HCLK_KS_TWICP;.
- * |        |          |16u2019b0000_0100_1010 : iTEST_CLK = HCLK_CANFD0;.
- * |        |          |16u2019b0000_0100_1011 : iTEST_CLK = HCLK_CANFD0_SRAM;.
- * |        |          |16u2019b0000_0100_1100 : iTEST_CLK = HCLK_CANFD1;.
- * |        |          |16u2019b0000_0100_1101 : iTEST_CLK = HCLK_CANFD1_SRAM;.
- * |        |          |16u2019b0000_0100_1110 : iTEST_CLK = HCLK_PDMA0;.
- * |        |          |16u2019b0000_0100_1111 : iTEST_CLK = HCLK_PDMA1;.
- * |        |          |16u2019b0000_0101_0000 : iTEST_CLK = HCLK_SDH0;.
- * |        |          |16u2019b0000_0101_0001 : iTEST_CLK = HCLK_SDH1;.
- * |        |          |16u2019b0000_0101_0010 : iTEST_CLK = HCLK_SRAM3;.
- * |        |          |16u2019b0000_0101_0011 : iTEST_CLK = HCLK_SWODEC;.
- * |        |          |16u2019b0000_0101_0100 : iTEST_CLK = HCLK_OTFC0;.
- * |        |          |16u2019b0000_0101_0101 : iTEST_CLK = HCLK_OTFC1;.
- * |        |          |16u2019b0000_0101_0110 : iTEST_CLK = HCLK_SPIM0;.
- * |        |          |16u2019b0000_0101_0111 : iTEST_CLK = HCLK_SPIM0 inverse;.
- * |        |          |16u2019b0000_0101_1000 : iTEST_CLK = HCLK_SPIM1;.
- * |        |          |16u2019b0000_0101_1001 : iTEST_CLK = HCLK_SPIM1 inverse;.
- * |        |          |16u2019b0000_0101_1010 : iTEST_CLK = HCLK_CCAP;.
- * |        |          |16u2019b0000_0101_1011 : iTEST_CLK = HCLK_LPGPIO;.
- * |        |          |16u2019b0000_0101_1100 : iTEST_CLK = HCLK_LPPDMA;.
- * |        |          |16u2019b0000_0101_1101 : iTEST_CLK = HCLK_LPSRAM;.
- * |        |          |16u2019b0000_0101_1110 : iTEST_CLK = HCLK_SCU;.
- * |        |          |//PCLK
- * |        |          |16u2019b0000_0101_1111 : iTEST_CLK = PCLK0;.
- * |        |          |16u2019b0000_0110_0000 : iTEST_CLK = PCLK1;.
- * |        |          |16u2019b0000_0110_0001 : iTEST_CLK = PCLK2;.
- * |        |          |16u2019b0000_0110_0010 : iTEST_CLK = PCLK3;.
- * |        |          |16u2019b0000_0110_0011 : iTEST_CLK = PCLK4;.
- * |        |          |16u2019b0000_0110_0100 : iTEST_CLK = PCLK5;.
- * |        |          |16u2019b0000_0110_0101 : iTEST_CLK = PCLK_ACMP01;.
- * |        |          |16u2019b0000_0110_0110 : iTEST_CLK = PCLK_ACMP23;.
- * |        |          |16u2019b0000_0110_0111 : iTEST_CLK = PCLK_BPWM0;.
- * |        |          |16u2019b0000_0110_1000 : iTEST_CLK = PCLK_BPWM1;.
- * |        |          |16u2019b0000_0110_1001 : iTEST_CLK = PCLK_DAC01;.
- * |        |          |16u2019b0000_0110_1010 : iTEST_CLK = PCLK_EADC0;.
- * |        |          |16u2019b0000_0110_1011 : iTEST_CLK = PCLK_EADC1;.
- * |        |          |16u2019b0000_0110_1100 : iTEST_CLK = PCLK_ECAP0;.
- * |        |          |16u2019b0000_0110_1101 : iTEST_CLK = PCLK_ECAP1;.
- * |        |          |16u2019b0000_0110_1110 : iTEST_CLK = PCLK_ECAP2;.
- * |        |          |16u2019b0000_0110_1111 : iTEST_CLK = PCLK_ECAP3;.
- * |        |          |16u2019b0000_0111_0000 : iTEST_CLK = PCLK_EPWM0;.
- * |        |          |16u2019b0000_0111_0001 : iTEST_CLK = PCLK_EPWM1;.
- * |        |          |16u2019b0000_0111_0010 : iTEST_CLK = PCLK_EQEI0;.
- * |        |          |16u2019b0000_0111_0011 : iTEST_CLK = PCLK_EQEI1;.
- * |        |          |16u2019b0000_0111_0100 : iTEST_CLK = PCLK_EQEI2;.
- * |        |          |16u2019b0000_0111_0101 : iTEST_CLK = PCLK_EQEI3;.
- * |        |          |16u2019b0000_0111_0110 : iTEST_CLK = PCLK_I2C0;.
- * |        |          |16u2019b0000_0111_0111 : iTEST_CLK = PCLK_I2C1;.
- * |        |          |16u2019b0000_0111_1000 : iTEST_CLK = PCLK_I2C2;.
- * |        |          |16u2019b0000_0111_1001 : iTEST_CLK = PCLK_I2C3;.
- * |        |          |16u2019b0000_0111_1010 : iTEST_CLK = PCLK_I2S0;.
- * |        |          |16u2019b0000_0111_1011 : iTEST_CLK = PCLK_I2S1;.
- * |        |          |16u2019b0000_0111_1100 : iTEST_CLK = PCLK_I3C;.
- * |        |          |16u2019b0000_0111_1101 : iTEST_CLK = PCLK_KPI;.
- * |        |          |16u2019b0000_0111_1110 : iTEST_CLK = PCLK_OTG;.
- * |        |          |16u2019b0000_0111_1111 : iTEST_CLK = PCLK_PSIO;.
- * |        |          |16u2019b0000_1000_0000 : iTEST_CLK = PCLK_QSPI0;.
- * |        |          |16u2019b0000_1000_0001 : iTEST_CLK = PCLK_QSPI1;.
- * |        |          |16u2019b0000_1000_0010 : iTEST_CLK = PCLK_RTC;.
- * |        |          |16u2019b0000_1000_0011 : iTEST_CLK = PCLK_SMC0;.
- * |        |          |16u2019b0000_1000_0100 : iTEST_CLK = PCLK_SMC1;.
- * |        |          |16u2019b0000_1000_0101 : iTEST_CLK = PCLK_SMC2;.
- * |        |          |16u2019b0000_1000_0110 : iTEST_CLK = PCLK_SPI0;.
- * |        |          |16u2019b0000_1000_0111 : iTEST_CLK = PCLK_SPI1;.
- * |        |          |16u2019b0000_1000_1000 : iTEST_CLK = PCLK_SPI2;.
- * |        |          |16u2019b0000_1000_1001 : iTEST_CLK = PCLK_SPI3;.
- * |        |          |16u2019b0000_1000_1010 : iTEST_CLK = PCLK_TAMPER;.
- * |        |          |16u2019b0000_1000_1011 : iTEST_CLK = PCLK_TMR0;.
- * |        |          |16u2019b0000_1000_1100 : iTEST_CLK = PCLK_TMR1;.
- * |        |          |16u2019b0000_1000_1101 : iTEST_CLK = PCLK_TMR2;.
- * |        |          |16u2019b0000_1000_1110 : iTEST_CLK = PCLK_TMR3;.
- * |        |          |16u2019b0000_1000_1111 : iTEST_CLK = PCLK_TRNG;.
- * |        |          |16u2019b0000_1001_0000 : iTEST_CLK = PCLK_UART0;.
- * |        |          |16u2019b0000_1001_0001 : iTEST_CLK = PCLK_UART1;.
- * |        |          |16u2019b0000_1001_0010 : iTEST_CLK = PCLK_UART2;.
- * |        |          |16u2019b0000_1001_0011 : iTEST_CLK = PCLK_UART3;.
- * |        |          |16u2019b0000_1001_0100 : iTEST_CLK = PCLK_UART4;.
- * |        |          |16u2019b0000_1001_0101 : iTEST_CLK = PCLK_UART5;.
- * |        |          |16u2019b0000_1001_0110 : iTEST_CLK = PCLK_UART6;.
- * |        |          |16u2019b0000_1001_0111 : iTEST_CLK = PCLK_UART7;.
- * |        |          |16u2019b0000_1001_1000 : iTEST_CLK = PCLK_UART8;.
- * |        |          |16u2019b0000_1001_1001 : iTEST_CLK = PCLK_UART9;.
- * |        |          |16u2019b0000_1001_1010 : iTEST_CLK = PCLK_USBD;.
- * |        |          |16u2019b0000_1001_1011 : iTEST_CLK = PCLK_USCI;.
- * |        |          |16u2019b0000_1001_1100 : iTEST_CLK = PCLK_USCI inverse;.
- * |        |          |16u2019b0000_1001_1101 : iTEST_CLK = PCLK_UTCPD;.
- * |        |          |16u2019b0000_1001_1110 : iTEST_CLK = PCLK_WWDT0;.
- * |        |          |16u2019b0000_1001_1111 : iTEST_CLK = PCLK_WWDT1;.
- * |        |          |16u2019b0000_1010_0000 : iTEST_CLK = PCLK_DMIC;.
- * |        |          |16u2019b0000_1010_0001 : iTEST_CLK = PCLK_LPADC;.
- * |        |          |16u2019b0000_1010_0010 : iTEST_CLK = PCLK_LPI2C;.
- * |        |          |16u2019b0000_1010_0011 : iTEST_CLK = PCLK_LPSPI;.
- * |        |          |16u2019b0000_1010_0100 : iTEST_CLK = PCLK_LPTMR0;.
- * |        |          |16u2019b0000_1010_0101 : iTEST_CLK = PCLK_LPTMR1;.
- * |        |          |16u2019b0000_1010_0110 : iTEST_CLK = PCLK_LPUART;.
- * |        |          |16u2019b0000_1010_0111 : iTEST_CLK = PCLK_AWF;.
- * |        |          |16u2019b0000_1010_1000 : iTEST_CLK = PCLK_TTMR0;.
- * |        |          |16u2019b0000_1010_1001 : iTEST_CLK = PCLK_TTMR1;.
- * |        |          |16u2019b0000_1010_1010 : iTEST_CLK = PCLK_WDT0;.
- * |        |          |16u2019b0000_1010_1011 : iTEST_CLK = PCLK_WDT1;.
- * |        |          |16u2019b0000_1010_1100 : iTEST_CLK = PCLK_CLK;.
- * |        |          |16u2019b0000_1010_1101 : iTEST_CLK = PCLK_PMC;.
- * |        |          |16u2019b0000_1010_1110 : iTEST_CLK = PCLK_SYS;.
- * |        |          |//ECLK
- * |        |          |16u2019b0000_1010_1111 : iTEST_CLK = ECLK_BPWM0;.
- * |        |          |16u2019b0000_1011_0000 : iTEST_CLK = ECLK_BPWM1;.
- * |        |          |16u2019b0000_1011_0001 : iTEST_CLK = ECLK_CANFD0;.
- * |        |          |16u2019b0000_1011_0010 : iTEST_CLK = ECLK_CANFD1;.
- * |        |          |16u2019b0000_1011_0011 : iTEST_CLK = ECLK_EADC0;.
- * |        |          |16u2019b0000_1011_0100 : iTEST_CLK = ECLK_EADC0 inverse;.
- * |        |          |16u2019b0000_1011_0101 : iTEST_CLK = ECLK_EADC1;.
- * |        |          |16u2019b0000_1011_0110 : iTEST_CLK = ECLK_EADC1 inverse;.
- * |        |          |16u2019b0000_1011_0111 : iTEST_CLK = ECLK_EPWM0;.
- * |        |          |16u2019b0000_1011_1000 : iTEST_CLK = ECLK_EPWM1;.
- * |        |          |16u2019b0000_1011_1001 : iTEST_CLK = ECLK_I2S0;.
- * |        |          |16u2019b0000_1011_1010 : iTEST_CLK = ECLK_I2S0 inverse;.
- * |        |          |16u2019b0000_1011_1011 : iTEST_CLK = ECLK_I2S1;.
- * |        |          |16u2019b0000_1011_1100 : iTEST_CLK = ECLK_I2S1 inverse;.
- * |        |          |16u2019b0000_1011_1101 : iTEST_CLK = ECLK_KPI;.
- * |        |          |16u2019b0000_1011_1110 : iTEST_CLK = ECLK_PSIO;.
- * |        |          |16u2019b0000_1011_1111 : iTEST_CLK = ECLK_PSIO inverse;.
- * |        |          |16u2019b0000_1100_0000 : iTEST_CLK = ECLK_QSPI0;.
- * |        |          |16u2019b0000_1100_0001 : iTEST_CLK = ECLK_QSPI0 inverse;.
- * |        |          |16u2019b0000_1100_0010 : iTEST_CLK = ECLK_QSPI1;.
- * |        |          |16u2019b0000_1100_0011 : iTEST_CLK = ECLK_QSPI1 inverse;.
- * |        |          |16u2019b0000_1100_0100 : iTEST_CLK = ECLK_SMC0;.
- * |        |          |16u2019b0000_1100_0101 : iTEST_CLK = ECLK_SMC0 inverse;.
- * |        |          |16u2019b0000_1100_0110 : iTEST_CLK = ECLK_SMC1;.
- * |        |          |16u2019b0000_1100_0111 : iTEST_CLK = ECLK_SMC1 inverse;.
- * |        |          |16u2019b0000_1100_1000 : iTEST_CLK = ECLK_SMC2;.
- * |        |          |16u2019b0000_1100_1001 : iTEST_CLK = ECLK_SMC2 inverse;.
- * |        |          |16u2019b0000_1100_1010 : iTEST_CLK = ECLK_SDH0;.
- * |        |          |16u2019b0000_1100_1011 : iTEST_CLK = ECLK_SDH0 inverse;.
- * |        |          |16u2019b0000_1100_1100 : iTEST_CLK = ECLK_SDH1;.
- * |        |          |16u2019b0000_1100_1101 : iTEST_CLK = ECLK_SDH1 inverse;.
- * |        |          |16u2019b0000_1100_1110 : iTEST_CLK = ECLK_SPI0;.
- * |        |          |16u2019b0000_1100_1111 : iTEST_CLK = ECLK_SPI0 inverse;.
- * |        |          |16u2019b0000_1101_0000 : iTEST_CLK = ECLK_SPI1;.
- * |        |          |16u2019b0000_1101_0001 : iTEST_CLK = ECLK_SPI1 inverse;.
- * |        |          |16u2019b0000_1101_0010 : iTEST_CLK = ECLK_SPI2;.
- * |        |          |16u2019b0000_1101_0011 : iTEST_CLK = ECLK_SPI2 inverse;.
- * |        |          |16u2019b0000_1101_0100 : iTEST_CLK = ECLK_SPI3;.
- * |        |          |16u2019b0000_1101_0101 : iTEST_CLK = ECLK_SPI3 inverse;.
- * |        |          |16u2019b0000_1101_0110 : iTEST_CLK = ECLK_TMR0;.
- * |        |          |16u2019b0000_1101_0111 : iTEST_CLK = ECLK_TMR1;.
- * |        |          |16u2019b0000_1101_1000 : iTEST_CLK = ECLK_TMR2;.
- * |        |          |16u2019b0000_1101_1001 : iTEST_CLK = ECLK_TMR3;.
- * |        |          |16u2019b0000_1101_1010 : iTEST_CLK = ECLK_UART0;.
- * |        |          |16u2019b0000_1101_1011 : iTEST_CLK = ECLK_UART1;.
- * |        |          |16u2019b0000_1101_1100 : iTEST_CLK = ECLK_UART2;.
- * |        |          |16u2019b0000_1101_1101 : iTEST_CLK = ECLK_UART3;.
- * |        |          |16u2019b0000_1101_1110 : iTEST_CLK = ECLK_UART4;.
- * |        |          |16u2019b0000_1101_1111 : iTEST_CLK = ECLK_UART5;.
- * |        |          |16u2019b0000_1110_0000 : iTEST_CLK = ECLK_UART6;.
- * |        |          |16u2019b0000_1110_0001 : iTEST_CLK = ECLK_UART7;.
- * |        |          |16u2019b0000_1110_0010 : iTEST_CLK = ECLK_UART8;.
- * |        |          |16u2019b0000_1110_0011 : iTEST_CLK = ECLK_UART9;.
- * |        |          |16u2019b0000_1110_0100 : iTEST_CLK = ECLK_USBD;.
- * |        |          |16u2019b0000_1110_0101 : iTEST_CLK = ECLK_USBD inverse;.
- * |        |          |16u2019b0000_1110_0110 : iTEST_CLK = ECLK_USBH;.
- * |        |          |16u2019b0000_1110_0111 : iTEST_CLK = ECLK_USBH inverse;.
- * |        |          |16u2019b0000_1110_1000 : iTEST_CLK = ECLK_OTG;.
- * |        |          |16u2019b0000_1110_1001 : iTEST_CLK = ECLK_WWDT0;.
- * |        |          |16u2019b0000_1110_1010 : iTEST_CLK = ECLK_WWDT1;.
- * |        |          |16u2019b0000_1110_1011 : iTEST_CLK = ECLK_FMC;.
- * |        |          |16u2019b0000_1110_1100 : iTEST_CLK = ECLK_SYSTICK;.
- * |        |          |16u2019b0000_1110_1101 : iTEST_CLK = ECLK_CCAP;.
- * |        |          |16u2019b0000_1110_1110 : iTEST_CLK = ECLK_DMIC;.
- * |        |          |16u2019b0000_1110_1111 : iTEST_CLK = ECLK_VAD;.
- * |        |          |16u2019b0000_1111_0000 : iTEST_CLK = ECLK_LPADC;.
- * |        |          |16u2019b0000_1111_0001 : iTEST_CLK = ECLK_LPSPI;.
- * |        |          |16u2019b0000_1111_0010 : iTEST_CLK = ECLK_LPSPI inverse;.
- * |        |          |16u2019b0000_1111_0011 : iTEST_CLK = ECLK_LPTMR0;.
- * |        |          |16u2019b0000_1111_0100 : iTEST_CLK = ECLK_LPTMR1;.
- * |        |          |16u2019b0000_1111_0101 : iTEST_CLK = ECLK_LPUART;.
- * |        |          |16u2019b0000_1111_0110 : iTEST_CLK = ECLK_TTMR0;.
- * |        |          |16u2019b0000_1111_0111 : iTEST_CLK = ECLK_TTMR1;.
- * |        |          |16u2019b0000_1111_1000 : iTEST_CLK = ECLK_WDT0;.
- * |        |          |16u2019b0000_1111_1001 : iTEST_CLK = ECLK_WDT1;.
- * |        |          |Else : 1u2019b0
- * |        |          |Note: These bits are lose when D0 power is turned off.
- * |[26:24] |TESTCKDIV |TEST Clock Divider
- * |        |          |Test clock output divider
- * |        |          |000: Test clk divide 1.
- * |        |          |001: Test clk divide 2.
- * |        |          |010: Test clk divide 4.
- * |        |          |011: Test clk divide 8.
- * |        |          |100: Test clk divide 16.
- * |        |          |101: Test clk divide 32.
- * |        |          |Others: Reserved.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- * |[31]    |TESTEN    |Test Clock Output Enable Bit
- * |        |          |0 = Test clock function Disabled.
- * |        |          |1 = Test clock function Enabled.
- * |        |          |Test clock will output through PC.0 & PD.0 pin.
- * |        |          |Note: This bit is lose when D0 power is turned off.
- */
+    /**
+     * @var CLK_T::SRCCTL
+     * Offset: 0x00  Clock Source Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |LIRCEN    |LIRC Enable Bit (Write Protect)
+     * |        |          |0 = 32 kHz internal low speed RC oscillator (LIRC) Disabled.
+     * |        |          |1 = 32 kHz internal low speed RC oscillator (LIRC) Enabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D4 power is turned off.
+     * |[1]     |LXTEN     |LXT Enable Bit (Write Protect) (Write Only)
+     * |        |          |0 = 32.768 kHz external low speed crystal (LXT) Disabled.
+     * |        |          |1 = 32.768 kHz external low speed crystal (LXT) Enabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D5 power is turned off.
+     * |[2]     |MIRCEN    |MIRC Enable Bit (Write Protect)
+     * |        |          |0 = 1 MHz internal middle speed RC oscillator (MIRC) Disabled.
+     * |        |          |1 = 1 MHz internal middle speed RC oscillator (MIRC) Enabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |        |          |Note 3: This bit is write ignore when SCLKSEL(CLK_SCLKSEL[2:0]) is set to MIRC.
+     * |[3]     |HIRCEN    |HIRC Enable Bit (Write Protect)
+     * |        |          |0 = 12 MHz internal high speed RC oscillator (HIRC) Disabled.
+     * |        |          |1 = 12 MHz internal high speed RC oscillator (HIRC) Enabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |        |          |Note 3: This bit is write ignore when SCLKSEL(CLK_SCLKSEL[2:0]) is set to HIRC.
+     * |[4]     |HXTEN     |HXT Enable Bit (Write Protect)
+     * |        |          |0 = 4~32 MHz external high speed crystal (HXT) Disabled.
+     * |        |          |1 = 4~32 MHz external high speed crystal (HXT) Enabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |        |          |Note 3: This bit is write ignore when SCLKSEL(CLK_SCLKSEL[2:0]) is set to HXT.
+     * |[5]     |HIRC48MEN |HIRC48M Enable Bit (Write Protect)
+     * |        |          |0 = 48 MHz internal high speed RC oscillator (HIRC48M) Disabled.
+     * |        |          |1 = 48 MHz internal high speed RC oscillator (HIRC48M) Enabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |        |          |Note 3: This bit is write ignore when SCLKSEL(CLK_SCLKSEL[2:0]) is set to HIRC48M.
+     * |[6]     |APLL0EN   |APLL0 Enable Bit (Write Protect)
+     * |        |          |0 = APLL0 Disabled.
+     * |        |          |1 = APLL0 Enabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |        |          |Note 3: This bit is write ignore when SCLKSEL(CLK_SCLKSEL[2:0]) is set to APLL0.
+     * |[7]     |APLL1EN   |APLL1 Enable Bit (Write Protect)
+     * |        |          |0 = APLL1 Disabled.
+     * |        |          |1 = APLL1 Enabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * @var CLK_T::STATUS
+     * Offset: 0x04  Clock Status Monitor Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |LIRCSTB   |LIRC Clock Source Stable Flag (Read Only)
+     * |        |          |0 = 32 kHz internal low speed RC oscillator (LIRC) clock is not stable or disabled.
+     * |        |          |1 = 32 kHz internal low speed RC oscillator (LIRC) clock is stable and enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[1]     |LXTSTB    |LXT Clock Source Stable Flag (Read Only)
+     * |        |          |0 = 32.768 kHz external low speed crystal oscillator (LXT) clock is not stable or disabled.
+     * |        |          |1 = 32.768 kHz external low speed crystal oscillator (LXT) clock is stabled and enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[2]     |MIRCSTB   |MIRC Clock Source Stable Flag (Read Only)
+     * |        |          |0 = Internal middle speed RC oscillator (MIRC) clock is not stable or disabled.
+     * |        |          |1 = Internal middle speed RC oscillator (MIRC) clock is stable and enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[3]     |HIRCSTB   |HIRC Clock Source Stable Flag (Read Only)
+     * |        |          |0 = 12 MHz internal high speed RC oscillator (HIRC) clock is not stable or disabled.
+     * |        |          |1 = 12 MHz internal high speed RC oscillator (HIRC) clock is stable and enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[4]     |HXTSTB    |HXT Clock Source Stable Flag (Read Only)
+     * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock is not stable or disabled.
+     * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock is stable and enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[5]     |HIRC48MSTB|HIRC48M Clock Source Stable Flag (Read Only)
+     * |        |          |0 = 48 MHz internal high speed RC oscillator (HIRC48M) clock is not stable or disabled.
+     * |        |          |1 = 48 MHz internal high speed RC oscillator (HIRC48M) clock is stable and enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[6]     |APLL0STB  |Internal APLL0 Clock Source Stable Flag (Read Only)
+     * |        |          |0 = Internal APLL0 clock is not stable or disabled.
+     * |        |          |1 = Internal APLL0 clock is stable and enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[7]     |APLL1STB  |Internal APLL1 Clock Source Stable Flag (Read Only)
+     * |        |          |0 = Internal APLL1 clock is not stable or disabled.
+     * |        |          |1 = Internal APLL1 clock is stable and enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[8]     |SCLKSWF   |System Clock Switching Finish Flag (Read Only)
+     * |        |          |This bit is updated when software switches system clock source
+     * |        |          |If switch target clock is stable, this bit will be set to 1
+     * |        |          |If switch target clock is not stable, this bit will be set to 0.
+     * |        |          |0 = Clock switching not finish.
+     * |        |          |1 = Clock switching finish.
+     * |        |          |Note 1: This bit is read only
+     * |        |          |After selected clock source is stable, hardware will switch system clock to selected clock automatically, and SCLKSWF will be setted automatically by hardware.
+     * |        |          |Note 2: This bit is not retained when D0 power is turned off.
+     * @var CLK_T::MIRCCTL
+     * Offset: 0x08  MIRC Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |MIRC1MSTBS|MIRC1M Stable Count Select (Write Protect)
+     * |        |          |00 = MIRC1M stable count is 9 clocks and clock output deviation about 2%.
+     * |        |          |01 = MIRC1M stable count is 8 clocks and clock output deviation about 5%.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |[20]    |MIRCFDIS  |MIRC Clock Filter Disable Bit
+     * |        |          |0 = MIRC Filter enabled.
+     * |        |          |1 = MIRC Filter disabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * @var CLK_T::HIRCCTL
+     * Offset: 0x0C  HIRC Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |HIRCSTBS  |HIRC Stable Count Select (Write Protect)
+     * |        |          |00 = HIRC stable count is 64 clocks.
+     * |        |          |01 = HIRC stable count is 24 clocks.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D3 power is turned off.
+     * |[4]     |HIRCFDIS  |HIRC Clock Filter Disable Bit
+     * |        |          |0 = HIRC Filter enabled.
+     * |        |          |1 = HIRC Filter disabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * @var CLK_T::HXTCTL
+     * Offset: 0x10  HXT Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |HXTGAIN   |HXT Gain Control Bit (Write Protect)
+     * |        |          |Gain control is used to enlarge the gain of crystal to make sure crystal work normally.
+     * |        |          |000 = HXT frequency is from 4 MHz to 8 MHz.
+     * |        |          |001 = HXT frequency is from 8 MHz to 12 MHz.
+     * |        |          |010 = HXT frequency is from 12 MHz to 16 MHz.
+     * |        |          |011 = HXT frequency is from 16 MHz to 24 MHz.
+     * |        |          |100 = HXT frequency is from 24 MHz to 32 MHz.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |        |          |Note 3: The default value is set by UCFG0[18:16].
+     * |[4]     |HXTSELTYP |HXT Crystal Type Select Bit (Write Protect)
+     * |        |          |0 = Select INV type.
+     * |        |          |1 = Select GM type.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |[5]     |HXTMD     |HXT Mode Selection (Write Protect)
+     * |        |          |0 = HXT work as crystal mode. PF.2 and PF.3 are configured as external high speed crystal (HXT) pins.
+     * |        |          |1 = HXT works as external clock mode. PF.3 is configured as external clock input pin.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGCTL register.
+     * |        |          |Note 2: When external clock mode enable, HXTSELTYP(CLK_HXTCTL[4]) must be set as GM type.
+     * |        |          |Note 3: This bit is not retained when D2 power is turned off.
+     * |[6]     |HXTFDIS   |HXT Clock Filter Disable Bit (Write Protect)
+     * |        |          |0 = HXT Filter enabled.
+     * |        |          |1 = HXT Filter disabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |[7]     |HXTFSEL   |HXT Filter Select (Write Protect)
+     * |        |          |0 = HXT frequency is <= 32 MHz.
+     * |        |          |1 = HXT frequency is <= 4 MHz.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * @var CLK_T::HIRC48MCTL
+     * Offset: 0x14  HIRC48M Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |HIRC48MSTBS|HIRC48M Stable Count Select (Write Protect)
+     * |        |          |00 = HIRC48M stable count = 1024 clocks.
+     * |        |          |01 = HIRC48M stable count = 512 clocks.
+     * |        |          |Others: Reserved
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |[4]     |HIRC48MFDIS|HIRC48M Clock Filter Disable Bit
+     * |        |          |0 = HIRC48M Filter enabled.
+     * |        |          |1 = HIRC48M Filter disabled.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * @var CLK_T::APLL0CTL
+     * Offset: 0x18  APLL0 Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[8:0]   |FBDIV     |APLL0 Feedback Divider Control (Write Protect)
+     * |        |          |Refer to the formulas below the table.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
+     * |[13:9]  |INDIV     |APLL0 Input Divider Control (Write Protect)
+     * |        |          |Refer to the formulas below the table.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
+     * |[15:14] |OUTDIV    |APLL0 Output Divider Control (Write Protect)
+     * |        |          |Refer to the formulas below the table.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
+     * |[27:16] |FRDIV     |APLL0 Fractional Divider Control (Write Protect)
+     * |        |          |Refer to the formulas below the table.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
+     * |[29:28] |STBSEL    |APLL0 Stable Counter Selection (Write Protect)
+     * |        |          |00 = APLL0 stable time is 820 APLL0 source clock (source clock is equal to 4M).
+     * |        |          |01 = APLL0 stable time is 2460 APLL0 source clock (4 MHz < source clock <=12 MHz).
+     * |        |          |10 = APLL0 stable time is 4920 APLL0 source clock (12 MHz < source clock <=24 MHz).
+     * |        |          |11 = APLL0 stable time is 6560 APLL0 source clock (24 MHz < source clock <=32 MHz).
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
+     * |[30]    |BP        |APLL0 Bypass Control (Write Protect)
+     * |        |          |0 = APLL0 is in normal mode (default).
+     * |        |          |1 = APLL0 clock output is same as APLL0 input clock FIN.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |        |          |Note 3: This bit is write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
+     * |[31]    |PLLFEN    |APLL0 Clock Filter Enable Bit
+     * |        |          |0 = APLL0 Filter Disable.
+     * |        |          |1 = APLL0 Filter Enable.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |        |          |Note 3: This bit is write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
+     * @var CLK_T::APLL0SEL
+     * Offset: 0x1C  APLL0 Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |APLLSRC   |APLL0 Source Clock Selection (Write Protect)
+     * |        |          |00 = APLL0 source clock from 4~32 MHz external high-speed crystal oscillator (HXT).
+     * |        |          |01 = APLL0 source clock from 12 MHz internal high-speed oscillator (HIRC).
+     * |        |          |10 = APLL0 source clock from 48 MHz internal high-speed oscillator (HIRC48M/4).
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL0EN(CLK_SRCCTL[6]) is set to enable.
+     * @var CLK_T::APLL1CTL
+     * Offset: 0x20  APLL1 Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[8:0]   |FBDIV     |APLL1 Feedback Divider Control (Write Protect)
+     * |        |          |Refer to the formulas below the table.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
+     * |[13:9]  |INDIV     |APLL1 Input Divider Control (Write Protect)
+     * |        |          |Refer to the formulas below the table.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
+     * |[15:14] |OUTDIV    |APLL1 Output Divider Control (Write Protect)
+     * |        |          |Refer to the formulas below the table.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
+     * |[27:16] |FRDIV     |APLL1 Fractional Divider Control (Write Protect)
+     * |        |          |Refer to the formulas below the table.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
+     * |[29:28] |STBSEL    |APLL1 Stable Counter Selection (Write Protect)
+     * |        |          |00 = APLL1 stable time is 820 APLL1 source clock (source clock is equal to 4M).
+     * |        |          |01 = APLL1 stable time is 2460 APLL1 source clock (4 MHz < source clock <= 12 MHz).
+     * |        |          |10 = APLL1 stable time is 4920 APLL1 source clock (12 MHz < source clock <= 24 MHz).
+     * |        |          |11 = APLL1 stable time is 6560 APLL1 source clock (24 MHz < source clock <= 32 MHz).
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
+     * |[30]    |BP        |APLL1 Bypass Control (Write Protect)
+     * |        |          |0 = APLL1 is in normal mode (default).
+     * |        |          |1 = APLL1 clock output is same as APLL1 input clock FIN.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |        |          |Note 3: This bit is write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
+     * |[31]    |PLLFEN    |APLL1 Clock Filter Enable Bit
+     * |        |          |0 = APLL1 Filter Disable.
+     * |        |          |1 = APLL1 Filter Enable.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |        |          |Note 3: This bit is write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
+     * @var CLK_T::APLL1SEL
+     * Offset: 0x24  APLL1 Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |APLLSRC   |APLL1 Source Clock Selection (Write Protect)
+     * |        |          |00 = APLL1 source clock from 4~32 MHz external high-speed crystal oscillator (HXT).
+     * |        |          |01 = APLL1 source clock from 12 MHz internal high-speed oscillator (HIRC).
+     * |        |          |10 = APLL1 source clock from 48 MHz internal high-speed oscillator (HIRC48M/4).
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |        |          |Note 3: These bits are write ignore when APLL1EN(CLK_SRCCTL[7]) is set to enable.
+     * @var CLK_T::CLKOCTL
+     * Offset: 0x28  Clock Output Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[3:0]   |FREQSEL   |Clock Output Frequency Selection
+     * |        |          |The formula of output frequency is
+     * |        |          |Fout = Fin/2(N+1).
+     * |        |          |Fin is the input clock frequency.
+     * |        |          |Fout is the frequency of divider output clock.
+     * |        |          |N is the 4-bit value of FREQSEL[3:0].
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * |[4]     |CLKOEN    |Clock Output Enable Bit
+     * |        |          |0 = Clock Output function Disabled.
+     * |        |          |1 = Clock Output function Enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[5]     |DIV1EN    |Clock Output Divide One Enable Bit
+     * |        |          |0 = Clock Output will output clock with source frequency divided by FREQSEL.
+     * |        |          |1 = Clock Output will output clock with source frequency.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[6]     |CLK1HZEN  |Clock Output 1Hz Enable Bit
+     * |        |          |0 = 1 Hz clock output for 32.768 kHz frequency compensation Disabled.
+     * |        |          |1 = 1 Hz clock output for 32.768 kHz frequency compensation Enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * @var CLK_T::CLKDCTL
+     * Offset: 0x30  Clock Fail Detector Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[4]     |HXTFDEN   |HXT Clock Fail Detector Enable Bit
+     * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector Disabled.
+     * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector Enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[5]     |HXTFIEN   |HXT Clock Fail Interrupt Enable Bit
+     * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail interrupt Disabled.
+     * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail interrupt Enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[6]     |HXTFDSEL  |HXT Clock Fail Detector Selection
+     * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector after HXT stable.
+     * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector bypass HXT stable.
+     * |        |          |Note 1: When HXT Clock Fail Detector Selection is set, detector will keep detect whether HXT is stable or not, prevent HXT fail before stable.
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * |[12]    |LXTFDEN   |LXT Clock Fail Detector Enable Bit
+     * |        |          |0 = 32.768 kHz external low speed crystal oscillator (LXT) clock fail detector Disabled.
+     * |        |          |1 = 32.768 kHz external low speed crystal oscillator (LXT) clock fail detector Enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[13]    |LXTFIEN   |LXT Clock Fail Interrupt Enable Bit
+     * |        |          |0 = 32.768 kHz external low speed crystal oscillator (LXT) clock fail interrupt Disabled.
+     * |        |          |1 = 32.768 kHz external low speed crystal oscillator (LXT) clock fail interrupt Enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[16]    |HXTFQDEN  |HXT Clock Frequency Range Detector Enable Bit
+     * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector Disabled.
+     * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector Enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[17]    |HXTFQIEN  |HXT Clock Frequency Range Detector Interrupt Enable Bit
+     * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector fail interrupt Disabled.
+     * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector fail interrupt Enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[18]    |HXTFQASW  |HXT Clock Frequency Range Detector Event Auto Switch Enable Bit
+     * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector fail event happened and SCLK will not switch to HIRC automatically.
+     * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency range detector fail event happened and SCLK will switch to HIRC automatically.
+     * |        |          |Note 1: This bit should be set before HXTFQDEN(CLK_CLKDCTL[16]).
+     * |        |          |Note 2: This bit is not retained when D2 power is turned off.
+     * @var CLK_T::CLKDSTS
+     * Offset: 0x34  Clock Fail Detector Status Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[4]     |HXTFDST   |HXT Clock Fail Detector Status Bit
+     * |        |          |0 = Indicate 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector already disabled.
+     * |        |          |1 = Indicate 4~32 MHz external high speed crystal oscillator (HXT) clock fail detector already enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[5]     |HXTFIF    |HXT Clock Fail Interrupt Flag (Write Protect)
+     * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock is normal.
+     * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock stops.
+     * |        |          |Note 1: Write 1 to clear this bit to 0.
+     * |        |          |Note 2: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 3: This bit is not retained when D2 power is turned off.
+     * |[12]    |LXTFDST   |LXT Clock Fail Detector Status Bit
+     * |        |          |0 = Indicate 32.768 kHz external low speed crystal oscillator (LXT) clock fail detector already disabled.
+     * |        |          |1 = Indicate 32.768 kHz external low speed crystal oscillator (LXT) clock fail detector already enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[13]    |LXTFIF    |LXT Clock Fail Interrupt Flag (Write Protect)
+     * |        |          |0 = 32.768 kHz external low speed crystal oscillator (LXT) clock is normal.
+     * |        |          |1 = 32.768 kHz external low speed crystal oscillator (LXT) stops.
+     * |        |          |Note 1: Write 1 to clear this bit to 0.
+     * |        |          |Note 2: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 3: This bit is not retained when D2 power is turned off.
+     * |[17]    |HXTFQIF   |HXT Clock Frequency Range Detector Interrupt Flag (Write Protect)
+     * |        |          |0 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency is normal.
+     * |        |          |1 = 4~32 MHz external high speed crystal oscillator (HXT) clock frequency is abnormal.
+     * |        |          |Note 1: Write 1 to clear this bit to 0.
+     * |        |          |Note 2: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 3: This bit is not retained when D2 power is turned off.
+     * @var CLK_T::CDUPB
+     * Offset: 0x38  Clock Frequency Range Detector Upper Boundary Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[9:0]   |UPERBD    |HXT Clock Frequency Range Detector Upper Boundary Value
+     * |        |          |The bits define the high value of frequency monitor window.
+     * |        |          |When HXT frequency monitor value higher than this register, the HXT frequency detect fail interrupt flag will set to 1.
+     * |        |          |Frequency out of range will be asserted when ((HIRC48M_period*512) / HXT_period)-1 > CLK_UPERBD.
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::CDLOWB
+     * Offset: 0x3C  Clock Frequency Range Detector Lower Boundary Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[9:0]   |LOWERBD   |HXT Clock Frequency Range Detector Lower Boundary Value
+     * |        |          |The bits define the low value of frequency monitor window.
+     * |        |          |When HXT frequency monitor value lower than this register, the HXT frequency detect fail interrupt flag will set to 1.
+     * |        |          |Frequency out of range will be asserted when ((HIRC48M_period*512) / HXT_period)-1 < CLK_CDLOWB.
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::STOPREQ
+     * Offset: 0x40  Clock Stop Request Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |CANFD0STR |CANFD0 Clock Stop Request
+     * |        |          |This bit is used to stop CANFD0 clock.
+     * |        |          |0 = CANFD0 clock is not stopped by this bit. (default)
+     * |        |          |1 = Set this bit and check the CANFD0STA(CLK_STOPACK[0]) is 1, then CANFD0 clock stop.
+     * |        |          |Note: This bit is not retained when D1 power is turned off.
+     * |[1]     |CANFD1STR |CANFD1 Clock Stop Request
+     * |        |          |This bit is used to stop CANFD1 clock.
+     * |        |          |0 = CANFD1 clock is not stopped by this bit. (default)
+     * |        |          |1 = Set this bit and check the CANFD1STA(CLK_STOPACK[1]) is 1, then CANFD1 clock stop.
+     * |        |          |Note: This bit is not retained when D1 power is turned off.
+     * @var CLK_T::STOPACK
+     * Offset: 0x44  Clock Stop Acknowledge Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |CANFD0STA |CANFD0 Clock Stop Acknowledge (Read Only)
+     * |        |          |This bit is used to check CANFD0 clock stop by setting CANFD0STR(CLK_STOPREQ[0]).
+     * |        |          |0 = CANFD0 clock not stopped.
+     * |        |          |1 = CANFD0 clock stopped.
+     * |        |          |Note: This bit is not retained when D1 power is turned off.
+     * |[1]     |CANFD1STA |CANFD1 Clock Stop Acknowledge (Read Only)
+     * |        |          |This bit is used to check CANFD1 clock stop by setting CANFD1STR(CLK_STOPREQ[1]).
+     * |        |          |0 = CANFD1 clock not stopped.
+     * |        |          |1 = CANFD1 clock stopped.
+     * |        |          |Note: This bit is not retained when D1 power is turned off.
+     * @var CLK_T::ACMPCTL
+     * Offset: 0x200  ACMP Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |ACMP01CKEN|ACMP0/1 Clock Enable Bit
+     * |        |          |0 = ACMP0/1 clock Disabled.
+     * |        |          |1 = ACMP0/1 clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |ACMP23CKEN|ACMP2/3 Clock Enable Bit
+     * |        |          |0 = ACMP2/3 clock Disabled.
+     * |        |          |1 = ACMP2/3 clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |ACMP Clock Stable Flag (Read Only)
+     * |        |          |0 = ACMP clock is not stable.
+     * |        |          |1 = ACMP clock is stable.
+     * @var CLK_T::AWFCTL
+     * Offset: 0x204  AWF Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |AWF0CKEN  |AWFx Clock Enable Bit
+     * |        |          |0 = AWFx clock Disabled.
+     * |        |          |1 = AWFx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |AWF Clock Stable Flag (Read Only)
+     * |        |          |0 = AWF clock is not stable.
+     * |        |          |1 = AWF clock is stable.
+     * @var CLK_T::BPWMCTL
+     * Offset: 0x208  BPWM Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |BPWM0CKEN |BPWMx Clock Enable Bit
+     * |        |          |0 = BPWMx clock Disabled.
+     * |        |          |1 = BPWMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |BPWM1CKEN |BPWMx Clock Enable Bit
+     * |        |          |0 = BPWMx clock Disabled.
+     * |        |          |1 = BPWMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |BPWM Clock Stable Flag (Read Only)
+     * |        |          |0 = BPWM clock is not stable.
+     * |        |          |1 = BPWM clock is stable.
+     * @var CLK_T::CANFDCTL
+     * Offset: 0x20C  CANFD Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |CANFD0CKEN|CANFDx Clock Enable Bit
+     * |        |          |0 = CANFDx clock Disabled.
+     * |        |          |1 = CANFDx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |CANFD1CKEN|CANFDx Clock Enable Bit
+     * |        |          |0 = CANFDx clock Disabled.
+     * |        |          |1 = CANFDx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[16]    |CANRM0CKEN|CANFD0 Message SRAM Clock Enable Bit
+     * |        |          |0 = CANFD0 Message SRAM clock Disabled.
+     * |        |          |1 = CANFD0 Message SRAM clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[17]    |CANRM1CKEN|CANFD1 Message SRAM Clock Enable Bit
+     * |        |          |0 = CANFD1 Message SRAM clock Disabled.
+     * |        |          |1 = CANFD1 Message SRAM clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |CANFD Clock Stable Flag (Read Only)
+     * |        |          |0 = CANFD clock is not stable.
+     * |        |          |1 = CANFD clock is stable.
+     * @var CLK_T::CCAPCTL
+     * Offset: 0x210  CCAP Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |CCAP0CKEN |CCAPx Clock Enable Bit
+     * |        |          |0 = CCAPx clock Disabled.
+     * |        |          |1 = CCAPx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |CCAP Clock Stable Flag (Read Only)
+     * |        |          |0 = CCAP clock is not stable.
+     * |        |          |1 = CCAP clock is stable.
+     * @var CLK_T::CRCCTL
+     * Offset: 0x214  CRC Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |CRC0CKEN  |CRCx Clock Enable Bit
+     * |        |          |0 = CRCx clock Disabled.
+     * |        |          |1 = CRCx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |CRC Clock Stable Flag (Read Only)
+     * |        |          |0 = CRC clock is not stable.
+     * |        |          |1 = CRC clock is stable.
+     * @var CLK_T::CRYPTOCTL
+     * Offset: 0x218  CRYPTO Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |CRYPTO0CKEN|CRYPTOx Clock Enable Bit
+     * |        |          |0 = CRYPTOx clock Disabled.
+     * |        |          |1 = CRYPTOx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |CRYPTO Clock Stable Flag (Read Only)
+     * |        |          |0 = CRYPTO clock is not stable.
+     * |        |          |1 = CRYPTO clock is stable.
+     * @var CLK_T::DACCTL
+     * Offset: 0x21C  DAC Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |DAC01CKEN |DAC0/DAC1 Clock Enable Bit  (DAC1 is not support in TESTCHIP_ONLY)
+     * |        |          |0 = DAC0/1 clock Disabled.
+     * |        |          |1 = DAC0/1 clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |DAC Clock Stable Flag (Read Only)
+     * |        |          |0 = DAC clock is not stable.
+     * |        |          |1 = DAC clock is stable.
+     * @var CLK_T::DMICCTL
+     * Offset: 0x220  DMIC Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |DMIC0CKEN |DMICx Clock Enable Bit
+     * |        |          |0 = DMICx clock Disabled.
+     * |        |          |1 = DMICx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |DMIC Clock Stable Flag (Read Only)
+     * |        |          |0 = DMIC clock is not stable.
+     * |        |          |1 = DMIC clock is stable.
+     * @var CLK_T::EADCCTL
+     * Offset: 0x224  EADC Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |EADC0CKEN |EADCx Clock Enable Bit
+     * |        |          |0 = EADCx clock Disabled.
+     * |        |          |1 = EADCx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |EADC1CKEN |EADCx Clock Enable Bit
+     * |        |          |0 = EADCx clock Disabled.
+     * |        |          |1 = EADCx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |EADC Clock Stable Flag (Read Only)
+     * |        |          |0 = EADC clock is not stable.
+     * |        |          |1 = EADC clock is stable.
+     * @var CLK_T::EBICTL
+     * Offset: 0x228  EBI Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |EBI0CKEN  |EBIx Clock Enable Bit
+     * |        |          |0 = EBIx clock Disabled.
+     * |        |          |1 = EBIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |EBI Clock Stable Flag (Read Only)
+     * |        |          |0 = EBI clock is not stable.
+     * |        |          |1 = EBI clock is stable.
+     * @var CLK_T::ECAPCTL
+     * Offset: 0x22C  ECAP Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |ECAP0CKEN |ECAPx Clock Enable Bit
+     * |        |          |0 = ECAPx clock Disabled.
+     * |        |          |1 = ECAPx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |ECAP1CKEN |ECAPx Clock Enable Bit
+     * |        |          |0 = ECAPx clock Disabled.
+     * |        |          |1 = ECAPx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[2]     |ECAP2CKEN |ECAPx Clock Enable Bit
+     * |        |          |0 = ECAPx clock Disabled.
+     * |        |          |1 = ECAPx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[3]     |ECAP3CKEN |ECAPx Clock Enable Bit
+     * |        |          |0 = ECAPx clock Disabled.
+     * |        |          |1 = ECAPx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |ECAP Clock Stable Flag (Read Only)
+     * |        |          |0 = ECAP clock is not stable.
+     * |        |          |1 = ECAP clock is stable.
+     * @var CLK_T::EMACCTL
+     * Offset: 0x230  EMAC Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |EMAC0CKEN |EMACx Clock Enable Bit
+     * |        |          |0 = EMACx clock Disabled.
+     * |        |          |1 = EMACx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |EMAC Clock Stable Flag (Read Only)
+     * |        |          |0 = EMAC clock is not stable.
+     * |        |          |1 = EMAC clock is stable.
+     * @var CLK_T::EPWMCTL
+     * Offset: 0x234  EPWM Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |EPWM0CKEN |EPWMx Clock Enable Bit
+     * |        |          |0 = EPWMx clock Disabled.
+     * |        |          |1 = EPWMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |EPWM1CKEN |EPWMx Clock Enable Bit
+     * |        |          |0 = EPWMx clock Disabled.
+     * |        |          |1 = EPWMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |EPWM Clock Stable Flag (Read Only)
+     * |        |          |0 = EPWM clock is not stable.
+     * |        |          |1 = EPWM clock is stable.
+     * @var CLK_T::EQEICTL
+     * Offset: 0x238  EQEI Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |EQEI0CKEN |EQEIx Clock Enable Bit
+     * |        |          |0 = EQEIx clock Disabled.
+     * |        |          |1 = EQEIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |EQEI1CKEN |EQEIx Clock Enable Bit
+     * |        |          |0 = EQEIx clock Disabled.
+     * |        |          |1 = EQEIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[2]     |EQEI2CKEN |EQEIx Clock Enable Bit
+     * |        |          |0 = EQEIx clock Disabled.
+     * |        |          |1 = EQEIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[3]     |EQEI3CKEN |EQEIx Clock Enable Bit
+     * |        |          |0 = EQEIx clock Disabled.
+     * |        |          |1 = EQEIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |EQEI Clock Stable Flag (Read Only)
+     * |        |          |0 = EQEI clock is not stable.
+     * |        |          |1 = EQEI clock is stable.
+     * @var CLK_T::FMCCTL
+     * Offset: 0x23C  FMC Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |FMC0CKEN  |FMCx Clock Enable Bit
+     * |        |          |0 = FMC clock Disabled when chip is under IDLE mode.
+     * |        |          |1 = FMC clock Enabled when chip is under IDLE mode.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[16]    |ISP0CKEN  |ISPx Clock Enable Bit
+     * |        |          |0 = ISPx clock Disabled.
+     * |        |          |1 = ISPx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * @var CLK_T::GDMACTL
+     * Offset: 0x240  GDMA Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |GDMA0CKEN |GDMAx Clock Enable Bit
+     * |        |          |0 = GDMAx clock Disabled.
+     * |        |          |1 = GDMAx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |GDMA Clock Stable Flag (Read Only)
+     * |        |          |0 = GDMA clock is not stable.
+     * |        |          |1 = GDMA clock is stable.
+     * @var CLK_T::GPIOCTL
+     * Offset: 0x244  GPIO Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |GPIOACKEN |GPIOA Clock Enable Bit
+     * |        |          |0 = GPIOA clock Disabled.
+     * |        |          |1 = GPIOA clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |GPIOBCKEN |GPIOB Clock Enable Bit
+     * |        |          |0 = GPIOB clock Disabled.
+     * |        |          |1 = GPIOB clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[2]     |GPIOCCKEN |GPIOC Clock Enable Bit
+     * |        |          |0 = GPIOC clock Disabled.
+     * |        |          |1 = GPIOC clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[3]     |GPIODCKEN |GPIOD Clock Enable Bit
+     * |        |          |0 = GPIOD clock Disabled.
+     * |        |          |1 = GPIOD clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[4]     |GPIOECKEN |GPIOE Clock Enable Bit
+     * |        |          |0 = GPIOE clock Disabled.
+     * |        |          |1 = GPIOE clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[5]     |GPIOFCKEN |GPIOF Clock Enable Bit
+     * |        |          |0 = GPIOF clock Disabled.
+     * |        |          |1 = GPIOF clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[6]     |GPIOGCKEN |GPIOG Clock Enable Bit
+     * |        |          |0 = GPIOG clock Disabled.
+     * |        |          |1 = GPIOG clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[7]     |GPIOHCKEN |GPIOH Clock Enable Bit
+     * |        |          |0 = GPIOH clock Disabled.
+     * |        |          |1 = GPIOH clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[8]     |GPIOICKEN |GPIOI Clock Enable Bit
+     * |        |          |0 = GPIOI clock Disabled.
+     * |        |          |1 = GPIOI clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[9]     |GPIOJCKEN |GPIOJ Clock Enable Bit
+     * |        |          |0 = GPIOJ clock Disabled.
+     * |        |          |1 = GPIOJ clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |GPIO Clock Stable Flag (Read Only)
+     * |        |          |0 = GPIO clock is not stable.
+     * |        |          |1 = GPIO clock is stable.
+     * @var CLK_T::HSOTGCTL
+     * Offset: 0x248  HSOTG Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |HSOTG0CKEN|HSOTGx Clock Enable Bit
+     * |        |          |0 = HSOTGx clock Disabled.
+     * |        |          |1 = HSOTGx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |HSOTG Clock Stable Flag (Read Only)
+     * |        |          |0 = HSOTG clock is not stable.
+     * |        |          |1 = HSOTG clock is stable.
+     * @var CLK_T::HSUSBDCTL
+     * Offset: 0x24C  HSUSBD Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |HSUSBD0CKEN|HSUSBDx Clock Enable Bit
+     * |        |          |0 = HSUSBDx clock Disabled.
+     * |        |          |1 = HSUSBDx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |HSUSBD Clock Stable Flag (Read Only)
+     * |        |          |0 = HSUSBD clock is not stable.
+     * |        |          |1 = HSUSBD clock is stable.
+     * @var CLK_T::HSUSBHCTL
+     * Offset: 0x250  HSUSBH Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |HSUSBH0CKEN|HSUSBHx Clock Enable Bit
+     * |        |          |0 = HSUSBHx clock Disabled.
+     * |        |          |1 = HSUSBHx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |HSUSBH Clock Stable Flag (Read Only)
+     * |        |          |0 = HSUSBH clock is not stable.
+     * |        |          |1 = HSUSBH clock is stable.
+     * @var CLK_T::I2CCTL
+     * Offset: 0x254  I2C Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |I2C0CKEN  |I2Cx Clock Enable Bit
+     * |        |          |0 = I2Cx clock Disabled.
+     * |        |          |1 = I2Cx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |I2C1CKEN  |I2Cx Clock Enable Bit
+     * |        |          |0 = I2Cx clock Disabled.
+     * |        |          |1 = I2Cx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[2]     |I2C2CKEN  |I2Cx Clock Enable Bit
+     * |        |          |0 = I2Cx clock Disabled.
+     * |        |          |1 = I2Cx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[3]     |I2C3CKEN  |I2Cx Clock Enable Bit
+     * |        |          |0 = I2Cx clock Disabled.
+     * |        |          |1 = I2Cx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |I2C Clock Stable Flag (Read Only)
+     * |        |          |0 = I2C clock is not stable.
+     * |        |          |1 = I2C clock is stable.
+     * @var CLK_T::I2SCTL
+     * Offset: 0x258  I2S Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |I2S0CKEN  |I2Sx Clock Enable Bit
+     * |        |          |0 = I2Sx clock Disabled.
+     * |        |          |1 = I2Sx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |I2S1CKEN  |I2Sx Clock Enable Bit
+     * |        |          |0 = I2Sx clock Disabled.
+     * |        |          |1 = I2Sx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |I2S Clock Stable Flag (Read Only)
+     * |        |          |0 = I2S clock is not stable.
+     * |        |          |1 = I2S clock is stable.
+     * @var CLK_T::I3CCTL
+     * Offset: 0x25C  I3C Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |I3C0CKEN  |I3Cx Clock Enable Bit
+     * |        |          |0 = I3Cx clock Disabled.
+     * |        |          |1 = I3Cx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |I3C Clock Stable Flag (Read Only)
+     * |        |          |0 = I3C clock is not stable.
+     * |        |          |1 = I3C clock is stable.
+     * @var CLK_T::KDFCTL
+     * Offset: 0x260  KDF Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |KDF0CKEN  |KDFx Clock Enable Bit
+     * |        |          |0 = KDFx clock Disabled.
+     * |        |          |1 = KDFx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |KDF Clock Stable Flag (Read Only)
+     * |        |          |0 = KDF clock is not stable.
+     * |        |          |1 = KDF clock is stable.
+     * @var CLK_T::KPICTL
+     * Offset: 0x264  KPI Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |KPI0CKEN  |KPIx Clock Enable Bit
+     * |        |          |0 = KPIx clock Disabled.
+     * |        |          |1 = KPIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |KPI Clock Stable Flag (Read Only)
+     * |        |          |0 = KPI clock is not stable.
+     * |        |          |1 = KPI clock is stable.
+     * @var CLK_T::KSCTL
+     * Offset: 0x268  KS Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |KS0CKEN   |KSx Clock Enable Bit
+     * |        |          |0 = KSx clock Disabled.
+     * |        |          |1 = KSx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |KS Clock Stable Flag (Read Only)
+     * |        |          |0 = KS clock is not stable.
+     * |        |          |1 = KS clock is stable.
+     * @var CLK_T::LPADCCTL
+     * Offset: 0x26C  Low Power ADC Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |LPADC0CKEN|LPADCx Clock Enable Bit
+     * |        |          |0 = LPADCx clock Disabled.
+     * |        |          |1 = LPADCx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |LPADC Clock Stable Flag (Read Only)
+     * |        |          |0 = LPADC clock is not stable.
+     * |        |          |1 = LPADC clock is stable.
+     * @var CLK_T::LPPDMACTL
+     * Offset: 0x270  Low Power PDMA Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |LPPDMA0CKEN|LPPDMAx Clock Enable Bit
+     * |        |          |0 = LPPDMAx clock Disabled.
+     * |        |          |1 = LPPDMAx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |LPPDMA Clock Stable Flag (Read Only)
+     * |        |          |0 = LPPDMA clock is not stable.
+     * |        |          |1 = LPPDMA clock is stable.
+     * @var CLK_T::LPGPIOCTL
+     * Offset: 0x274  Low Power GPIO Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |LPGPIO0CKEN|LPGPIOx Clock Enable Bit
+     * |        |          |0 = LPGPIOx clock Disabled.
+     * |        |          |1 = LPGPIOx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |LPGPIO Clock Stable Flag (Read Only)
+     * |        |          |0 = LPGPIO clock is not stable.
+     * |        |          |1 = LPGPIO clock is stable.
+     * @var CLK_T::LPI2CCTL
+     * Offset: 0x278  Low Power I2C Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |LPI2C0CKEN|LPI2Cx Clock Enable Bit
+     * |        |          |0 = LPI2Cx clock Disabled.
+     * |        |          |1 = LPI2Cx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |LPI2C Clock Stable Flag (Read Only)
+     * |        |          |0 = LPI2C clock is not stable.
+     * |        |          |1 = LPI2C clock is stable.
+     * @var CLK_T::LPSPICTL
+     * Offset: 0x27C  Low Power SPI Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |LPSPI0CKEN|LPSPIx Clock Enable Bit
+     * |        |          |0 = LPSPIx clock Disabled.
+     * |        |          |1 = LPSPIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |LPSPI Clock Stable Flag (Read Only)
+     * |        |          |0 = LPSPI clock is not stable.
+     * |        |          |1 = LPSPI clock is stable.
+     * @var CLK_T::LPSRAMCTL
+     * Offset: 0x280  Low Power SRAM Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |LPSRAM0CKEN|LPSRAMx Clock Enable Bit
+     * |        |          |0 = LPSRAMx clock Disabled.
+     * |        |          |1 = LPSRAMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |LPSRAM Clock Stable Flag (Read Only)
+     * |        |          |0 = LPSRAM clock is not stable.
+     * |        |          |1 = LPSRAM clock is stable.
+     * @var CLK_T::LPTMRCTL
+     * Offset: 0x284  Low Power Timer Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |LPTMR0CKEN|LPTMRx Clock Enable Bit
+     * |        |          |0 = LPTMRx clock Disabled.
+     * |        |          |1 = LPTMRx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |LPTMR1CKEN|LPTMRx Clock Enable Bit
+     * |        |          |0 = LPTMRx clock Disabled.
+     * |        |          |1 = LPTMRx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |LPTMR Clock Stable Flag (Read Only)
+     * |        |          |0 = LPTMR clock is not stable.
+     * |        |          |1 = LPTMR clock is stable.
+     * @var CLK_T::LPUARTCTL
+     * Offset: 0x288  Low Power UART Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |LPUART0CKEN|LPUARTx Clock Enable Bit
+     * |        |          |0 = LPUARTx clock Disabled.
+     * |        |          |1 = LPUARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |LPUART Clock Stable Flag (Read Only)
+     * |        |          |0 = LPUART clock is not stable.
+     * |        |          |1 = LPUART clock is stable.
+     * @var CLK_T::NPUCTL
+     * Offset: 0x28C  NPU Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |NPU0CKEN  |NPUx Clock Enable Bit
+     * |        |          |0 = NPUx clock Disabled.
+     * |        |          |1 = NPUx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |NPU Clock Stable Flag (Read Only)
+     * |        |          |0 = NPU clock is not stable.
+     * |        |          |1 = NPU clock is stable.
+     * @var CLK_T::OTFCCTL
+     * Offset: 0x294  OTFC Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |OTFC0CKEN |OTFCx Clock Enable Bit
+     * |        |          |0 = OTFCx clock Disabled.
+     * |        |          |1 = OTFCx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |OTFC1CKEN |OTFCx Clock Enable Bit
+     * |        |          |0 = OTFCx clock Disabled.
+     * |        |          |1 = OTFCx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |OTFC Clock Stable Flag (Read Only)
+     * |        |          |0 = OTFC clock is not stable.
+     * |        |          |1 = OTFC clock is stable.
+     * @var CLK_T::OTGCTL
+     * Offset: 0x298  OTG Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |OTG0CKEN  |OTGx Clock Enable Bit
+     * |        |          |0 = OTGx clock Disabled.
+     * |        |          |1 = OTGx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |OTG Clock Stable Flag (Read Only)
+     * |        |          |0 = OTG clock is not stable.
+     * |        |          |1 = OTG clock is stable.
+     * @var CLK_T::PDMACTL
+     * Offset: 0x29C  PDMA Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |PDMA0CKEN |PDMAx Clock Enable Bit
+     * |        |          |0 = PDMAx clock Disabled.
+     * |        |          |1 = PDMAx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |PDMA1CKEN |PDMAx Clock Enable Bit
+     * |        |          |0 = PDMAx clock Disabled.
+     * |        |          |1 = PDMAx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |PDMA Clock Stable Flag (Read Only)
+     * |        |          |0 = PDMA clock is not stable.
+     * |        |          |1 = PDMA clock is stable.
+     * @var CLK_T::PSIOCTL
+     * Offset: 0x2A0  PSIO Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |PSIO0CKEN |PSIOx Clock Enable Bit
+     * |        |          |0 = PSIOx clock Disabled.
+     * |        |          |1 = PSIOx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |PSIO Clock Stable Flag (Read Only)
+     * |        |          |0 = PSIO clock is not stable.
+     * |        |          |1 = PSIO clock is stable.
+     * @var CLK_T::QSPICTL
+     * Offset: 0x2A4  QSPI Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |QSPI0CKEN |QSPIx Clock Enable Bit
+     * |        |          |0 = QSPIx clock Disabled.
+     * |        |          |1 = QSPIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |QSPI1CKEN |QSPIx Clock Enable Bit
+     * |        |          |0 = QSPIx clock Disabled.
+     * |        |          |1 = QSPIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |QSPI Clock Stable Flag (Read Only)
+     * |        |          |0 = QSPI clock is not stable.
+     * |        |          |1 = QSPI clock is stable.
+     * @var CLK_T::RTCCTL
+     * Offset: 0x2A8  RTC Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |RTC0CKEN  |RTCx Clock Enable Bit
+     * |        |          |0 = RTCx clock Disabled.
+     * |        |          |1 = RTCx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |RTC Clock Stable Flag (Read Only)
+     * |        |          |0 = RTC clock is not stable.
+     * |        |          |1 = RTC clock is stable.
+     * @var CLK_T::SCCTL
+     * Offset: 0x2AC  SC Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |SC0CKEN   |SCx Clock Enable Bit
+     * |        |          |0 = SCx clock Disabled.
+     * |        |          |1 = SCx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |SC1CKEN   |SCx Clock Enable Bit
+     * |        |          |0 = SCx clock Disabled.
+     * |        |          |1 = SCx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[2]     |SC2CKEN   |SCx Clock Enable Bit
+     * |        |          |0 = SCx clock Disabled.
+     * |        |          |1 = SCx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |SC Clock Stable Flag (Read Only)
+     * |        |          |0 = SC clock is not stable.
+     * |        |          |1 = SC clock is stable.
+     * @var CLK_T::SCUCTL
+     * Offset: 0x2B0  SCU Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |SCU0CKEN  |SCUx Clock Enable Bit
+     * |        |          |0 = SCUx clock Disabled.
+     * |        |          |1 = SCUx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |SCU Clock Stable Flag (Read Only)
+     * |        |          |0 = SCU clock is not stable.
+     * |        |          |1 = SCU clock is stable.
+     * @var CLK_T::SDHCTL
+     * Offset: 0x2B4  SDH Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |SDH0CKEN  |SDHx Clock Enable Bit
+     * |        |          |0 = SDHx clock Disabled.
+     * |        |          |1 = SDHx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |SDH1CKEN  |SDHx Clock Enable Bit
+     * |        |          |0 = SDHx clock Disabled.
+     * |        |          |1 = SDHx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |SDH Clock Stable Flag (Read Only)
+     * |        |          |0 = SDH clock is not stable.
+     * |        |          |1 = SDH clock is stable.
+     * @var CLK_T::SPICTL
+     * Offset: 0x2B8  SPI Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |SPI0CKEN  |SPIx Clock Enable Bit
+     * |        |          |0 = SPIx clock Disabled.
+     * |        |          |1 = SPIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |SPI1CKEN  |SPIx Clock Enable Bit
+     * |        |          |0 = SPIx clock Disabled.
+     * |        |          |1 = SPIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[2]     |SPI2CKEN  |SPIx Clock Enable Bit
+     * |        |          |0 = SPIx clock Disabled.
+     * |        |          |1 = SPIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[3]     |SPI3CKEN  |SPIx Clock Enable Bit
+     * |        |          |0 = SPIx clock Disabled.
+     * |        |          |1 = SPIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |SPI Clock Stable Flag (Read Only)
+     * |        |          |0 = SPI clock is not stable.
+     * |        |          |1 = SPI clock is stable.
+     * @var CLK_T::SPIMCTL
+     * Offset: 0x2BC  SPIM Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |SPIM0CKEN |SPIMx Clock Enable Bit
+     * |        |          |0 = SPIMx clock Disabled.
+     * |        |          |1 = SPIMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |SPIM1CKEN |SPIMx Clock Enable Bit
+     * |        |          |0 = SPIMx clock Disabled.
+     * |        |          |1 = SPIMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |SPIM Clock Stable Flag (Read Only)
+     * |        |          |0 = SPIM clock is not stable.
+     * |        |          |1 = SPIM clock is stable.
+     * @var CLK_T::SRAMCTL
+     * Offset: 0x2C0  System SRAM Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |SRAM0CKEN |SRAMx Clock Enable Bit
+     * |        |          |0 = SRAMx clock Disabled.
+     * |        |          |1 = SRAMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |SRAM1CKEN |SRAMx Clock Enable Bit
+     * |        |          |0 = SRAMx clock Disabled.
+     * |        |          |1 = SRAMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[2]     |SRAM2CKEN |SRAMx Clock Enable Bit
+     * |        |          |0 = SRAMx clock Disabled.
+     * |        |          |1 = SRAMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[3]     |SRAM3CKEN |SRAMx Clock Enable Bit
+     * |        |          |0 = SRAMx clock Disabled.
+     * |        |          |1 = SRAMx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |SRAM Clock Stable Flag (Read Only)
+     * |        |          |0 = SRAM clock is not stable.
+     * |        |          |1 = SRAM clock is stable.
+     * @var CLK_T::STCTL
+     * Offset: 0x2CC  System Tick Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |ST0CKEN   |SYSTICKx Clock Enable Bit
+     * |        |          |0 = SYSTICKx clock Disabled.
+     * |        |          |1 = SYSTICKx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |SYSTICK Clock Stable Flag (Read Only)
+     * |        |          |0 = SYSTICK clock is not stable.
+     * |        |          |1 = SYSTICK clock is stable.
+     * @var CLK_T::TAMPERCTL
+     * Offset: 0x2D0  TAMPER Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |TAMPER0CKEN|TAMPERx Clock Enable Bit
+     * |        |          |0 = TAMPERx clock Disabled.
+     * |        |          |1 = TAMPERx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |TAMPER Clock Stable Flag (Read Only)
+     * |        |          |0 = TAMPER clock is not stable.
+     * |        |          |1 = TAMPER clock is stable.
+     * @var CLK_T::TMRCTL
+     * Offset: 0x2D4  Timer Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |TMR0CKEN  |TIMERx Clock Enable Bit
+     * |        |          |0 = TIMERx clock Disabled.
+     * |        |          |1 = TIMERx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |TMR1CKEN  |TIMERx Clock Enable Bit
+     * |        |          |0 = TIMERx clock Disabled.
+     * |        |          |1 = TIMERx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[2]     |TMR2CKEN  |TIMERx Clock Enable Bit
+     * |        |          |0 = TIMERx clock Disabled.
+     * |        |          |1 = TIMERx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[3]     |TMR3CKEN  |TIMERx Clock Enable Bit
+     * |        |          |0 = TIMERx clock Disabled.
+     * |        |          |1 = TIMERx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |TIMER Clock Stable Flag (Read Only)
+     * |        |          |0 = TIMER clock is not stable.
+     * |        |          |1 = TIMER clock is stable.
+     * @var CLK_T::TRNGCTL
+     * Offset: 0x2D8  TRNG Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |TRNG0CKEN |TRNGx Clock Enable Bit
+     * |        |          |0 = TRNGx clock Disabled.
+     * |        |          |1 = TRNGx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |TRNG Clock Stable Flag (Read Only)
+     * |        |          |0 = TRNG clock is not stable.
+     * |        |          |1 = TRNG clock is stable.
+     * @var CLK_T::TTMRCTL
+     * Offset: 0x2DC  Tick Timer Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |TTMR0CKEN |TTMRx Clock Enable Bit
+     * |        |          |0 = TTMRx clock Disabled.
+     * |        |          |1 = TTMRx clock Enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[1]     |TTMR1CKEN |TTMRx Clock Enable Bit
+     * |        |          |0 = TTMRx clock Disabled.
+     * |        |          |1 = TTMRx clock Enabled.
+     * |        |          |Note: This bit is not retained when D2 power is turned off.
+     * |[31]    |CLKSTB    |TTMR Clock Stable Flag (Read Only)
+     * |        |          |0 = TTMR clock is not stable.
+     * |        |          |1 = TTMR clock is stable.
+     * @var CLK_T::UARTCTL
+     * Offset: 0x2E0  UART Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |UART0CKEN |UARTx Clock Enable Bit
+     * |        |          |0 = UARTx clock Disabled.
+     * |        |          |1 = UARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[1]     |UART1CKEN |UARTx Clock Enable Bit
+     * |        |          |0 = UARTx clock Disabled.
+     * |        |          |1 = UARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[2]     |UART2CKEN |UARTx Clock Enable Bit
+     * |        |          |0 = UARTx clock Disabled.
+     * |        |          |1 = UARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[3]     |UART3CKEN |UARTx Clock Enable Bit
+     * |        |          |0 = UARTx clock Disabled.
+     * |        |          |1 = UARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[4]     |UART4CKEN |UARTx Clock Enable Bit
+     * |        |          |0 = UARTx clock Disabled.
+     * |        |          |1 = UARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[5]     |UART5CKEN |UARTx Clock Enable Bit
+     * |        |          |0 = UARTx clock Disabled.
+     * |        |          |1 = UARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[6]     |UART6CKEN |UARTx Clock Enable Bit
+     * |        |          |0 = UARTx clock Disabled.
+     * |        |          |1 = UARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[7]     |UART7CKEN |UARTx Clock Enable Bit
+     * |        |          |0 = UARTx clock Disabled.
+     * |        |          |1 = UARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[8]     |UART8CKEN |UARTx Clock Enable Bit
+     * |        |          |0 = UARTx clock Disabled.
+     * |        |          |1 = UARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[9]     |UART9CKEN |UARTx Clock Enable Bit
+     * |        |          |0 = UARTx clock Disabled.
+     * |        |          |1 = UARTx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |UART Clock Stable Flag (Read Only)
+     * |        |          |0 = UART clock is not stable.
+     * |        |          |1 = UART clock is stable.
+     * @var CLK_T::USBDCTL
+     * Offset: 0x2E4  USBD Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |USBD0CKEN |USBDx Clock Enable Bit
+     * |        |          |0 = USBDx clock Disabled.
+     * |        |          |1 = USBDx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |USBD Clock Stable Flag (Read Only)
+     * |        |          |0 = USBD clock is not stable.
+     * |        |          |1 = USBD clock is stable.
+     * @var CLK_T::USBHCTL
+     * Offset: 0x2E8  USBH Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |USBH0CKEN |USBHx Clock Enable Bit
+     * |        |          |0 = USBHx clock Disabled.
+     * |        |          |1 = USBHx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |USBH Clock Stable Flag (Read Only)
+     * |        |          |0 = USBH clock is not stable.
+     * |        |          |1 = USBH clock is stable.
+     * @var CLK_T::USCICTL
+     * Offset: 0x2EC  USCI Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |USCI0CKEN |USCIx Clock Enable Bit
+     * |        |          |0 = USCIx clock Disabled.
+     * |        |          |1 = USCIx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |USCI Clock Stable Flag (Read Only)
+     * |        |          |0 = USCI clock is not stable.
+     * |        |          |1 = USCI clock is stable.
+     * @var CLK_T::UTCPDCTL
+     * Offset: 0x2F0  UTCPD Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |UTCPD0CKEN|UTCPDx Clock Enable Bit
+     * |        |          |0 = UTCPDx clock Disabled.
+     * |        |          |1 = UTCPDx clock Enabled.
+     * |        |          |Note: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |UTCPD Clock Stable Flag (Read Only)
+     * |        |          |0 = UTCPD clock is not stable.
+     * |        |          |1 = UTCPD clock is stable.
+     * @var CLK_T::WDTCTL
+     * Offset: 0x2F4  WDT Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |WDT0CKEN  |WDTx Clock Enable Bit
+     * |        |          |0 = WDTx clock Disabled.
+     * |        |          |1 = WDTx clock Enabled.
+     * |        |          |Note 2: This bit is not retained when D0 power is turned off.
+     * |[1]     |WDT1CKEN  |WDTx Clock Enable Bit
+     * |        |          |0 = WDTx clock Disabled.
+     * |        |          |1 = WDTx clock Enabled.
+     * |        |          |Note 2: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |WDT Clock Stable Flag (Read Only)
+     * |        |          |0 = WDT clock is not stable.
+     * |        |          |1 = WDT clock is stable.
+     * @var CLK_T::WWDTCTL
+     * Offset: 0x2F8  WWDT Clock Enable Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |WWDT0CKEN |WWDTx Clock Enable Bit
+     * |        |          |0 = WWDTx clock Disabled.
+     * |        |          |1 = WWDTx clock Enabled.
+     * |        |          |Note 2: This bit is not retained when D0 power is turned off.
+     * |[1]     |WWDT1CKEN |WWDTx Clock Enable Bit
+     * |        |          |0 = WWDTx clock Disabled.
+     * |        |          |1 = WWDTx clock Enabled.
+     * |        |          |Note 2: This bit is not retained when D0 power is turned off.
+     * |[31]    |CLKSTB    |WWDT Clock Stable Flag (Read Only)
+     * |        |          |0 = WWDT clock is not stable.
+     * |        |          |1 = WWDT clock is stable.
+     * @var CLK_T::SCLKSEL
+     * Offset: 0x400  System Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |SCLKSEL   |System Clock Source Selection (Write Protect)
+     * |        |          |The system clock source is defined by SCLKSEL.
+     * |        |          |000 = Clock source from HIRC.
+     * |        |          |001 = Clock source from MIRC.
+     * |        |          |010 = Clock source from HIRC48M.
+     * |        |          |011 = Clock source from HXT.
+     * |        |          |100 = Clock source from APLL0.
+     * |        |          |Others = Reserved.
+     * |        |          |Note: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::BPWMSEL
+     * Offset: 0x404  BPWM Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |BPWM0SEL  |BPWM0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of BPWM0 is defined by BPWM0SEL.
+     * |        |          |0 = Clock source from PCLK0.
+     * |        |          |1 = Clock source from HCLK0.
+     * |        |          |Note 0: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: These bits are not retained when D1 power is turned off.
+     * |[4]     |BPWM1SEL  |BPWM1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of BPWM1 is defined by BPWM1SEL.
+     * |        |          |0 = Clock source from PCLK2.
+     * |        |          |1 = Clock source from HCLK0.
+     * |        |          |Note 0: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::CANFDSEL
+     * Offset: 0x408  CANFD Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |CANFD0SEL |CANFD0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of CANFD0 is defined by CANFD0SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL0/2.
+     * |        |          |010 = Clock source from HCLK0.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: These bits are not retained when D1 power is turned off.
+     * |[6:4]   |CANFD1SEL |CANFD1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of CANFD1 is defined by CANFD1SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL0/2.
+     * |        |          |010 = Clock source from HCLK0.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::CCAPSEL
+     * Offset: 0x40C  CCAP Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |CCAP0SEL  |CCAP Sensor Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of CCAP is defined by CCAP0SEL.
+     * |        |          |000 = Clock source from MIRC.
+     * |        |          |010 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HXT.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::CLKOSEL
+     * Offset: 0x410  Clock Output Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[3:0]   |CLKOSEL   |Clock Output Clock Source Selection (Write Protect)
+     * |        |          |0000 = Clock source from SYSCLK.
+     * |        |          |0001 = Clock source from ACLK.
+     * |        |          |0010 = Clock source from HCLK0.
+     * |        |          |0011 = Clock source from HCLK1.
+     * |        |          |0100 = Clock source from HCLK2.
+     * |        |          |0101 = Clock source from APLL0/2.
+     * |        |          |0110 = Clock source from APLL1/2.
+     * |        |          |0111 = Clock source from HIRC48M.
+     * |        |          |1000 = Clock source from HXT.
+     * |        |          |1001 = Clock source from HIRC.
+     * |        |          |1010 = Clock source from MIRC.
+     * |        |          |1011 = Clock source from LXT.
+     * |        |          |1100 = Clock source from LIRC.
+     * |        |          |Others = Reserved.
+     * |        |          |Note: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::DMICSEL
+     * Offset: 0x414  DMIC Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |DMIC0SEL  |DMIC Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of DIMC0 is defined by DMIC0SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL1/2.
+     * |        |          |010 = Clock source from MIRC.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |101 = Clock source from PCLK4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: These bits are not retained when D2 power is turned off.
+     * |[5:4]   |VAD0SEL   |VAD Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock VAD source of DIMC0 is defined by VAD0SEL.
+     * |        |          |00 = Clock source from PCLK4.
+     * |        |          |01 = Clock source from MIRC.
+     * |        |          |10 = Clock source from HIRC.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::EADCSEL
+     * Offset: 0x418  EADC Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |EADC0SEL  |EADC0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of EADC0 is defined by EADC0SEL.
+     * |        |          |00 = Clock source from APLL1/2.
+     * |        |          |01 = Clock source from APLL0/2.
+     * |        |          |10 = PCLK0.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: These bits are not retained when D1 power is turned off.
+     * |[5:4]   |EADC1SEL  |EADC1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of EADC0 is defined by EADC1SEL.
+     * |        |          |00 = Clock source from APLL1/2.
+     * |        |          |01 = Clock source from APLL0/2.
+     * |        |          |10 = PCLK2.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 0: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::EPWMSEL
+     * Offset: 0x41C  EPWM Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |EPWM0SEL  |EPWM0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of EPWM0 is defined by EPWM0SEL.
+     * |        |          |0 = Clock source from PCLK0.
+     * |        |          |1 = Clock source from HCLK0.
+     * |        |          |Note 0: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: This bit is not retained when D1 power is turned off.
+     * |[4]     |EPWM1SEL  |EPWM1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of EPWM1 is defined by EPWM1SEL.
+     * |        |          |0 = Clock source from PCLK2.
+     * |        |          |1 = Clock source from HCLK0.
+     * |        |          |Note 0: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: This bit is not retained when D1 power is turned off.
+     * @var CLK_T::FMCSEL
+     * Offset: 0x420  FMC Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |FMC0SEL   |FMC0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of FMC0 is defined by FMC0SEL.
+     * |        |          |0 = Clock source from HIRC.
+     * |        |          |1 = Clock source from HIRC48M/4.
+     * |        |          |Note 0: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 1: This bit is not retained when D0 power is turned off.
+     * @var CLK_T::I2SSEL
+     * Offset: 0x424  I2S Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |I2S0SEL   |I2S0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of I2S0 is defined by I2S0SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL1/2.
+     * |        |          |010 = Clock source from APLL0/2.
+     * |        |          |011 = Clock source from PCLK1.
+     * |        |          |100 = Clock source from HIRC.
+     * |        |          |101 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[6:4]   |I2S1SEL   |I2S1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of I2S1 is defined by I2S1SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL1/2.
+     * |        |          |010 = Clock source from APLL0/2.
+     * |        |          |011 = Clock source from PCLK3.
+     * |        |          |100 = Clock source from HIRC.
+     * |        |          |101 = Clock source from HIRC48M.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::I3CSEL
+     * Offset: 0x428  I3C Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |I3C0SEL   |I3C0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of I3C0 is defined by I3C0SEL.
+     * |        |          |0 = Clock source from HCLK0.
+     * |        |          |1 = Clock source from APLL1.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: This bit is not retained when D1 power is turned off.
+     * @var CLK_T::KPISEL
+     * Offset: 0x42C  KPI Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |KPI0SEL   |KPI0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of KPI0 is defined by KPI0SEL.
+     * |        |          |00 = Clock source from HIRC48M/4.
+     * |        |          |01 = Clock source from HIRC.
+     * |        |          |10 = Clock source from LIRC.
+     * |        |          |11 = Clock source from HXT.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::LPADCSEL
+     * Offset: 0x430  Low Power ADC Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |LPADC0SEL |LPADC0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of LPADC0 is defined by LPADC0SEL.
+     * |        |          |00 = Clock source from PCLK4.
+     * |        |          |01 = Clock source from LXT.
+     * |        |          |10 = Clock source from MIRC.
+     * |        |          |11 = Clock source from HIRC.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::LPSPISEL
+     * Offset: 0x434  Low Power SPI Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |LPSPI0SEL |LPSPI0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of LPSPI0 is defined by LPSPI0SEL.
+     * |        |          |00 = Clock source from PCLK4.
+     * |        |          |01 = Clock source from MIRC.
+     * |        |          |10 = Clock source from HIRC.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::LPTMRSEL
+     * Offset: 0x438  Low Power Timer Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |LPTMR0SEL |LPTMR0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of LPTMR0 is defined by LPTMR0SEL.
+     * |        |          |000 = Clock source from PCLK4.
+     * |        |          |001 = Clock source from LXT.
+     * |        |          |010 = Clock source from LIRC.
+     * |        |          |011 = Clock source from MIRC.
+     * |        |          |100 = Clock source from HIRC.
+     * |        |          |101 = Clock source from external clock TM0 pin.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |[6:4]   |LPTMR1SEL |LPTMR1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of LPTMR1 is defined by LPTMR1SEL.
+     * |        |          |000 = Clock source from PCLK4.
+     * |        |          |001 = Clock source from LXT.
+     * |        |          |010 = Clock source from LIRC.
+     * |        |          |011 = Clock source from MIRC.
+     * |        |          |100 = Clock source from HIRC.
+     * |        |          |101 = Clock source from external clock TM1 pin.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::LPUARTSEL
+     * Offset: 0x43C  Low Power UART Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |LPUART0SEL|LPUART0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of LPUART0 is defined by LPUART0SEL.
+     * |        |          |00 = Clock source from PCLK4.
+     * |        |          |01 = Clock source from LXT.
+     * |        |          |10 = Clock source from MIRC.
+     * |        |          |11 = Clock source from HIRC.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::PSIOSEL
+     * Offset: 0x440  PSIO Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |PSIO0SEL  |PSIO0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of PSIO0 is defined by PSIO0SEL.
+     * |        |          |000 = Clock source from LXT.
+     * |        |          |001 = Clock source from HXT.
+     * |        |          |010 = Clock source from LIRC.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M/4.
+     * |        |          |101 = Clock source from PCLK1.
+     * |        |          |110 = Clock source from APLL0/2.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::QSPISEL
+     * Offset: 0x444  QSPI Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |QSPI0SEL  |QSPI0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of QSPI0 is defined by QSPI0SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL0/2.
+     * |        |          |010 = Clock source from PCLK0.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[6:4]   |QSPI1SEL  |QSPI1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of QSPI1 is defined by QSPI1SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL0/2.
+     * |        |          |010 = Clock source from PCLK2.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::SCSEL
+     * Offset: 0x448  SC Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |SC0SEL    |SC0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of SC0 is defined by SC0SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL0/2.
+     * |        |          |010 = Clock source from PCLK1.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[6:4]   |SC1SEL    |SC1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of SC1 is defined by SC1SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL0/2.
+     * |        |          |010 = Clock source from PCLK3.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[10:8]  |SC2SEL    |SC2 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of SC2 is defined by SC2SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL0/2.
+     * |        |          |010 = Clock source from PCLK1.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::SDHSEL
+     * Offset: 0x44C  SDH Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |SDH0SEL   |SDH0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of SDH0 is defined by SDH0SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL1/2.
+     * |        |          |010 = Clock source from HCLK0.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[6:4]   |SDH1SEL   |SDH1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of SDH1 is defined by SDH1SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL1/2.
+     * |        |          |010 = Clock source from HCLK0.
+     * |        |          |011 = Clock source from HIRC.
+     * |        |          |100 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::SPISEL
+     * Offset: 0x450  SPI Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |SPI0SEL   |SPI0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of SPI0 is defined by SPI0SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL1/2.
+     * |        |          |010 = Clock source from APLL0/2.
+     * |        |          |011 = Clock source from PCLK0.
+     * |        |          |100 = Clock source from HIRC.
+     * |        |          |101 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[6:4]   |SPI1SEL   |SPI1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of SPI1 is defined by SPI1SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL1/2.
+     * |        |          |010 = Clock source from APLL0/2.
+     * |        |          |011 = Clock source from PCLK2.
+     * |        |          |100 = Clock source from HIRC.
+     * |        |          |101 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[10:8]  |SPI2SEL   |SPI2 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of SPI2 is defined by SPI2SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL1/2.
+     * |        |          |010 = Clock source from APLL0/2.
+     * |        |          |011 = Clock source from PCLK0.
+     * |        |          |100 = Clock source from HIRC.
+     * |        |          |101 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[14:12] |SPI3SEL   |SPI3 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of SPI3 is defined by SPI3SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from APLL1/2.
+     * |        |          |010 = Clock source from APLL0/2.
+     * |        |          |011 = Clock source from PCLK2.
+     * |        |          |100 = Clock source from HIRC.
+     * |        |          |101 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::STSEL
+     * Offset: 0x454  System Tick Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |ST0SEL    |Cortex-M55 SysTick 0 Clock Source Selection (Write Protect)
+     * |        |          |If SYST_CTRL[2]=0, SysTick uses listed clock source below.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from LXT.
+     * |        |          |010 = Clock source from HXT/2.
+     * |        |          |011 = Clock source from ACLK/2.
+     * |        |          |100 = Clock source from HIRC/2.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: if SysTick clock source is not from CPUCLK (i.e
+     * |        |          |SYST_CTRL[2] = 0), SysTick needs to enable ST0CKEN(CLK_STCTL [0])
+     * |        |          |SysTick clock source must less than or equal to ACLK/2.
+     * |        |          |Note 2: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 3: These bits are not retained when D0 power is turned off.
+     * @var CLK_T::TMRSEL
+     * Offset: 0x458  Timer Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |TMR0SEL   |Timer 0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of TMR0 is defined by TMR0SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from LXT.
+     * |        |          |010 = Clock source from PCLK1.
+     * |        |          |011 = Clock source from external clock TM0 pin.
+     * |        |          |100 = Clock source from LIRC.
+     * |        |          |101 = Clock source from HIRC.
+     * |        |          |110 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[6:4]   |TMR1SEL   |Timer 1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of TMR1 is defined by TMR1SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from LXT.
+     * |        |          |010 = Clock source from PCLK1.
+     * |        |          |011 = Clock source from external clock TM1 pin.
+     * |        |          |100 = Clock source from LIRC.
+     * |        |          |101 = Clock source from HIRC.
+     * |        |          |110 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[10:8]  |TMR2SEL   |Timer 2 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of TMR2 is defined by TMR2SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from LXT.
+     * |        |          |010 = Clock source from PCLK3.
+     * |        |          |011 = Clock source from external clock TM2 pin.
+     * |        |          |100 = Clock source from LIRC.
+     * |        |          |101 = Clock source from HIRC.
+     * |        |          |110 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[14:12] |TMR3SEL   |Timer 3 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of TMR3 is defined by TMR3SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from LXT.
+     * |        |          |010 = Clock source from PCLK3.
+     * |        |          |011 = Clock source from external clock TM3 pin.
+     * |        |          |100 = Clock source from LIRC.
+     * |        |          |101 = Clock source from HIRC.
+     * |        |          |110 = Clock source from HIRC48M/4.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::TTMRSEL
+     * Offset: 0x45C  Tick Timer Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |TTMR0SEL  |Tick Timer 0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of TTMR0 is defined by TTMR0SEL.
+     * |        |          |000 = Clock source from PCLK4.
+     * |        |          |001 = Clock source from LXT.
+     * |        |          |010 = Clock source from LIRC.
+     * |        |          |011 = Clock source from MIRC.
+     * |        |          |100 = Clock source from HIRC.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |[6:4]   |TTMR1SEL  |Tick Timer 1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of TTMR1 is defined by TTMR1SEL.
+     * |        |          |000 = Clock source from PCLK4.
+     * |        |          |001 = Clock source from LXT.
+     * |        |          |010 = Clock source from LIRC.
+     * |        |          |011 = Clock source from MIRC.
+     * |        |          |100 = Clock source from HIRC.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::UARTSEL0
+     * Offset: 0x460  UART Clock Source Select Control Register 0
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |UART0SEL  |UART 0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of UART0 is defined by UART0SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from HIRC.
+     * |        |          |010 = Clock source from LXT.
+     * |        |          |011 = Clock source from APLL0/2.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[6:4]   |UART1SEL  |UART 1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of UART1 is defined by UART1SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from HIRC.
+     * |        |          |010 = Clock source from LXT.
+     * |        |          |011 = Clock source from APLL0/2.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[10:8]  |UART2SEL  |UART 2 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of UART2 is defined by UART2SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from HIRC.
+     * |        |          |010 = Clock source from LXT.
+     * |        |          |011 = Clock source from APLL0/2.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[14:12] |UART3SEL  |UART 3 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of UART3 is defined by UART3SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from HIRC.
+     * |        |          |010 = Clock source from LXT.
+     * |        |          |011 = Clock source from APLL0/2.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[18:16] |UART4SEL  |UART 4 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of UART4 is defined by UART4SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from HIRC.
+     * |        |          |010 = Clock source from LXT.
+     * |        |          |011 = Clock source from APLL0/2.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[22:20] |UART5SEL  |UART 5 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of UART5 is defined by UART5SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from HIRC.
+     * |        |          |010 = Clock source from LXT.
+     * |        |          |011 = Clock source from APLL0/2.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[26:24] |UART6SEL  |UART 6 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of UART6 is defined by UART6SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from HIRC.
+     * |        |          |010 = Clock source from LXT.
+     * |        |          |011 = Clock source from APLL0/2.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[30:28] |UART7SEL  |UART 7 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of UART7 is defined by UART7SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from HIRC.
+     * |        |          |010 = Clock source from LXT.
+     * |        |          |011 = Clock source from APLL0/2.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::UARTSEL1
+     * Offset: 0x464  UART Clock Source Select Control Register 1
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[2:0]   |UART8SEL  |UART 8 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of UART8 is defined by UART8SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from HIRC.
+     * |        |          |010 = Clock source from LXT.
+     * |        |          |011 = Clock source from APLL0/2.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[6:4]   |UART9SEL  |UART 9 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of UART9 is defined by UART9SEL.
+     * |        |          |000 = Clock source from HXT.
+     * |        |          |001 = Clock source from HIRC.
+     * |        |          |010 = Clock source from LXT.
+     * |        |          |011 = Clock source from APLL0/2.
+     * |        |          |100 = Clock source from HIRC48M.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::USBSEL
+     * Offset: 0x468  USB Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |USBSEL    |USB Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of USBH, USBD and OTG is defined by USBSEL.
+     * |        |          |0 = Clock source from HIRC48M.
+     * |        |          |1 = Clock source from APLL1/2.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::WDTSEL
+     * Offset: 0x46C  WDT Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[1:0]   |WDT0SEL   |WDT0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of WDT0 is defined by WDT0SEL.
+     * |        |          |00 = Clock source from LXT.
+     * |        |          |01 = Clock source from HCLK2/2048.
+     * |        |          |10 = Clock source from LIRC.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * |[5:4]   |WDT1SEL   |WDT1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of WDT1 is defined by WDT1SEL.
+     * |        |          |00 = Clock source from LXT.
+     * |        |          |01 = Clock source from HCLK2/2048.
+     * |        |          |10 = Clock source from LIRC.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::WWDTSEL
+     * Offset: 0x470  WWDT Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |WWDT0SEL  |WWDT0 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of WWDT0 is defined by WWDT0SEL.
+     * |        |          |0 = Clock source from HCLK0/2048.
+     * |        |          |1 = Clock source from LIRC.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: This bit are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * |[4]     |WWDT1SEL  |WWDT1 Clock Source Selection (Write Protect)
+     * |        |          |The peripheral clock source of WWDT1 is defined by WWDT1SEL.
+     * |        |          |0 = Clock source from HCLK0/2048.
+     * |        |          |1 = Clock source from LIRC.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: This bit are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::DLLSEL
+     * Offset: 0x474  DLL Clock Source Select Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[0]     |DLL0SEL   |DLL0 Clock Source Selection (Write Protect)
+     * |        |          |0 = Clock source from APLL0.
+     * |        |          |1 = Clock source from APLL1.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: This bit are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D0 power is turned off.
+     * |[4]     |DLL1SEL   |DLL1 Clock Source Selection (Write Protect)
+     * |        |          |0 = Clock source from APLL0.
+     * |        |          |1 = Clock source from APLL1.
+     * |        |          |Others = Reserved.
+     * |        |          |Note 1: This bit are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note 2: These bits are not retained when D0 power is turned off.
+     * @var CLK_T::SCLKDIV
+     * Offset: 0x500  SCLK Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[3:0]   |SCLKDIV   |SCLK Clock Divide Number from SCLK Clock Source
+     * |        |          |SCLK clock frequency = (SCLK clock source frequency) / (SCLKDIV + 1).
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::HCLKDIV
+     * Offset: 0x508  HCLK Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[11:8]  |HCLK2DIV  |HCLK2 Clock Divide Number from HCLK2 Clock Source
+     * |        |          |HCLK2 clock frequency = (HCLK2 clock source frequency) / (HCLK2DIV + 1).
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::PCLKDIV
+     * Offset: 0x50C  PCLK Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[3:0]   |PCLK0DIV  |PCLK0 Clock Divide Number from PCLK0 Clock Source
+     * |        |          |PCLK0 clock frequency = (PCLK0 clock source frequency) / (PCLK0DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[7:4]   |PCLK1DIV  |PCLK1 Clock Divide Number from PCLK1 Clock Source
+     * |        |          |PCLK1 clock frequency = (PCLK1 clock source frequency) / (PCLK1DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[11:8]  |PCLK2DIV  |PCLK2 Clock Divide Number from PCLK2 Clock Source
+     * |        |          |PCLK2 clock frequency = (PCLK2 clock source frequency) / (PCLK2DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[15:12] |PCLK3DIV  |PCLK3 Clock Divide Number from PCLK3 Clock Source
+     * |        |          |PCLK3 clock frequency = (PCLK3 clock source frequency) / (PCLK3DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[19:16] |PCLK4DIV  |PCLK4 Clock Divide Number from PCLK4 Clock Source
+     * |        |          |PCLK4 clock frequency = (PCLK4 clock source frequency) / (PCLK4DIV + 1).
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::CANFDDIV
+     * Offset: 0x510  CANFD Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[7:0]   |CANFD0DIV |CANFD0 Clock Divide Number from CANFD0 Clock Source
+     * |        |          |CANFD0 clock frequency = (CANFD0 clock source frequency) / (CANFD0DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[15:8]  |CANFD1DIV |CANFD1 Clock Divide Number from CANFD1 Clock Source
+     * |        |          |CANFD1 clock frequency = (CANFD1 clock source frequency) / (CANFD1DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::DMICDIV
+     * Offset: 0x514  DMIC Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[7:0]   |DMIC0DIV  |DMIC0 Clock Divide Number from CANFD0 Clock Source
+     * |        |          |DMIC0 clock frequency = (DMIC0DIV clock source frequency) / (DMIC0DIV + 1).
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::EADCDIV
+     * Offset: 0x518  EADC Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[7:0]   |EADC0DIV  |EADC0 Clock Divide Number from EADC0 Clock Source
+     * |        |          |EADC0 clock frequency = (EADC0 clock source frequency) / (EADC0DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[15:8]  |EADC1DIV  |EADC1 Clock Divide Number from EADC1 Clock Source
+     * |        |          |EADC1 clock frequency = (EADC1 clock source frequency) / (EADC1DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::I2SDIV
+     * Offset: 0x51C  I2S Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[7:0]   |I2S0DIV   |I2S0 Clock Divide Number from I2S0 Clock Source
+     * |        |          |I2S0 clock frequency = (I2S0 clock source frequency) / (I2S0DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[15:8]  |I2S1DIV   |I2S1 Clock Divide Number from I2S1 Clock Source
+     * |        |          |I2S1 clock frequency = (I2S1 clock source frequency) / (I2S1DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::KPIDIV
+     * Offset: 0x520  KPI Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[7:0]   |KPI0DIV   |KPI0 Clock Divide Number from KPI0 Clock Source
+     * |        |          |KPI0 clock frequency = (KPI0 clock source frequency) / (KPI0DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::LPADCDIV
+     * Offset: 0x524  Low Power ADC Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[7:0]   |LPADC0DIV |LPADC0 Clock Divide Number from LPADC0 Clock Source
+     * |        |          |LPADC0 clock frequency = (LPADC0 clock source frequency) / (LPADC0DIV + 1).
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::LPUARTDIV
+     * Offset: 0x528  Low Power UART Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[3:0]   |LPUART0DIV|LPUART0 Clock Divide Number from LPUART0 Clock Source
+     * |        |          |LPUART0 clock frequency = (LPUART0 clock source frequency) / (LPUART0DIV + 1).
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     * @var CLK_T::PSIODIV
+     * Offset: 0x52C  PSIO Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[7:0]   |PSIO0DIV  |PSIO0 Clock Divide Number from PSIO0 Clock Source
+     * |        |          |PSIO0 clock frequency = (PSIO0 clock source frequency) / (PSIO0DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::SCDIV
+     * Offset: 0x530  SC Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[7:0]   |SC0DIV    |SC0 Clock Divide Number from SC0 Clock Source
+     * |        |          |SC0 clock frequency = (SC0 clock source frequency) / (SC0DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[15:8]  |SC1DIV    |SC1 Clock Divide Number from SC1 Clock Source
+     * |        |          |SC1 clock frequency = (SC1 clock source frequency) / (SC1DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[23:16] |SC2DIV    |SC2 Clock Divide Number from SC2 Clock Source
+     * |        |          |SC2 clock frequency = (SC2 clock source frequency) / (SC2DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::SDHDIV
+     * Offset: 0x534  SDH Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[7:0]   |SDH0DIV   |SDH0 Clock Divide Number from SDH0 Clock Source
+     * |        |          |SDH0 clock frequency = (SDH0 clock source frequency) / (SDH0DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[15:8]  |SDH1DIV   |SDH1 Clock Divide Number from SDH1 Clock Source
+     * |        |          |SDH1 clock frequency = (SDH1 clock source frequency) / (SDH1DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::STDIV
+     * Offset: 0x538  System Tick Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[7:0]   |ST0DIV    |System Tick 0 Clock Divide Number from System Tick 0 Clock Source
+     * |        |          |ST0 clock frequency = (ST0 clock source frequency) / (ST0DIV + 1).
+     * |        |          |Note: These bits are not retained when D0 power is turned off.
+     * @var CLK_T::UARTDIV0
+     * Offset: 0x53C  UART Clock Divider Control Register 0
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[3:0]   |UART0DIV  |UART0 Clock Divide Number from UART0 Clock Source
+     * |        |          |UART0 clock frequency = (UART0 clock source frequency) / (UART0DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[7:4]   |UART1DIV  |UART1 Clock Divide Number from UART1 Clock Source
+     * |        |          |UART1 clock frequency = (UART1 clock source frequency) / (UART1DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[11:8]  |UART2DIV  |UART2 Clock Divide Number from UART2 Clock Source
+     * |        |          |UART2 clock frequency = (UART2 clock source frequency) / (UART2DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[15:12] |UART3DIV  |UART3 Clock Divide Number from UART3 Clock Source
+     * |        |          |UART3 clock frequency = (UART3 clock source frequency) / (UART3DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[19:16] |UART4DIV  |UART4 Clock Divide Number from UART4 Clock Source
+     * |        |          |UART4 clock frequency = (UART4 clock source frequency) / (UART4DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[23:20] |UART5DIV  |UART5 Clock Divide Number from UART5 Clock Source
+     * |        |          |UART5 clock frequency = (UART5 clock source frequency) / (UART5DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[27:24] |UART6DIV  |UART6 Clock Divide Number from UART6 Clock Source
+     * |        |          |UART6 clock frequency = (UART6 clock source frequency) / (UART6DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[31:28] |UART7DIV  |UART7 Clock Divide Number from UART7 Clock Source
+     * |        |          |UART7 clock frequency = (UART7 clock source frequency) / (UART7DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::UARTDIV1
+     * Offset: 0x540  UART Clock Divider Control Register 1
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[3:0]   |UART8DIV  |UART8 Clock Divide Number from UART8 Clock Source
+     * |        |          |UART8 clock frequency = (UART8 clock source frequency) / (UART8DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * |[7:4]   |UART9DIV  |UART9 Clock Divide Number from UART9 Clock Source
+     * |        |          |UART9 clock frequency = (UART9 clock source frequency) / (UART9DIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::USBDIV
+     * Offset: 0x544  USB Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[3:0]   |USBDIV    |USB Clock Divide Number from USB Clock Source
+     * |        |          |USB clock frequency = (USB clock source frequency) / (USBDIV + 1).
+     * |        |          |Note: These bits are not retained when D1 power is turned off.
+     * @var CLK_T::VSENSEDIV
+     * Offset: 0x548  Video Pixel Clock Divider Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[3:0]   |VSENSEDIV |Video Pixel Clock Divide Number from Video Pixel Clock Source
+     * |        |          |VSENSE clock frequency = (VSENSE clock source frequency) / (VSENSEDIV + 1).
+     * |        |          |Note: These bits are not retained when D2 power is turned off.
+     */
     __IO uint32_t SRCCTL;                /*!< [0x0000] Clock Source Control Register                                    */
     __I  uint32_t STATUS;                /*!< [0x0004] Clock Status Monitor Register                                    */
     __IO uint32_t MIRCCTL;               /*!< [0x0008] MIRC Control Register                                            */
@@ -2775,8 +2385,7 @@ typedef struct
     __IO uint32_t SPICTL;                /*!< [0x02b8] SPI Clock Enable Control Register                                */
     __IO uint32_t SPIMCTL;               /*!< [0x02bc] SPIM Clock Enable Control Register                               */
     __IO uint32_t SRAMCTL;               /*!< [0x02c0] System SRAM Clock Enable Control Register                        */
-    __IO uint32_t SWDHCTL;               /*!< [0x02c4] SWDH Clock Enable Control Register                               */
-    __IO uint32_t SWODECCTL;             /*!< [0x02c8] SWODEC Clock Enable Control Register                             */
+    __I  uint32_t RESERVE3[2];
     __IO uint32_t STCTL;                 /*!< [0x02cc] System Tick Clock Enable Control Register                        */
     __IO uint32_t TAMPERCTL;             /*!< [0x02d0] TAMPER Clock Enable Control Register                             */
     __IO uint32_t TMRCTL;                /*!< [0x02d4] Timer Clock Enable Control Register                              */
@@ -2789,8 +2398,7 @@ typedef struct
     __IO uint32_t UTCPDCTL;              /*!< [0x02f0] UTCPD Clock Enable Control Register                              */
     __IO uint32_t WDTCTL;                /*!< [0x02f4] WDT Clock Enable Control Register                                */
     __IO uint32_t WWDTCTL;               /*!< [0x02f8] WWDT Clock Enable Control Register                               */
-    __IO uint32_t ETMCCTL;               /*!< [0x02fc] ETMC Clock Enable Control Register                               */
-    __I  uint32_t RESERVE3[64];
+    __I  uint32_t RESERVE4[65];
     __IO uint32_t SCLKSEL;               /*!< [0x0400] System Clock Source Select Control Register                      */
     __IO uint32_t BPWMSEL;               /*!< [0x0404] BPWM Clock Source Select Control Register                        */
     __IO uint32_t CANFDSEL;              /*!< [0x0408] CANFD Clock Source Select Control Register                       */
@@ -2821,9 +2429,9 @@ typedef struct
     __IO uint32_t WDTSEL;                /*!< [0x046c] WDT Clock Source Select Control Register                         */
     __IO uint32_t WWDTSEL;               /*!< [0x0470] WWDT Clock Source Select Control Register                        */
     __IO uint32_t DLLSEL;                /*!< [0x0474] DLL Clock Source Select Control Register                         */
-    __I  uint32_t RESERVE4[34];
+    __I  uint32_t RESERVE5[34];
     __IO uint32_t SCLKDIV;               /*!< [0x0500] SCLK Clock Divider Control Register                              */
-    __IO uint32_t ACLKDIV;               /*!< [0x0504] ACLK Clock Divider Control Register                              */
+    __I  uint32_t RESERVE6[1];
     __IO uint32_t HCLKDIV;               /*!< [0x0508] HCLK Clock Divider Control Register                              */
     __IO uint32_t PCLKDIV;               /*!< [0x050c] PCLK Clock Divider Control Register                              */
     __IO uint32_t CANFDDIV;              /*!< [0x0510] CANFD Clock Divider Control Register                             */
@@ -2841,9 +2449,6 @@ typedef struct
     __IO uint32_t UARTDIV1;              /*!< [0x0540] UART Clock Divider Control Register 1                            */
     __IO uint32_t USBDIV;                /*!< [0x0544] USB Clock Divider Control Register                               */
     __IO uint32_t VSENSEDIV;             /*!< [0x0548] Video Pixel Clock Divider Control Register                       */
-    __IO uint32_t TPIUDIV;               /*!< [0x054c] TPIU Clock Divider Control Register                              */
-    __I  uint32_t RESERVE5[620];
-    __IO uint32_t TESTCLK;               /*!< [0x0f00] Test Clock Control Register                                      */
 
 } CLK_T;
 
@@ -2905,18 +2510,6 @@ typedef struct
 
 #define CLK_MIRCCTL_MIRC1MSTBS_Pos       (0)                                               /*!< CLK_T::MIRCCTL: MIRC1MSTBS Position    */
 #define CLK_MIRCCTL_MIRC1MSTBS_Msk       (0x3ul << CLK_MIRCCTL_MIRC1MSTBS_Pos)             /*!< CLK_T::MIRCCTL: MIRC1MSTBS Mask        */
-
-#define CLK_MIRCCTL_MIRC2MSTBS_Pos       (4)                                               /*!< CLK_T::MIRCCTL: MIRC2MSTBS Position    */
-#define CLK_MIRCCTL_MIRC2MSTBS_Msk       (0x3ul << CLK_MIRCCTL_MIRC2MSTBS_Pos)             /*!< CLK_T::MIRCCTL: MIRC2MSTBS Mask        */
-
-#define CLK_MIRCCTL_MIRC4MSTBS_Pos       (8)                                               /*!< CLK_T::MIRCCTL: MIRC4MSTBS Position    */
-#define CLK_MIRCCTL_MIRC4MSTBS_Msk       (0x3ul << CLK_MIRCCTL_MIRC4MSTBS_Pos)             /*!< CLK_T::MIRCCTL: MIRC4MSTBS Mask        */
-
-#define CLK_MIRCCTL_MIRC8MSTBS_Pos       (12)                                              /*!< CLK_T::MIRCCTL: MIRC8MSTBS Position    */
-#define CLK_MIRCCTL_MIRC8MSTBS_Msk       (0x3ul << CLK_MIRCCTL_MIRC8MSTBS_Pos)             /*!< CLK_T::MIRCCTL: MIRC8MSTBS Mask        */
-
-#define CLK_MIRCCTL_MIRCFSEL_Pos         (16)                                              /*!< CLK_T::MIRCCTL: MIRCFSEL Position      */
-#define CLK_MIRCCTL_MIRCFSEL_Msk         (0x3ul << CLK_MIRCCTL_MIRCFSEL_Pos)               /*!< CLK_T::MIRCCTL: MIRCFSEL Mask          */
 
 #define CLK_MIRCCTL_MIRCFDIS_Pos         (20)                                              /*!< CLK_T::MIRCCTL: MIRCFDIS Position      */
 #define CLK_MIRCCTL_MIRCFDIS_Msk         (0x1ul << CLK_MIRCCTL_MIRCFDIS_Pos)               /*!< CLK_T::MIRCCTL: MIRCFDIS Mask          */
@@ -3473,18 +3066,6 @@ typedef struct
 #define CLK_SRAMCTL_CLKSTB_Pos           (31)                                              /*!< CLK_T::SRAMCTL: CLKSTB Position        */
 #define CLK_SRAMCTL_CLKSTB_Msk           (0x1ul << CLK_SRAMCTL_CLKSTB_Pos)                 /*!< CLK_T::SRAMCTL: CLKSTB Mask            */
 
-#define CLK_SWDHCTL_SWDH0CKEN_Pos        (0)                                               /*!< CLK_T::SWDHCTL: SWDH0CKEN Position     */
-#define CLK_SWDHCTL_SWDH0CKEN_Msk        (0x1ul << CLK_SWDHCTL_SWDH0CKEN_Pos)              /*!< CLK_T::SWDHCTL: SWDH0CKEN Mask         */
-
-#define CLK_SWDHCTL_CLKSTB_Pos           (31)                                              /*!< CLK_T::SWDHCTL: CLKSTB Position        */
-#define CLK_SWDHCTL_CLKSTB_Msk           (0x1ul << CLK_SWDHCTL_CLKSTB_Pos)                 /*!< CLK_T::SWDHCTL: CLKSTB Mask            */
-
-#define CLK_SWODECCTL_SWODEC0CKEN_Pos    (0)                                               /*!< CLK_T::SWODECCTL: SWODEC0CKEN Position */
-#define CLK_SWODECCTL_SWODEC0CKEN_Msk    (0x1ul << CLK_SWODECCTL_SWODEC0CKEN_Pos)          /*!< CLK_T::SWODECCTL: SWODEC0CKEN Mask     */
-
-#define CLK_SWODECCTL_CLKSTB_Pos         (31)                                              /*!< CLK_T::SWODECCTL: CLKSTB Position      */
-#define CLK_SWODECCTL_CLKSTB_Msk         (0x1ul << CLK_SWODECCTL_CLKSTB_Pos)               /*!< CLK_T::SWODECCTL: CLKSTB Mask          */
-
 #define CLK_STCTL_ST0CKEN_Pos            (0)                                               /*!< CLK_T::STCTL: ST0CKEN Position         */
 #define CLK_STCTL_ST0CKEN_Msk            (0x1ul << CLK_STCTL_ST0CKEN_Pos)                  /*!< CLK_T::STCTL: ST0CKEN Mask             */
 
@@ -3601,12 +3182,6 @@ typedef struct
 
 #define CLK_WWDTCTL_CLKSTB_Pos           (31)                                              /*!< CLK_T::WWDTCTL: CLKSTB Position        */
 #define CLK_WWDTCTL_CLKSTB_Msk           (0x1ul << CLK_WWDTCTL_CLKSTB_Pos)                 /*!< CLK_T::WWDTCTL: CLKSTB Mask            */
-
-#define CLK_ETMCCTL_ETMC0CKEN_Pos        (0)                                               /*!< CLK_T::ETMCCTL: ETMC0CKEN Position     */
-#define CLK_ETMCCTL_ETMC0CKEN_Msk        (0x1ul << CLK_ETMCCTL_ETMC0CKEN_Pos)              /*!< CLK_T::ETMCCTL: ETMC0CKEN Mask         */
-
-#define CLK_ETMCCTL_CLKSTB_Pos           (31)                                              /*!< CLK_T::ETMCCTL: CLKSTB Position        */
-#define CLK_ETMCCTL_CLKSTB_Msk           (0x1ul << CLK_ETMCCTL_CLKSTB_Pos)                 /*!< CLK_T::ETMCCTL: CLKSTB Mask            */
 
 #define CLK_SCLKSEL_SCLKSEL_Pos          (0)                                               /*!< CLK_T::SCLKSEL: SCLKSEL Position       */
 #define CLK_SCLKSEL_SCLKSEL_Msk          (0x7ul << CLK_SCLKSEL_SCLKSEL_Pos)                /*!< CLK_T::SCLKSEL: SCLKSEL Mask           */
@@ -3788,15 +3363,6 @@ typedef struct
 #define CLK_SCLKDIV_SCLKDIV_Pos          (0)                                               /*!< CLK_T::SCLKDIV: SCLKDIV Position       */
 #define CLK_SCLKDIV_SCLKDIV_Msk          (0xful << CLK_SCLKDIV_SCLKDIV_Pos)                /*!< CLK_T::SCLKDIV: SCLKDIV Mask           */
 
-#define CLK_ACLKDIV_ACLKDIV_Pos          (0)                                               /*!< CLK_T::ACLKDIV: ACLKDIV Position       */
-#define CLK_ACLKDIV_ACLKDIV_Msk          (0xful << CLK_ACLKDIV_ACLKDIV_Pos)                /*!< CLK_T::ACLKDIV: ACLKDIV Mask           */
-
-#define CLK_HCLKDIV_HCLK0DIV_Pos         (0)                                               /*!< CLK_T::HCLKDIV: HCLK0DIV Position      */
-#define CLK_HCLKDIV_HCLK0DIV_Msk         (0xful << CLK_HCLKDIV_HCLK0DIV_Pos)               /*!< CLK_T::HCLKDIV: HCLK0DIV Mask          */
-
-#define CLK_HCLKDIV_HCLK1DIV_Pos         (4)                                               /*!< CLK_T::HCLKDIV: HCLK1DIV Position      */
-#define CLK_HCLKDIV_HCLK1DIV_Msk         (0xful << CLK_HCLKDIV_HCLK1DIV_Pos)               /*!< CLK_T::HCLKDIV: HCLK1DIV Mask          */
-
 #define CLK_HCLKDIV_HCLK2DIV_Pos         (8)                                               /*!< CLK_T::HCLKDIV: HCLK2DIV Position      */
 #define CLK_HCLKDIV_HCLK2DIV_Msk         (0xful << CLK_HCLKDIV_HCLK2DIV_Pos)               /*!< CLK_T::HCLKDIV: HCLK2DIV Mask          */
 
@@ -3902,24 +3468,12 @@ typedef struct
 #define CLK_VSENSEDIV_VSENSEDIV_Pos      (0)                                               /*!< CLK_T::VSENSEDIV: VSENSEDIV Position   */
 #define CLK_VSENSEDIV_VSENSEDIV_Msk      (0xful << CLK_VSENSEDIV_VSENSEDIV_Pos)            /*!< CLK_T::VSENSEDIV: VSENSEDIV Mask       */
 
-#define CLK_TPIUDIV_TPIUDIV_Pos          (0)                                               /*!< CLK_T::TPIUDIV: TPIUDIV Position       */
-#define CLK_TPIUDIV_TPIUDIV_Msk          (0xfful << CLK_TPIUDIV_TPIUDIV_Pos)               /*!< CLK_T::TPIUDIV: TPIUDIV Mask           */
-
-#define CLK_TESTCLK_TCLKSEL_Pos          (0)                                               /*!< CLK_T::TESTCLK: TCLKSEL Position       */
-#define CLK_TESTCLK_TCLKSEL_Msk          (0xfffful << CLK_TESTCLK_TCLKSEL_Pos)             /*!< CLK_T::TESTCLK: TCLKSEL Mask           */
-
-#define CLK_TESTCLK_TESTCKDIV_Pos        (24)                                              /*!< CLK_T::TESTCLK: TESTCKDIV Position     */
-#define CLK_TESTCLK_TESTCKDIV_Msk        (0x7ul << CLK_TESTCLK_TESTCKDIV_Pos)              /*!< CLK_T::TESTCLK: TESTCKDIV Mask         */
-
-#define CLK_TESTCLK_TESTEN_Pos           (31)                                              /*!< CLK_T::TESTCLK: TESTEN Position        */
-#define CLK_TESTCLK_TESTEN_Msk           (0x1ul << CLK_TESTCLK_TESTEN_Pos)                 /*!< CLK_T::TESTCLK: TESTEN Mask            */
-
-/** @} CLK_CONST */
-/** @} end of CLK register group */
-/** @} end of REGISTER group */
+/**@}*/ /* CLK_CONST */
+/**@}*/ /* end of CLK register group */
+/**@}*/ /* end of REGISTER group */
 
 #if defined ( __CC_ARM   )
-#pragma no_anon_unions
+    #pragma no_anon_unions
 #endif
 
 #endif /* __CLK_REG_H__ */

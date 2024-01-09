@@ -38,17 +38,49 @@ int32_t g_LPADC_i32ErrCode = 0;   /*!< LPADC global error code */
   * @return  None
   * @note LPADC can only convert 1 channel at a time. If more than 1 channels are enabled, only channel
   *       with smallest number will be convert.
-  * @note This API does not turn on LPADC power nor does trigger LPADC conversion.
-  * @note This API will reset and calibrate LPADC if LPADC never be calibrated after chip power on.
-  * @note This function sets g_LPADC_i32ErrCode to LPADC_TIMEOUT_ERR if CALIF(LPADC_ADCALSTSR[0]) is not set to 1
+  * @note This API does not trigger LPADC conversion.
   */
 void LPADC_Open(LPADC_T *lpadc, uint32_t u32InputMode, uint32_t u32OpMode, uint32_t u32ChMask)
 {
-    uint32_t u32Delay = SystemCoreClock;    /* 1 second */
-    
     g_LPADC_i32ErrCode = 0;
     /*Enable the LPADC Power on*/
     LPADC_POWER_ON(lpadc);
+
+    /* Workaround solution for TESTCHIP */
+    outp32((uint32_t)lpadc + 0xFF4, inp32(LPADC0_BASE + 0xFF4) | (BIT5|BIT4|BIT1));
+    outp32((uint32_t)lpadc + 0xFF0, inp32(LPADC0_BASE + 0xFF0) | (BIT8));
+
+
+    lpadc->ADCR = (lpadc->ADCR & (~(LPADC_ADCR_DIFFEN_Msk | LPADC_ADCR_ADMD_Msk))) | (u32InputMode) | (u32OpMode);
+
+    lpadc->ADCHER = (lpadc->ADCHER & ~LPADC_ADCHER_CHEN_Msk) | (u32ChMask);
+
+    return;
+}
+/**
+  * @brief  Calibration the specified LPADC module
+  *
+  * @param[in]  acmp The pointer of the specified LPADC module
+  *
+  * @return     None
+  *
+  * @details    To decrease the effect of electrical random noise, the calibration mode performs an offset and mismatch measurement cycles.
+  *             Afterwards, in normal operation mode, the calibration engine applies to the capacitor array, so that the offset and mismatch are removed.
+  * @note       This API will reset and calibrate LPADC if LPADC never be calibrated after chip power on.
+  * @note       If chip power off, calibration function should be executed again.
+  * @note       This function sets g_LPADC_i32ErrCode to LPADC_TIMEOUT_ERR if CALIF(LPADC_ADCALSTSR[0]) is not set to 1
+  */
+void LPADC_Calibration(LPADC_T *lpadc)
+{
+    uint32_t u32Delay = SystemCoreClock;    /* 1 second */
+
+    g_LPADC_i32ErrCode = 0;
+    /*Enable the LPADC Power on*/
+    LPADC_POWER_ON(lpadc);
+
+    /* Workaround solution for TESTCHIP */
+    outp32((uint32_t)lpadc + 0xFF4, inp32(LPADC0_BASE + 0xFF4) | (BIT5|BIT4|BIT1));
+    outp32((uint32_t)lpadc + 0xFF0, inp32(LPADC0_BASE + 0xFF0) | (BIT8));
 
     /*Wait the LPADC Power On Ready  */
     while (!(lpadc->ADSR0 & LPADC_ADSR0_ADPRDY_Msk))
@@ -59,7 +91,6 @@ void LPADC_Open(LPADC_T *lpadc, uint32_t u32InputMode, uint32_t u32OpMode, uint3
             break;
         }
     }
-
 
     /* Do calibration for LPADC to decrease the effect of electrical random noise. */
     if ((lpadc->ADCALSTS & LPADC_ADCALSTS_CALIF_Msk) == 0)
@@ -89,20 +120,12 @@ void LPADC_Open(LPADC_T *lpadc, uint32_t u32InputMode, uint32_t u32OpMode, uint3
                 break;
             }
         }
+        lpadc->ADCALSTS |= LPADC_ADCALSTS_CALIF_Msk;      /* Clear Calibration Finish Interrupt Flag */
+        /* Read channel 0 ADDR to clear Valid flag of channel 0 that set by calibration. */
+        /* Currently Sample Time basically needs 5 cycles */
+        uint32_t u32Temp  = LPADC0->ADDR[0];
     }
 
-    /* Read channel 0 ADDR to clear Valid flag of channel 0 that set by calibration. */
-    uint32_t u32Temp  = LPADC0->ADDR[0];
-    /* Currently Sample Time basically needs 5 cycles */
-    /* Workaround solution for LPADC0->DEBUG(from M2L31) */
-    outp32((uint32_t)lpadc + 0xFF4, inp32(LPADC0_BASE + 0xFF4) | (BIT5|BIT4|BIT1));
-    outp32((uint32_t)lpadc + 0xFF0, inp32(LPADC0_BASE + 0xFF0) | (BIT8));
-    
-    lpadc->ADCR = (lpadc->ADCR & (~(LPADC_ADCR_DIFFEN_Msk | LPADC_ADCR_ADMD_Msk))) | (u32InputMode) | (u32OpMode);
-
-    lpadc->ADCHER = (lpadc->ADCHER & ~LPADC_ADCHER_CHEN_Msk) | (u32ChMask);
-
-    return;
 }
 
 /**
@@ -152,12 +175,12 @@ void LPADC_EnableHWTrigger(LPADC_T *lpadc, uint32_t u32Source,uint32_t u32Param)
 
     if(u32Source == LPADC_STADC_TRIGGER)
     {
-        lpadc->ADCR = (lpadc->ADCR & ~(LPADC_ADCR_TRGS_Msk | LPADC_ADCR_TRGCOND_Msk)) |
+        lpadc->ADCR = (lpadc->ADCR & ~(LPADC_ADCR_TRGS_Msk | LPADC_ADCR_TRGCOND_Msk | LPADC_ADCR_TRGEN_Msk)) |
                       ((u32Source) | (u32Param) | LPADC_ADCR_TRGEN_Msk);
     }
     else
     {
-        lpadc->ADCR = (lpadc->ADCR & ~(LPADC_ADCR_TRGS_Msk | LPADC_ADCR_TRGCOND_Msk)) |
+        lpadc->ADCR = (lpadc->ADCR & ~(LPADC_ADCR_TRGS_Msk | LPADC_ADCR_TRGCOND_Msk | LPADC_ADCR_TRGEN_Msk)) |
                       ((u32Source) | LPADC_ADCR_TRGEN_Msk);
     }
 
@@ -171,7 +194,7 @@ void LPADC_EnableHWTrigger(LPADC_T *lpadc, uint32_t u32Source,uint32_t u32Param)
 void LPADC_DisableHWTrigger(LPADC_T *lpadc)
 {
     /* Software should clear TRGEN bit and ADST bit before changing TRGS bits. */
-    lpadc->ADCR &= ~(LPADC_ADCR_TRGEN_Msk | LPADC_ADCR_ADST_Msk); 
+    lpadc->ADCR &= ~(LPADC_ADCR_TRGEN_Msk | LPADC_ADCR_ADST_Msk);
     lpadc->ADCR &= ~(LPADC_ADCR_TRGS_Msk | LPADC_ADCR_TRGCOND_Msk);
 
 }
@@ -229,7 +252,7 @@ void LPADC_DisableInt(LPADC_T *lpadc, uint32_t u32Mask)
 /**
   * @brief Set LPADC extend sample time.
   * @param[in] lpadc The pointer of the specified LPADC module.
-  * @param[in] u32ModuleNum Decides the sample module number, valid value are 0.  
+  * @param[in] u32ModuleNum Decides the sample module number, valid value are 0.
   * @param[in] u32ExtendSampleTime Decides the extend sampling time, the range is from 0~16383 LPADC clock. Valid value are from 0 to 0x3FFF.
   * @return None
   * @details When A/D converting at high conversion rate, the sampling time of analog input voltage may not enough if input channel loading is heavy,
