@@ -22,32 +22,20 @@
     #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
 #endif
 
-#if 1
-    /* FSA506 EBI */
-    #define CONFIG_FSA506_EBI              EBI_BANK0
-    #define CONFIG_FSA506_EBI_USE_PDMA     1
-    #define CONFIG_FSA506_EBI_ADDR         (EBI_BANK0_BASE_ADDR+(CONFIG_FSA506_EBI*EBI_MAX_SIZE))
-    #define CONFIG_FSA506_PIN_BACKLIGHT    NU_GET_PININDEX(evGG, 5)   //101
-    #define CONFIG_FSA506_PIN_DC           NU_GET_PININDEX(evGH, 7)   //119
-    #define CONFIG_FSA506_PIN_RESET        NU_GET_PININDEX(evGG, 7)   //103
+#define GPIO_PIN_DATA                  GPIO_PIN_DATA_S
 
-    /* ST1663I I2C */
-    #define CONFIG_ST1663I_I2C             I2C1
-    #define CONFIG_ST1663I_PIN_IRQ         NU_GET_PININDEX(evGG, 6)
-    #define CONFIG_ST1663I_PIN_RESET       NU_GET_PININDEX(evGD, 10)
+/* FSA506 EBI */
+#define CONFIG_FSA506_EBI              EBI_BANK0
+#define CONFIG_FSA506_EBI_USE_PDMA     1
+#define CONFIG_FSA506_EBI_ADDR         (EBI_BANK0_BASE_ADDR+(CONFIG_FSA506_EBI*EBI_MAX_SIZE))
+#define CONFIG_FSA506_PIN_BACKLIGHT    NU_GET_PININDEX(evGG, 5)
+#define CONFIG_FSA506_PIN_DC           NU_GET_PININDEX(evGH, 7)
+#define CONFIG_FSA506_PIN_RESET        NU_GET_PININDEX(evGH, 6)
 
-#else
-
-    /* SSD1963 EBI */
-    #define CONFIG_SSD1963_EBI              EBI_BANK0
-    #define CONFIG_SSD1963_EBI_USE_PDMA     1
-    #define CONFIG_SSD1963_EBI_ADDR         (EBI_BANK0_BASE_ADDR+(CONFIG_SSD1963_EBI*EBI_MAX_SIZE))
-    #define CONFIG_SSD1963_PIN_BACKLIGHT    NU_GET_PININDEX(evGG, 5)   //101
-    #define CONFIG_SSD1963_PIN_DC           NU_GET_PININDEX(evGH, 7)   //119
-    #define CONFIG_SSD1963_PIN_RESET        NU_GET_PININDEX(evGG, 7)   //103
-    #define CONFIG_SSD1963_PIN_DISPLAY      NU_GET_PININDEX(evGG, 8)
-
-#endif
+/* ST1663I I2C */
+#define CONFIG_ST1663I_I2C             I2C1
+#define CONFIG_ST1663I_PIN_IRQ         NU_GET_PININDEX(evGF, 6)
+#define CONFIG_ST1663I_PIN_RESET       NU_GET_PININDEX(evGD, 10)
 
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);

@@ -18,8 +18,17 @@
 #define FSA506_ADDR_CMD  0x0
 #define FSA506_ADDR_DATA 0x0
 
-#define FSA506_WRITE_REG(u32RegAddr)   (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_CMD))) = (u32RegAddr))
-#define FSA506_WRITE_DATA(u32Data)     (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_DATA))) = (u32Data))
+#define FSA506_WRITE_REG(u32RegAddr) \
+        { \
+            (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_CMD))) = (u32RegAddr)); \
+            __DSB(); \
+        }
+
+#define FSA506_WRITE_DATA(u32Data) \
+        { \
+            (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_DATA))) = (u32Data)); \
+            __DSB(); \
+        }
 
 void fsa506_write_reg(uint16_t reg, uint16_t data)
 {
@@ -64,7 +73,10 @@ void fsa506_send_pixels(uint16_t *pixels, int byte_len)
 #if defined(CONFIG_FSA506_EBI_USE_PDMA)
     // PDMA-M2M feed
     if (count > 1024)
-        nu_pdma_mempush((void *)(CONFIG_FSA506_EBI_ADDR + (FSA506_ADDR_DATA)), (void *)pixels, 16, count);
+    {
+        uint32_t Odd = count & 0x1;
+        nu_pdma_mempush((void *)(CONFIG_FSA506_EBI_ADDR + FSA506_ADDR_DATA), (void *)pixels, (Odd ? 16:32), (Odd ? count:(count/2)) );
+    }
     else
 #endif
     {

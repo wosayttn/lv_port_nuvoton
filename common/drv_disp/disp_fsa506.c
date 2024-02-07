@@ -1,6 +1,6 @@
 /**************************************************************************//**
  * @file     disp_fsa506.c
- * @brief    ili9431 driver
+ * @brief    fsa506 driver
  *
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
