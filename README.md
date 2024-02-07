@@ -32,4 +32,4 @@ git clone --recurse-submodules https://github.com/OpenNuvoton/lv_port_nuvoton
 | **NuMaker-HMI-M2354** | [m2354](./bsp/m2354) | [numaker-hmi-m2354](./board/numaker-hmi-m2354) |
 | **NuMaker-HMI-M487** | [m480](./bsp/m480) | [numaker-hmi-m487](./board/numaker-hmi-m487) |
 | **NuMaker-HMI-M032** | [m031](./bsp/m031) | [numaker-hmi-m032](./board/numaker-hmi-m032) |
-| **NuMaker-HMI-M55M1** | **Not ready** | [numaker-hmi-m55m1](./board/numaker-hmi-m55m1) |
+| **NuMaker-HMI-M55M1** | [m55m1es](./bsp/m55m1) | [numaker-hmi-m55m1](./board/numaker-hmi-m55m1) |
