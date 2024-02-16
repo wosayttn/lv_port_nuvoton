@@ -9,6 +9,13 @@
 #include "lvgl.h"
 #include "lv_glue.h"
 
+#define CONFIG_SYS_TIMER                 TIMER0
+
+static void systick_inc(void)
+{
+    lv_tick_inc(1);
+}
+
 static void sys_init(void)
 {
     // Cache on.
@@ -38,15 +45,16 @@ static void sys_init(void)
 #else
     sysSetTimerReferenceClock(CONFIG_SYS_TIMER, CONFIG_EXTERN_FREQUENCY);
     sysStartTimer(CONFIG_SYS_TIMER, CONFIG_TICK_PER_SECOND, PERIODIC_MODE);
+    sysSetTimerEvent(CONFIG_SYS_TIMER, 1, systick_inc);
 #endif
 
     sysSetLocalInterrupt(ENABLE_IRQ);   // Enable CPSR I bit
 }
 
 #if LV_USE_LOG
-static void lv_nuvoton_log(const char *buf)
+static void lv_nuvoton_log(lv_log_level_t level, const char * buf)
 {
-    sysprintf("%s", buf);
+    sysprintf("[LVGL] %s", buf);
 }
 #endif /* LV_USE_LOG */
 
@@ -61,6 +69,10 @@ void lv_nuvoton_task(void *pdata)
 }
 #endif
 
+static uint32_t get_systick(void)
+{
+	return sysGetTicks(CONFIG_SYS_TIMER);
+}
 
 int main(void)
 {
@@ -69,6 +81,13 @@ int main(void)
 #if LV_USE_LOG
     lv_log_register_print_cb(lv_nuvoton_log);
 #endif /* LV_USE_LOG */
+
+#if defined(__FreeRTOS__)
+    lv_tick_set_cb(xTaskGetTickCount);    /*Expression evaluating to current system time in ms*/
+#else
+    lv_tick_set_cb(get_systick);          /*Expression evaluating to current system time in ms*/
+	  lv_delay_set_cb(sysDelay);
+#endif
 
     lv_init();
 
