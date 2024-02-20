@@ -9,7 +9,7 @@
 #include "lvgl.h"
 #include "lv_glue.h"
 
-#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * LV_VER_RES_MAX * sizeof(lv_color_t) * CONFIG_LCD_FB_NUM), DEF_CACHE_LINE_SIZE)
+#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * LV_VER_RES_MAX * (LV_COLOR_DEPTH/8) * CONFIG_LCD_FB_NUM), DEF_CACHE_LINE_SIZE)
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DEF_CACHE_LINE_SIZE)));
 
@@ -224,7 +224,7 @@ int lcd_device_control(int cmd, void *argv)
         psLCDInfo->u32VramSize = CONFIG_VRAM_TOTAL_ALLOCATED_SIZE;
         psLCDInfo->u32ResWidth = LV_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = LV_VER_RES_MAX;
-        psLCDInfo->u32BytePerPixel = sizeof(lv_color_t);
+        psLCDInfo->u32BytePerPixel = (LV_COLOR_DEPTH / 8);
         psLCDInfo->evLCDType = evLCD_TYPE_SYNC;
     }
     break;
@@ -290,14 +290,14 @@ int touchpad_device_initialize(void)
 int touchpad_device_open(void)
 {
 
+    adc_open(ADC_TS_4WIRE, LV_HOR_RES_MAX, LV_VER_RES_MAX);
+
+#if 1
     char szFileName[32];
     char szCalibrationFile[32];
     int hFile;
 
-    adc_open(ADC_TS_4WIRE, LV_HOR_RES_MAX, LV_VER_RES_MAX);
-
     nuvoton_fs_init();
-
     sprintf(szFileName, "C:\\ts_calib");
     fsAsciiToUnicode(szFileName, szCalibrationFile, TRUE);
     hFile = fsOpenFile(szCalibrationFile, szFileName, O_RDONLY | O_FSEEK);
@@ -322,7 +322,10 @@ int touchpad_device_open(void)
     fsCloseFile(hFile);
 
     nuvoton_fs_fini();
-
+#else
+    extern int ad_touch_calibrate(void);
+    ad_touch_calibrate();
+#endif
     return 0;
 }
 

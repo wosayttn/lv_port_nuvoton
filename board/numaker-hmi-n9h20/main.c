@@ -9,12 +9,38 @@
 #include "lvgl.h"
 #include "lv_glue.h"
 
-#define CONFIG_SYS_TIMER                 TIMER0
+#if defined(__FreeRTOS__)
+void lv_nuvoton_task(void *pdata)
+{
+    while (1)
+    {
+        lv_task_handler();
+        vTaskDelay((const TickType_t) 1 / portTICK_PERIOD_MS);
+    }
+}
 
+void lv_tick_task(void *pdata)
+{
+    while (1)
+    {
+        lv_tick_inc(1);
+        vTaskDelay((const TickType_t) 1 / portTICK_PERIOD_MS);
+    }
+}
+
+#else
+#define CONFIG_SYS_TIMER    TIMER0
 static void systick_inc(void)
 {
     lv_tick_inc(1);
 }
+
+static uint32_t get_systick(void)
+{
+    return sysGetTicks(CONFIG_SYS_TIMER);
+}
+
+#endif
 
 static void sys_init(void)
 {
@@ -52,31 +78,21 @@ static void sys_init(void)
 }
 
 #if LV_USE_LOG
-static void lv_nuvoton_log(lv_log_level_t level, const char * buf)
+static void lv_nuvoton_log(lv_log_level_t level, const char *buf)
 {
     sysprintf("[LVGL] %s", buf);
 }
 #endif /* LV_USE_LOG */
 
 #if defined(__FreeRTOS__)
-void lv_nuvoton_task(void *pdata)
-{
-    while (1)
-    {
-        lv_task_handler();
-        vTaskDelay((const TickType_t) LV_DISP_DEF_REFR_PERIOD / portTICK_PERIOD_MS);
-    }
-}
 #endif
 
-static uint32_t get_systick(void)
-{
-	return sysGetTicks(CONFIG_SYS_TIMER);
-}
 
 int main(void)
 {
     sys_init();
+
+    lv_init();
 
 #if LV_USE_LOG
     lv_log_register_print_cb(lv_nuvoton_log);
@@ -84,12 +100,11 @@ int main(void)
 
 #if defined(__FreeRTOS__)
     lv_tick_set_cb(xTaskGetTickCount);    /*Expression evaluating to current system time in ms*/
+    lv_delay_set_cb(vTaskDelay);
 #else
     lv_tick_set_cb(get_systick);          /*Expression evaluating to current system time in ms*/
-	  lv_delay_set_cb(sysDelay);
+    lv_delay_set_cb(sysDelay);
 #endif
-
-    lv_init();
 
     extern void lv_port_disp_init(void);
     lv_port_disp_init();
@@ -105,7 +120,8 @@ int main(void)
 #define CONFIG_LV_TASK_STACKSIZE     8192
 #define CONFIG_LV_TASK_PRIORITY      (configMAX_PRIORITIES-1)
 
-    xTaskCreate(lv_nuvoton_task, "lv", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
+    xTaskCreate(lv_nuvoton_task, "lv_handler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
+    xTaskCreate(lv_tick_task, "lv_tick", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
 
     // Construct other tasks here __start.
 
@@ -120,12 +136,8 @@ int main(void)
     while (1)
     {
         lv_task_handler();
-#if 1
-        sysDelay(LV_DISP_DEF_REFR_PERIOD);
-#else
         // Put your code here  __start.
         // Put your code here  __eend.
-#endif
     }
 
 #endif

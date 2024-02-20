@@ -15,7 +15,7 @@ static void input_read(lv_indev_t *indev, lv_indev_data_t *data)
 
 void lv_port_indev_init(void)
 {
-    static lv_indev_t* lv_indev_touch;
+    static lv_indev_t *lv_indev_touch;
 
     LV_ASSERT(touchpad_device_initialize() == 0);
     LV_ASSERT(touchpad_device_open() == 0);

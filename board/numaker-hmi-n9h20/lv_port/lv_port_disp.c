@@ -8,11 +8,6 @@
 
 #include "lvgl.h"
 #include "lv_glue.h"
-#if (CONFIG_LV_GPU_USE_N9H20_BLT==1)
-    #include "lv_gpu_n9h20_blt.h"
-#endif
-
-static void *buf3_next = NULL;
 
 #if CONFIG_LV_DISP_FULL_REFRESH
 static void lv_port_disp_full(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map)
@@ -22,29 +17,16 @@ static void lv_port_disp_full(lv_display_t *disp, const lv_area_t *area, uint8_t
     /* Use PANDISPLAY without H/W copying */
     LV_ASSERT(lcd_device_control(evLCD_CTRL_PAN_DISPLAY, (void *)px_map) == 0);
 
-#if 0
-    // TODO
-    if (buf3_next)
-    {
-        /* vsync-none: Use triple screen-sized buffers. */
-        if (disp->buf_1->data == px_map)
-            disp->buf_1->data = buf3_next;
-        else
-            disp->buf_2->data = buf3_next;
-
-        disp->buf_act->data = buf3_next;
-        buf3_next = px_map;
-    }
-    else
-#endif
-    {
-        /* vsync-after: Use ping-pong screen-sized buffers only.*/
-        LV_ASSERT(lcd_device_control(evLCD_CTRL_WAIT_VSYNC, (void *)NULL) == 0);
-    }
+    /* vsync-after: Use ping-pong screen-sized buffers only.*/
+    LV_ASSERT(lcd_device_control(evLCD_CTRL_WAIT_VSYNC, (void *)NULL) == 0);
 
     lv_display_flush_ready(disp);
 }
+
 #else
+
+static void *buf3_next = NULL;
+static E_DRVEDMA_CHANNEL_INDEX s_evVDMAIdx = (E_DRVEDMA_CHANNEL_INDEX) - 1;
 static void lv_port_disp_partial(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map)
 {
     int32_t w = lv_area_get_width(area);
@@ -66,27 +48,21 @@ static void lv_port_disp_partial(lv_display_t *disp, const lv_area_t *area, uint
 #endif
 
     /* Update dirty region. */
-    if (lv_area_get_size(area) > (LV_HOR_RES_MAX * LV_VER_RES_MAX / 4))
+    if (lv_area_get_size(area) > (LV_HOR_RES_MAX * LV_VER_RES_MAX / 8))
     {
-        E_DRVEDMA_CHANNEL_INDEX evVDMAIdx;
-
-        LV_ASSERT((evVDMAIdx = (E_DRVEDMA_CHANNEL_INDEX)VDMA_FindandRequest()) == 0);
+        LV_ASSERT((s_evVDMAIdx = (E_DRVEDMA_CHANNEL_INDEX)VDMA_FindandRequest()) == 0);
 
         sysCleanDcache((UINT32) px_map, (UINT32) lv_area_get_size(area) * (LV_COLOR_DEPTH / 8));
 
-        EDMA_SetupSingle(evVDMAIdx, (uint32_t)px_map, (uint32_t)pDisp, w * h * (LV_COLOR_DEPTH / 8));
+        EDMA_SetupSingle(s_evVDMAIdx, (uint32_t)px_map, (uint32_t)pDisp, w * h * (LV_COLOR_DEPTH / 8));
 
-        DrvEDMA_SetSourceStride(evVDMAIdx, w * (LV_COLOR_DEPTH / 8), 0);
+        DrvEDMA_SetSourceStride(s_evVDMAIdx, w * (LV_COLOR_DEPTH / 8), 0);
 
-        DrvEDMA_SetDestinationStrideOffset(evVDMAIdx, (psLCDInfo->u32ResWidth - w) * (LV_COLOR_DEPTH / 8));
+        DrvEDMA_SetDestinationStrideOffset(s_evVDMAIdx, (psLCDInfo->u32ResWidth - w) * (LV_COLOR_DEPTH / 8));
 
         outp32(REG_VDMA_CTCSR, inp32(REG_VDMA_CTCSR) | STRIDE_EN);
 
-        EDMA_Trigger(evVDMAIdx);
-
-        while (EDMA_IsBusy(evVDMAIdx));
-
-        EDMA_Free(evVDMAIdx);
+        EDMA_Trigger(s_evVDMAIdx);
     }
     else
     {
@@ -101,9 +77,18 @@ static void lv_port_disp_partial(lv_display_t *disp, const lv_area_t *area, uint
             pDisp += LV_HOR_RES_MAX;
             pSrc += w;
         }
-    }
 
-    lv_display_flush_ready(disp);
+    }
+}
+
+static void lv_port_disp_flush_wait(lv_display_t *disp)
+{
+    if (s_evVDMAIdx == 0) // Is VDMA channel?
+    {
+        while (EDMA_IsBusy(s_evVDMAIdx));
+        EDMA_Free(s_evVDMAIdx);
+        s_evVDMAIdx = (E_DRVEDMA_CHANNEL_INDEX) - 1;
+    }
 }
 
 #endif
@@ -123,7 +108,6 @@ void lv_port_disp_init(void)
     u32FBSize = sLcdInfo.u32ResHeight * sLcdInfo.u32ResWidth * sLcdInfo.u32BytePerPixel;
     buf1 = (void *)((uint32_t)sLcdInfo.pvVramStartAddr);
     buf2 = (void *)((uint32_t)buf1 + u32FBSize);
-    buf3_next = (void *)((uint32_t)buf2 + u32FBSize);
 
     disp = lv_display_create(sLcdInfo.u32ResWidth, sLcdInfo.u32ResHeight);
     LV_ASSERT(disp != NULL);
@@ -131,25 +115,19 @@ void lv_port_disp_init(void)
     lv_display_set_driver_data(disp, &sLcdInfo);
 
 #if CONFIG_LV_DISP_FULL_REFRESH
-    LV_LOG_INFO("Use triple screen-size shadow buffer, buf1: 0x%08x, buf2: 0x%08x, buf3_next: 0x%08x", buf1, buf2, buf3_next);
+    LV_LOG_INFO("Use two screen-size buffer, buf1: 0x%08x, buf2: 0x%08x: 0x%08x", buf1, buf2);
+    lv_color_format_t cf = lv_display_get_color_format(disp);
 
     lv_display_set_flush_cb(disp, lv_port_disp_full); /*Set a flush callback to draw to the display*/
-
     lv_display_set_buffers(disp, buf1, buf2, u32FBSize, LV_DISPLAY_RENDER_MODE_FULL); /*Set an initialized buffer*/
 
 #else
+    buf3_next = (void *)((uint32_t)buf2 + u32FBSize);
+
     LV_LOG_INFO("Use two screen-size shadow buffer, 0x%08x, 0x%08x.", buf2, buf3_next);
 
-    lv_display_set_flush_cb(disp, lv_port_disp_partial); /*Set a flush callback to draw to the display*/
-
+    lv_display_set_flush_cb(disp, lv_port_disp_partial);               /*Set a flush callback to draw to the display*/
+    lv_display_set_flush_wait_cb(disp, lv_port_disp_flush_wait);       /*Set a flush wait callback*/
     lv_display_set_buffers(disp, buf2, buf3_next, u32FBSize, LV_DISPLAY_RENDER_MODE_PARTIAL); /*Set an initialized buffer*/
 #endif
-
-
-#if (CONFIG_LV_GPU_USE_N9H20_BLT==1)
-    disp_drv.draw_ctx_init = lv_draw_n9h20_blt_ctx_init;
-    disp_drv.draw_ctx_deinit = lv_draw_n9h20_blt_ctx_init;
-    disp_drv.draw_ctx_size = sizeof(lv_draw_n9h20_blt_ctx_t);
-#endif
-
 }

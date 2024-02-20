@@ -12,6 +12,8 @@
 #define LV_NUVOTON_INCLUDE     "N9H20.h"
 #include LV_NUVOTON_INCLUDE
 
+#define LV_USE_OS   LV_OS_NONE
+
 #if defined(__800x480__)
     #define LV_HOR_RES_MAX              800
     #define LV_VER_RES_MAX              480
@@ -42,16 +44,10 @@
     i. Tearingless by switching VRAM start address after receiving Vsync of VPOST.
    ii. lvgl keeps previous surface and redraw new dirty joined area, the do vsync-switch.
 */
-#define CONFIG_LV_DISP_FULL_REFRESH      0
-#define CONFIG_LV_GPU_USE_N9H20_BLT      0
+#define CONFIG_LV_DISP_FULL_REFRESH     0
 
-#define LV_MEMCPY_MEMSET_STD            1
-
-#define LV_SPRINTF_CUSTOM               1
-#define LV_SPRINTF_INCLUDE              LV_NUVOTON_INCLUDE
 #define lv_snprintf                     snprintf
 #define lv_vsnprintf                    vsnprintf
-#define LV_SPRINTF_USE_FLOAT            0
 
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_14           1
@@ -74,27 +70,26 @@
 #define LV_FONT_MONTSERRAT_48           1
 
 #define CONFIG_LV_MEM_SIZE              (512*1024)
-#define CONFIG_LV_LAYER_SIMPLE_BUF_SIZE (256*1024)
+#define CONFIG_LV_CACHE_DEF_SIZE        (512*1024)
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
-//#define LV_USE_DEMO_WIDGETS             1
-#define LV_USE_DEMO_MUSIC             1
-#define LV_USE_SYSMON                 1
-
+#define LV_USE_DEMO_WIDGETS             1
+//#define LV_USE_DEMO_MUSIC             1
 #if LV_USE_DEMO_MUSIC
     #define LV_DEMO_MUSIC_AUTO_PLAY     1
 #endif
 
+#define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1
 #define LV_USE_LOG                      1
 
 #if LV_USE_LOG
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
 #endif
 
 #endif

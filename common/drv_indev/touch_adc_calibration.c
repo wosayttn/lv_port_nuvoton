@@ -183,18 +183,24 @@ static void _cleanscreen(void)
     S_LCD_INFO sLcdInfo = {0};
     lv_area_t area;
 
+    LV_LOG_INFO("BEGIN");
+		
     LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
 
     switch (sLcdInfo.evLCDType)
     {
     case evLCD_TYPE_SYNC:
     {
-        volatile lv_color_t *plvColorStart = (volatile lv_color_t *)sLcdInfo.pvVramStartAddr;
+#if (LV_COLOR_DEPTH == 16)  //RGB565
+        volatile uint16_t *plvColorStart = (volatile uint16_t *)sLcdInfo.pvVramStartAddr;
+#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+        volatile uint32_t *plvColorStart = (volatile uint32_t *)sLcdInfo.pvVramStartAddr;
+#endif
         for (i = 0; i < LV_HOR_RES_MAX * LV_VER_RES_MAX; i++)
         {
-#if (LV_COLOR_SIZE == 16)  //RGB565
+#if (LV_COLOR_DEPTH == 16)  //RGB565
             *((uint16_t*)plvColorStart) = 0xCADB;
-#elif (LV_COLOR_SIZE == 32)  //ARGB888
+#elif (LV_COLOR_DEPTH == 32)  //ARGB888
             *((uint32_t*)plvColorStart) = (uint32_t)0xFF97CADB;
 #endif
             plvColorStart++;
@@ -206,11 +212,19 @@ static void _cleanscreen(void)
     {
         while (line < LV_VER_RES_MAX)
         {
-            volatile lv_color16_t *plvColorStart = (volatile lv_color16_t *)sLcdInfo.pvVramStartAddr;
+#if (LV_COLOR_DEPTH == 16)  //RGB565
+            volatile uint16_t *plvColorStart = (volatile uint16_t *)sLcdInfo.pvVramStartAddr;
+#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+            volatile uint32_t *plvColorStart = (volatile uint32_t *)sLcdInfo.pvVramStartAddr;
+#endif
 
             for (i = 0; i < LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER; i++)
             {
-                *((uint16_t*)plvColorStart) = 0xCADB;
+#if (LV_COLOR_DEPTH == 16)  //RGB565
+            *((uint16_t*)plvColorStart) = 0xCADB;
+#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+            *((uint32_t*)plvColorStart) = (uint32_t)0xFF97CADB;
+#endif
                 plvColorStart++;
             }
 
@@ -230,6 +244,8 @@ static void _cleanscreen(void)
     default:
         break;
     }
+		
+    LV_LOG_INFO("END");		
 }
 
 static void _draw_bots(int x, int y)
@@ -240,6 +256,8 @@ static void _draw_bots(int x, int y)
     int start_x = x - (DEF_DOT_NUMBER / 2);
     int start_y = y - (DEF_DOT_NUMBER / 2);
 
+    LV_LOG_INFO("BEGIN");
+	
     S_LCD_INFO sLcdInfo = {0};
     LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
 
@@ -249,51 +267,48 @@ static void _draw_bots(int x, int y)
     {
         int i, j;
 #if (LV_COLOR_DEPTH == 16)  //RGB565
-        uint16_t *pu16Start = (uint16_t *)((uintptr_t)sLcdInfo.pvVramStartAddr + (start_y) * (LV_HOR_RES_MAX * sizeof(lv_color_t)) + (start_x * 2));
-        for (i = 0; i < DEF_DOT_NUMBER; i++)
-        {
-            for (j = 0; j < DEF_DOT_NUMBER; j++)
-            {
-                *pu16Start = 0x07E0; //RGB565
-                pu16Start++;
-            }
-            pu16Start += (LV_HOR_RES_MAX - DEF_DOT_NUMBER);
-        }
+        volatile uint16_t *plvColorStart = (volatile uint16_t *)((uintptr_t)sLcdInfo.pvVramStartAddr + (start_y) * (LV_HOR_RES_MAX * (LV_COLOR_DEPTH/8)) + (start_x * 2));
 #elif (LV_COLOR_DEPTH == 32)  //ARGB888
-        uint32_t *pu32Start = (uint32_t *)((uintptr_t)sLcdInfo.pvVramStartAddr + (start_y) * (LV_HOR_RES_MAX * sizeof(lv_color_t)) + (start_x * 4));
+        volatile uint32_t *plvColorStart = (volatile uint32_t *)((uintptr_t)sLcdInfo.pvVramStartAddr + (start_y) * (LV_HOR_RES_MAX * (LV_COLOR_DEPTH/8)) + (start_x * 4));
+#endif		
         for (i = 0; i < DEF_DOT_NUMBER; i++)
         {
             for (j = 0; j < DEF_DOT_NUMBER; j++)
             {
-                *pu32Start = 0xFF001B48; //ARGB888
-                pu32Start++;
-            }
-            pu32Start += (LV_HOR_RES_MAX - DEF_DOT_NUMBER);
-        }
-#else
-        LV_LOG_ERROR("Not supported.");
+#if (LV_COLOR_DEPTH == 16)  //RGB565
+              *plvColorStart = 0x07E0; //RGB565
+#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+							*plvColorStart = 0xFF001B48; //ARGB888
 #endif
+							plvColorStart++;
+            }
+            plvColorStart += (LV_HOR_RES_MAX - DEF_DOT_NUMBER);
+        }
     }
     break;
 
     case evLCD_TYPE_MPU:
     {
-#if (LV_COLOR_SIZE == 16)  //RGB565
         int i;
-        uint16_t *pu16Start = (uint16_t *)sLcdInfo.pvVramStartAddr;
+#if (LV_COLOR_DEPTH == 16)  //RGB565
+        volatile uint16_t *plvColorStart = (volatile uint16_t *)sLcdInfo.pvVramStartAddr;
+#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+        volatile uint32_t *plvColorStart = (volatile uint16_t *)sLcdInfo.pvVramStartAddr;
+#endif		
         for (i = 0; i < DEF_DOT_NUMBER * DEF_DOT_NUMBER; i++)
         {
-            *pu16Start = 0x07E0; //RGB565
-            pu16Start++;
+#if (LV_COLOR_DEPTH == 16)  //RGB565
+              *plvColorStart = 0x07E0; //RGB565
+#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+							*plvColorStart = 0xFF001B48; //ARGB888
+#endif
+            plvColorStart++;
         }
 
         area.x1 = start_x;
         area.y1 = start_y;
         area.x2 = start_x + DEF_DOT_NUMBER;
         area.y2 = start_y + DEF_DOT_NUMBER;
-#else
-        LV_LOG_ERROR("Not supported.");
-#endif
     }
     break;
     default:
@@ -303,6 +318,8 @@ static void _draw_bots(int x, int y)
     /* Update dirty region. */
     LV_ASSERT(lcd_device_control(evLCD_CTRL_RECT_UPDATE, (void *)&area) == 0);
 
+    LV_LOG_INFO("END");		
+		
     return;
 }
 
