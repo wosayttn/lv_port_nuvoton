@@ -107,6 +107,46 @@ static void sys_init(void)
     GPIO_SetSlewCtl(PJ, (BIT8 | BIT9), GPIO_SLEWCTL_HIGH);
     GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_HIGH);
 
+    /* Enable SPIM module clock */
+    CLK_EnableModuleClock(SPIM1_MODULE);
+
+    /* Enable SPIM module clock */
+    CLK_EnableModuleClock(OTFC1_MODULE);
+
+    /* Init SPIM multi-function pins */
+    SET_SPIM1_D5_PD7();
+    SET_SPIM1_D6_PD6();
+    SET_SPIM1_D7_PD5();
+    SET_SPIM1_D4_PH15();
+    SET_SPIM1_RWDS_PH14();
+    SET_SPIM1_CLK_PH13();
+    SET_SPIM1_CLKN_PH12();
+    SET_SPIM1_D3_PJ3();
+    SET_SPIM1_RESETN_PJ2();
+    SET_SPIM1_SS_PJ7();
+    SET_SPIM1_MOSI_PJ6();
+    SET_SPIM1_MISO_PJ5();
+    SET_SPIM1_D2_PJ4();
+
+    PD->SMTEN |= (GPIO_SMTEN_SMTEN5_Msk |
+                  GPIO_SMTEN_SMTEN6_Msk |
+                  GPIO_SMTEN_SMTEN7_Msk);
+    PH->SMTEN |= (GPIO_SMTEN_SMTEN12_Msk |
+                  GPIO_SMTEN_SMTEN13_Msk |
+                  GPIO_SMTEN_SMTEN14_Msk |
+                  GPIO_SMTEN_SMTEN15_Msk);
+    PJ->SMTEN |= (GPIO_SMTEN_SMTEN2_Msk |
+                  GPIO_SMTEN_SMTEN3_Msk |
+                  GPIO_SMTEN_SMTEN4_Msk |
+                  GPIO_SMTEN_SMTEN5_Msk |
+                  GPIO_SMTEN_SMTEN6_Msk |
+                  GPIO_SMTEN_SMTEN7_Msk);
+
+    /* Set SPIM I/O pins as high slew rate. */
+    GPIO_SetSlewCtl(PD, (BIT5 | BIT6 | BIT7), GPIO_SLEWCTL_FAST1);
+    GPIO_SetSlewCtl(PH, (BIT12 | BIT13 | BIT14 | BIT15), GPIO_SLEWCTL_FAST1);
+    GPIO_SetSlewCtl(PJ, (BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7), GPIO_SLEWCTL_FAST1);
+
     /* Enable I2C1 clock */
     CLK_EnableModuleClock(I2C1_MODULE);
     SET_I2C1_SDA_PB10();
@@ -119,11 +159,19 @@ static void sys_init(void)
     /* Enable SysTick clock */
     CLK_EnableSysTick(CLK_STSEL_ST0SEL_HIRC_DIV2, 0);
 
+    /*---------------------------------------------------------------------------------------------------------*/
+    /* Init I/O Multi-function                                                                                 */
+    /*---------------------------------------------------------------------------------------------------------*/
     SetDebugUartMFP();
 
     InitDebugUart();
 
     systick_init();
+		
+    extern void HyperRAM_Init(SPIM_T *spim);
+    HyperRAM_Init(SPIM1);
+		
+    SPIM_HYPER_EnterDirectMapMode(SPIM1);
 }
 
 #if LV_USE_LOG
@@ -155,7 +203,6 @@ int main(void)
     while (1)
     {
         lv_task_handler();
-        sysDelay(LV_DISP_DEF_REFR_PERIOD);
     }
 
     return 0;
