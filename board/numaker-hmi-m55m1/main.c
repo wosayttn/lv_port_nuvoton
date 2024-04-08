@@ -107,6 +107,28 @@ static void sys_init(void)
     GPIO_SetSlewCtl(PJ, (BIT8 | BIT9), GPIO_SLEWCTL_HIGH);
     GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_HIGH);
 
+    /* Enable I2C1 clock */
+    CLK_EnableModuleClock(I2C1_MODULE);
+    SET_I2C1_SDA_PB10();
+    SET_I2C1_SCL_PB11();
+
+    /* Enable PDMA clock */
+    CLK_EnableModuleClock(PDMA0_MODULE);
+    CLK_EnableModuleClock(PDMA1_MODULE);
+
+    /* Enable SysTick clock */
+    CLK_EnableSysTick(CLK_STSEL_ST0SEL_HIRC_DIV2, 0);
+
+    /*---------------------------------------------------------------------------------------------------------*/
+    /* Init I/O Multi-function                                                                                 */
+    /*---------------------------------------------------------------------------------------------------------*/
+    SetDebugUartMFP();
+
+    InitDebugUart();
+
+    systick_init();
+
+#if defined(USE_HYPERRAM_AS_FRAMEBUFFER)
     /* Enable SPIM module clock */
     CLK_EnableModuleClock(SPIM1_MODULE);
 
@@ -147,31 +169,11 @@ static void sys_init(void)
     GPIO_SetSlewCtl(PH, (BIT12 | BIT13 | BIT14 | BIT15), GPIO_SLEWCTL_FAST1);
     GPIO_SetSlewCtl(PJ, (BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7), GPIO_SLEWCTL_FAST1);
 
-    /* Enable I2C1 clock */
-    CLK_EnableModuleClock(I2C1_MODULE);
-    SET_I2C1_SDA_PB10();
-    SET_I2C1_SCL_PB11();
-
-    /* Enable PDMA clock */
-    CLK_EnableModuleClock(PDMA0_MODULE);
-    CLK_EnableModuleClock(PDMA1_MODULE);
-
-    /* Enable SysTick clock */
-    CLK_EnableSysTick(CLK_STSEL_ST0SEL_HIRC_DIV2, 0);
-
-    /*---------------------------------------------------------------------------------------------------------*/
-    /* Init I/O Multi-function                                                                                 */
-    /*---------------------------------------------------------------------------------------------------------*/
-    SetDebugUartMFP();
-
-    InitDebugUart();
-
-    systick_init();
-		
     extern void HyperRAM_Init(SPIM_T *spim);
     HyperRAM_Init(SPIM1);
 		
     SPIM_HYPER_EnterDirectMapMode(SPIM1);
+#endif
 }
 
 #if LV_USE_LOG
