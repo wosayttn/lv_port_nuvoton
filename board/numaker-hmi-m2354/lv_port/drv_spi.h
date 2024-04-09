@@ -31,5 +31,6 @@ struct nu_spi
 typedef struct nu_spi *nu_spi_t;
 
 int nu_spi_transfer(struct nu_spi *psNuSPI, const void *tx, void *rx, int length);
+int nu_spi_send_then_recv(SPI_T* spi, const uint8_t *tx, int tx_len, uint8_t *rx, int rx_len, int dw);
 
 #endif //__DRV_SPI_H__

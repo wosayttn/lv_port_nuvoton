@@ -30,6 +30,9 @@
 #define LV_USE_PERF_MONITOR             1
 #define LV_USE_LOG                      1
 
+#define LV_USE_FS_FATFS                 1
+#define LV_FS_FATFS_LETTER              'E'
+
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO

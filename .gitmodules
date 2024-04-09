@@ -45,3 +45,6 @@
 [submodule "thirdparty/arm2d"]
 	path = thirdparty/arm2d
 	url = https://github.com/ARM-software/Arm-2D
+[submodule "thirdparty/SFUD"]
+	path = thirdparty/SFUD
+	url = https://github.com/armink/SFUD

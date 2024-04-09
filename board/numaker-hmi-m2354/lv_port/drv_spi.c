@@ -9,7 +9,7 @@
 
 #define SPI_GET_DATA_WIDTH(spi)  (((spi)->CTL & SPI_CTL_DWIDTH_Msk) >> SPI_CTL_DWIDTH_Pos)
 
-static int nu_spi_read(SPI_T *spi, uint8_t *rx, int dw)
+__STATIC_INLINE int nu_spi_read(SPI_T *spi, uint8_t *rx, int dw)
 {
     // Read RX data
     if (!SPI_GET_RX_FIFO_EMPTY_FLAG(spi))
@@ -42,7 +42,7 @@ static int nu_spi_read(SPI_T *spi, uint8_t *rx, int dw)
     return dw;
 }
 
-static int nu_spi_write(SPI_T *spi, const uint8_t *tx, int dw)
+__STATIC_INLINE int nu_spi_write(SPI_T *spi, const uint8_t *tx, int dw)
 {
     // Wait SPI TX send data
     while (SPI_GET_TX_FIFO_FULL_FLAG(spi));
@@ -70,7 +70,7 @@ static int nu_spi_write(SPI_T *spi, const uint8_t *tx, int dw)
     return dw;
 }
 
-void nu_spi_drain_rxfifo(SPI_T *spi)
+__STATIC_INLINE void nu_spi_drain_rxfifo(SPI_T *spi)
 {
     while (SPI_IS_BUSY(spi));
 
@@ -145,6 +145,41 @@ static int nu_spi_transmit_poll(struct nu_spi *psNuSPI, const uint8_t *tx, uint8
 
     return length;
 }
+
+int nu_spi_send_then_recv(SPI_T *base, const uint8_t *tx, int tx_len, uint8_t *rx, int rx_len, int dw)
+{
+    SPI_SET_SS_LOW(base);
+
+    if (tx)
+    {
+        while (tx_len > 0)
+        {
+            tx += nu_spi_write(base, tx, dw);
+            tx_len -= dw;
+        }
+    }
+
+    /* Clear SPI RX FIFO */
+    nu_spi_drain_rxfifo(base);
+
+    if (rx)
+    {
+        uint32_t dummy = 0xffffffff;
+        while (rx_len > 0)
+        {
+            /* Input data to SPI TX FIFO */
+            rx_len -= nu_spi_write(base, (const uint8_t *)&dummy, dw);
+            while (SPI_IS_BUSY(base));
+            if (!SPI_GET_RX_FIFO_EMPTY_FLAG(base))
+                rx += nu_spi_read(base, rx, dw);
+        }
+    }
+
+    SPI_SET_SS_HIGH(base);
+
+    return 0;
+}
+
 
 #if defined(CONFIG_SPI_USE_PDMA)
 

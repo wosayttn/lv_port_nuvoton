@@ -7,6 +7,8 @@
  ******************************************************************************/
 
 #include "lv_glue.h"
+#include "ff.h"
+#include "diskio.h"
 
 static uint32_t get_systick(void)
 {
@@ -60,16 +62,36 @@ static void sys_init(void)
     /* Enable digital path on these EADC pins */
     GPIO_ENABLE_DIGITAL_PATH(PB, BIT6 | BIT7 | BIT8 | BIT9 | BIT10 | BIT11);
 
+    /* Enable SPI0 module clock */
+    CLK_EnableModuleClock(SPI0_MODULE);
+    CLK_SetModuleClock(SPI0_MODULE, CLK_CLKSEL2_SPI0SEL_PCLK1, MODULE_NoMsk);
+    SYS_ResetModule(SPI0_RST);
+    SYS->GPA_MFPL &= ~(SYS_GPA_MFPL_PA0MFP_Msk | SYS_GPA_MFPL_PA1MFP_Msk | SYS_GPA_MFPL_PA2MFP_Msk | SYS_GPA_MFPL_PA3MFP_Msk);
+    SYS->GPA_MFPL |= (SYS_GPA_MFPL_PA0MFP_SPI0_MOSI | SYS_GPA_MFPL_PA1MFP_SPI0_MISO | SYS_GPA_MFPL_PA2MFP_SPI0_CLK | SYS_GPA_MFPL_PA3MFP_SPI0_SS);
+    GPIO_SetSlewCtl(PA, BIT0 | BIT1 | BIT3, GPIO_SLEWCTL_HIGH);
+
+    /* Pull-up MISO1 & MOSI1 pins */
+    SYS->GPC_MFPH &= ~(SYS_GPC_MFPH_PC9MFP_Msk | SYS_GPC_MFPH_PC10MFP_Msk);
+    GPIO_SetMode(PC, BIT9 | BIT10, GPIO_MODE_INPUT);
+    GPIO_SetPullCtl(PC, BIT9 | BIT10, GPIO_PUSEL_PULL_UP);
+
+    /* RESET ESP12 to avoid power issue. */
+    SYS->GPC_MFPH &= ~(SYS_GPC_MFPH_PC13MFP_Msk);
+    GPIO_SetMode(PC, BIT13, GPIO_MODE_OUTPUT);
+    PC13 = 0;
+
     /* Enable SPI1 module clock */
     CLK_EnableModuleClock(SPI1_MODULE);
     CLK_SetModuleClock(SPI1_MODULE, CLK_CLKSEL2_SPI1SEL_PCLK0, MODULE_NoMsk);
+    SYS_ResetModule(SPI1_RST);
+
     SYS->GPE_MFPL &= ~(SYS_GPE_MFPL_PE1MFP_Msk | SYS_GPE_MFPL_PE0MFP_Msk);
     SYS->GPE_MFPL |= (SYS_GPE_MFPL_PE1MFP_SPI1_MISO | SYS_GPE_MFPL_PE0MFP_SPI1_MOSI);
     SYS->GPH_MFPH &= ~(SYS_GPH_MFPH_PH9MFP_Msk | SYS_GPH_MFPH_PH8MFP_Msk);
     SYS->GPH_MFPH |= (SYS_GPH_MFPH_PH9MFP_SPI1_SS | SYS_GPH_MFPH_PH8MFP_SPI1_CLK);
 
     /* Enable SysTick module clock */
-    CLK_EnableSysTick(CLK_CLKSEL0_STCLKSEL_HCLK, 0);
+    CLK_EnableSysTick(CLK_CLKSEL0_STCLKSEL_HXT_DIV2, 0);
 
     /* Enable PDMA0/PDMA1 module clock */
     CLK_EnableModuleClock(PDMA0_MODULE);
@@ -90,10 +112,33 @@ static void lv_nuvoton_log(const char *buf)
 }
 #endif /* LV_USE_LOG */
 
+
+
+FATFS FatFs[FF_VOLUMES];       /* File system object for logical drive */
+
+static void put_rc(FRESULT rc)
+{
+    const TCHAR *p =
+        _T("OK\0DISK_ERR\0INT_ERR\0NOT_READY\0NO_FILE\0NO_PATH\0INVALID_NAME\0")
+        _T("DENIED\0EXIST\0INVALID_OBJECT\0WRITE_PROTECTED\0INVALID_DRIVE\0")
+        _T("NOT_ENABLED\0NO_FILE_SYSTEM\0MKFS_ABORTED\0TIMEOUT\0LOCKED\0")
+        _T("NOT_ENOUGH_CORE\0TOO_MANY_OPEN_FILES\0INVALID_PARAMETER\0");
+
+    uint32_t i;
+
+    for (i = 0; (i != (UINT)rc) && *p; i++)
+    {
+        while (*p++) ;
+    }
+
+    printf(_T("rc=%u FR_%s\n"), (UINT)rc, p);
+}
+
 int main(void)
 {
     sys_init();
 
+#if 1
     lv_init();
 
 #if LV_USE_LOG
@@ -119,5 +164,100 @@ int main(void)
         // Put your code here  __eend.
     }
 
+#elif 0
+
+
+#define SFUD_DEMO_TEST_BUFFER_SIZE                     1024
+    static uint8_t sfud_demo_test_buf[SFUD_DEMO_TEST_BUFFER_SIZE];
+    void sfud_demo(uint32_t addr, size_t size, uint8_t *data);
+
+    sfud_init();
+    sfud_demo(0, sizeof(sfud_demo_test_buf), sfud_demo_test_buf);
+#else
+    {
+        DIR dir;                /* Directory object */
+        FRESULT res;
+
+        char logic_nbr[3] = {'0', ':', 0};
+
+        /* Mount a logical drive */
+        if ((res = f_mount(&FatFs[0], logic_nbr, 1)) != 0)
+        {
+            put_rc(res);
+#if (FF_USE_MKFS)
+            {
+                BYTE Buff[FF_MAX_SS];          /* Working buffer */
+
+                MKFS_PARM opt = {0};
+                opt.fmt = FM_ANY | FM_SFD;
+
+                /* Create a FAT volume */
+                res = f_mkfs(logic_nbr, &opt, Buff, sizeof(Buff));
+                if (res)
+                {
+                    put_rc(res);
+                    goto _Exit;
+                }
+								else if ((res = f_mount(&FatFs[0], logic_nbr, 1)) != 0)
+								{
+									  goto _Exit;
+								}
+            }
+#else
+            goto _Exit:						
+#endif
+        }
+
+        /* List directory information */
+        if ((res = f_opendir(&dir, logic_nbr)) != 0)
+        {
+            put_rc(res);
+        }
+        else
+        {
+            FILINFO Finfo;
+            FATFS *fs;              /* Pointer to file system object */
+            uint32_t p1, s1, s2;
+            p1 = s1 = s2 = 0;
+
+            for (;;)
+            {
+                /* Read directory entries in sequence */
+                res = f_readdir(&dir, &Finfo);
+
+                if ((res != FR_OK) || !Finfo.fname[0])
+                    break;
+
+                if (Finfo.fattrib & AM_DIR)
+                {
+                    s2++;
+                }
+                else
+                {
+                    s1++;
+                    p1 += Finfo.fsize;
+                }
+
+                printf("%c%c%c%c%c %u/%02u/%02u %02u:%02u %9lu  %s\n",
+                       (Finfo.fattrib & AM_DIR) ? 'D' : '-',
+                       (Finfo.fattrib & AM_RDO) ? 'R' : '-',
+                       (Finfo.fattrib & AM_HID) ? 'H' : '-',
+                       (Finfo.fattrib & AM_SYS) ? 'S' : '-',
+                       (Finfo.fattrib & AM_ARC) ? 'A' : '-',
+                       (Finfo.fdate >> 9) + 1980, (Finfo.fdate >> 5) & 15, Finfo.fdate & 31,
+                       (Finfo.ftime >> 11), (Finfo.ftime >> 5) & 63, Finfo.fsize, Finfo.fname);
+            }
+
+            printf("%4u File(s),%10u bytes total\n%4u Dir(s)", s1, p1, s2);
+
+            /* Get number of free clusters */
+            if (f_getfree(logic_nbr, (DWORD *)&p1, &fs) == FR_OK)
+                printf(", %10u bytes free\n", p1 * fs->csize * 512);
+        }
+    }
+_Exit:
+
+#endif
+    while (1);
     return 0;
 }
