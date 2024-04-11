@@ -1,9 +1,9 @@
 /**************************************************************************//**
  * @file     main.c
- * @brief    M2354 Driver Sample Code
+ * @brief    main routine.
  *
  * @note
- * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2024 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 
 #include "lv_glue.h"

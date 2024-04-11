@@ -26,5 +26,10 @@ To export SLS UI files into this folder and import all c source files to lvgl pr
 
 - Download execution using programming tool.
 
+## Deploy Asset binary to SPI NOR flash of NuTFT board
+- Press `SW2` button then press `SW1` button to reset.
+- After booting, you should see a drive in your file explorer.
+- After that, to copy `1.bin` and `2.bin` in `assets_ext_storage` folder to the disk drive.
+
 ## **Resources**
 [SquareLine Studio](https://squareline.io/downloads)
