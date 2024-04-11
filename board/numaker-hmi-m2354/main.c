@@ -10,11 +10,6 @@
 #include "ff.h"
 #include "diskio.h"
 
-static uint32_t get_systick(void)
-{
-    return sysGetTicks(0);
-}
-
 static void sys_init(void)
 {
     SYS_UnlockReg();
@@ -80,6 +75,10 @@ static void sys_init(void)
     GPIO_SetMode(PC, BIT13, GPIO_MODE_OUTPUT);
     PC13 = 0;
 
+    /* RESET BUTTON to avoid power issue. */
+    SYS->GPF_MFPH &= ~(SYS_GPF_MFPH_PF11MFP_Msk);
+    GPIO_SetMode(PF, BIT11, GPIO_MODE_INPUT);
+
     /* Enable SPI1 module clock */
     CLK_EnableModuleClock(SPI1_MODULE);
     CLK_SetModuleClock(SPI1_MODULE, CLK_CLKSEL2_SPI1SEL_PCLK0, MODULE_NoMsk);
@@ -97,167 +96,45 @@ static void sys_init(void)
     CLK_EnableModuleClock(PDMA0_MODULE);
     CLK_EnableModuleClock(PDMA1_MODULE);
 
+    /* Select USB clock source as PLL and USB clock divider as 2 */
+    CLK_SetModuleClock(USBD_MODULE, CLK_CLKSEL0_USBSEL_PLL, CLK_CLKDIV0_USB(2));
+
+    /* Select USB Device role */
+    SYS->USBPHY = (SYS->USBPHY & ~SYS_USBPHY_USBROLE_Msk) | SYS_USBPHY_OTGPHYEN_Msk | SYS_USBPHY_SBO_Msk;
+
+    /* Enable USBD module clock */
+    CLK_EnableModuleClock(USBD_MODULE);
+
+    /* USBD multi-function pins for VBUS, D+, D-, and ID pins */
+    SYS->GPA_MFPH &= ~(SYS_GPA_MFPH_PA12MFP_Msk | SYS_GPA_MFPH_PA13MFP_Msk | SYS_GPA_MFPH_PA14MFP_Msk | SYS_GPA_MFPH_PA15MFP_Msk);
+    SYS->GPA_MFPH |= (SYS_GPA_MFPH_PA12MFP_USB_VBUS | SYS_GPA_MFPH_PA13MFP_USB_D_N | SYS_GPA_MFPH_PA14MFP_USB_D_P | SYS_GPA_MFPH_PA15MFP_USB_OTG_ID);
+
     UART_Open(UART0, 115200);
 
     /* Vref connect to internal */
     SYS_SetVRef(SYS_VREFCTL_VREF_3_0V);
-
-    systick_init();
-}
-
-#if LV_USE_LOG
-static void lv_nuvoton_log(const char *buf)
-{
-    printf("%s", buf);
-}
-#endif /* LV_USE_LOG */
-
-
-
-FATFS FatFs[FF_VOLUMES];       /* File system object for logical drive */
-
-static void put_rc(FRESULT rc)
-{
-    const TCHAR *p =
-        _T("OK\0DISK_ERR\0INT_ERR\0NOT_READY\0NO_FILE\0NO_PATH\0INVALID_NAME\0")
-        _T("DENIED\0EXIST\0INVALID_OBJECT\0WRITE_PROTECTED\0INVALID_DRIVE\0")
-        _T("NOT_ENABLED\0NO_FILE_SYSTEM\0MKFS_ABORTED\0TIMEOUT\0LOCKED\0")
-        _T("NOT_ENOUGH_CORE\0TOO_MANY_OPEN_FILES\0INVALID_PARAMETER\0");
-
-    uint32_t i;
-
-    for (i = 0; (i != (UINT)rc) && *p; i++)
-    {
-        while (*p++) ;
-    }
-
-    printf(_T("rc=%u FR_%s\n"), (UINT)rc, p);
 }
 
 int main(void)
 {
     sys_init();
 
-#if 1
-    lv_init();
+    /* Initial fatfs and access SPI-NOR flash device on NuTFT board. */
+    /* Notice: Due to PA0, PA1, PA2, PA3 pins(SPI0) is in 1.8v power-domain. */
+    /* You should switch 3.3v domain to access the W25X16 SPI NOR flash of Nu-TFT board. */
+    task_fatfs_init();
 
-#if LV_USE_LOG
-    lv_log_register_print_cb(lv_nuvoton_log);
-#endif /* LV_USE_LOG */
+    /* If button pressed, to enter USB MSC mode. */
+    /* If button release, to enter LVGL demo mode. */
+    if (PF11 == 0)
+        task_msc_sfd_init();
+    else
+        task_lv_init();
 
-    lv_tick_set_cb(sysGetTicks);          /*Expression evaluating to current system time in ms*/
-    lv_delay_set_cb(sysDelay);
+    /* Start scheduling. */
+    vTaskStartScheduler();
 
-    extern void lv_port_disp_init(void);
-    lv_port_disp_init();
+    for (;;);
 
-    extern void lv_port_indev_init(void);
-    lv_port_indev_init();
-
-    extern void ui_init(void);
-    ui_init();
-
-    while (1)
-    {
-        lv_task_handler();
-        // Put your code here  __start.
-        // Put your code here  __eend.
-    }
-
-#elif 0
-
-
-#define SFUD_DEMO_TEST_BUFFER_SIZE                     1024
-    static uint8_t sfud_demo_test_buf[SFUD_DEMO_TEST_BUFFER_SIZE];
-    void sfud_demo(uint32_t addr, size_t size, uint8_t *data);
-
-    sfud_init();
-    sfud_demo(0, sizeof(sfud_demo_test_buf), sfud_demo_test_buf);
-#else
-    {
-        DIR dir;                /* Directory object */
-        FRESULT res;
-
-        char logic_nbr[3] = {'0', ':', 0};
-
-        /* Mount a logical drive */
-        if ((res = f_mount(&FatFs[0], logic_nbr, 1)) != 0)
-        {
-            put_rc(res);
-#if (FF_USE_MKFS)
-            {
-                BYTE Buff[FF_MAX_SS];          /* Working buffer */
-
-                MKFS_PARM opt = {0};
-                opt.fmt = FM_ANY | FM_SFD;
-
-                /* Create a FAT volume */
-                res = f_mkfs(logic_nbr, &opt, Buff, sizeof(Buff));
-                if (res)
-                {
-                    put_rc(res);
-                    goto _Exit;
-                }
-								else if ((res = f_mount(&FatFs[0], logic_nbr, 1)) != 0)
-								{
-									  goto _Exit;
-								}
-            }
-#else
-            goto _Exit:						
-#endif
-        }
-
-        /* List directory information */
-        if ((res = f_opendir(&dir, logic_nbr)) != 0)
-        {
-            put_rc(res);
-        }
-        else
-        {
-            FILINFO Finfo;
-            FATFS *fs;              /* Pointer to file system object */
-            uint32_t p1, s1, s2;
-            p1 = s1 = s2 = 0;
-
-            for (;;)
-            {
-                /* Read directory entries in sequence */
-                res = f_readdir(&dir, &Finfo);
-
-                if ((res != FR_OK) || !Finfo.fname[0])
-                    break;
-
-                if (Finfo.fattrib & AM_DIR)
-                {
-                    s2++;
-                }
-                else
-                {
-                    s1++;
-                    p1 += Finfo.fsize;
-                }
-
-                printf("%c%c%c%c%c %u/%02u/%02u %02u:%02u %9lu  %s\n",
-                       (Finfo.fattrib & AM_DIR) ? 'D' : '-',
-                       (Finfo.fattrib & AM_RDO) ? 'R' : '-',
-                       (Finfo.fattrib & AM_HID) ? 'H' : '-',
-                       (Finfo.fattrib & AM_SYS) ? 'S' : '-',
-                       (Finfo.fattrib & AM_ARC) ? 'A' : '-',
-                       (Finfo.fdate >> 9) + 1980, (Finfo.fdate >> 5) & 15, Finfo.fdate & 31,
-                       (Finfo.ftime >> 11), (Finfo.ftime >> 5) & 63, Finfo.fsize, Finfo.fname);
-            }
-
-            printf("%4u File(s),%10u bytes total\n%4u Dir(s)", s1, p1, s2);
-
-            /* Get number of free clusters */
-            if (f_getfree(logic_nbr, (DWORD *)&p1, &fs) == FR_OK)
-                printf(", %10u bytes free\n", p1 * fs->csize * 512);
-        }
-    }
-_Exit:
-
-#endif
-    while (1);
     return 0;
 }

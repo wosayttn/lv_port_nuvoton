@@ -48,3 +48,6 @@
 [submodule "thirdparty/SFUD"]
 	path = thirdparty/SFUD
 	url = https://github.com/armink/SFUD
+[submodule "thirdparty/CherryUSB"]
+	path = thirdparty/CherryUSB
+	url = https://github.com/cherry-embedded/CherryUSB

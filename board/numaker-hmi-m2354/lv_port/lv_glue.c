@@ -20,28 +20,9 @@ static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((al
 S_CALIBRATION_MATRIX g_sCalMat = { -105, 6354, -3362552, 5086, -24, -2489744, 65536 };
 #endif
 
-static volatile uint32_t s_systick_count = 0;
-
-void SysTick_Handler(void)
-{
-    s_systick_count++;
-    lv_tick_inc(1);
-}
-
-void systick_init(void)
-{
-    SysTick_Config(SystemCoreClock / CONFIG_TICK_PER_SECOND);
-}
-
 void sysDelay(uint32_t ms)
 {
-    volatile uint32_t tgtTicks = s_systick_count + ms;
-    while (s_systick_count < tgtTicks);
-}
-
-uint32_t sysGetTicks(uint32_t no)
-{
-    return s_systick_count;
+    vTaskDelay( ms / portTICK_PERIOD_MS );
 }
 
 static int nuvoton_fs_init(void)
@@ -191,7 +172,7 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
     psInDevData->point.x = sLastInDevData.point.x;
     psInDevData->point.y = sLastInDevData.point.y;
 
-    if (sysGetTicks(0) < u32NextTriggerTime)
+    if (xTaskGetTickCount() < u32NextTriggerTime)
     {
         goto exit_touchpad_device_read;
     }
@@ -199,7 +180,7 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
     /* Get X, Y ADC converting data */
     adc_x  = indev_touch_get_x();
     adc_y  = indev_touch_get_y();
-    u32NextTriggerTime = sysGetTicks(0) + CONFIG_TRIGGER_PERIOD;
+    u32NextTriggerTime = xTaskGetTickCount() + CONFIG_TRIGGER_PERIOD;
 
     if ((adc_x < 4000) && (adc_y < 4000))
     {

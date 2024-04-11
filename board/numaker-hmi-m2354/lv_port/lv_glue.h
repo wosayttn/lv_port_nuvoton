@@ -12,11 +12,14 @@
 #include "NuMicro.h"
 #include "lvgl.h"
 #include "nu_misc.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
 
 #define PORT_OFFSET                 0x40
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
-#define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX/2)
+#define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX/4)
 
 #if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
     #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
@@ -59,8 +62,6 @@ int touchpad_device_open(void);
 int touchpad_device_read(lv_indev_data_t *psInDevData);
 void touchpad_device_close(void);
 int touchpad_device_control(int cmd, void *argv);
-void systick_init(void);
 void sysDelay(uint32_t ms);
-uint32_t sysGetTicks(uint32_t no);
 
 #endif /* __LV_GLUE_H__ */

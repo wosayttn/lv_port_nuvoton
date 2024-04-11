@@ -201,8 +201,8 @@ sfud_err sfud_spi_port_init(sfud_flash *flash)
 #ifdef SFUD_USING_QSPI
     flash->spi.qspi_read = qspi_read;
 #endif
-    flash->spi.lock = spi_lock;
-    flash->spi.unlock = spi_unlock;
+    //flash->spi.lock = spi_lock;
+    //flash->spi.unlock = spi_unlock;
     /* about 100 microsecond delay */
     flash->retry.delay = retry_delay_100us;
     /* adout 60 seconds timeout */
@@ -246,7 +246,7 @@ void sfud_log_info(const char *format, ...)
 
     /* args point to the first variable parameter */
     va_start(args, format);
-    printf("[SFUD]");
+    printf("[SFUD1]");
     /* must use vprintf to print */
     vsnprintf(log_buf, sizeof(log_buf), format, args);
     printf("%s\n", log_buf);

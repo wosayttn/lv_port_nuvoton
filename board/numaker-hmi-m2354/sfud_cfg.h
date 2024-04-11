@@ -32,10 +32,10 @@
 #include "NuMicro.h"
 
 //#define SFUD_DEBUG_MODE
-
 #define SFUD_USING_SFDP
 
 //#define SFUD_USING_QSPI
+
 
 enum {
     SFUD_W25_DEVICE_INDEX = 0,

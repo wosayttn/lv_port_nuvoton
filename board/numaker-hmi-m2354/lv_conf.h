@@ -9,8 +9,8 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
-
 #define LV_USE_OS   LV_OS_NONE
+
 #define LV_HOR_RES_MAX                  320
 #define LV_VER_RES_MAX                  240
 #define LV_COLOR_DEPTH                  16
@@ -28,10 +28,11 @@
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      1
+#define LV_USE_LOG                      0
 
 #define LV_USE_FS_FATFS                 1
-#define LV_FS_FATFS_LETTER              'E'
+#define LV_FS_FATFS_LETTER              '0'
+#define CONFIG_LV_MEM_SIZE              (128*1024U)
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
