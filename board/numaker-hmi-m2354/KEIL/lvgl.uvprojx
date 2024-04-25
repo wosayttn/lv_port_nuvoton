@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\bsp\M2354\Library\CMSIS\Include;..\..\..\bsp\M2354\Library\Device\Nuvoton\M2354\Include;..\..\..\bsp\M2354\Library\StdDriver\inc;..\lv_port;..\..\..\thirdparty\SFUD\sfud\inc;..\..\..\thirdparty\FatFs-r15\source;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files;..\..\..\thirdparty\CherryUSB\core;..\..\..\thirdparty\CherryUSB\class\msc;..\..\..\thirdparty\CherryUSB\common;..\..\..\thirdparty\FreeRTOS-10.4\include;..\..\..\thirdparty\FreeRTOS-10.4\portable\GCC\ARM_CM23</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\M2354\Library\CMSIS\Include;..\..\..\bsp\M2354\Library\Device\Nuvoton\M2354\Include;..\..\..\bsp\M2354\Library\StdDriver\inc;..\lv_port;..\..\..\thirdparty\SFUD\sfud\inc;..\..\..\thirdparty\FatFs-r15\source;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files;..\..\..\thirdparty\CherryUSB\core;..\..\..\thirdparty\CherryUSB\class\msc;..\..\..\thirdparty\CherryUSB\common;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\ARMv8M\non_secure;..\..\..\thirdparty\FreeRTOS\portable\ARMv8M\non_secure\portable\GCC\ARM_CM23_NTZ</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2245,32 +2245,37 @@
             <File>
               <FileName>list.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS-10.4\list.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\list.c</FilePath>
             </File>
             <File>
               <FileName>queue.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS-10.4\queue.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\queue.c</FilePath>
             </File>
             <File>
               <FileName>tasks.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS-10.4\tasks.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\tasks.c</FilePath>
             </File>
             <File>
               <FileName>timers.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS-10.4\timers.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\timers.c</FilePath>
             </File>
             <File>
               <FileName>heap_4.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS-10.4\portable\MemMang\heap_4.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
             </File>
             <File>
               <FileName>port.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS-10.4\portable\GCC\ARM_CM23\port.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\ARMv8M\non_secure\port.c</FilePath>
+            </File>
+            <File>
+              <FileName>portasm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\ARMv8M\non_secure\portable\GCC\ARM_CM23_NTZ\portasm.c</FilePath>
             </File>
           </Files>
         </Group>
