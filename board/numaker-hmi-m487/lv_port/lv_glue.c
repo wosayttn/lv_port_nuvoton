@@ -1,6 +1,6 @@
 /**************************************************************************//**
  * @file     lv_glue.c
- * @brief    lvgl glue for M2354 series
+ * @brief    lvgl glue for M480 series
  *
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
@@ -11,14 +11,17 @@
 #include "disp_ili9341.h"
 #include "touch_adc.h"
 
-
-#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), 4)
+#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * sizeof(lv_color_t)), 4)
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(4)));
 
+/* User can define ADC touch calibration matrix in board_dev.c. */
 #if defined(__320x240__)
-S_CALIBRATION_MATRIX g_sCalMat = { -105, 6354, -3362552, 5086, -24, -2489744, 65536 };
+/* Use ADVv4.1 board */
+S_CALIBRATION_MATRIX g_sCalMat = { 9, 6484, -4280144, -5183, -113, 19125360, 65536 };
 #endif
+
+static volatile uint32_t s_systick_count = 0;
 
 void sysDelay(uint32_t ms)
 {
@@ -41,17 +44,25 @@ int lcd_device_initialize(void)
     PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ILI9341_PIN_BACKLIGHT) * PORT_OFFSET));
     GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ILI9341_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
 
-    /* Open SPI */
-    SPI_Open(CONFIG_ILI9341_SPI, SPI_MASTER, SPI_MODE_0, 8, CONFIG_ILI9341_SPI_CLOCK);
-
-    /* Set sequence to MSB first */
-    SPI_SET_MSB_FIRST(CONFIG_ILI9341_SPI);
-
-    /* Set CS pin to HIGH */
-    SPI_SET_SS_HIGH(CONFIG_ILI9341_SPI);
-
-    /* Set sequence to MSB first */
-    SPI_SET_MSB_FIRST(CONFIG_ILI9341_SPI);
+    /* Open EBI */
+    EBI_Open(CONFIG_ILI9341_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_NORMAL, EBI_CS_ACTIVE_LOW);
+    switch (CONFIG_ILI9341_EBI)
+    {
+    case EBI_BANK0:
+        EBI->CTL0 |= EBI_CTL0_CACCESS_Msk;
+        EBI->TCTL0 |= (EBI_TCTL0_WAHDOFF_Msk | EBI_TCTL0_RAHDOFF_Msk);
+        break;
+    case EBI_BANK1:
+        EBI->CTL1 |= EBI_CTL1_CACCESS_Msk;
+        EBI->TCTL1 |= (EBI_TCTL1_WAHDOFF_Msk | EBI_TCTL1_RAHDOFF_Msk);
+        break;
+    case EBI_BANK2:
+        EBI->CTL2 |= EBI_CTL2_CACCESS_Msk;
+        EBI->TCTL2 |= (EBI_TCTL2_WAHDOFF_Msk | EBI_TCTL2_RAHDOFF_Msk);
+        break;
+    default:
+        return -1;
+    }
 
     disp_ili9341_init();
 
