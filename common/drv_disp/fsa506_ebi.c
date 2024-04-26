@@ -1,6 +1,6 @@
 /**************************************************************************//**
  * @file     fsa506_ebi.c
- * @brief    ili9431 ebi interface glue
+ * @brief    fsa506 ebi interface glue
  *
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
@@ -20,8 +20,10 @@
 
 #define FSA506_WRITE_REG(u32RegAddr) \
         { \
+            CLR_RS; \
             (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_CMD))) = (u32RegAddr)); \
             __DSB(); \
+            SET_RS; \
         }
 
 #define FSA506_WRITE_DATA(u32Data) \
@@ -33,17 +35,13 @@
 void fsa506_write_reg(uint16_t reg, uint16_t data)
 {
     // Register
-    CLR_RS;
     FSA506_WRITE_REG(reg & 0xFF);
-    SET_RS;
 
     // Data
     FSA506_WRITE_DATA(data & 0xFF);
 
     // Done
-    CLR_RS;
     FSA506_WRITE_REG(0x80);
-    SET_RS;
 }
 
 void fsa506_set_column(uint16_t StartCol, uint16_t EndCol)
@@ -66,9 +64,7 @@ void fsa506_send_pixels(uint16_t *pixels, int byte_len)
 {
     int count = byte_len / sizeof(uint16_t);
 
-    CLR_RS;
     FSA506_WRITE_REG(0xC1);
-    SET_RS;
 
 #if defined(CONFIG_FSA506_EBI_USE_PDMA)
     // PDMA-M2M feed
@@ -89,7 +85,5 @@ void fsa506_send_pixels(uint16_t *pixels, int byte_len)
         }
     }
 
-    CLR_RS;
     FSA506_WRITE_REG(0x80);
-    SET_RS;
 }

@@ -11,8 +11,16 @@
 
 #define LV_USE_OS   LV_OS_NONE
 
-#define LV_HOR_RES_MAX                  480
-#define LV_VER_RES_MAX                  272
+#if defined(__480x272__)
+    #define LV_HOR_RES_MAX              480
+    #define LV_VER_RES_MAX              272
+#endif
+
+#if defined(__800x480__)
+    #define LV_HOR_RES_MAX              800
+    #define LV_VER_RES_MAX              480
+#endif
+
 #define LV_COLOR_DEPTH                  16
 #define LV_DISP_DEF_REFR_PERIOD         30
 

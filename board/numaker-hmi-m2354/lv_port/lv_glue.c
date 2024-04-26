@@ -25,8 +25,6 @@ void sysDelay(uint32_t ms)
     vTaskDelay( ms / portTICK_PERIOD_MS );
 }
 
-
-
 int lcd_device_initialize(void)
 {
     GPIO_T *PORT;

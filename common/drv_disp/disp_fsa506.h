@@ -1,6 +1,6 @@
 /**************************************************************************//**
  * @file     disp_fsa506.h
- * @brief    ili9431 display panel driver
+ * @brief    fsa506 display panel driver
  *
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.

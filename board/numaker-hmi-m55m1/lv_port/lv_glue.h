@@ -27,18 +27,35 @@
 
 #define GPIO_PIN_DATA                  GPIO_PIN_DATA_S
 
-/* FSA506 EBI */
-#define CONFIG_FSA506_EBI              EBI_BANK0
-#define CONFIG_FSA506_EBI_USE_PDMA     1
-#define CONFIG_FSA506_EBI_ADDR         (EBI_BANK0_BASE_ADDR+(CONFIG_FSA506_EBI*EBI_MAX_SIZE))
-#define CONFIG_FSA506_PIN_BACKLIGHT    NU_GET_PININDEX(evGG, 5)
-#define CONFIG_FSA506_PIN_DC           NU_GET_PININDEX(evGH, 7)
-#define CONFIG_FSA506_PIN_RESET        NU_GET_PININDEX(evGH, 6)
+#if defined(__480x272__)
+    /* FSA506 EBI */
+    #define CONFIG_FSA506_EBI              EBI_BANK0
+    #define CONFIG_FSA506_EBI_USE_PDMA     1
+    #define CONFIG_FSA506_EBI_ADDR         (EBI_BANK0_BASE_ADDR+(CONFIG_FSA506_EBI*EBI_MAX_SIZE))
+    #define CONFIG_FSA506_PIN_BACKLIGHT    NU_GET_PININDEX(evGG, 5)
+    #define CONFIG_FSA506_PIN_DC           NU_GET_PININDEX(evGH, 7)
+    #define CONFIG_FSA506_PIN_RESET        NU_GET_PININDEX(evGH, 6)
 
-/* ST1663I I2C */
-#define CONFIG_ST1663I_I2C             I2C1
-#define CONFIG_ST1663I_PIN_IRQ         NU_GET_PININDEX(evGF, 6)
-#define CONFIG_ST1663I_PIN_RESET       NU_GET_PININDEX(evGD, 10)
+    /* ST1663I I2C */
+    #define CONFIG_ST1663I_I2C             I2C1
+    #define CONFIG_ST1663I_PIN_IRQ         NU_GET_PININDEX(evGF, 6)
+    #define CONFIG_ST1663I_PIN_RESET       NU_GET_PININDEX(evGD, 10)
+#endif
+
+#if defined(__800x480__)
+    /* LT7381 EBI */
+    #define CONFIG_LT7381_EBI              EBI_BANK0
+    #define CONFIG_LT7381_EBI_ADDR         (EBI_BANK0_BASE_ADDR+(CONFIG_LT7381_EBI*EBI_MAX_SIZE))
+    #define CONFIG_LT7381_PIN_BACKLIGHT    NU_GET_PININDEX(evGG, 5)
+    //#define CONFIG_LT7381_PIN_DC           NU_GET_PININDEX(evGH, 7)
+    #define CONFIG_LT7381_PIN_RESET        NU_GET_PININDEX(evGH, 6)
+
+    /* FT5316 I2C */
+    #define CONFIG_FT5316_I2C             I2C1
+    #define CONFIG_FT5316_PIN_IRQ         NU_GET_PININDEX(evGF, 6)
+    #define CONFIG_FT5316_PIN_RESET       NU_GET_PININDEX(evGD, 10)
+#endif
+
 
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);
