@@ -169,9 +169,9 @@ static void sys_init(void)
     GPIO_SetSlewCtl(PH, (BIT12 | BIT13 | BIT14 | BIT15), GPIO_SLEWCTL_FAST1);
     GPIO_SetSlewCtl(PJ, (BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7), GPIO_SLEWCTL_FAST1);
 
-    extern void HyperRAM_Init(SPIM_T *spim);
+    extern void HyperRAM_Init(SPIM_T * spim);
     HyperRAM_Init(SPIM1);
-		
+
     SPIM_HYPER_EnterDirectMapMode(SPIM1);
 #endif
 }

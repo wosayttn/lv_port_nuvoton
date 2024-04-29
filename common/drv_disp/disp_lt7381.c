@@ -6,7 +6,7 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "disp_lt7381.h"
+#include "disp.h"
 
 #define LCD_VBPD        20
 #define LCD_VFPD        12
@@ -47,6 +47,7 @@
 
 #define SDRAM_ITV ((64000000 / 8192) / (1000 / MCLK) - 2)
 
+#define XI_IN    XI_12M
 typedef enum
 {
     XI_4M,
@@ -82,10 +83,10 @@ static const lt7381_pll_t s_PllSettings[XI_CNT] =
 static void lt7381_hw_reset(void)
 {
     /* Hardware reset */
-    CLR_RST;
-    lt7381_delay_ms(100);
-    SET_RST;
-    lt7381_delay_ms(100);
+    DISP_CLR_RST;
+    disp_delay_ms(100);
+    DISP_SET_RST;
+    disp_delay_ms(100);
 }
 
 static void lt7381_wait_ready(void)
@@ -98,19 +99,19 @@ static void lt7381_wait_ready(void)
 
     while (1)
     {
-        if ((LT7381_READ_STATUS() & BIT1) == 0x00)
+        if ((DISP_READ_STATUS() & BIT1) == 0x00)
         {
-            lt7381_delay_ms(2);
-            LT7381_WRITE_REG(0x01);
-            if ((LT7381_READ_DATA() & BIT7) == BIT7)
+            disp_delay_ms(2);
+            DISP_WRITE_REG(0x01);
+            if ((DISP_READ_DATA() & BIT7) == BIT7)
             {
                 break;
             }
             else
             {
-                lt7381_delay_ms(2);
-                LT7381_WRITE_REG(0x01);
-                LT7381_WRITE_DATA(BIT7);
+                disp_delay_ms(2);
+                DISP_WRITE_REG(0x01);
+                DISP_WRITE_DATA(BIT7);
             }
         }
 
@@ -120,9 +121,9 @@ static void lt7381_wait_ready(void)
         i++;
     }
 
-    lt7381_delay_ms(100);
+    disp_delay_ms(100);
 
-    while (LT7381_READ_STATUS() & BIT1);
+    while (DISP_READ_STATUS() & BIT1);
 }
 
 /*
@@ -134,61 +135,61 @@ static void lt7381_display_on(void)
 {
     volatile uint16_t temp;
 
-    LT7381_WRITE_REG(0x12);
-    temp = LT7381_READ_DATA();
+    DISP_WRITE_REG(0x12);
+    temp = DISP_READ_DATA();
     temp |= BIT6;
-    LT7381_WRITE_DATA(temp);
+    DISP_WRITE_DATA(temp);
 }
 
 static void lt7381_initial_pll(void)
 {
-    LT7381_WRITE_REG(0x05);
-    LT7381_WRITE_DATA((s_PllSettings[XI_12M].lpllOD_sclk << 6) |
-                      (s_PllSettings[XI_12M].lpllR_sclk << 1) |
-                      ((s_PllSettings[XI_12M].lpllN_sclk >> 8) & 0x1));
+    DISP_WRITE_REG(0x05);
+    DISP_WRITE_DATA((s_PllSettings[XI_IN].lpllOD_sclk << 6) |
+                    (s_PllSettings[XI_IN].lpllR_sclk << 1) |
+                    (s_PllSettings[XI_IN].lpllN_sclk >> 8) & 0x1);
 
-    LT7381_WRITE_REG(0x07);
-    LT7381_WRITE_DATA((s_PllSettings[XI_12M].lpllOD_mclk << 6) |
-                      (s_PllSettings[XI_12M].lpllR_mclk << 1) |
-                      ((s_PllSettings[XI_12M].lpllN_mclk >> 8) & 0x1));
+    DISP_WRITE_REG(0x07);
+    DISP_WRITE_DATA((s_PllSettings[XI_IN].lpllOD_mclk << 6) |
+                    (s_PllSettings[XI_IN].lpllR_mclk << 1) |
+                    (s_PllSettings[XI_IN].lpllN_mclk >> 8) & 0x1);
 
-    LT7381_WRITE_REG(0x09);
-    LT7381_WRITE_DATA((s_PllSettings[XI_12M].lpllOD_cclk << 6) |
-                      (s_PllSettings[XI_12M].lpllR_cclk << 1) |
-                      ((s_PllSettings[XI_12M].lpllN_cclk >> 8) & 0x1));
+    DISP_WRITE_REG(0x09);
+    DISP_WRITE_DATA((s_PllSettings[XI_IN].lpllOD_cclk << 6) |
+                    (s_PllSettings[XI_IN].lpllR_cclk << 1) |
+                    (s_PllSettings[XI_IN].lpllN_cclk >> 8) & 0x1);
 
-    LT7381_WRITE_REG(0x06);
-    LT7381_WRITE_DATA(s_PllSettings[XI_12M].lpllN_sclk);
+    DISP_WRITE_REG(0x06);
+    DISP_WRITE_DATA(s_PllSettings[XI_IN].lpllN_sclk);
 
-    LT7381_WRITE_REG(0x08);
-    LT7381_WRITE_DATA(s_PllSettings[XI_12M].lpllN_mclk);
+    DISP_WRITE_REG(0x08);
+    DISP_WRITE_DATA(s_PllSettings[XI_IN].lpllN_mclk);
 
-    LT7381_WRITE_REG(0x0a);
-    LT7381_WRITE_DATA(s_PllSettings[XI_12M].lpllN_cclk);
+    DISP_WRITE_REG(0x0a);
+    DISP_WRITE_DATA(s_PllSettings[XI_IN].lpllN_cclk);
 
-    LT7381_WRITE_REG(0x00);
-    lt7381_delay_ms(1);
-    LT7381_WRITE_DATA(0x80);
-    lt7381_delay_ms(1);
+    DISP_WRITE_REG(0x00);
+    disp_delay_ms(1);
+    DISP_WRITE_DATA(0x80);
+    disp_delay_ms(1);
 }
 
 static void lt7381_initial_sdram(void)
 {
-    lt7381_write_reg(0xe0, 0x20);
-    lt7381_write_reg(0xe1, 0x03);  //CAS:2=0x02，CAS:3=0x03
+    disp_write_reg(0xe0, 0x20);
+    disp_write_reg(0xe1, 0x03);  //CAS:2=0x02，CAS:3=0x03
 
-    lt7381_write_reg(0xe2, SDRAM_ITV);
-    lt7381_write_reg(0xe3, SDRAM_ITV >> 8);
-    lt7381_write_reg(0xe4, 0x01);
+    disp_write_reg(0xe2, SDRAM_ITV);
+    disp_write_reg(0xe3, SDRAM_ITV >> 8);
+    disp_write_reg(0xe4, 0x01);
 
     /*  0: SDRAM is not ready for access
         1: SDRAM is ready for access        */
-    while ((LT7381_READ_STATUS() & BIT2) == 0x00);
+    while ((DISP_READ_STATUS() & BIT2) == 0x00);
 
-    lt7381_delay_ms(1);
+    disp_delay_ms(1);
 }
 
-void lt7381_initial_panel(void)
+static void lt7381_initial_panel(void)
 {
     //**[01h]**//
     /*
@@ -197,42 +198,42 @@ void lt7381_initial_panel(void)
         10b: 16-bits output, unused pins are set as GPIO.
         11b: LVDS, all 24-bits unused output pins are set as GPIO.
     */
-    LT7381_WRITE_REG(0x01);
-    LT7381_WRITE_DATA((LT7381_READ_DATA() & ~BIT3) | BIT4);
+    DISP_WRITE_REG(0x01);
+    DISP_WRITE_DATA((DISP_READ_DATA() & ~BIT3) | BIT4);
 
     /*
     Parallel Host Data Bus Width Selection
         0: 8-bit Parallel Host Data Bus.
         1: 16-bit Parallel Host Data Bus.*/
-    LT7381_WRITE_REG(0x01);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() | BIT0);
+    DISP_WRITE_REG(0x01);
+    DISP_WRITE_DATA(DISP_READ_DATA() | BIT0);
 
     //**[02h]**//
     /* RGB_16bpp, RGB565 */
-    LT7381_WRITE_REG(0x02);
-    LT7381_WRITE_DATA((LT7381_READ_DATA() & ~BIT7) | BIT6);
+    DISP_WRITE_REG(0x02);
+    DISP_WRITE_DATA((DISP_READ_DATA() & ~BIT7) | BIT6);
 
     /* MemWrite_Left_Right_Top_Down */
-    LT7381_WRITE_REG(0x02);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() & ~(BIT2 | BIT1));
+    DISP_WRITE_REG(0x02);
+    DISP_WRITE_DATA(DISP_READ_DATA() & ~(BIT2 | BIT1));
 
     //**[03h]**//
     /* Set graphics mode */
-    LT7381_WRITE_REG(0x03);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() & ~BIT2);
+    DISP_WRITE_REG(0x03);
+    DISP_WRITE_DATA(DISP_READ_DATA() & ~BIT2);
 
     /* Set memory using sdram */
-    LT7381_WRITE_REG(0x03);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() & ~(BIT1 | BIT0));
+    DISP_WRITE_REG(0x03);
+    DISP_WRITE_DATA(DISP_READ_DATA() & ~(BIT1 | BIT0));
 
-    //**[03h]**//
+    //**[12h]**//
     /*
     PCLK Inversion
     0: PDAT, DE, HSYNC etc. Drive(/ change) at PCLK falling edge.
     1: PDAT, DE, HSYNC etc. Drive(/ change) at PCLK rising edge.
     */
-    LT7381_WRITE_REG(0x12);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() | BIT7);
+    DISP_WRITE_REG(0x12);
+    DISP_WRITE_DATA(DISP_READ_DATA() | BIT7);
 
     /*
     Vertical Scan direction
@@ -240,8 +241,8 @@ void lt7381_initial_panel(void)
     1 : From bottom to Top
     PIP window will be disabled when VDIR set as 1.
     */
-    LT7381_WRITE_REG(0x12);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() & ~BIT3);
+    DISP_WRITE_REG(0x12);
+    DISP_WRITE_DATA(DISP_READ_DATA() & ~BIT3);
 
     /*
     parallel PDATA[23:0] Output Sequence
@@ -252,8 +253,8 @@ void lt7381_initial_panel(void)
     100b : BRG.
     101b : BGR.
     */
-    LT7381_WRITE_REG(0x12);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() & ~(BIT0 | BIT1 | BIT2));
+    DISP_WRITE_REG(0x12);
+    DISP_WRITE_DATA(DISP_READ_DATA() & ~(BIT0 | BIT1 | BIT2));
 
     //**[13h]**//
     /*
@@ -261,24 +262,24 @@ void lt7381_initial_panel(void)
     0 : Low active.
     1 : High active.
     */
-    LT7381_WRITE_REG(0x13);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() & ~(BIT7));
+    DISP_WRITE_REG(0x13);
+    DISP_WRITE_DATA(DISP_READ_DATA() & ~(BIT7));
 
     /*
     VSYNC Polarity
     0 : Low active.
     1 : High active.
     */
-    LT7381_WRITE_REG(0x13);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() & ~(BIT6));
+    DISP_WRITE_REG(0x13);
+    DISP_WRITE_DATA(DISP_READ_DATA() & ~(BIT6));
 
     /*
     DE Polarity
     0 : High active.
     1 : Low active.
     */
-    LT7381_WRITE_REG(0x13);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() & ~(BIT5));
+    DISP_WRITE_REG(0x13);
+    DISP_WRITE_DATA(DISP_READ_DATA() & ~(BIT5));
 
     //**[14h][15h][1Ah][1Bh]**//
     /*
@@ -293,10 +294,10 @@ void lt7381_initial_panel(void)
     [1Bh] Vertical Display Height Bit[10:8]
     Vertical Display Height(Line) = VDHR + 1
     */
-    lt7381_write_reg(0x14, (LV_HOR_RES_MAX < 8) ? 0 : ((LV_HOR_RES_MAX / 8) - 1));
-    lt7381_write_reg(0x15, (LV_HOR_RES_MAX < 8) ? LV_HOR_RES_MAX : LV_HOR_RES_MAX % 8);
-    lt7381_write_reg(0x1A, (LV_VER_RES_MAX - 1));
-    lt7381_write_reg(0x1B, (LV_VER_RES_MAX - 1) >> 8);
+    disp_write_reg(0x14, (LV_HOR_RES_MAX < 8) ? 0 : ((LV_HOR_RES_MAX / 8) - 1));
+    disp_write_reg(0x15, (LV_HOR_RES_MAX < 8) ? LV_HOR_RES_MAX : LV_HOR_RES_MAX % 8);
+    disp_write_reg(0x1A, (LV_VER_RES_MAX - 1));
+    disp_write_reg(0x1B, (LV_VER_RES_MAX - 1) >> 8);
 
     //**[16h][17h][18h][19]**//
     /*
@@ -318,11 +319,11 @@ void lt7381_initial_panel(void)
     The period width of HSYNC.
     HSYNC Pulse Width(pixels) = (HPW + 1)x8
     */
-    lt7381_write_reg(0x16, (LCD_HBPD < 8) ? 0 : (LCD_HBPD / 8) - 1);
-    lt7381_write_reg(0x17, (LCD_HBPD < 8) ? LCD_HBPD : (LCD_HBPD % 8));
+    disp_write_reg(0x16, (LCD_HBPD < 8) ? 0 : (LCD_HBPD / 8) - 1);
+    disp_write_reg(0x17, (LCD_HBPD < 8) ? LCD_HBPD : (LCD_HBPD % 8));
 
-    lt7381_write_reg(0x18, (LCD_HFPD < 8) ? 0 : ((LCD_HFPD / 8) - 1));
-    lt7381_write_reg(0x19, (LCD_HSPW < 8) ? 0 : ((LCD_HSPW / 8) - 1));
+    disp_write_reg(0x18, (LCD_HFPD < 8) ? 0 : ((LCD_HFPD / 8) - 1));
+    disp_write_reg(0x19, (LCD_HSPW < 8) ? 0 : ((LCD_HSPW / 8) - 1));
 
     //**[1Ch][1Dh][1Eh][1Fh]**//
     /*
@@ -337,11 +338,11 @@ void lt7381_initial_panel(void)
     The pulse width of VSYNC in lines.
     VSYNC Pulse Width(Line) = (VPWR + 1)
     */
-    lt7381_write_reg(0x1C, (LCD_VBPD - 1));
-    lt7381_write_reg(0x1D, (LCD_VBPD - 1) >> 8);
+    disp_write_reg(0x1C, (LCD_VBPD - 1));
+    disp_write_reg(0x1D, (LCD_VBPD - 1) >> 8);
 
-    lt7381_write_reg(0x1E, LCD_VFPD  - 1);
-    lt7381_write_reg(0x1F, LCD_VSPW  - 1);
+    disp_write_reg(0x1E, LCD_VFPD  - 1);
+    disp_write_reg(0x1F, LCD_VSPW  - 1);
 
     //**[5Eh]**//
     /*
@@ -349,8 +350,8 @@ void lt7381_initial_panel(void)
     0: Block mode (X-Y coordination addressing)
     1: linear mode
     */
-    LT7381_WRITE_REG(0x5E);
-    LT7381_WRITE_DATA(LT7381_READ_DATA() & ~(BIT2));
+    DISP_WRITE_REG(0x5E);
+    DISP_WRITE_DATA(DISP_READ_DATA() & ~(BIT2));
 
     /*
     Canvas image color depth & memory R/W data width
@@ -363,11 +364,11 @@ void lt7381_initial_panel(void)
     X0: 8-bits memory data read/write.
     X1: 16-bits memory data read/write
     */
-    LT7381_WRITE_REG(0x5E);
-    LT7381_WRITE_DATA((LT7381_READ_DATA() & ~(BIT1)) | BIT0);
+    DISP_WRITE_REG(0x5E);
+    DISP_WRITE_DATA((DISP_READ_DATA() & ~(BIT1)) | BIT0);
 }
 
-void lt7381_initial_main_window(void)
+static void lt7381_initial_main_window(void)
 {
     //**[10h]**//
     /*
@@ -376,8 +377,8 @@ void lt7381_initial_main_window(void)
     01b: 16-bpp generic TFT, i.e. 65K colors.
     1xb: 24-bpp generic TFT, i.e. 1.67M colors.
     */
-    LT7381_WRITE_REG(0x10);
-    LT7381_WRITE_DATA((LT7381_READ_DATA() & ~(BIT3)) | BIT2);
+    DISP_WRITE_REG(0x10);
+    DISP_WRITE_DATA((DISP_READ_DATA() & ~(BIT3)) | BIT2);
 
     //**[20h][21h][22h][23h]**//
     /*
@@ -386,10 +387,10 @@ void lt7381_initial_main_window(void)
     [22h] Main Image Start Address [23:16]
     [23h] Main Image Start Address [31:24]
     */
-    lt7381_write_reg(0x20, 0x0);
-    lt7381_write_reg(0x21, 0x0 >> 8);
-    lt7381_write_reg(0x22, 0x0 >> 16);
-    lt7381_write_reg(0x23, 0x0 >> 24);
+    disp_write_reg(0x20, 0x0);
+    disp_write_reg(0x21, 0x0 >> 8);
+    disp_write_reg(0x22, 0x0 >> 16);
+    disp_write_reg(0x23, 0x0 >> 24);
 
     //**[24h][25h]**//
     /*
@@ -399,8 +400,8 @@ void lt7381_initial_main_window(void)
     It must be divisible by 4. MIW Bit [1:0] tie to ?? internally.
     The value is physical pixel number. Maximum value is 8188 pixels
     */
-    lt7381_write_reg(0x24, LV_HOR_RES_MAX);
-    lt7381_write_reg(0x25, LV_HOR_RES_MAX >> 8);
+    disp_write_reg(0x24, LV_HOR_RES_MAX);
+    disp_write_reg(0x25, LV_HOR_RES_MAX >> 8);
 
     //**[26h][27h]**//
     /*
@@ -417,10 +418,10 @@ void lt7381_initial_main_window(void)
     Unit: Pixel
     Range is between 0 and 8191.
     */
-    lt7381_write_reg(0x26, 0x0);
-    lt7381_write_reg(0x27, 0x0 >> 8);
-    lt7381_write_reg(0x28, 0x0);
-    lt7381_write_reg(0x29, 0x0 >> 8);
+    disp_write_reg(0x26, 0x0);
+    disp_write_reg(0x27, 0x0 >> 8);
+    disp_write_reg(0x28, 0x0);
+    disp_write_reg(0x29, 0x0 >> 8);
 
     //**[50h][51h][52h][53h][54h][55h]**//
     /*
@@ -431,12 +432,12 @@ void lt7381_initial_main_window(void)
     [54h] Canvas image width [7:2]
     [55h] Canvas image width [12:8]
     */
-    lt7381_write_reg(0x50, 0x0);
-    lt7381_write_reg(0x51, 0x0 >> 8);
-    lt7381_write_reg(0x52, 0x0 >> 16);
-    lt7381_write_reg(0x53, 0x0 >> 24);
-    lt7381_write_reg(0x54, LV_HOR_RES_MAX);
-    lt7381_write_reg(0x55, LV_HOR_RES_MAX >> 8);
+    disp_write_reg(0x50, 0x0);
+    disp_write_reg(0x51, 0x0 >> 8);
+    disp_write_reg(0x52, 0x0 >> 16);
+    disp_write_reg(0x53, 0x0 >> 24);
+    disp_write_reg(0x54, LV_HOR_RES_MAX);
+    disp_write_reg(0x55, LV_HOR_RES_MAX >> 8);
 
     //**[56h][57h][58h][59h][5Ah][5Bh][5Ch][5Dh]**//
     /*
@@ -449,24 +450,22 @@ void lt7381_initial_main_window(void)
     [5Ch] Height of Active Window [7:0]
     [5Dh] Height of Active Window [12:8]
     */
-    lt7381_write_reg(0x56, 0x0);
-    lt7381_write_reg(0x57, 0x0 >> 8);
-    lt7381_write_reg(0x58, 0x0);
-    lt7381_write_reg(0x59, 0x0 >> 8);
-    lt7381_write_reg(0x5A, LV_HOR_RES_MAX);
-    lt7381_write_reg(0x5B, LV_HOR_RES_MAX >> 8);
-    lt7381_write_reg(0x5C, LV_VER_RES_MAX);
-    lt7381_write_reg(0x5D, LV_VER_RES_MAX >> 8);
+    disp_write_reg(0x56, 0x0);
+    disp_write_reg(0x57, 0x0 >> 8);
+    disp_write_reg(0x58, 0x0);
+    disp_write_reg(0x59, 0x0 >> 8);
+    disp_write_reg(0x5A, LV_HOR_RES_MAX);
+    disp_write_reg(0x5B, LV_HOR_RES_MAX >> 8);
+    disp_write_reg(0x5C, LV_VER_RES_MAX);
+    disp_write_reg(0x5D, LV_VER_RES_MAX >> 8);
 }
 
-int disp_lt7381_init(void)
+int disp_init(void)
 {
-    SET_RST;
-    SET_BACKLIGHT_OFF;
+    DISP_SET_RST;
+    DISP_CLR_BACKLIGHT;
 
     lt7381_wait_ready();
-
-    //lt7381_delay_ms(100);
 
     lt7381_initial_pll();
 
@@ -478,26 +477,26 @@ int disp_lt7381_init(void)
 
     lt7381_initial_main_window();
 
-    SET_BACKLIGHT_ON;
+    DISP_SET_BACKLIGHT;
 
     return 0;
 }
 
-void lt7381_fillrect(uint16_t *pixels, const lv_area_t *area)
+void disp_fillrect(uint16_t *pixels, const lv_area_t *area)
 {
     int32_t w = lv_area_get_width(area);
     int32_t h = lv_area_get_height(area);
 
-    printf("%08x WxH=%dx%d (%d, %d) (%d, %d)\r\n",
-           pixels,
-           lv_area_get_width(area),
-           lv_area_get_height(area),
-           area->x1,
-           area->y1,
-           area->x2,
-           area->y2);
+    LV_LOG_INFO("%08x WxH=%dx%d (%d, %d) (%d, %d)",
+                pixels,
+                lv_area_get_width(area),
+                lv_area_get_height(area),
+                area->x1,
+                area->y1,
+                area->x2,
+                area->y2);
 
-    lt7381_set_column(area->x1, area->x2);
-    lt7381_set_page(area->y1, area->y2);
-    lt7381_send_pixels(pixels, h * w * sizeof(uint16_t));
+    disp_set_column(area->x1, area->x2);
+    disp_set_page(area->y1, area->y2);
+    disp_send_pixels(pixels, h * w * sizeof(uint16_t));
 }

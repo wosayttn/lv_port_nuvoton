@@ -21,8 +21,8 @@
 
 /* Prevent C code being included by the IAR assembler. */
 #ifndef __IASMARM__
-#include <stdint.h>
-extern uint32_t SystemCoreClock;
+    #include <stdint.h>
+    extern uint32_t SystemCoreClock;
 #endif
 
 /******************************************************************************
@@ -90,9 +90,9 @@ extern uint32_t SystemCoreClock;
 #define configUSE_STATS_FORMATTING_FUNCTIONS            1
 #define configCOMMAND_INT_MAX_OUTPUT_SIZE               2048
 #ifdef __NVIC_PRIO_BITS
-#define configPRIO_BITS                                 __NVIC_PRIO_BITS
+    #define configPRIO_BITS                                 __NVIC_PRIO_BITS
 #else
-#define configPRIO_BITS                                 4
+    #define configPRIO_BITS                                 4
 #endif
 /* Interrupt settings */
 #define configLIBRARY_LOWEST_INTERRUPT_PRIORITY         0xf
@@ -106,8 +106,8 @@ extern uint32_t SystemCoreClock;
     #define configTICK_RATE_HZ                          (TickType_t)1000
 #endif /* __IASMARM__ */
 #if defined(CPU_CORTEX_M3) || defined(CPU_CORTEX_M4) || defined(CPU_CORTEX_M7)
-#define xPortPendSVHandler                              PendSV_Handler
-#define vPortSVCHandler                                 SVC_Handler
-#define xPortSysTickHandler                             SysTick_Handler
+    #define xPortPendSVHandler                              PendSV_Handler
+    #define vPortSVCHandler                                 SVC_Handler
+    #define xPortSysTickHandler                             SysTick_Handler
 #endif
 #endif /* FREERTOS_CONFIG_H */

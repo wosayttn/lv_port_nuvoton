@@ -6,35 +6,35 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "disp_lt7381.h"
+#include "disp.h"
 
-void lt7381_write_reg(uint16_t reg, uint16_t data)
+void disp_write_reg(uint16_t reg, uint16_t data)
 {
     // Register
-    LT7381_WRITE_REG(reg & 0xFF);
+    DISP_WRITE_REG(reg & 0xFF);
 
     // Data
-    LT7381_WRITE_DATA(data & 0xFF);
+    DISP_WRITE_DATA(data & 0xFF);
 }
 
-void lt7381_set_column(uint16_t StartCol, uint16_t EndCol)
+void disp_set_column(uint16_t StartCol, uint16_t EndCol)
 {
     uint16_t ActiveX = EndCol - StartCol + 1;
 
-    lt7381_write_reg(0x56, StartCol);
-    lt7381_write_reg(0x57, StartCol >> 8);
-    lt7381_write_reg(0x5A, ActiveX);
-    lt7381_write_reg(0x5B, ActiveX >> 8);
+    disp_write_reg(0x56, StartCol);
+    disp_write_reg(0x57, StartCol >> 8);
+    disp_write_reg(0x5A, ActiveX);
+    disp_write_reg(0x5B, ActiveX >> 8);
 }
 
-void lt7381_set_page(uint16_t StartPage, uint16_t EndPage)
+void disp_set_page(uint16_t StartPage, uint16_t EndPage)
 {
     uint16_t ActiveY = EndPage - StartPage + 1;
 
-    lt7381_write_reg(0x58, StartPage);
-    lt7381_write_reg(0x59, StartPage >> 8);
-    lt7381_write_reg(0x5C, ActiveY);
-    lt7381_write_reg(0x5D, ActiveY >> 8);
+    disp_write_reg(0x58, StartPage);
+    disp_write_reg(0x59, StartPage >> 8);
+    disp_write_reg(0x5C, ActiveY);
+    disp_write_reg(0x5D, ActiveY >> 8);
 }
 
 /*
@@ -43,7 +43,7 @@ void lt7381_set_page(uint16_t StartPage, uint16_t EndPage)
 */
 static uint32_t lt7381_vram_fifo_isfull(void)
 {
-    return ((LT7381_READ_STATUS() & BIT7) != 0) ? 1 : 0;
+    return ((DISP_READ_STATUS() & BIT7) != 0) ? 1 : 0;
 }
 
 /*
@@ -52,45 +52,43 @@ static uint32_t lt7381_vram_fifo_isfull(void)
 */
 static uint32_t lt7381_vram_fifo_isempty(void)
 {
-    return ((LT7381_READ_STATUS() & 0x40) != 0) ? 1 : 0;
+    return ((DISP_READ_STATUS() & 0x40) != 0) ? 1 : 0;
 }
 
-void lt7381_send_pixels(uint16_t *pixels, int byte_len)
+void disp_send_pixels(uint16_t *pixels, int byte_len)
 {
-    static int bInit = 0;
-    int i = 0;
+
     int count = byte_len / sizeof(uint16_t);
 
-    if (!bInit)
+    /* REG[03h] Input Control Register（ICR）*/
+    /* Select Graphics mode. */
+    DISP_WRITE_REG(0x03);
+    DISP_WRITE_DATA(DISP_READ_STATUS() & ~BIT2);
+
+    /* Set Graphic Read/Write position */
+    disp_write_reg(0x5F, 0);
+    disp_write_reg(0x60, 0);
+    disp_write_reg(0x61, 0);
+    disp_write_reg(0x62, 0);
+
+    DISP_WRITE_REG(0x04);
+
+#if defined(CONFIG_DISP_USE_PDMA)
+    // PDMA-M2M feed
+    if (count > 1024)
     {
-
-        /* REG[03h] Input Control Register（ICR）*/
-        /* Select Graphics mode. */
-        LT7381_WRITE_REG(0x03);
-        LT7381_WRITE_DATA(LT7381_READ_STATUS() & ~BIT2);
-
-        /* Set Graphic Read/Write position */
-        lt7381_write_reg(0x5F, 0);
-        lt7381_write_reg(0x60, 0);
-        lt7381_write_reg(0x61, 0);
-        lt7381_write_reg(0x62, 0);
-
-        bInit = 1;
+        nu_pdma_mempush((void *)CONFIG_DISP_DAT_ADDR, (void *)pixels, 16, count);
     }
-
-    LT7381_WRITE_REG(0x04);
-
-    // Just support CPU-feed only
-    while (i < count)
+    else
+#endif
     {
-        if ((i % 32) == 0)
+        int i = 0;
+        // Just support CPU-feed only
+        while (i < count)
         {
-            while (lt7381_vram_fifo_isfull())
-                printf("full!!!\n");
+            DISP_WRITE_DATA(pixels[i]);
+            i++;
         }
-
-        LT7381_WRITE_DATA(pixels[i]);
-        i++;
     }
 
     while (!lt7381_vram_fifo_isempty());

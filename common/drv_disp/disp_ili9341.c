@@ -6,139 +6,138 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "disp_ili9341.h"
+#include "disp.h"
 
-int disp_ili9341_init(void)
+int disp_init(void)
 {
-    SET_RS;
-    SET_RST;
-    SET_BACKLIGHT_OFF;
+    DISP_SET_RST;
+    DISP_CLR_BACKLIGHT;
 
     /* Hardware reset */
-    SET_RST;
-    ili9341_delay_ms(5);     // Delay 5ms
+    DISP_SET_RST;
+    disp_delay_ms(5);     // Delay 5ms
 
-    CLR_RST;
-    ili9341_delay_ms(20);    // Delay 20ms
+    DISP_CLR_RST;
+    disp_delay_ms(20);    // Delay 20ms
 
-    SET_RST;
-    ili9341_delay_ms(40);    // Delay 40ms
+    DISP_SET_RST;
+    disp_delay_ms(40);    // Delay 40ms
 
     /* Initial control registers */
-    ili9341_send_cmd(0xCB);
-    ili9341_send_cmd_parameter(0x39);
-    ili9341_send_cmd_parameter(0x2C);
-    ili9341_send_cmd_parameter(0x00);
-    ili9341_send_cmd_parameter(0x34);
-    ili9341_send_cmd_parameter(0x02);
+    DISP_WRITE_REG(0xCB);
+    DISP_WRITE_DATA(0x39);
+    DISP_WRITE_DATA(0x2C);
+    DISP_WRITE_DATA(0x00);
+    DISP_WRITE_DATA(0x34);
+    DISP_WRITE_DATA(0x02);
 
-    ili9341_send_cmd(0xCF);
-    ili9341_send_cmd_parameter(0x00);
-    ili9341_send_cmd_parameter(0xC1);
-    ili9341_send_cmd_parameter(0x30);
+    DISP_WRITE_REG(0xCF);
+    DISP_WRITE_DATA(0x00);
+    DISP_WRITE_DATA(0xC1);
+    DISP_WRITE_DATA(0x30);
 
-    ili9341_send_cmd(0xE8);
-    ili9341_send_cmd_parameter(0x85);
-    ili9341_send_cmd_parameter(0x00);
-    ili9341_send_cmd_parameter(0x78);
+    DISP_WRITE_REG(0xE8);
+    DISP_WRITE_DATA(0x85);
+    DISP_WRITE_DATA(0x00);
+    DISP_WRITE_DATA(0x78);
 
-    ili9341_send_cmd(0xEA);
-    ili9341_send_cmd_parameter(0x00);
-    ili9341_send_cmd_parameter(0x00);
+    DISP_WRITE_REG(0xEA);
+    DISP_WRITE_DATA(0x00);
+    DISP_WRITE_DATA(0x00);
 
-    ili9341_send_cmd(0xED);
-    ili9341_send_cmd_parameter(0x64);
-    ili9341_send_cmd_parameter(0x03);
-    ili9341_send_cmd_parameter(0x12);
-    ili9341_send_cmd_parameter(0x81);
+    DISP_WRITE_REG(0xED);
+    DISP_WRITE_DATA(0x64);
+    DISP_WRITE_DATA(0x03);
+    DISP_WRITE_DATA(0x12);
+    DISP_WRITE_DATA(0x81);
 
-    ili9341_send_cmd(0xF7);
-    ili9341_send_cmd_parameter(0x20);
+    DISP_WRITE_REG(0xF7);
+    DISP_WRITE_DATA(0x20);
 
-    ili9341_send_cmd(0xC0);
-    ili9341_send_cmd_parameter(0x23);
+    DISP_WRITE_REG(0xC0);
+    DISP_WRITE_DATA(0x23);
 
-    ili9341_send_cmd(0xC1);
-    ili9341_send_cmd_parameter(0x10);
+    DISP_WRITE_REG(0xC1);
+    DISP_WRITE_DATA(0x10);
 
-    ili9341_send_cmd(0xC5);
-    ili9341_send_cmd_parameter(0x3e);
-    ili9341_send_cmd_parameter(0x28);
+    DISP_WRITE_REG(0xC5);
+    DISP_WRITE_DATA(0x3e);
+    DISP_WRITE_DATA(0x28);
 
-    ili9341_send_cmd(0xC7);
-    ili9341_send_cmd_parameter(0x86);
+    DISP_WRITE_REG(0xC7);
+    DISP_WRITE_DATA(0x86);
 
-    ili9341_send_cmd(0x36);
+    DISP_WRITE_REG(0x36);
 
     if (LV_HOR_RES_MAX == 240)
-        ili9341_send_cmd_parameter(0x48); // for 240x320
+        DISP_WRITE_DATA(0x48); // for 240x320
     else
-        ili9341_send_cmd_parameter(0xE8); // for 320x240
+        DISP_WRITE_DATA(0xE8); // for 320x240
 
-    ili9341_send_cmd(0x3A);
-    ili9341_send_cmd_parameter(0x55);
+    DISP_WRITE_REG(0x3A);
+    DISP_WRITE_DATA(0x55);
 
-    ili9341_send_cmd(0xB1);
-    ili9341_send_cmd_parameter(0x00);
-    ili9341_send_cmd_parameter(0x18);
+    DISP_WRITE_REG(0xB1);
+    DISP_WRITE_DATA(0x00);
+    DISP_WRITE_DATA(0x18);
 
-    ili9341_send_cmd(0xB6);
-    ili9341_send_cmd_parameter(0x08);
-    ili9341_send_cmd_parameter(0x82);
-    ili9341_send_cmd_parameter(0x27);
+    DISP_WRITE_REG(0xB6);
+    DISP_WRITE_DATA(0x08);
+    DISP_WRITE_DATA(0x82);
+    DISP_WRITE_DATA(0x27);
 
-    ili9341_send_cmd(0xF2);
-    ili9341_send_cmd_parameter(0x00);
+    DISP_WRITE_REG(0xF2);
+    DISP_WRITE_DATA(0x00);
 
-    ili9341_send_cmd(0x26);
-    ili9341_send_cmd_parameter(0x01);
+    DISP_WRITE_REG(0x26);
+    DISP_WRITE_DATA(0x01);
 
-    ili9341_send_cmd(0xE0);
-    ili9341_send_cmd_parameter(0x0F);
-    ili9341_send_cmd_parameter(0x31);
-    ili9341_send_cmd_parameter(0x2B);
-    ili9341_send_cmd_parameter(0x0C);
-    ili9341_send_cmd_parameter(0x0E);
-    ili9341_send_cmd_parameter(0x08);
-    ili9341_send_cmd_parameter(0x4E);
-    ili9341_send_cmd_parameter(0xF1);
-    ili9341_send_cmd_parameter(0x37);
-    ili9341_send_cmd_parameter(0x07);
-    ili9341_send_cmd_parameter(0x10);
-    ili9341_send_cmd_parameter(0x03);
-    ili9341_send_cmd_parameter(0x0E);
-    ili9341_send_cmd_parameter(0x09);
-    ili9341_send_cmd_parameter(0x00);
+    DISP_WRITE_REG(0xE0);
+    DISP_WRITE_DATA(0x0F);
+    DISP_WRITE_DATA(0x31);
+    DISP_WRITE_DATA(0x2B);
+    DISP_WRITE_DATA(0x0C);
+    DISP_WRITE_DATA(0x0E);
+    DISP_WRITE_DATA(0x08);
+    DISP_WRITE_DATA(0x4E);
+    DISP_WRITE_DATA(0xF1);
+    DISP_WRITE_DATA(0x37);
+    DISP_WRITE_DATA(0x07);
+    DISP_WRITE_DATA(0x10);
+    DISP_WRITE_DATA(0x03);
+    DISP_WRITE_DATA(0x0E);
+    DISP_WRITE_DATA(0x09);
+    DISP_WRITE_DATA(0x00);
 
-    ili9341_send_cmd(0xE1);
-    ili9341_send_cmd_parameter(0x00);
-    ili9341_send_cmd_parameter(0x0E);
-    ili9341_send_cmd_parameter(0x14);
-    ili9341_send_cmd_parameter(0x03);
-    ili9341_send_cmd_parameter(0x11);
-    ili9341_send_cmd_parameter(0x07);
-    ili9341_send_cmd_parameter(0x31);
-    ili9341_send_cmd_parameter(0xC1);
-    ili9341_send_cmd_parameter(0x48);
-    ili9341_send_cmd_parameter(0x08);
-    ili9341_send_cmd_parameter(0x0F);
-    ili9341_send_cmd_parameter(0x0C);
-    ili9341_send_cmd_parameter(0x31);
-    ili9341_send_cmd_parameter(0x36);
-    ili9341_send_cmd_parameter(0x0F);
+    DISP_WRITE_REG(0xE1);
+    DISP_WRITE_DATA(0x00);
+    DISP_WRITE_DATA(0x0E);
+    DISP_WRITE_DATA(0x14);
+    DISP_WRITE_DATA(0x03);
+    DISP_WRITE_DATA(0x11);
+    DISP_WRITE_DATA(0x07);
+    DISP_WRITE_DATA(0x31);
+    DISP_WRITE_DATA(0xC1);
+    DISP_WRITE_DATA(0x48);
+    DISP_WRITE_DATA(0x08);
+    DISP_WRITE_DATA(0x0F);
+    DISP_WRITE_DATA(0x0C);
+    DISP_WRITE_DATA(0x31);
+    DISP_WRITE_DATA(0x36);
+    DISP_WRITE_DATA(0x0F);
 
-    ili9341_send_cmd(0x11);
+    DISP_WRITE_REG(0x11);
 
-    ili9341_delay_ms(120);   // Delay 120ms
+    disp_delay_ms(120);   // Delay 120ms
 
-    ili9341_send_cmd(0x29);  //Display on
+    DISP_WRITE_REG(0x29);  //Display on
 
-    SET_BACKLIGHT_ON;
+    DISP_SET_BACKLIGHT;
 
     return 0;
 }
 
-void ili9341_fillrect(uint16_t *pixels, const lv_area_t *area)
+void disp_fillrect(uint16_t *pixels, const lv_area_t *area)
 {
     int32_t w = lv_area_get_width(area);
     int32_t h = lv_area_get_height(area);
@@ -152,9 +151,9 @@ void ili9341_fillrect(uint16_t *pixels, const lv_area_t *area)
                 area->x2,
                 area->y2);
 
-    ili9341_set_column(area->x1, area->x2);
-    ili9341_set_page(area->y1, area->y2);
-    ili9341_send_cmd(0x2c);
+    disp_set_column(area->x1, area->x2);
+    disp_set_page(area->y1, area->y2);
+    DISP_WRITE_REG(0x2c);
 
-    ili9341_send_pixels(pixels, h * w * sizeof(uint16_t));
+    disp_send_pixels(pixels, h * w * sizeof(uint16_t));
 }

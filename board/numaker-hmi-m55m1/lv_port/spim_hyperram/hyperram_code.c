@@ -171,7 +171,7 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
 #ifdef NVT_DCACHE_ON
         SCB_InvalidateDCache_by_Addr((volatile void *)u32DMMAddr, (int32_t)DLL_TRIM_SIZE);
 #endif
-				
+
         for (u32i = u32SrcAddr; u32i < (u32SrcAddr + DLL_TRIM_SIZE); u32i += 4)
         {
             pu32RdBuf[u32RdDataCnt++] = inpw(u32DMMAddr + u32i);

@@ -7,13 +7,15 @@
 
 
 // IMAGE DATA: assets/3.png
-lv_img_dsc_t ui_img_3_png = {
+lv_img_dsc_t ui_img_3_png =
+{
     .header.w = 137,
     .header.h = 89,
     .header.cf = LV_COLOR_FORMAT_RGB565A8,
 };
 
-void ui_img_3_png_load() {
+void ui_img_3_png_load()
+{
     ui_img_3_png.data = UI_LOAD_IMAGE("0:2.bin", 36583);
     ui_img_3_png.data_size = 36583;
 }

@@ -11,7 +11,7 @@
 #include "disp_ili9341.h"
 #include "touch_adc.h"
 
-#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * sizeof(lv_color_t)), 4)
+#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), 4)
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(4)));
 
@@ -21,50 +21,26 @@ static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((al
 S_CALIBRATION_MATRIX g_sCalMat = { 9, 6484, -4280144, -5183, -113, 19125360, 65536 };
 #endif
 
-static volatile uint32_t s_systick_count = 0;
-
 void sysDelay(uint32_t ms)
 {
-    vTaskDelay( ms / portTICK_PERIOD_MS );
+    vTaskDelay(ms / portTICK_PERIOD_MS);
 }
-
-
 
 int lcd_device_initialize(void)
 {
     GPIO_T *PORT;
 
-    /* Set GPIO Output mode for ILI9341 pins. */
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ILI9341_PIN_DC) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ILI9341_PIN_DC)), GPIO_MODE_OUTPUT);
+    /* Set GPIO Output mode for display pins. */
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_RESET) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_RESET)), GPIO_MODE_OUTPUT);
 
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ILI9341_PIN_RESET) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ILI9341_PIN_RESET)), GPIO_MODE_OUTPUT);
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
 
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ILI9341_PIN_BACKLIGHT) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ILI9341_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
+    /* Open EBI  */
+    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
 
-    /* Open EBI */
-    EBI_Open(CONFIG_ILI9341_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_NORMAL, EBI_CS_ACTIVE_LOW);
-    switch (CONFIG_ILI9341_EBI)
-    {
-    case EBI_BANK0:
-        EBI->CTL0 |= EBI_CTL0_CACCESS_Msk;
-        EBI->TCTL0 |= (EBI_TCTL0_WAHDOFF_Msk | EBI_TCTL0_RAHDOFF_Msk);
-        break;
-    case EBI_BANK1:
-        EBI->CTL1 |= EBI_CTL1_CACCESS_Msk;
-        EBI->TCTL1 |= (EBI_TCTL1_WAHDOFF_Msk | EBI_TCTL1_RAHDOFF_Msk);
-        break;
-    case EBI_BANK2:
-        EBI->CTL2 |= EBI_CTL2_CACCESS_Msk;
-        EBI->TCTL2 |= (EBI_TCTL2_WAHDOFF_Msk | EBI_TCTL2_RAHDOFF_Msk);
-        break;
-    default:
-        return -1;
-    }
-
-    disp_ili9341_init();
+    disp_init();
 
     return 0;
 }
@@ -95,7 +71,7 @@ int lcd_device_control(int cmd, void *argv)
 
     case evLCD_CTRL_RECT_UPDATE:
     {
-        ili9341_fillrect((uint16_t *)s_au8FrameBuf, (const lv_area_t *)argv);
+        disp_fillrect((uint16_t *)s_au8FrameBuf, (const lv_area_t *)argv);
     }
     break;
 

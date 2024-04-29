@@ -37,7 +37,8 @@
 //#define SFUD_USING_QSPI
 
 
-enum {
+enum
+{
     SFUD_W25_DEVICE_INDEX = 0,
 };
 

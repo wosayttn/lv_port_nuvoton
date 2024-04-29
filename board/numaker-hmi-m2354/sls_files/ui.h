@@ -19,21 +19,21 @@ extern "C" {
 #include "ui_img_manager.h"
 // SCREEN: ui_Screen1
 void ui_Screen1_screen_init(void);
-void ui_event_Screen1( lv_event_t * e);
+void ui_event_Screen1(lv_event_t *e);
 extern lv_obj_t *ui_Screen1;
 extern lv_obj_t *ui_Image3;
 // SCREEN: ui_Screen2
 void ui_Screen2_screen_init(void);
-void ui_event_Screen2( lv_event_t * e);
+void ui_event_Screen2(lv_event_t *e);
 extern lv_obj_t *ui_Screen2;
 extern lv_obj_t *ui_Image6;
 extern lv_obj_t *ui____initial_actions0;
 
 
 extern lv_img_dsc_t ui_img_2_png;   // assets/2.png
-void ui_img_2_png_load ();
+void ui_img_2_png_load();
 extern lv_img_dsc_t ui_img_3_png;   // assets/3.png
-void ui_img_3_png_load ();
+void ui_img_3_png_load();
 
 
 

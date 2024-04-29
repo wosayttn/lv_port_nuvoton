@@ -32,12 +32,12 @@ void lv_port_disp_init(void)
     disp = lv_display_create(sLcdInfo.u32ResWidth, sLcdInfo.u32ResHeight);
     LV_ASSERT(disp != NULL);
 
-		/*Set user-data*/
+    /*Set user-data*/
     lv_display_set_driver_data(disp, &sLcdInfo);
 
-		/*Set a flush callback to draw to the display*/
+    /*Set a flush callback to draw to the display*/
     lv_display_set_flush_cb(disp, lv_port_disp_partial);
-		
-		/*Set an initialized buffer*/
+
+    /*Set an initialized buffer*/
     lv_display_set_buffers(disp, sLcdInfo.pvVramStartAddr, NULL, sLcdInfo.u32VramSize, LV_DISPLAY_RENDER_MODE_PARTIAL);
 }

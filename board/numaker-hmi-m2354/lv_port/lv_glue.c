@@ -22,7 +22,7 @@ S_CALIBRATION_MATRIX g_sCalMat = { -105, 6354, -3362552, 5086, -24, -2489744, 65
 
 void sysDelay(uint32_t ms)
 {
-    vTaskDelay( ms / portTICK_PERIOD_MS );
+    vTaskDelay(ms / portTICK_PERIOD_MS);
 }
 
 int lcd_device_initialize(void)

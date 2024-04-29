@@ -26,7 +26,7 @@ DSTATUS disk_status(
 {
     DSTATUS stat = 0x00;
 
-  	if (pdrv)
+    if (pdrv)
         stat =   STA_NOINIT;
 
     return stat;
@@ -43,12 +43,12 @@ DSTATUS disk_initialize(
 )
 {
     static DSTATUS stat = STA_NOINIT;
-	
+
     if (stat != RES_OK)
     {
         //sfud_flash *flash = sfud_get_device(SFUD_W25_DEVICE_INDEX);
-			  if (sfud_init() == SFUD_SUCCESS)
-		        stat = RES_OK;		
+        if (sfud_init() == SFUD_SUCCESS)
+            stat = RES_OK;
         /* Enable qspi fast read mode, set four data lines width */
         //sfud_qspi_fast_read_enable(flash, 4);
     }
@@ -58,36 +58,36 @@ DSTATUS disk_initialize(
 
 typedef enum
 {
-	SFUD_READ,
-	SFUD_ERASE_WRITE,
-	SFUD_WRITE,
+    SFUD_READ,
+    SFUD_ERASE_WRITE,
+    SFUD_WRITE,
 } E_MODE;
 
-static sfud_err sfud_transfer(E_MODE mode, uint8_t* pu8Buf, uint32_t sector, uint32_t count)
+static sfud_err sfud_transfer(E_MODE mode, uint8_t *pu8Buf, uint32_t sector, uint32_t count)
 {
     sfud_err result;
-  	sfud_flash* flash = sfud_get_device(SFUD_W25_DEVICE_INDEX);
-  	uint32_t u32SecSize = flash->chip.erase_gran;
-		uint32_t u32Addr, u32Size;
-	
-		u32Addr = sector*u32SecSize;
-  	u32Size = count*u32SecSize;
+    sfud_flash *flash = sfud_get_device(SFUD_W25_DEVICE_INDEX);
+    uint32_t u32SecSize = flash->chip.erase_gran;
+    uint32_t u32Addr, u32Size;
 
-	  // printf("%s Mode: %d, StartSecAddr: %d, Size: %d\n", __func__, mode, u32Addr, u32Size);
-    if ( mode == SFUD_READ )
-		{
-				result = sfud_read(flash, u32Addr, u32Size, (uint8_t *)pu8Buf);
-		}
-    else if ( mode == SFUD_ERASE_WRITE )
-		{
-        result = sfud_erase_write(flash, u32Addr, u32Size, (uint8_t *)pu8Buf);			
-		}
-		else if ( mode == SFUD_WRITE )
-		{
+    u32Addr = sector * u32SecSize;
+    u32Size = count * u32SecSize;
+
+    // printf("%s Mode: %d, StartSecAddr: %d, Size: %d\n", __func__, mode, u32Addr, u32Size);
+    if (mode == SFUD_READ)
+    {
+        result = sfud_read(flash, u32Addr, u32Size, (uint8_t *)pu8Buf);
+    }
+    else if (mode == SFUD_ERASE_WRITE)
+    {
+        result = sfud_erase_write(flash, u32Addr, u32Size, (uint8_t *)pu8Buf);
+    }
+    else if (mode == SFUD_WRITE)
+    {
         result = sfud_write(flash, u32Addr, u32Size, (uint8_t *)pu8Buf);
-		}
+    }
 
-		return result;
+    return result;
 }
 
 /*-----------------------------------------------------------------------*/
@@ -106,7 +106,7 @@ DRESULT disk_read(
         return RES_ERROR;
     }
 
-		return (sfud_transfer(SFUD_READ, buff, sector, count) == SFUD_SUCCESS) ? RES_OK: RES_ERROR;
+    return (sfud_transfer(SFUD_READ, buff, sector, count) == SFUD_SUCCESS) ? RES_OK : RES_ERROR;
 }
 
 
@@ -129,7 +129,7 @@ DRESULT disk_write(
         return RES_ERROR;
     }
 
-		return (sfud_transfer(SFUD_ERASE_WRITE, (BYTE *)buff, sector, count) == SFUD_SUCCESS) ? RES_OK: RES_ERROR;
+    return (sfud_transfer(SFUD_ERASE_WRITE, (BYTE *)buff, sector, count) == SFUD_SUCCESS) ? RES_OK : RES_ERROR;
 }
 
 #endif
@@ -169,7 +169,7 @@ DRESULT disk_ioctl(
 
     default:
         res = RES_PARERR;
-    }		
+    }
 
     return res;
 }

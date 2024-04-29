@@ -16,7 +16,7 @@
 #include "task.h"
 #include "semphr.h"
 
-#define PORT_OFFSET                 0x40
+#define PORT_OFFSET   0x40
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
 #define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX/4)
@@ -26,21 +26,25 @@
 #endif
 
 /* ILI9341 EBI */
-#define CONFIG_ILI9341_EBI              EBI_BANK0
-#define CONFIG_ILI9341_EBI_USE_PDMA     1
-
-#define CONFIG_ILI9341_EBI_ADDR         (EBI_BANK0_BASE_ADDR+(CONFIG_ILI9341_EBI*EBI_MAX_SIZE))
-
-#define CONFIG_ILI9341_PIN_BACKLIGHT    NU_GET_PININDEX(evGB, 7)   //23
-#define CONFIG_ILI9341_PIN_DC           NU_GET_PININDEX(evGH, 3)   //115
-#define CONFIG_ILI9341_PIN_RESET        NU_GET_PININDEX(evGB, 6)   //22
+#define CONFIG_DISP_EBI            EBI_BANK0
+#define CONFIG_DISP_USE_PDMA
+#define CONFIG_DISP_EBI_ADDR       (EBI_BANK0_BASE_ADDR+(CONFIG_DISP_EBI*EBI_MAX_SIZE))
+#define CONFIG_DISP_CMD_ADDR       (CONFIG_DISP_EBI_ADDR+0x0)
+#define CONFIG_DISP_DAT_ADDR       (CONFIG_DISP_EBI_ADDR+0x20)
+#define CONFIG_DISP_PIN_BACKLIGHT  NU_GET_PININDEX(evGB, 7)   //23
+#define CONFIG_DISP_PIN_RESET      NU_GET_PININDEX(evGB, 6)   //22
+#define DISP_SET_RST               GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_RESET),     NU_GET_PIN(CONFIG_DISP_PIN_RESET)) = 1
+#define DISP_CLR_RST               GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_RESET),     NU_GET_PIN(CONFIG_DISP_PIN_RESET)) = 0
+#define DISP_SET_BACKLIGHT         GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT), NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)) = 1
+#define DISP_CLR_BACKLIGHT         GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT), NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)) = 0
 
 /* SW ADC PINs */
-#define CONFIG_AD                       EADC0
-#define CONFIG_AD_PIN_XL                NU_GET_PININDEX(evGH, 4)
-#define CONFIG_AD_PIN_YU                NU_GET_PININDEX(evGB, 8)
-#define CONFIG_AD_PIN_XR                NU_GET_PININDEX(evGB, 9)
-#define CONFIG_AD_PIN_YD                NU_GET_PININDEX(evGH, 5)
+#define CONFIG_AD                  EADC0
+#define CONFIG_AD_PIN_XL           NU_GET_PININDEX(evGH, 4)
+#define CONFIG_AD_PIN_YU           NU_GET_PININDEX(evGB, 8)
+#define CONFIG_AD_PIN_XR           NU_GET_PININDEX(evGB, 9)
+#define CONFIG_AD_PIN_YD           NU_GET_PININDEX(evGH, 5)
+#define disp_delay_ms(ms)          sysDelay(ms)
 
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);

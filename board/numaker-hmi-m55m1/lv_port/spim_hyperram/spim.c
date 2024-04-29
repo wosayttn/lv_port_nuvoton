@@ -64,7 +64,7 @@ static void SPIM_WriteInPageDataByIO(SPIM_T *spim, uint32_t u32Addr, int is4Byte
                                      uint32_t u32NBitCmd, uint32_t u32NBitAddr,
                                      uint32_t u32NBitDat, int isSync);
 static int32_t SPIM_WriteInPageDataByPageWrite(SPIM_T *spim, uint32_t u32Addr, int is4ByteAddr,
-                                               uint32_t u32NTx, uint8_t pu8TxBuf[], uint32_t wrCmd, int isSync);
+        uint32_t u32NTx, uint8_t pu8TxBuf[], uint32_t wrCmd, int isSync);
 static void spim_clr_contreadphase(SPIM_T *spim, uint32_t u32OPMode);
 
 //------------------------------------------------------------------------------
@@ -80,24 +80,24 @@ static void SwitchNBitOutput(SPIM_T *spim, uint32_t u32NBit)
 {
     switch (u32NBit)
     {
-        case 1UL:
-            SPIM_ENABLE_SING_OUTPUT_MODE(spim);     /* 1-bit, Output. */
-            break;
+    case 1UL:
+        SPIM_ENABLE_SING_OUTPUT_MODE(spim);     /* 1-bit, Output. */
+        break;
 
-        case 2UL:
-            SPIM_ENABLE_DUAL_OUTPUT_MODE(spim);     /* 2-bit, Output. */
-            break;
+    case 2UL:
+        SPIM_ENABLE_DUAL_OUTPUT_MODE(spim);     /* 2-bit, Output. */
+        break;
 
-        case 4UL:
-            SPIM_ENABLE_QUAD_OUTPUT_MODE(spim);     /* 4-bit, Output. */
-            break;
+    case 4UL:
+        SPIM_ENABLE_QUAD_OUTPUT_MODE(spim);     /* 4-bit, Output. */
+        break;
 
-        case 8UL:
-            SPIM_ENABLE_OCTAL_OUTPUT_MODE(spim);    /* 8-bit, Output. */
-            break;
+    case 8UL:
+        SPIM_ENABLE_OCTAL_OUTPUT_MODE(spim);    /* 8-bit, Output. */
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -105,24 +105,24 @@ static void SwitchNBitInput(SPIM_T *spim, uint32_t u32NBit)
 {
     switch (u32NBit)
     {
-        case 1UL:
-            SPIM_ENABLE_SING_INPUT_MODE(spim);      /* 1-bit, Input. */
-            break;
+    case 1UL:
+        SPIM_ENABLE_SING_INPUT_MODE(spim);      /* 1-bit, Input. */
+        break;
 
-        case 2UL:
-            SPIM_ENABLE_DUAL_INPUT_MODE(spim);      /* 2-bit, Input. */
-            break;
+    case 2UL:
+        SPIM_ENABLE_DUAL_INPUT_MODE(spim);      /* 2-bit, Input. */
+        break;
 
-        case 4UL:
-            SPIM_ENABLE_QUAD_INPUT_MODE(spim);      /* 4-bit, Input. */
-            break;
+    case 4UL:
+        SPIM_ENABLE_QUAD_INPUT_MODE(spim);      /* 4-bit, Input. */
+        break;
 
-        case 8UL:
-            SPIM_ENABLE_OCTAL_INPUT_MODE(spim);     /* 8-bit, Input. */
-            break;
+    case 8UL:
+        SPIM_ENABLE_OCTAL_INPUT_MODE(spim);     /* 8-bit, Input. */
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -964,44 +964,44 @@ void SPIM_SetQuadEnable(SPIM_T *spim, int isEn, uint32_t u32NBit)
 
     switch (idBuf[0])
     {
-        case MFGID_WINBOND:                      /* Winbond SPI flash  */
-            SPIM_ReadStatusRegister(spim, &dataBuf[0], 1UL, u32NBit);
-            SPIM_ReadStatusRegister2(spim, &dataBuf[1], 1UL, u32NBit);
-            SPIM_DBGMSG("Status Register: 0x%x - 0x%x\n", dataBuf[0], dataBuf[1]);
+    case MFGID_WINBOND:                      /* Winbond SPI flash  */
+        SPIM_ReadStatusRegister(spim, &dataBuf[0], 1UL, u32NBit);
+        SPIM_ReadStatusRegister2(spim, &dataBuf[1], 1UL, u32NBit);
+        SPIM_DBGMSG("Status Register: 0x%x - 0x%x\n", dataBuf[0], dataBuf[1]);
 
-            if (isEn)
-            {
-                dataBuf[1] |= SR2_QE;
-            }
-            else
-            {
-                dataBuf[1] &= ~SR2_QE;
-            }
+        if (isEn)
+        {
+            dataBuf[1] |= SR2_QE;
+        }
+        else
+        {
+            dataBuf[1] &= ~SR2_QE;
+        }
 
-            SPIM_SetWriteEnable(spim, SPIM_OP_ENABLE, u32NBit);   /* Write Enable.    */
-            SPIM_WriteStatusRegister2(spim, dataBuf, sizeof(dataBuf), u32NBit);
-            spim_wait_writedone(spim, u32NBit);
+        SPIM_SetWriteEnable(spim, SPIM_OP_ENABLE, u32NBit);   /* Write Enable.    */
+        SPIM_WriteStatusRegister2(spim, dataBuf, sizeof(dataBuf), u32NBit);
+        spim_wait_writedone(spim, u32NBit);
 
-            SPIM_ReadStatusRegister(spim, &dataBuf[0], 1UL, u32NBit);
-            SPIM_ReadStatusRegister2(spim, &dataBuf[1], 1UL, u32NBit);
-            SPIM_DBGMSG("Status Register: 0x%x - 0x%x\n", dataBuf[0], dataBuf[1]);
-            break;
+        SPIM_ReadStatusRegister(spim, &dataBuf[0], 1UL, u32NBit);
+        SPIM_ReadStatusRegister2(spim, &dataBuf[1], 1UL, u32NBit);
+        SPIM_DBGMSG("Status Register: 0x%x - 0x%x\n", dataBuf[0], dataBuf[1]);
+        break;
 
-        case MFGID_MXIC:                         /* MXIC SPI flash.  */
-        case MFGID_EON:
-        case MFGID_ISSI:                               /* ISSI SPI flash.  */
-            SPIM_SetWriteEnable(spim, 1, u32NBit);   /* Write Enable.    */
-            dataBuf[0] = isEn ? SR_QE : 0U;
-            SPIM_WriteStatusRegister(spim, dataBuf, sizeof(dataBuf), u32NBit);
-            spim_wait_writedone(spim, u32NBit);
-            break;
+    case MFGID_MXIC:                         /* MXIC SPI flash.  */
+    case MFGID_EON:
+    case MFGID_ISSI:                               /* ISSI SPI flash.  */
+        SPIM_SetWriteEnable(spim, 1, u32NBit);   /* Write Enable.    */
+        dataBuf[0] = isEn ? SR_QE : 0U;
+        SPIM_WriteStatusRegister(spim, dataBuf, sizeof(dataBuf), u32NBit);
+        spim_wait_writedone(spim, u32NBit);
+        break;
 
-        case MFGID_SPANSION:
-            spim_enable_spansion_quad_mode(spim, isEn);
-            break;
+    case MFGID_SPANSION:
+        spim_enable_spansion_quad_mode(spim, isEn);
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -1061,26 +1061,26 @@ int32_t SPIM_Is4ByteModeEnable(SPIM_T *spim, uint32_t u32NBit)
     /* Based on Flash size, check if 4-byte address mode is supported.  */
     switch (idBuf[0])
     {
-        case MFGID_WINBOND:
-            isSupt = (idBuf[2] < 0x16U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
-            break;
+    case MFGID_WINBOND:
+        isSupt = (idBuf[2] < 0x16U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
+        break;
 
-        case MFGID_MXIC:
-        case MFGID_EON:
-            isSupt = (idBuf[2] < 0x19U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
-            break;
+    case MFGID_MXIC:
+    case MFGID_EON:
+        isSupt = (idBuf[2] < 0x19U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
+        break;
 
-        case MFGID_ISSI:
-            isSupt = (idBuf[2] < 0x49U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
-            break;
+    case MFGID_ISSI:
+        isSupt = (idBuf[2] < 0x49U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
+        break;
 
-        case MFGID_MICRON:
-            SPIM_ReadMT35XFlagRegister(spim, dataBuf, sizeof(dataBuf), u32NBit);
-            isEn = !!(dataBuf[0] & SR3_ADR);
-            break;
+    case MFGID_MICRON:
+        SPIM_ReadMT35XFlagRegister(spim, dataBuf, sizeof(dataBuf), u32NBit);
+        isEn = !!(dataBuf[0] & SR3_ADR);
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if (isSupt != 0)
@@ -1124,33 +1124,33 @@ int32_t SPIM_Enable_4Bytes_Mode(SPIM_T *spim, int isEn, uint32_t u32NBit)
     /* Based on Flash size, check if 4-byte address mode is supported. */
     switch (idBuf[0])
     {
-        case MFGID_WINBOND:
-            isSupt = (idBuf[2] < 0x16U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
-            break;
+    case MFGID_WINBOND:
+        isSupt = (idBuf[2] < 0x16U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
+        break;
 
-        case MFGID_MXIC:
-        case MFGID_EON:
-            isSupt = (idBuf[2] < 0x19U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
-            break;
+    case MFGID_MXIC:
+    case MFGID_EON:
+        isSupt = (idBuf[2] < 0x19U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
+        break;
 
-        case MFGID_ISSI:
-            isSupt = (idBuf[2] < 0x49U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
-            break;
+    case MFGID_ISSI:
+        isSupt = (idBuf[2] < 0x49U) ? SPIM_OP_DISABLE : SPIM_OP_ENABLE;
+        break;
 
-        case MFGID_SPANSION:
-            SPIM_SPANSION_4Bytes_Enable(spim, isEn, u32NBit);
-            isSupt = SPIM_OP_ENABLE;
-            ret = SPIM_OK;
-            break;
+    case MFGID_SPANSION:
+        SPIM_SPANSION_4Bytes_Enable(spim, isEn, u32NBit);
+        isSupt = SPIM_OP_ENABLE;
+        ret = SPIM_OK;
+        break;
 
-        case MFGID_MICRON:
-            SPIM_SetWriteEnable(spim, SPIM_OP_ENABLE, u32NBit);
-            isSupt = SPIM_OP_ENABLE;
-            break;
+    case MFGID_MICRON:
+        SPIM_SetWriteEnable(spim, SPIM_OP_ENABLE, u32NBit);
+        isSupt = SPIM_OP_ENABLE;
+        break;
 
-        default:
-            //isSupt = SPIM_OP_ENABLE;
-            break;
+    default:
+        //isSupt = SPIM_OP_ENABLE;
+        break;
     }
 
     if ((isSupt == SPIM_OP_ENABLE) && (idBuf[0] != MFGID_SPANSION))
@@ -1328,20 +1328,20 @@ static void *SPIM_SwitchPhaseRegister(SPIM_T *spim, uint32_t u32OPMode)
 {
     switch (u32OPMode)
     {
-        case SPIM_CTL0_OPMODE_PAGEWRITE:
-            return (uint32_t *)&spim->PHDMAW;
-            break;
+    case SPIM_CTL0_OPMODE_PAGEWRITE:
+        return (uint32_t *)&spim->PHDMAW;
+        break;
 
-        case SPIM_CTL0_OPMODE_PAGEREAD:
-            return (uint32_t *)&spim->PHDMAR;
-            break;
+    case SPIM_CTL0_OPMODE_PAGEREAD:
+        return (uint32_t *)&spim->PHDMAR;
+        break;
 
-        case SPIM_CTL0_OPMODE_DIRECTMAP:
-            return (uint32_t *)&spim->PHDMM;
-            break;
+    case SPIM_CTL0_OPMODE_DIRECTMAP:
+        return (uint32_t *)&spim->PHDMM;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return NULL;
@@ -1425,8 +1425,8 @@ static void SPIM_WriteInPageDataByIO(SPIM_T *spim, uint32_t u32Addr,
   *         SPIM_ERR_TIMEOUT SPIM operation abort due to timeout error.
   */
 static int32_t SPIM_WriteInPageDataByPageWrite(SPIM_T *spim, uint32_t u32Addr,
-                                               int is4ByteAddr, uint32_t u32NTx,
-                                               uint8_t pu8TxBuf[], uint32_t wrCmd, int isSync)
+        int is4ByteAddr, uint32_t u32NTx,
+        uint8_t pu8TxBuf[], uint32_t wrCmd, int isSync)
 {
     SPIM_CLEAR_MODE_DATA(spim);                         /* Disable continue read */
     SPIM_DISABLE_DMM_BWEN(spim);                        /* Disable burst wrap */
@@ -1471,22 +1471,22 @@ uint32_t SPIM_PhaseModeToNBit(uint32_t u32Phase)
 
     switch (u32Phase)
     {
-        case PHASE_DUAL_MODE:
-            u32PhaseSize = 2;
-            break;
+    case PHASE_DUAL_MODE:
+        u32PhaseSize = 2;
+        break;
 
-        case PHASE_QUAD_MODE:
-            u32PhaseSize = 4;
-            break;
+    case PHASE_QUAD_MODE:
+        u32PhaseSize = 4;
+        break;
 
-        case PHASE_OCTAL_MODE:
-            u32PhaseSize = 8;
-            break;
+    case PHASE_OCTAL_MODE:
+        u32PhaseSize = 8;
+        break;
 
-        default:
-        case PHASE_NORMAL_MODE:
-            u32PhaseSize = 1;
-            break;
+    default:
+    case PHASE_NORMAL_MODE:
+        u32PhaseSize = 1;
+        break;
     }
 
     return u32PhaseSize;
@@ -1937,8 +1937,8 @@ void SPIM_IO_SendCMDPhase(SPIM_T *spim, uint32_t u32OPMode, uint32_t u32OpCMD,
 }
 
 static void SPIM_WriteInPageDataByPhaseIO(SPIM_T *spim, SPIM_PHASE_T *psPhaseTable,
-                                          uint32_t u32Addr, int is4ByteAddr,
-                                          uint8_t *pu8TxBuf, uint32_t u32RdSize)
+        uint32_t u32Addr, int is4ByteAddr,
+        uint8_t *pu8TxBuf, uint32_t u32RdSize)
 {
     SPIM_IO_SendCMDPhase(spim,
                          SPIM_IO_WRITE_PHASE,

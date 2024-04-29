@@ -8,20 +8,8 @@
 
 #include "lvgl.h"
 #include "lv_glue.h"
-
-#if defined(CONFIG_FSA506_EBI)
-#include "disp_fsa506.h"
-#endif
-#if defined(CONFIG_LT7381_EBI)
-#include "disp_lt7381.h"
-#endif
-
-#if defined(CONFIG_FT5316_I2C)
-#endif
-
-#if defined(CONFIG_ST1663I_I2C)
-#include "touch_st1663i.h"
-#endif
+#include "disp.h"
+#include "indev_touch.h"
 
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), DCACHE_LINE_SIZE)
 
@@ -33,65 +21,25 @@
 
 void sysDelay(uint32_t ms)
 {
-    vTaskDelay( ms / portTICK_PERIOD_MS );
+    vTaskDelay(ms / portTICK_PERIOD_MS);
 }
 
 int lcd_device_initialize(void)
 {
     GPIO_T *PORT;
 
-#if defined(CONFIG_FSA506_EBI)
+    /* Set GPIO Output mode for display pins. */
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_RESET) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_RESET)), GPIO_MODE_OUTPUT);
 
-    /* Set GPIO Output mode for FSA506 pins. */
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_FSA506_PIN_DC) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_FSA506_PIN_DC)), GPIO_MODE_OUTPUT);
-
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_FSA506_PIN_RESET) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_FSA506_PIN_RESET)), GPIO_MODE_OUTPUT);
-
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_FSA506_PIN_BACKLIGHT) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_FSA506_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
 
     /* Open EBI  */
-    EBI_Open(CONFIG_FSA506_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_CACCESS, EBI_CS_ACTIVE_LOW);
+    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
 
-    disp_fsa506_init();
+    disp_init();
 
-#elif defined(CONFIG_LT7381_EBI)
-
-    /* Set GPIO Output mode for LT7381 pins. */
-#if defined(CONFIG_LT7381_PIN_DC)
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_LT7381_PIN_DC) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_LT7381_PIN_DC)), GPIO_MODE_OUTPUT);
-#endif
-	
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_LT7381_PIN_RESET) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_LT7381_PIN_RESET)), GPIO_MODE_OUTPUT);
-
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_LT7381_PIN_BACKLIGHT) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_LT7381_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
-
-    /* Open EBI  */
-    EBI_Open(CONFIG_LT7381_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_SLOW, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
-
-    switch (CONFIG_LT7381_EBI)
-    {
-    case EBI_BANK0:
-        EBI->TCTL0 |= (EBI_TCTL_WAHDOFF_Msk | EBI_TCTL_RAHDOFF_Msk);
-        break;
-    case EBI_BANK1:
-        EBI->TCTL1 |= (EBI_TCTL_WAHDOFF_Msk | EBI_TCTL_RAHDOFF_Msk);
-        break;
-    case EBI_BANK2:
-        EBI->TCTL2 |= (EBI_TCTL_WAHDOFF_Msk | EBI_TCTL_RAHDOFF_Msk);
-        break;
-    default:
-        return -1;
-    }
-
-    disp_lt7381_init();
-
-#endif
     return 0;
 }
 
@@ -121,11 +69,7 @@ int lcd_device_control(int cmd, void *argv)
 
     case evLCD_CTRL_RECT_UPDATE:
     {
-#if defined(CONFIG_FSA506_EBI)
-        fsa506_fillrect((uint16_t *)s_au8FrameBuf, (const lv_area_t *)argv);
-#elif defined(CONFIG_LT7381_EBI)
-        lt7381_fillrect((uint16_t *)s_au8FrameBuf, (const lv_area_t *)argv);
-#endif
+        disp_fillrect((uint16_t *)s_au8FrameBuf, (const lv_area_t *)argv);
     }
     break;
 
@@ -145,7 +89,7 @@ int lcd_device_finalize(void)
     return 0;
 }
 
-#if defined(CONFIG_ST1663I_PIN_IRQ)
+#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
 
 static IRQn_Type au32GPIRQ[] =
 {
@@ -167,12 +111,12 @@ static volatile uint32_t s_u32LastIRQ = 0;
 // GPF ISR
 void GPF_IRQHandler(void)
 {
-    GPIO_T *PORT = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ST1663I_PIN_IRQ) * PORT_OFFSET));
+    GPIO_T *PORT = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET));
 
     /* To check if PF.6 interrupt occurred */
-    if (GPIO_GET_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ))))
+    if (GPIO_GET_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ))))
     {
-        GPIO_CLR_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ)));
+        GPIO_CLR_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)));
         s_u32LastIRQ = xTaskGetTickCount();
     }
     else
@@ -182,30 +126,32 @@ void GPF_IRQHandler(void)
         PORT->INTSRC = u32temp;
     }
 }
-
 #endif
 
 int touchpad_device_initialize(void)
 {
-#if defined(CONFIG_ST1663I_I2C)
+#if defined(CONFIG_INDEV_TOUCH_I2C)
     GPIO_T *PORT;
 
-    /* Set GPIO OUTPUT mode for ST1663I pins. */
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ST1663I_PIN_RESET) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_RESET)), GPIO_MODE_OUTPUT);
+    /* Set GPIO OUTPUT mode for indev touch pins. */
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)), GPIO_MODE_OUTPUT);
 
-#if defined(CONFIG_ST1663I_PIN_IRQ)
-    /* Set GPIO INTPUT mode for ST1663I pins. */
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ST1663I_PIN_IRQ) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ)), GPIO_MODE_INPUT);
-    GPIO_SetPullCtl(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ)), GPIO_PUSEL_PULL_UP);
-    GPIO_EnableInt(PORT, NU_GET_PIN(CONFIG_ST1663I_PIN_IRQ), GPIO_INT_FALLING);
-    NVIC_EnableIRQ(au32GPIRQ[NU_GET_PORT(CONFIG_ST1663I_PIN_IRQ)]);
+#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
+    /* Set GPIO INTPUT mode for indev touch pins. */
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), GPIO_MODE_INPUT);
+    GPIO_SetPullCtl(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), GPIO_PUSEL_PULL_UP);
+    GPIO_EnableInt(PORT, NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ), GPIO_INT_FALLING);
+    NVIC_EnableIRQ(au32GPIRQ[NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ)]);
 #endif
 
     return indev_touch_init();
+
 #else
+
     return 0;
+
 #endif
 
 }
@@ -217,9 +163,9 @@ int touchpad_device_open(void)
 
 int touchpad_device_read(lv_indev_data_t *psInDevData)
 {
-#if defined(CONFIG_ST1663I_I2C)
+#if defined(CONFIG_INDEV_TOUCH_I2C)
 
-#if defined(CONFIG_ST1663I_PIN_IRQ)
+#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
     static uint32_t u32LastIRQ = 0;
 
     if (u32LastIRQ != s_u32LastIRQ)
@@ -234,8 +180,11 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
 #else
     indev_touch_get_data(psInDevData);
 #endif
+
     return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
+
 #else
+
     return LV_INDEV_STATE_RELEASED;
 
 #endif

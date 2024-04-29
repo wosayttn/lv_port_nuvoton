@@ -7,15 +7,13 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "touch_st1663i.h"
+#include "indev_touch.h"
 
-#define ST1663I_REGITER_LEN         1
-#define ST1663I_MAX_TOUCH           5
-#define ST1663I_ADDRESS             0x55
+#define ST1663I_REGITER_LEN  1
+#define ST1663I_MAX_TOUCH    5
+#define ST1663I_ADDRESS      0x55
 
-#define SET_RST                     GPIO_PIN_DATA(NU_GET_PORT(CONFIG_ST1663I_PIN_RESET), NU_GET_PIN(CONFIG_ST1663I_PIN_RESET)) = 0
-#define CLR_RST                     GPIO_PIN_DATA(NU_GET_PORT(CONFIG_ST1663I_PIN_RESET), NU_GET_PIN(CONFIG_ST1663I_PIN_RESET)) = 1
-#define CONFIG_MAX_TOUCH            1
+#define CONFIG_MAX_TOUCH     1
 
 typedef struct
 {
@@ -112,7 +110,7 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
 
     memset(&sStRegMap, 0, sizeof(S_ST_REGMAP));
 
-    error = st1663i_read_reg(CONFIG_ST1663I_I2C, 0x10, (uint8_t *)&sStRegMap, sizeof(sStRegMap));
+    error = st1663i_read_reg(CONFIG_INDEV_TOUCH_I2C, 0x10, (uint8_t *)&sStRegMap, sizeof(sStRegMap));
     if (error)
     {
         LV_LOG_ERROR("Get touch data failed, err:");
@@ -198,14 +196,14 @@ int indev_touch_init(void)
     memset(&pre_id[0], 0xff,  CONFIG_MAX_TOUCH * sizeof(int16_t));
 
     /* Hardware reset */
-    SET_RST;
+    INDEV_TOUCH_SET_RST;
     sysDelay(5);
-    CLR_RST;
+    INDEV_TOUCH_CLR_RST;
     sysDelay(200);
 
-    I2C_Open(CONFIG_ST1663I_I2C, 400000);
+    I2C_Open(CONFIG_INDEV_TOUCH_I2C, 400000);
 
-    st1663i_write_reg(CONFIG_ST1663I_I2C, 0x0, 0);
+    st1663i_write_reg(CONFIG_INDEV_TOUCH_I2C, 0x0, 0);
 
     return 0;
 }

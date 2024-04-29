@@ -14,12 +14,13 @@
 #define USB_CONFIG_SIZE (9 + MSC_DESCRIPTOR_LEN)
 
 #ifdef CONFIG_USB_HS
-#define MSC_MAX_MPS 512
+    #define MSC_MAX_MPS 512
 #else
-#define MSC_MAX_MPS 64
+    #define MSC_MAX_MPS 64
 #endif
 
-const uint8_t msc_ram_descriptor[] = {
+const uint8_t msc_ram_descriptor[] =
+{
     USB_DEVICE_DESCRIPTOR_INIT(USB_2_0, 0x00, 0x00, 0x00, USBD_VID, USBD_PID, 0x0200, 0x01),
     USB_CONFIG_DESCRIPTOR_INIT(USB_CONFIG_SIZE, 0x01, 0x01, USB_CONFIG_BUS_POWERED, USBD_MAX_POWER),
     MSC_DESCRIPTOR_INIT(0x00, MSC_OUT_EP, MSC_IN_EP, MSC_MAX_MPS, 0x02),
@@ -99,87 +100,88 @@ const uint8_t msc_ram_descriptor[] = {
 
 static void usbd_event_handler(uint8_t busid, uint8_t event)
 {
-    switch (event) {
-        case USBD_EVENT_RESET:
-            break;
-        case USBD_EVENT_CONNECTED:
-            break;
-        case USBD_EVENT_DISCONNECTED:
-            break;
-        case USBD_EVENT_RESUME:
-            break;
-        case USBD_EVENT_SUSPEND:
-            break;
-        case USBD_EVENT_CONFIGURED:
-            break;
-        case USBD_EVENT_SET_REMOTE_WAKEUP:
-            break;
-        case USBD_EVENT_CLR_REMOTE_WAKEUP:
-            break;
+    switch (event)
+    {
+    case USBD_EVENT_RESET:
+        break;
+    case USBD_EVENT_CONNECTED:
+        break;
+    case USBD_EVENT_DISCONNECTED:
+        break;
+    case USBD_EVENT_RESUME:
+        break;
+    case USBD_EVENT_SUSPEND:
+        break;
+    case USBD_EVENT_CONFIGURED:
+        break;
+    case USBD_EVENT_SET_REMOTE_WAKEUP:
+        break;
+    case USBD_EVENT_CLR_REMOTE_WAKEUP:
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
 typedef enum
 {
-	SFUD_READ,
-	SFUD_ERASE_WRITE,
-	SFUD_WRITE,
+    SFUD_READ,
+    SFUD_ERASE_WRITE,
+    SFUD_WRITE,
 } E_MODE;
 
 static uint32_t s_u32BlkCnt = 0;
 static uint32_t s_u32BlkSize = 0;
 
-static sfud_err sfud_transfer(E_MODE mode, uint8_t* pu8Buf, uint32_t sector, uint32_t u32Size)
+static sfud_err sfud_transfer(E_MODE mode, uint8_t *pu8Buf, uint32_t sector, uint32_t u32Size)
 {
     sfud_err result;
-  	sfud_flash* flash = sfud_get_device(SFUD_W25_DEVICE_INDEX);
-		uint32_t u32Addr= sector*s_u32BlkSize;
+    sfud_flash *flash = sfud_get_device(SFUD_W25_DEVICE_INDEX);
+    uint32_t u32Addr = sector * s_u32BlkSize;
 
-	  // printf("%s Mode: %d, StartSecAddr: %d, Size: %d\n", __func__, mode, u32Addr, u32Size);
-    if ( mode == SFUD_READ )
-		{
-				result = sfud_read(flash, u32Addr, u32Size, (uint8_t *)pu8Buf);
-		}
-    else if ( mode == SFUD_ERASE_WRITE )
-		{
-        result = sfud_erase_write(flash, u32Addr, u32Size, (uint8_t *)pu8Buf);			
-		}
-		else if ( mode == SFUD_WRITE )
-		{
+    // printf("%s Mode: %d, StartSecAddr: %d, Size: %d\n", __func__, mode, u32Addr, u32Size);
+    if (mode == SFUD_READ)
+    {
+        result = sfud_read(flash, u32Addr, u32Size, (uint8_t *)pu8Buf);
+    }
+    else if (mode == SFUD_ERASE_WRITE)
+    {
+        result = sfud_erase_write(flash, u32Addr, u32Size, (uint8_t *)pu8Buf);
+    }
+    else if (mode == SFUD_WRITE)
+    {
         result = sfud_write(flash, u32Addr, u32Size, (uint8_t *)pu8Buf);
-		}
+    }
 
-		return result;
+    return result;
 }
 
 void usbd_msc_get_cap(uint8_t busid, uint8_t lun, uint32_t *block_num, uint32_t *block_size)
 {
-  	*block_num = ( s_u32BlkCnt < 1000 )?1000:s_u32BlkCnt; //Pretend having so many buffer,not has actually.
+    *block_num = (s_u32BlkCnt < 1000) ? 1000 : s_u32BlkCnt; //Pretend having so many buffer,not has actually.
     *block_size = s_u32BlkSize;
 }
 
 int usbd_msc_sector_read(uint8_t busid, uint8_t lun, uint32_t sector, uint8_t *buffer, uint32_t length)
 {
-	  if ( sector < s_u32BlkCnt)
-	      sfud_transfer(SFUD_READ, buffer, sector, length);
+    if (sector < s_u32BlkCnt)
+        sfud_transfer(SFUD_READ, buffer, sector, length);
     return 0;
 }
 
 int usbd_msc_sector_write(uint8_t busid, uint8_t lun, uint32_t sector, uint8_t *buffer, uint32_t length)
 {
-	  if ( sector < s_u32BlkCnt)
+    if (sector < s_u32BlkCnt)
         sfud_transfer(SFUD_ERASE_WRITE, buffer, sector, length);
-    return 0; 
+    return 0;
 }
 
 static struct usbd_interface intf0;
 void msc_sfud_init(uint8_t busid, uint32_t reg_base)
 {
     s_u32BlkSize = sfud_get_device(SFUD_W25_DEVICE_INDEX)->chip.erase_gran;
-	  s_u32BlkCnt = sfud_get_device(SFUD_W25_DEVICE_INDEX)->chip.capacity / s_u32BlkSize;
+    s_u32BlkCnt = sfud_get_device(SFUD_W25_DEVICE_INDEX)->chip.capacity / s_u32BlkSize;
 
     usbd_desc_register(busid, msc_ram_descriptor);
     usbd_add_interface(busid, usbd_msc_init_intf(busid, &intf0, MSC_OUT_EP, MSC_IN_EP));

@@ -6,72 +6,47 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "disp_fsa506.h"
-#if defined(CONFIG_FSA506_EBI_USE_PDMA)
-    #include "drv_pdma.h"
-#endif
+#include "disp.h"
 
-#if !defined(CONFIG_FSA506_EBI_ADDR)
-    #error "Please specify CONFIG_FSA506_EBI_ADDR in lv_conf.h"
-#endif
-
-#define FSA506_ADDR_CMD  0x0
-#define FSA506_ADDR_DATA 0x0
-
-#define FSA506_WRITE_REG(u32RegAddr) \
-        { \
-            CLR_RS; \
-            (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_CMD))) = (u32RegAddr)); \
-            __DSB(); \
-            SET_RS; \
-        }
-
-#define FSA506_WRITE_DATA(u32Data) \
-        { \
-            (*((volatile uint16_t *)(CONFIG_FSA506_EBI_ADDR+(FSA506_ADDR_DATA))) = (u32Data)); \
-            __DSB(); \
-        }
-
-void fsa506_write_reg(uint16_t reg, uint16_t data)
+void disp_write_reg(uint16_t reg, uint16_t data)
 {
     // Register
-    FSA506_WRITE_REG(reg & 0xFF);
+    DISP_WRITE_REG(reg & 0xFF);
 
     // Data
-    FSA506_WRITE_DATA(data & 0xFF);
+    DISP_WRITE_DATA(data & 0xFF);
 
     // Done
-    FSA506_WRITE_REG(0x80);
+    DISP_WRITE_REG(0x80);
 }
 
-void fsa506_set_column(uint16_t StartCol, uint16_t EndCol)
+void disp_set_column(uint16_t StartCol, uint16_t EndCol)
 {
-    fsa506_write_reg(0x0, (StartCol >> 8) & 0xFF);
-    fsa506_write_reg(0x1, StartCol & 0xFF);
-    fsa506_write_reg(0x2, (EndCol >> 8) & 0xFF);
-    fsa506_write_reg(0x3, EndCol & 0xFF);
+    disp_write_reg(0x0, (StartCol >> 8) & 0xFF);
+    disp_write_reg(0x1, StartCol & 0xFF);
+    disp_write_reg(0x2, (EndCol >> 8) & 0xFF);
+    disp_write_reg(0x3, EndCol & 0xFF);
 }
 
-void fsa506_set_page(uint16_t StartPage, uint16_t EndPage)
+void disp_set_page(uint16_t StartPage, uint16_t EndPage)
 {
-    fsa506_write_reg(0x4, (StartPage >> 8) & 0xFF);
-    fsa506_write_reg(0x5, StartPage & 0xFF);
-    fsa506_write_reg(0x6, (EndPage >> 8) & 0xFF);
-    fsa506_write_reg(0x7, EndPage & 0xFF);
+    disp_write_reg(0x4, (StartPage >> 8) & 0xFF);
+    disp_write_reg(0x5, StartPage & 0xFF);
+    disp_write_reg(0x6, (EndPage >> 8) & 0xFF);
+    disp_write_reg(0x7, EndPage & 0xFF);
 }
 
-void fsa506_send_pixels(uint16_t *pixels, int byte_len)
+void disp_send_pixels(uint16_t *pixels, int byte_len)
 {
     int count = byte_len / sizeof(uint16_t);
 
-    FSA506_WRITE_REG(0xC1);
+    DISP_WRITE_REG(0xC1);
 
-#if defined(CONFIG_FSA506_EBI_USE_PDMA)
+#if defined(CONFIG_DISP_USE_PDMA)
     // PDMA-M2M feed
     if (count > 1024)
     {
-        uint32_t Odd = count & 0x1;
-        nu_pdma_mempush((void *)(CONFIG_FSA506_EBI_ADDR + FSA506_ADDR_DATA), (void *)pixels, (Odd ? 16:32), (Odd ? count:(count/2)) );
+        nu_pdma_mempush((void *)CONFIG_DISP_DAT_ADDR, (void *)pixels, 16, count);
     }
     else
 #endif
@@ -80,10 +55,10 @@ void fsa506_send_pixels(uint16_t *pixels, int byte_len)
         int i = 0;
         while (i < count)
         {
-            FSA506_WRITE_DATA(pixels[i]);
+            DISP_WRITE_DATA(pixels[i]);
             i++;
         }
     }
 
-    FSA506_WRITE_REG(0x80);
+    DISP_WRITE_REG(0x80);
 }
