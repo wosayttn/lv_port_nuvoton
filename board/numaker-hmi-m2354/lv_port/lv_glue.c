@@ -8,7 +8,7 @@
 
 #include "lvgl.h"
 #include "lv_glue.h"
-#include "disp_ili9341.h"
+#include "disp.h"
 #include "touch_adc.h"
 
 
@@ -30,28 +30,28 @@ int lcd_device_initialize(void)
     GPIO_T *PORT;
 
     /* Set GPIO Output mode for ILI9341 pins. */
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ILI9341_PIN_DC) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ILI9341_PIN_DC)), GPIO_MODE_OUTPUT);
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_DC) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_DC)), GPIO_MODE_OUTPUT);
 
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ILI9341_PIN_RESET) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ILI9341_PIN_RESET)), GPIO_MODE_OUTPUT);
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_RESET) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_RESET)), GPIO_MODE_OUTPUT);
 
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_ILI9341_PIN_BACKLIGHT) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_ILI9341_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
 
     /* Open SPI */
-    SPI_Open(CONFIG_ILI9341_SPI, SPI_MASTER, SPI_MODE_0, 8, CONFIG_ILI9341_SPI_CLOCK);
+    SPI_Open(CONFIG_DISP_SPI, SPI_MASTER, SPI_MODE_0, 8, CONFIG_DISP_SPI_CLOCK);
 
     /* Set sequence to MSB first */
-    SPI_SET_MSB_FIRST(CONFIG_ILI9341_SPI);
+    SPI_SET_MSB_FIRST(CONFIG_DISP_SPI);
 
     /* Set CS pin to HIGH */
-    SPI_SET_SS_HIGH(CONFIG_ILI9341_SPI);
+    SPI_SET_SS_HIGH(CONFIG_DISP_SPI);
 
     /* Set sequence to MSB first */
-    SPI_SET_MSB_FIRST(CONFIG_ILI9341_SPI);
+    SPI_SET_MSB_FIRST(CONFIG_DISP_SPI);
 
-    disp_ili9341_init();
+    disp_init();
 
     return 0;
 }
@@ -82,7 +82,7 @@ int lcd_device_control(int cmd, void *argv)
 
     case evLCD_CTRL_RECT_UPDATE:
     {
-        ili9341_fillrect((uint16_t *)s_au8FrameBuf, (const lv_area_t *)argv);
+        disp_fillrect((uint16_t *)s_au8FrameBuf, (const lv_area_t *)argv);
     }
     break;
 

@@ -6,14 +6,14 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "disp_ili9341.h"
+#include "disp.h"
 #include "drv_uspi.h"
 
 static struct nu_uspi s_NuUSPI =
 {
-    .base           = CONFIG_ILI9341_USPI,
+    .base           = CONFIG_DISP_USPI,
     .ss_pin         = CONFIG_ILI9341_USPI_SS_PIN,
-#if defined(CONFIG_USPI_USE_PDMA)
+#if defined(CONFIG_DISP_USE_PDMA)
     .pdma_perp_tx   = CONFIG_PDMA_USPI_TX,
     .pdma_chanid_tx = -1,
     .pdma_perp_rx   = CONFIG_PDMA_USPI_RX,
@@ -22,53 +22,43 @@ static struct nu_uspi s_NuUSPI =
 #endif
 };
 
-static void ili9341_change_datawidth(int dw)
+void DISP_WRITE_REG(uint8_t u8Cmd)
 {
-    static uint32_t u32LastDW = 0;
+    USPI_SET_DATA_WIDTH(CONFIG_DISP_USPI, 8);
 
-    if (u32LastDW != dw)
-    {
-        USPI_SET_DATA_WIDTH(CONFIG_ILI9341_USPI, dw * 8);
-        u32LastDW = dw;
-    }
+    DISP_CLR_RS;
+    nu_spi_transfer(&s_NuUSPI, (const void *)&u8Cmd, NULL, 1);
+    DISP_SET_RS;
 }
 
-void ili9341_send_cmd(uint8_t cmd)
+void DISP_WRITE_DATA(uint8_t u8Dat)
 {
-    ili9341_change_datawidth(1);
-    CLR_RS;
-    nu_uspi_transfer(&s_NuUSPI, (const void *)&cmd, NULL, 1);
-    SET_RS;
+    nu_uspi_transfer(&s_NuUSPI, (const void *)&u8Dat, NULL, 1);
 }
 
-void ili9341_send_cmd_parameter(uint8_t data)
+static void DISP_WRITE_DATA_2B(uint16_t u16Dat)
 {
-    ili9341_change_datawidth(1);
-    nu_uspi_transfer(&s_NuUSPI, (const void *)&data, NULL, 1);
+    USPI_SET_DATA_WIDTH(CONFIG_DISP_USPI, 16);
+
+    nu_spi_transfer(&s_NuUSPI, (const void *)&u16Dat, NULL, 2);
 }
 
-static void ili9341_write_data_16bit(uint16_t data)
+void disp_send_pixels(uint16_t *pixels, int byte_len)
 {
-    ili9341_change_datawidth(2);
-    nu_uspi_transfer(&s_NuUSPI, (const void *)&data, NULL, 2);
-}
-
-void ili9341_send_pixels(uint16_t *pixels, int byte_len)
-{
-    ili9341_change_datawidth(2);
+    USPI_SET_DATA_WIDTH(CONFIG_DISP_USPI, 16);
     nu_uspi_transfer(&s_NuUSPI, (const void *)pixels, NULL, byte_len);
 }
 
-void ili9341_set_column(uint16_t StartCol, uint16_t EndCol)
+void disp_set_column(uint16_t StartCol, uint16_t EndCol)
 {
-    ili9341_send_cmd(0x2A);
-    ili9341_write_data_16bit(StartCol);
-    ili9341_write_data_16bit(EndCol);
+    DISP_WRITE_REG(0x2A);
+    DISP_WRITE_DATA_2B(StartCol);
+    DISP_WRITE_DATA_2B(EndCol);
 }
 
-void ili9341_set_page(uint16_t StartPage, uint16_t EndPage)
+void disp_set_page(uint16_t StartPage, uint16_t EndPage)
 {
-    ili9341_send_cmd(0x2B);
-    ili9341_write_data_16bit(StartPage);
-    ili9341_write_data_16bit(EndPage);
+    DISP_WRITE_REG(0x2B);
+    DISP_WRITE_DATA_2B(StartPage);
+    DISP_WRITE_DATA_2B(EndPage);
 }

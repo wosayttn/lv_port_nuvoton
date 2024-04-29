@@ -21,7 +21,16 @@
     #define DISP_WRITE_DATA(u16Data)    *((volatile uint16_t *)CONFIG_DISP_DAT_ADDR) = u16Data
     #define DISP_READ_STATUS()          *((volatile uint16_t *)CONFIG_DISP_CMD_ADDR)
     #define DISP_READ_DATA()            *((volatile uint16_t *)CONFIG_DISP_DAT_ADDR)
+
+#else //SPI/USPI
+
+    void DISP_WRITE_REG(uint8_t u8Cmd);
+
+    void DISP_WRITE_DATA(uint8_t u8Dat);
+
 #endif
+
+#define disp_delay_ms(ms)            sysDelay(ms)
 
 void disp_write_reg(uint16_t reg, uint16_t data);
 void disp_set_column(uint16_t StartCol, uint16_t EndCol);

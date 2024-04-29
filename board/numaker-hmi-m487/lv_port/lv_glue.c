@@ -8,7 +8,7 @@
 
 #include "lvgl.h"
 #include "lv_glue.h"
-#include "disp_ili9341.h"
+#include "disp.h"
 #include "touch_adc.h"
 
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), 4)

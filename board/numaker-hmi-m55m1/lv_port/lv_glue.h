@@ -47,8 +47,6 @@
 #define INDEV_TOUCH_SET_RST           GPIO_PIN_DATA(NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET), NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)) = 0
 #define INDEV_TOUCH_CLR_RST           GPIO_PIN_DATA(NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET), NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)) = 1
 
-#define disp_delay_ms(ms)         sysDelay(ms)
-
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);
 int lcd_device_open(void);

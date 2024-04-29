@@ -44,7 +44,6 @@
 #define CONFIG_AD_PIN_YU           NU_GET_PININDEX(evGB, 8)
 #define CONFIG_AD_PIN_XR           NU_GET_PININDEX(evGB, 9)
 #define CONFIG_AD_PIN_YD           NU_GET_PININDEX(evGH, 5)
-#define disp_delay_ms(ms)          sysDelay(ms)
 
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);
