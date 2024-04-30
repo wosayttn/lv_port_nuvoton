@@ -2257,17 +2257,17 @@
             <File>
               <FileName>lv_demo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_demo.c</FilePath>
+              <FilePath>..\..\..\common\lv_demo.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_indev.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
               <FileName>lv_glue.c</FileName>
@@ -4651,17 +4651,17 @@
             <File>
               <FileName>lv_demo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_demo.c</FilePath>
+              <FilePath>..\..\..\common\lv_demo.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_indev.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
               <FileName>lv_glue.c</FileName>
@@ -7045,17 +7045,17 @@
             <File>
               <FileName>lv_demo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_demo.c</FilePath>
+              <FilePath>..\..\..\common\lv_demo.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_indev.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
               <FileName>lv_glue.c</FileName>
@@ -9439,17 +9439,17 @@
             <File>
               <FileName>lv_demo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_demo.c</FilePath>
+              <FilePath>..\..\..\common\lv_demo.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_indev.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
               <FileName>lv_glue.c</FileName>
@@ -11782,17 +11782,17 @@
             <File>
               <FileName>lv_demo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_demo.c</FilePath>
+              <FilePath>..\..\..\common\lv_demo.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_indev.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
               <FileName>lv_glue.c</FileName>
@@ -14056,17 +14056,17 @@
             <File>
               <FileName>lv_demo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_demo.c</FilePath>
+              <FilePath>..\..\..\common\lv_demo.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_indev.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
               <FileName>lv_glue.c</FileName>
