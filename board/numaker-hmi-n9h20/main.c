@@ -3,7 +3,7 @@
  * @brief    bring up lvgl.
  *
  * SPDX-License-Identifier: Apache-2.0
- * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
+ * @copyright (C) 2024 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 
 #include "lv_glue.h"

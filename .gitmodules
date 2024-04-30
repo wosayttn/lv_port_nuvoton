@@ -51,3 +51,6 @@
 [submodule "thirdparty/CherryUSB"]
 	path = thirdparty/CherryUSB
 	url = https://github.com/cherry-embedded/CherryUSB
+[submodule "bsp/n9h31"]
+	path = bsp/n9h31
+	url = https://github.com/OpenNuvoton/N9H31_NonOS
