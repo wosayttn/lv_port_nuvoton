@@ -35,7 +35,7 @@
 #include "task.h"
 
 /* Nuvoton includes. */
-#include "nuc980.h"
+#include "N9H30.h"
 #include "sys.h"
 
 /* Constants required to setup the initial task context. */
@@ -171,15 +171,17 @@ void vPortEndScheduler( void )
 }
 /*-----------------------------------------------------------*/
 
-void systemIrqHandler(UINT32 irq)
-{
-
-	if (irq != 0)
-		(*sysIrqHandlerTable[irq])();
-
-	outpw(REG_AIC_EOIS, 1);
+/* Interrupt Handler */
+void systemIrqHandler(UINT32 _mIPER, UINT32 _mISNR)
+{		
+    _mIPER = (_mIPER >> 2) & 0x3f;
+		
+    if (_mISNR != 0)
+        if (_mIPER == _mISNR)
+            (*sysIrqHandlerTable[_mIPER])();
+		
+    outpw(REG_AIC_EOSCR, 1);
 }
-
 
 #if configUSE_PREEMPTION == 0
 
@@ -190,21 +192,21 @@ void systemIrqHandler(UINT32 irq)
 	void vNonPreemptiveTick( void ) __irq;
 	void vNonPreemptiveTick( void ) __irq
 	{
-		UINT32 num;
+		UINT32 volatile _mIPER, _mISNR;
 
-		num = inpw(REG_AIC_IRQNUM);
-		if(num != TMR5_IRQn) 
-		{
-			if (num != 0)
-				(*sysIrqHandlerTable[num])();
-		}
-		else
-		{
-			xTaskIncrementTick();
-			// clear timer interrupt
-			outpw(REG_TIMER5_ISR, 1);
-		}
-		outpw(REG_AIC_EOIS, 1);
+		/* Increment the tick count - this may make a delaying task ready
+		to run - but a context switch is not performed. */		
+		xTaskIncrementTick();
+
+		_mIPER = inpw(REG_AIC_IPER);
+		_mISNR = inpw(REG_AIC_ISNR);
+		if (_mISNR != TMR1_IRQn)
+			systemIrqHandler(_mIPER, _mISNR);
+
+		// clear TIF1
+		outpw(REG_TMR_TISR, 0x2);
+		// Acknowledge the Interrupt
+		outpw(REG_AIC_EOSCR, 0x01);
 	}
 
  #else
@@ -217,7 +219,7 @@ void systemIrqHandler(UINT32 irq)
 	 ************************************************************************** 
 	 */
 
-	  void vPreemptiveTick( void );
+	void vPreemptiveTick( void );
 
 #endif
 /*-----------------------------------------------------------*/
@@ -226,8 +228,11 @@ static void prvSetupTimerInterrupt( void )
 {
 uint32_t ulCompareMatch;
 
-	// enable timer5 clock
-	outpw(REG_CLK_PCLKEN0, inpw(REG_CLK_PCLKEN0) | (1 << 13));
+	// enable the Timer 1 clock	
+	outpw(REG_CLK_PCLKEN0, inpw(REG_CLK_PCLKEN0)| 0x200);
+	outp32(REG_SYS_APBIPRST0, inp32(REG_SYS_APBIPRST0) | BIT9);
+	outp32(REG_SYS_APBIPRST0, inp32(REG_SYS_APBIPRST0) & ~BIT9);
+
 	/* Calculate the match value required for our wanted tick rate. */
 	ulCompareMatch = 12000000 / configTICK_RATE_HZ;
 
@@ -252,11 +257,9 @@ uint32_t ulCompareMatch;
 	#endif
 	_sys_bIsAICInitial = TRUE;
 
-	// set up timer and enable timer 5 interrupt
-	outpw(REG_ETMR5_CMPR, ulCompareMatch);
-	outpw(REG_ETMR5_CTL, 0x11);
-	outpw(REG_ETMR5_IER, 0x1);
-	sysEnableInterrupt(IRQ_TIMER5);
+	outpw(REG_TMR1_TICR, ulCompareMatch);
+	outpw(REG_TMR1_TCSR, (inpw(REG_TMR1_TCSR) & 0x81FFFF00) | (0xD << 27));		// 0xC means CEN and IE were enable	
+	sysEnableInterrupt(TMR1_IRQn);
 }
 /*-----------------------------------------------------------*/
 

@@ -58,32 +58,6 @@ static void sys_init(void)
     sysSetLocalInterrupt(ENABLE_IRQ);   // Enable CPSR I bit
 }
 
-void test_task1(void *pdata)
-{
-    while (1)
-    {
-        printf("%s\n", __func__);
-        vTaskDelay((const TickType_t) 1000 / portTICK_PERIOD_MS);
-    }
-}
-void test_task2(void *pdata)
-{
-    while (1)
-    {
-        printf("%s\n", __func__);
-        vTaskDelay((const TickType_t) 1000 / portTICK_PERIOD_MS);
-    }
-}
-
-
-int task_test_init(void)
-{
-    xTaskCreate(test_task1, "test_task1", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-    xTaskCreate(test_task2, "test_task2", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-    return 0;
-}
-
-
 int main(void)
 {
     sys_init();

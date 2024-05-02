@@ -37,10 +37,12 @@
 	EXPORT	vPreemptiveTick
 	EXPORT	vPortYield
 
-REG_AIC_IRQNUM	EQU	0xB0042120
-REG_AIC_EOIS	EQU	0xB0042150
-REG_ETMR5_ISR	EQU	0xB0052110
-IRQ_TIMER5	EQU	0x00000022
+REG_AIC_IPER	EQU 0xB8002118
+REG_AIC_ISNR	EQU 0xB8002120
+REG_AIC_EOSCR	EQU 0xB8002150
+REG_TISR	EQU	0xB8001060
+IRQ_TMR1	EQU	0x00000011
+TIF1		EQU	0x00000002
 
 	ARM
 	AREA	PORT_ASM, CODE, READONLY
@@ -94,7 +96,7 @@ vPortYieldProcessor
 ; Interrupt service routine for preemptive scheduler tick timer
 ; Only used if portUSE_PREEMPTION is set to 1 in portmacro.h
 ;
-; Uses timer 5 of NUC980
+; Uses timer 1 of N9H30 Family
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 vPreemptiveTick
@@ -103,14 +105,17 @@ vPreemptiveTick
 
 	portSAVE_CONTEXT					; Save the context of the current task.
 
-	LDR R0, =REG_AIC_IRQNUM				;
-	LDR R0, [R0]
-	CMP R0, #IRQ_TIMER5					; Check the interrupt is from Timer 5 or not.
+	LDR R0, =REG_AIC_IPER				;
+	LDR R0, [R0] 
+	LDR R1, =REG_AIC_ISNR				;
+	LDR R1, [R1] 
+
+	CMP R1, #IRQ_TMR1					; Check the interrupt is from Timer 1 or not.
 	BEQ SkipIrqHandler
 
-	LDR R1, =systemIrqHandler			; Call to real interrupt handler of non-OS.    
+	LDR R2, =systemIrqHandler			; Call to real interrupt handler of non-OS.    
 	MOV LR, PC							;
-	BX  R1								;
+	BX R2								;
 
 	B RestoreContext
 
@@ -126,11 +131,12 @@ SkipIrqHandler
 	BX R0
 
 SkipContextSwitch
-	LDR R0, =REG_ETMR5_ISR				; Clear the timer interrupt.
-	LDR R1, =1
-	STR R1, [R0] 
+	MOV R0, #TIF1						; Clear the timer event.
+	LDR R1, =REG_TISR
+	STR R0, [R1] 
 
-	LDR R0, =REG_AIC_EOIS				; Acknowledge end of IRQ handler.
+	LDR R0, =REG_AIC_EOSCR				; Acknowledge the interrupt.
+	LDR R1, =1
 	STR R1,[R0]
 
 RestoreContext
