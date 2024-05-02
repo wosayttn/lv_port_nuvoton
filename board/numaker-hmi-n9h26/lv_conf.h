@@ -9,7 +9,7 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
-#define LV_NUVOTON_INCLUDE     "N9H20.h"
+#define LV_NUVOTON_INCLUDE     "N9H26.h"
 #include LV_NUVOTON_INCLUDE
 
 #define LV_USE_OS   LV_OS_NONE

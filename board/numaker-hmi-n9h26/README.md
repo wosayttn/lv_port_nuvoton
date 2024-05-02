@@ -1,4 +1,4 @@
-# **NuMaker-HMI-N9H20**
+# **NuMaker-HMI-N9H26**
 
 ## **Folder Structure**
 
@@ -17,8 +17,8 @@
 User can select listed **Target Name** to build target execution using uVision MDK4.
 | Target | Description |
 |-|-|
-| N9H20K5_NAND_480x272_FreeRTOS | Use 480x272 LCD panel, NAND storage and run on FreeRTOS environment |
-| N9H20K5_NAND_800x480_FreeRTOS | Use 800x480 LCD panel, NAND storage and run on FreeRTOS environment |
+| N9H26K6_800x480 | Use 800x480 LCD panel |
+
 
 ## **Compiling options**
 
@@ -42,8 +42,8 @@ User can select listed **Target Name** to build target execution using uVision M
 
 ## **Purchase**
 
-[Nuvoton Direct](https://direct.nuvoton.com/en/numaker-emwin-n9h20)
+[Nuvoton Direct](https://direct.nuvoton.com/en/numaker-hmi-n9h26)
 
 ## **Resources**
 
-[TurboWriter](../../bsp/n9h20/Tools/PC_Tools)
+[TurboWriter](../../bsp/n9h26/Tools/PC_Tools)

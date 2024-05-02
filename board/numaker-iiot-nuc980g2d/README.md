@@ -34,6 +34,42 @@ User can select listed **Target Name** to build target execution using uVision M
 
 - The partial update approach is applied in this port.
 
+## **SPI NAND flash using NuWriter**
+You can use NuWriter to program lvgl_demo.bin into SPI NAND flash.
+<br>
+Choose type: SPINAND<br>
+<< Press Re-Connect >><br>
+
+<< Press Erase >><br>
+<< Select Erase All >><br>
+<< Press OK >><br>
+
+Choose file: Specify your uboot-spl.bin file.<br>
+Image Type: Loader<br>
+Execute Address: 0x200<br>
+<< Press Program >><br>
+
+Choose file: Specify your uboot.bin file.<br>
+Image Type: Data<br>
+Image start address: 0x100000<br>
+<< Press Program >><br>
+
+Choose file: Specify your lvgl_demo.bin file.<br>
+Image Type: Data<br>
+Image start address: 0x200000<br>
+<< Press Program >><br>
+
+Choose file: Specify your env.txt file.<br>
+Image Type: Environment<br>
+Image start address: 0x80000<br>
+<< Press Program >><br>
+
+<< Press OK & Wait it down >><br>
+<< Set Power-on setting to SPI NAND booting >><br>
+<< Press Reset button on board >><br>
+Enjoy!! <br>
+<br>
+
 ## **Purchase**
 
 [Nuvoton Direct](https://direct.nuvoton.com/tw/numaker-iiot-nuc980g2d)
