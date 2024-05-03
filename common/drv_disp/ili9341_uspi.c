@@ -11,12 +11,12 @@
 
 static struct nu_uspi s_NuUSPI =
 {
-    .base           = CONFIG_DISP_USPI,
-    .ss_pin         = CONFIG_ILI9341_USPI_SS_PIN,
+    .base           = CONFIG_DISP_SPI,
+    .ss_pin         = CONFIG_DISP_SPI_SS_PIN,
 #if defined(CONFIG_DISP_USE_PDMA)
-    .pdma_perp_tx   = CONFIG_PDMA_USPI_TX,
+    .pdma_perp_tx   = CONFIG_PDMA_SPI_TX,
     .pdma_chanid_tx = -1,
-    .pdma_perp_rx   = CONFIG_PDMA_USPI_RX,
+    .pdma_perp_rx   = CONFIG_PDMA_SPI_RX,
     .pdma_chanid_rx = -1,
     .m_psSemBus     = 0,
 #endif
@@ -24,10 +24,10 @@ static struct nu_uspi s_NuUSPI =
 
 void DISP_WRITE_REG(uint8_t u8Cmd)
 {
-    USPI_SET_DATA_WIDTH(CONFIG_DISP_USPI, 8);
+    USPI_SET_DATA_WIDTH(CONFIG_DISP_SPI, 8);
 
     DISP_CLR_RS;
-    nu_spi_transfer(&s_NuUSPI, (const void *)&u8Cmd, NULL, 1);
+    nu_uspi_transfer(&s_NuUSPI, (const void *)&u8Cmd, NULL, 1);
     DISP_SET_RS;
 }
 
@@ -38,14 +38,14 @@ void DISP_WRITE_DATA(uint8_t u8Dat)
 
 static void DISP_WRITE_DATA_2B(uint16_t u16Dat)
 {
-    USPI_SET_DATA_WIDTH(CONFIG_DISP_USPI, 16);
+    USPI_SET_DATA_WIDTH(CONFIG_DISP_SPI, 16);
 
-    nu_spi_transfer(&s_NuUSPI, (const void *)&u16Dat, NULL, 2);
+    nu_uspi_transfer(&s_NuUSPI, (const void *)&u16Dat, NULL, 2);
 }
 
 void disp_send_pixels(uint16_t *pixels, int byte_len)
 {
-    USPI_SET_DATA_WIDTH(CONFIG_DISP_USPI, 16);
+    USPI_SET_DATA_WIDTH(CONFIG_DISP_SPI, 16);
     nu_uspi_transfer(&s_NuUSPI, (const void *)pixels, NULL, byte_len);
 }
 

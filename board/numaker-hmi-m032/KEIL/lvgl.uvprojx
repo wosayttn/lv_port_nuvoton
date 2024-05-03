@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_proj.xsd">
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_projx.xsd">
 
-  <SchemaVersion>1.1</SchemaVersion>
+  <SchemaVersion>2.1</SchemaVersion>
 
   <Header>### uVision Project, (C) Keil Software</Header>
 
   <Targets>
     <Target>
-      <TargetName>N9H30F6_800x480</TargetName>
+      <TargetName>M032KI_320x240</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>TMPA900CMXBG</Device>
-          <Vendor>Toshiba</Vendor>
-          <Cpu>IRAM(0xF8002000-0xF8009FFF) CLOCK(24000000) CPUTYPE(ARM926EJ-S)</Cpu>
+          <Device>M032KIAAE</Device>
+          <Vendor>Nuvoton</Vendor>
+          <PackID>Nuvoton.NuMicro_DFP.1.3.23</PackID>
+          <PackURL>https://github.com/OpenNuvoton/cmsis-packs/raw/master/Nuvoton_DFP/</PackURL>
+          <Cpu>IRAM(0x20000000,0x18000) IROM(0x00000000,0x80000) CPUTYPE("Cortex-M0") CLOCK(12000000)</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
-          <StartupFile>"STARTUP\Toshiba\TMPA900.s" ("Toshiba TMPA910 Startup Code")</StartupFile>
-          <FlashDriverDll></FlashDriverDll>
-          <DeviceId>4898</DeviceId>
-          <RegisterFile>TMPA900.H</RegisterFile>
+          <StartupFile></StartupFile>
+          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FCC000 -FN1 -FF0M031_AP_512 -FS00 -FL080000 -FP0($$Device:M032KIAAE$Flash\M031_AP_512.FLM))</FlashDriverDll>
+          <DeviceId>0</DeviceId>
+          <RegisterFile>$$Device:M032KIAAE$Device\M031\Include\M031Series.h</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -31,14 +33,14 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile></SFDFile>
+          <SFDFile>$$Device:M032KIAAE$SVD\Nuvoton\M031AE_v1.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
           <LibPath></LibPath>
-          <RegisterFilePath>Toshiba\</RegisterFilePath>
-          <DBRegisterFilePath>Toshiba\</DBRegisterFilePath>
+          <RegisterFilePath></RegisterFilePath>
+          <DBRegisterFilePath></DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -80,7 +82,7 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
-            <UserProg1Name>fromelf.exe --bin --output "$L@L.bin" "$L@L.axf"</UserProg1Name>
+            <UserProg1Name>fromelf --bin "$L@L.axf" --output "$L@L.bin"</UserProg1Name>
             <UserProg2Name>fromelf --bin "$L@L.axf" --output "$P../Bin/@L.bin" </UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -107,14 +109,14 @@
           <ComprImg>1</ComprImg>
         </CommonProperty>
         <DllOption>
-          <SimDllName>SARM.DLL</SimDllName>
-          <SimDllArguments>-cAT91SAM9</SimDllArguments>
-          <SimDlgDll>DARMATS9.DLL</SimDlgDll>
-          <SimDlgDllArguments>-p91SAM9260</SimDlgDllArguments>
-          <TargetDllName>SARM.DLL</TargetDllName>
-          <TargetDllArguments></TargetDllArguments>
-          <TargetDlgDll>TARMATS9.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-p91SAM9260</TargetDlgDllArguments>
+          <SimDllName>SARMCM3.DLL</SimDllName>
+          <SimDllArguments>  </SimDllArguments>
+          <SimDlgDll>DARMCM1.DLL</SimDlgDll>
+          <SimDlgDllArguments>-pCM0</SimDlgDllArguments>
+          <TargetDllName>SARMCM3.DLL</TargetDllName>
+          <TargetDllArguments> </TargetDllArguments>
+          <TargetDlgDll>TARMCM1.DLL</TargetDlgDll>
+          <TargetDlgDllArguments>-pCM0</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -124,60 +126,19 @@
             <HexOffset>0</HexOffset>
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
-          <Simulator>
-            <UseSimulator>0</UseSimulator>
-            <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>1</RunToMain>
-            <RestoreBreakpoints>1</RestoreBreakpoints>
-            <RestoreWatchpoints>1</RestoreWatchpoints>
-            <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
-            <RestoreFunctions>1</RestoreFunctions>
-            <RestoreToolbox>1</RestoreToolbox>
-            <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
-            <RestoreSysVw>1</RestoreSysVw>
-          </Simulator>
-          <Target>
-            <UseTarget>1</UseTarget>
-            <LoadApplicationAtStartup>0</LoadApplicationAtStartup>
-            <RunToMain>0</RunToMain>
-            <RestoreBreakpoints>1</RestoreBreakpoints>
-            <RestoreWatchpoints>1</RestoreWatchpoints>
-            <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
-            <RestoreFunctions>0</RestoreFunctions>
-            <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
-            <RestoreSysVw>1</RestoreSysVw>
-          </Target>
-          <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>16</TargetSelection>
-          <SimDlls>
-            <CpuDll></CpuDll>
-            <CpuDllArguments></CpuDllArguments>
-            <PeripheralDll></PeripheralDll>
-            <PeripheralDllArguments></PeripheralDllArguments>
-            <InitializationFile></InitializationFile>
-          </SimDlls>
-          <TargetDlls>
-            <CpuDll></CpuDll>
-            <CpuDllArguments></CpuDllArguments>
-            <PeripheralDll></PeripheralDll>
-            <PeripheralDllArguments></PeripheralDllArguments>
-            <InitializationFile>..\..\..\bsp\n9h30\Script\InitDDR2.ini</InitializationFile>
-            <Driver>BIN\UL2ARM.DLL</Driver>
-          </TargetDlls>
         </DebugOption>
         <Utilities>
           <Flash1>
-            <UseTargetDll>0</UseTargetDll>
-            <UseExternalTool>1</UseExternalTool>
+            <UseTargetDll>1</UseTargetDll>
+            <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
-            <UpdateFlashBeforeDebugging>0</UpdateFlashBeforeDebugging>
+            <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4098</DriverSelection>
+            <DriverSelection>4106</DriverSelection>
           </Flash1>
-          <bUseTDR>0</bUseTDR>
-          <Flash2>Segger\JLTAgdi.dll</Flash2>
-          <Flash3>"" ()</Flash3>
+          <bUseTDR>1</bUseTDR>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
+          <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -213,12 +174,12 @@
             <AdsLsxf>1</AdsLsxf>
             <RvctClst>0</RvctClst>
             <GenPPlst>0</GenPPlst>
-            <AdsCpuType>ARM926EJ-S</AdsCpuType>
+            <AdsCpuType>"Cortex-M0"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
             <mOS>0</mOS>
             <uocRom>0</uocRom>
             <uocRam>0</uocRam>
-            <hadIROM>0</hadIROM>
+            <hadIROM>1</hadIROM>
             <hadIRAM>1</hadIRAM>
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
@@ -226,12 +187,12 @@
             <RvdsMve>0</RvdsMve>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
-            <StupSel>0</StupSel>
+            <StupSel>8</StupSel>
             <useUlib>0</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
-            <RoSelD>0</RoSelD>
+            <RoSelD>3</RoSelD>
             <RwSelD>3</RwSelD>
             <CodeSel>0</CodeSel>
             <OptFeed>0</OptFeed>
@@ -243,7 +204,7 @@
             <Ro1Chk>0</Ro1Chk>
             <Ro2Chk>0</Ro2Chk>
             <Ro3Chk>0</Ro3Chk>
-            <Ir1Chk>0</Ir1Chk>
+            <Ir1Chk>1</Ir1Chk>
             <Ir2Chk>0</Ir2Chk>
             <Ra1Chk>0</Ra1Chk>
             <Ra2Chk>0</Ra2Chk>
@@ -283,13 +244,13 @@
               </Ocm6>
               <IRAM>
                 <Type>0</Type>
-                <StartAddress>0xf8002000</StartAddress>
-                <Size>0x8000</Size>
+                <StartAddress>0x20000000</StartAddress>
+                <Size>0x18000</Size>
               </IRAM>
               <IROM>
-                <Type>0</Type>
+                <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x0</Size>
+                <Size>0x80000</Size>
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -314,7 +275,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x0</Size>
+                <Size>0x80000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -338,8 +299,8 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0xf8002000</StartAddress>
-                <Size>0x8000</Size>
+                <StartAddress>0x20000000</StartAddress>
+                <Size>0x18000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -366,25 +327,25 @@
             <uC99>1</uC99>
             <uGnu>1</uGnu>
             <useXO>0</useXO>
-            <v6Lang>1</v6Lang>
-            <v6LangP>1</v6LangP>
-            <vShortEn>1</vShortEn>
-            <vShortWch>1</vShortWch>
+            <v6Lang>3</v6Lang>
+            <v6LangP>3</v6LangP>
+            <vShortEn>0</vShortEn>
+            <vShortWch>0</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE</Define>
+              <MiscControls></MiscControls>
+              <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h30\Driver\Include;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H30;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\m031\Library\CMSIS\Include;..\..\..\bsp\m031\Library\Device\Nuvoton\M031\Include;..\..\..\bsp\m031\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\src\extra\layouts;..\..\..\lvgl\src\extra\libs;..\..\..\lvgl\src\extra\others;..\..\..\lvgl\src\extra\themes;..\..\..\lvgl\src\extra\widgets;..\..\..\lvgl\src\extra\layouts\flex;..\..\..\lvgl\src\extra\layouts\grid;..\..\..\lvgl\src\extra\themes\basic;..\..\..\lvgl\src\extra\themes\default;..\..\..\lvgl\src\extra\themes\mono;..\..\..\lvgl\src\extra\widgets\animimg;..\..\..\lvgl\src\extra\widgets\calendar;..\..\..\lvgl\src\extra\widgets\chart;..\..\..\lvgl\src\extra\widgets\colorwheel;..\..\..\lvgl\src\extra\widgets\imgbtn;..\..\..\lvgl\src\extra\widgets\keyboard;..\..\..\lvgl\src\extra\widgets\led;..\..\..\lvgl\src\extra\widgets\list;..\..\..\lvgl\src\extra\widgets\menu;..\..\..\lvgl\src\extra\widgets\meter;..\..\..\lvgl\src\extra\widgets\msgbox;..\..\..\lvgl\src\extra\widgets\span;..\..\..\lvgl\src\extra\widgets\spinbox;..\..\..\lvgl\src\extra\widgets\spinner;..\..\..\lvgl\src\extra\widgets\tabview;..\..\..\lvgl\src\extra\widgets\tileview;..\..\..\lvgl\src\extra\widgets\win;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files;..\..\..\thirdparty\CherryUSB\core;..\..\..\thirdparty\CherryUSB\class\msc;..\..\..\thirdparty\CherryUSB\common;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM_CM0</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
             <interw>1</interw>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <thumb>0</thumb>
+            <thumb>1</thumb>
             <SplitLS>0</SplitLS>
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>
@@ -393,7 +354,7 @@
             <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>N9H30F6</Define>
+              <Define>M032KI Heap_Size=0x800</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
             </VariousControls>
@@ -406,12 +367,12 @@
             <RepFail>1</RepFail>
             <useFile>0</useFile>
             <TextAddressRange>0x00000000</TextAddressRange>
-            <DataAddressRange>0xF8002000</DataAddressRange>
+            <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\n9h30\Script\N9H30.sct</ScatterFile>
+            <ScatterFile></ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc>--entry 0x0</Misc>
+            <Misc>--map --first='startup_M031Series.o(RESET)' --datacompressor=off --info=inline --entry Reset_Handler</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -487,65 +448,60 @@
               <FileType>5</FileType>
               <FilePath>..\FreeRTOSConfig.h</FilePath>
             </File>
-            <File>
-              <FileName>multithread.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\multithread.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>libraries</GroupName>
           <Files>
             <File>
-              <FileName>standalone.c</FileName>
+              <FileName>clk.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\n9h30\Driver\Source\standalone.c</FilePath>
+              <FilePath>..\..\..\bsp\m031\Library\StdDriver\src\clk.c</FilePath>
+            </File>
+            <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m031\Library\StdDriver\src\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>pdma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m031\Library\StdDriver\src\pdma.c</FilePath>
+            </File>
+            <File>
+              <FileName>retarget.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m031\Library\StdDriver\src\retarget.c</FilePath>
             </File>
             <File>
               <FileName>sys.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\n9h30\Driver\Source\sys.c</FilePath>
+              <FilePath>..\..\..\bsp\m031\Library\StdDriver\src\sys.c</FilePath>
             </File>
             <File>
-              <FileName>sys_timer.c</FileName>
+              <FileName>uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\n9h30\Driver\Source\sys_timer.c</FilePath>
+              <FilePath>..\..\..\bsp\m031\Library\StdDriver\src\uart.c</FilePath>
             </File>
             <File>
-              <FileName>sys_uart.c</FileName>
+              <FileName>system_M031Series.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\n9h30\Driver\Source\sys_uart.c</FilePath>
+              <FilePath>..\..\..\bsp\m031\Library\Device\Nuvoton\M031\Source\system_M031Series.c</FilePath>
             </File>
             <File>
-              <FileName>system_N9H30.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\n9h30\Driver\Source\system_N9H30.c</FilePath>
-            </File>
-            <File>
-              <FileName>startup_N9H30.s</FileName>
+              <FileName>startup_M031Series.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\..\bsp\n9h30\Driver\Source\startup_N9H30.s</FilePath>
+              <FilePath>..\..\..\bsp\m031\Library\Device\Nuvoton\M031\Source\ARM\startup_M031Series.s</FilePath>
             </File>
             <File>
-              <FileName>sys_N9H30.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\..\bsp\n9h30\Driver\Source\sys_N9H30.s</FilePath>
-            </File>
-            <File>
-              <FileName>2d.c</FileName>
+              <FileName>usci_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\n9h30\Driver\Source\2d.c</FilePath>
+              <FilePath>..\..\..\bsp\m031\Library\StdDriver\src\usci_spi.c</FilePath>
             </File>
             <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\n9h30\Driver\Source\adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\n9h30\Driver\Source\lcd.c</FilePath>
+              <FilePath>..\..\..\bsp\m031\Library\StdDriver\src\adc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2131,6 +2087,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\bin_decoder\lv_bin_decoder.c</FilePath>
             </File>
+            <File>
+              <FileName>lv_fs_fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_fatfs.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2144,7 +2105,7 @@
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\..\..\common\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
@@ -2170,6 +2131,31 @@
               <FileName>touch_adc_calibration.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
+            </File>
+            <File>
+              <FileName>disp_ili9341.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_disp\disp_ili9341.c</FilePath>
+            </File>
+            <File>
+              <FileName>ili9341_uspi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_disp\ili9341_uspi.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\touch_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_pdma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lv_port\drv_pdma.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_uspi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lv_port\drv_uspi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2197,19 +2183,14 @@
               <FilePath>..\..\..\thirdparty\FreeRTOS\timers.c</FilePath>
             </File>
             <File>
-              <FileName>port.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H30\port.c</FilePath>
-            </File>
-            <File>
-              <FileName>portASM.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H30\portASM.s</FilePath>
-            </File>
-            <File>
               <FileName>heap_4.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
+            </File>
+            <File>
+              <FileName>port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM_CM0\port.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2219,5 +2200,11 @@
       </Groups>
     </Target>
   </Targets>
+
+  <RTE>
+    <apis/>
+    <components/>
+    <files/>
+  </RTE>
 
 </Project>
