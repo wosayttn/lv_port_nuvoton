@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>lvgl_ma35d1</name>
+	<name>lvgl_n9h30</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -55,89 +55,49 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>Driver/GCC.ld</name>
+			<name>Driver/Startup_GCC.S</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/Device/Nuvoton/MA35D1/Source/GCC/gcc_arm.ld</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/Startup_GCC.S</locationURI>
+		</link>
+		<link>
+			<name>Driver/2d.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/2d.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/adc.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/adc.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/adc.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/cache.c</name>
+			<name>Driver/sys_uart.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/Arch/Core_A/Source/cache.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/sys_uart.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/clk.c</name>
+			<name>Driver/system_N9H30.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/clk.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/cpu.S</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/Arch/Core_A/Source/cpu.S</locationURI>
-		</link>
-		<link>
-			<name>Driver/disp.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/disp.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/gpio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/gpio.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/irq_ctrl_gic.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/Arch/Core_A/Source/irq_ctrl_gic.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/mmu.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/Arch/Core_A/Source/mmu.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/mmu_MA35D1.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/Device/Nuvoton/MA35D1/Source/mmu_MA35D1.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/pmic.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/pmic.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/retarget.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/retarget.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/ssmcc.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/ssmcc.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/system_N9H30.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/sys.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/sys.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/sys.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/system_MA35D1.c</name>
+			<name>Driver/sys_timer.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/Device/Nuvoton/MA35D1/Source/system_MA35D1.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/sys_timer.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/uart.c</name>
+			<name>Driver/lcd.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/StdDriver/src/uart.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/lcd.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/vectors.c</name>
+			<name>Driver/GCC.ld</name>
 			<type>1</type>
-			<location>PARENT-3-PROJECT_LOC/bsp/ma35d1/Library/Arch/Core_A/Source/vectors.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/GCC.ld</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/event_groups.c</name>
@@ -157,12 +117,12 @@
 		<link>
 			<name>FreeRTOS/port.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM_CA35/port.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_N9H30/port.c</locationURI>
 		</link>
 		<link>
-			<name>FreeRTOS/portASM.S</name>
+			<name>FreeRTOS/portISR.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM_CA35/portASM.S</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_N9H30/portISR.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/queue.c</name>
@@ -170,19 +130,9 @@
 			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/queue.c</locationURI>
 		</link>
 		<link>
-			<name>FreeRTOS/startup.S</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM_CA35/startup.S</locationURI>
-		</link>
-		<link>
 			<name>FreeRTOS/tasks.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/tasks.c</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/tick_config.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM_CA35/tick_config.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/timers.c</name>

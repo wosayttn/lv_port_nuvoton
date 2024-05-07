@@ -24,3 +24,4 @@ git clone --recurse-submodules https://github.com/OpenNuvoton/lv_port_nuvoton
 | **NuMaker Board Name** | **BSP Folder** | **LVGL Demo Project Folder** |
 | ------------------------- | ------------------------- | -------------------------- |
 | **NuMaker-HMI-N9H20** | [n9h20](./bsp/n9h20) | [numaker-hmi-n9h20](./board/numaker-hmi-n9h20) |
+| **NuMaker-HMI-N9H30** | [n9h30](./bsp/n9h30) | [numaker-hmi-n9h30](./board/numaker-hmi-n9h30) |
