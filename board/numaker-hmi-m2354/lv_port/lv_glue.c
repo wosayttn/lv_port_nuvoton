@@ -134,7 +134,7 @@ int touchpad_device_open(void)
     return 0;
 }
 
-#define CONFIG_TRIGGER_PERIOD     LV_DISP_DEF_REFR_PERIOD
+#define CONFIG_TRIGGER_PERIOD     16
 int touchpad_device_read(lv_indev_data_t *psInDevData)
 {
     static lv_indev_data_t sLastInDevData = {0};

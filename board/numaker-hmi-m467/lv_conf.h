@@ -14,8 +14,6 @@
 #define LV_HOR_RES_MAX                  480
 #define LV_VER_RES_MAX                  272
 #define LV_COLOR_DEPTH                  16
-#define LV_DISP_DEF_REFR_PERIOD         30
-
 
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_16           1

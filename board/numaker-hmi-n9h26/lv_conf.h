@@ -18,32 +18,16 @@
     #define LV_HOR_RES_MAX              800
     #define LV_VER_RES_MAX              480
     #define LV_COLOR_DEPTH              16
-
-    #define LV_DISP_DEF_REFR_PERIOD     33
 #elif defined(__480x272__)
     #define LV_HOR_RES_MAX              480
     #define LV_VER_RES_MAX              272
     #define LV_COLOR_DEPTH              16
-
-    #define LV_DISP_DEF_REFR_PERIOD     16
 #else
     #define LV_HOR_RES_MAX              320
     #define LV_VER_RES_MAX              240
     #define LV_COLOR_DEPTH              16
-
-    #define LV_DISP_DEF_REFR_PERIOD     16
 #endif
 
-/*
-(1) Apply partial update:
-    i. Higher FPS.
-   ii. Easy tearing when sliding.
-  iii. Copy offline surface buffer to on-screen buffer.
-
-(2) Apply full-refresh:
-    i. Tearingless by switching VRAM start address after receiving Vsync of VPOST.
-   ii. lvgl keeps previous surface and redraw new dirty joined area, the do vsync-switch.
-*/
 #define CONFIG_LV_DISP_FULL_REFRESH     0
 
 #define lv_snprintf                     snprintf

@@ -53,10 +53,18 @@ void sysDelay(uint32_t ms)
     vTaskDelay(ms / portTICK_PERIOD_MS);
 }
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
+
+#define DISP_ENABLE_INT()     (DISP->DisplayIntrEnable |=  DISP_DisplayIntrEnable_DISP0_Msk)
+#define DISP_GET_INTSTS()     (DISP->DisplayIntr & DISP_DisplayIntr_DISP0_Msk)
+
 static volatile uint32_t s_vu32Displayblank = 0;
 static void lcd_disp_handler(void)
 {
-    s_vu32Displayblank++;
+    /* Get DISP INTSTS */
+    if (DISP_GET_INTSTS())
+    {
+        s_vu32Displayblank++;
+    }
 }
 #endif
 
@@ -84,8 +92,8 @@ int lcd_device_initialize(void)
 
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
     IRQ_SetHandler((IRQn_ID_t)DISP_IRQn, lcd_disp_handler);
-    IRQ_SetTarget((IRQn_ID_t)DISP_IRQn, IRQ_CPU_0);
     IRQ_Enable((IRQn_ID_t)DISP_IRQn);
+    DISP_ENABLE_INT();
 #endif
 
     return 0;
@@ -129,7 +137,7 @@ int lcd_device_control(int cmd, void *argv)
     case evLCD_CTRL_WAIT_VSYNC:
     {
         volatile uint32_t next = s_vu32Displayblank + 1;
-        while (s_vu32Displayblank < next)
+        while (s_vu32Displayblank <= next)
         {
             //Wait next blank coming;
         }

@@ -22,7 +22,6 @@
 #endif
 
 #define LV_COLOR_DEPTH                  16
-#define LV_DISP_DEF_REFR_PERIOD         30
 
 //#define LV_USE_GPU_ARM2D                1
 #define LV_FONT_MONTSERRAT_12           1
