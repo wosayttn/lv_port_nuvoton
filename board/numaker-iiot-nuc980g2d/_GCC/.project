@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>lvgl_n9h30</name>
+	<name>lvgl_nuc980</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -57,47 +57,52 @@
 		<link>
 			<name>Driver/GCC.ld</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/GCC.ld</locationURI>
-		</link>
-		<link>
-			<name>Driver/2d.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/2d.c</locationURI>
+			<locationURI>PROJECT_LOC/GCC.ld</locationURI>
 		</link>
 		<link>
 			<name>Driver/adc.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/adc.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/nuc980/Driver/Source/adc.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/sys_uart.c</name>
+			<name>Driver/cache.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/sys_uart.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/nuc980/Driver/Source/cache.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/system_N9H30.c</name>
+			<name>Driver/gpio.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/system_N9H30.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/nuc980/Driver/Source/gpio.c</locationURI>
+		</link>
+		<link>
+			<name>Driver/pdma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/nuc980/Driver/Source/pdma.c</locationURI>
+		</link>
+		<link>
+			<name>Driver/retarget.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/nuc980/Driver/Source/retarget.c</locationURI>
+		</link>
+		<link>
+			<name>Driver/spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/nuc980/Driver/Source/spi.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/sys.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/sys.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/nuc980/Driver/Source/sys.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/sys_timer.c</name>
+			<name>Driver/uart.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/sys_timer.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/lcd.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/n9h30/Driver/Source/lcd.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/nuc980/Driver/Source/uart.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/Startup.S</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_N9H30/Startup.S</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_NUC980/Startup.S</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/event_groups.c</name>
@@ -117,12 +122,12 @@
 		<link>
 			<name>FreeRTOS/port.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_N9H30/port.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_NUC980/port.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/portISR.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_N9H30/portISR.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_NUC980/portISR.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/queue.c</name>
@@ -150,6 +155,26 @@
 			<locationURI>PARENT-1-PROJECT_LOC/components/task_lv.c</locationURI>
 		</link>
 		<link>
+			<name>lv_port/disp_ili9341.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/disp_ili9341.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/drv_pdma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/lv_port/drv_pdma.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/drv_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/lv_port/drv_spi.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/ili9341_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/ili9341_spi.c</locationURI>
+		</link>
+		<link>
 			<name>lv_port/lv_demo.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/common/lv_demo.c</locationURI>
@@ -162,7 +187,7 @@
 		<link>
 			<name>lv_port/lv_port_disp.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/lv_port/lv_port_disp.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/lv_port_disp.c</locationURI>
 		</link>
 		<link>
 			<name>lv_port/lv_port_indev.c</name>
