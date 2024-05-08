@@ -75,7 +75,7 @@
       <OPTFL>
         <tvExp>1</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
-        <IsCurrentTarget>1</IsCurrentTarget>
+        <IsCurrentTarget>0</IsCurrentTarget>
       </OPTFL>
       <CpuCode>0</CpuCode>
       <DebugOpt>
@@ -233,7 +233,7 @@
       <OPTFL>
         <tvExp>1</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
-        <IsCurrentTarget>0</IsCurrentTarget>
+        <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
       <CpuCode>0</CpuCode>
       <DebugOpt>
@@ -4217,7 +4217,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\bsp\n9h26\BSP\ThirdParty\FreeRTOS\Source\list.c</PathWithFileName>
+      <PathWithFileName>..\..\..\thirdparty\FreeRTOS\list.c</PathWithFileName>
       <FilenameWithoutPath>list.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4229,7 +4229,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\bsp\n9h26\BSP\ThirdParty\FreeRTOS\Source\queue.c</PathWithFileName>
+      <PathWithFileName>..\..\..\thirdparty\FreeRTOS\queue.c</PathWithFileName>
       <FilenameWithoutPath>queue.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4241,7 +4241,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\bsp\n9h26\BSP\ThirdParty\FreeRTOS\Source\tasks.c</PathWithFileName>
+      <PathWithFileName>..\..\..\thirdparty\FreeRTOS\tasks.c</PathWithFileName>
       <FilenameWithoutPath>tasks.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4253,31 +4253,43 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\bsp\n9h26\BSP\SampleCode\FreeRTOS\ARM9_N9H26\port.c</PathWithFileName>
-      <FilenameWithoutPath>port.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\thirdparty\FreeRTOS\timers.c</PathWithFileName>
+      <FilenameWithoutPath>timers.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>5</GroupNumber>
       <FileNumber>326</FileNumber>
-      <FileType>2</FileType>
+      <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\bsp\n9h26\BSP\SampleCode\FreeRTOS\ARM9_N9H26\portASM.s</PathWithFileName>
-      <FilenameWithoutPath>portASM.s</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H26\port.c</PathWithFileName>
+      <FilenameWithoutPath>port.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>5</GroupNumber>
       <FileNumber>327</FileNumber>
+      <FileType>2</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H26\portASM.s</PathWithFileName>
+      <FilenameWithoutPath>portASM.s</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>5</GroupNumber>
+      <FileNumber>328</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\bsp\n9h26\BSP\ThirdParty\FreeRTOS\Source\portable\MemMang\heap_4.c</PathWithFileName>
+      <PathWithFileName>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</PathWithFileName>
       <FilenameWithoutPath>heap_4.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>

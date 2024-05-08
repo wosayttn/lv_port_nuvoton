@@ -17,7 +17,7 @@
 #define CONFIG_EXTERN_FREQUENCY     (sysGetExternalClock()*1000)
 
 #define CONFIG_LCD_FB_NUM               3
-#define CONFIG_DISP_LINE_BUFFER_NUMBER  (CONFIG_LCD_FB_NUM * LV_VER_RES_MAX)
+#define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX)
 
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);
