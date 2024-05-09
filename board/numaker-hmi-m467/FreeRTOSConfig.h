@@ -106,9 +106,9 @@
     #define portGET_RUN_TIME_COUNTER_VALUE()            0
     #define configTICK_RATE_HZ                          (TickType_t)1000
 #endif /* __IASMARM__ */
-#if defined(CPU_CORTEX_M3) || defined(CPU_CORTEX_M4) || defined(CPU_CORTEX_M7)
-    #define xPortPendSVHandler                              PendSV_Handler
-    #define vPortSVCHandler                                 SVC_Handler
-    #define xPortSysTickHandler                             SysTick_Handler
-#endif
+
+#define xPortPendSVHandler                              PendSV_Handler
+#define vPortSVCHandler                                 SVC_Handler
+#define xPortSysTickHandler                             SysTick_Handler
+
 #endif /* FREERTOS_CONFIG_H */

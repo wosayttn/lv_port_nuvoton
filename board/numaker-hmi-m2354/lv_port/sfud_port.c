@@ -29,6 +29,7 @@
 #include <sfud.h>
 #include <stdarg.h>
 #include "drv_spi.h"
+#include "sfud_cfg.h"
 
 static char log_buf[256];
 
