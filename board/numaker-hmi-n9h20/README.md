@@ -4,9 +4,10 @@
 
 | Folder Name | Description |
 |-|-|
+| GCC | GCC project file |
 | KEIL | MDK4 project file |
-| lv_port | lvgl porting files |
 | sls_files | User UI files SLS exported |
+| lv_port | lvgl porting files |
 | lv_conf.h | Major lvgl configuration file |
 | main.c | main routine |
 | standalone.c | minimal C library bootstrap for MDK4 |
@@ -17,8 +18,14 @@
 User can select listed **Target Name** to build target execution using uVision MDK4.
 | Target | Description |
 |-|-|
-| N9H20K5_NAND_480x272_FreeRTOS | Use 480x272 LCD panel, NAND storage and run on FreeRTOS environment |
-| N9H20K5_NAND_800x480_FreeRTOS | Use 800x480 LCD panel, NAND storage and run on FreeRTOS environment |
+| N9H20K5_NAND_480x272 | Use 480x272 LCD panel, NAND storage and run on FreeRTOS environment |
+
+## **GCC project**
+
+User can select listed **Build configurations** to build target execution using Eclipse-base IDE.
+| Target | Description |
+|-|-|
+| N9H20K5_480x272 | Use 480x272 LCD panel and NAND  storage |
 
 ## **Compiling options**
 

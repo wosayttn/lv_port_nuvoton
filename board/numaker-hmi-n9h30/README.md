@@ -4,6 +4,7 @@
 
 | Folder Name | Description |
 |-|-|
+| GCC | GCC project file |
 | KEIL | MDK4 project file |
 | lv_port | lvgl porting files |
 | sls_files | User UI files SLS exported |
@@ -15,6 +16,13 @@
 ## **KEIL project**
 
 User can select listed **Target Name** to build target execution using uVision MDK4.
+| Target | Description |
+|-|-|
+| N9H30F6_800x480 | Use 800x480 LCD panel |
+
+## **GCC project**
+
+User can select listed **Build configurations** to build target execution using Eclipse-base IDE.
 | Target | Description |
 |-|-|
 | N9H30F6_800x480 | Use 800x480 LCD panel |

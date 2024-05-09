@@ -4,6 +4,7 @@
 
 | Folder Name | Description |
 |-|-|
+| GCC | GCC project file |
 | KEIL | MDK5 project file |
 | lv_port | lvgl porting files |
 | sls_files | User UI files SLS exported |
@@ -13,6 +14,13 @@
 ## **KEIL project**
 
 User can select listed **Target Name** to build target execution using uVision MDK5.
+| Target | Description |
+|-|-|
+| M467HJ_480x272 | Use FSA506 EBI LCD panel with resistive touch screen |
+
+## **GCC project**
+
+User can select listed **Build configurations** to build target execution using Eclipse-base IDE.
 | Target | Description |
 |-|-|
 | M467HJ_480x272 | Use FSA506 EBI LCD panel with resistive touch screen |
