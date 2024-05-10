@@ -54,3 +54,6 @@
 [submodule "bsp/n9h31"]
 	path = bsp/n9h31
 	url = https://github.com/OpenNuvoton/N9H31_NonOS
+[submodule "bsp/ma35h0"]
+	path = bsp/ma35h0
+	url = https://github.com/OpenNuvoton/MA35H0_NonOS_BSP
