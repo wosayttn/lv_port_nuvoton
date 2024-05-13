@@ -547,6 +547,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\bsp\n9h31\Driver\Source\lcd.c</FilePath>
             </File>
+            <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\n9h31\Driver\Source\gpio.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

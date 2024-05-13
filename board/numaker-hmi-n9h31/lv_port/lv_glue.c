@@ -15,9 +15,16 @@ static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((al
 
 extern S_CALIBRATION_MATRIX g_sCalMat;
 #if defined(__800x480__)
-S_CALIBRATION_MATRIX g_sCalMat = { 13292, 56, -1552344, -79, 8401, -1522648, 65536  };
+
+#define USE_DISP_PANEL      5
+
+#if (USE_DISP_PANEL==5)
+S_CALIBRATION_MATRIX g_sCalMat = { 13742, -81, -1906400, -103, -8624, 33161548, 65536  };
+#elif (USE_DISP_PANEL==7)
+S_CALIBRATION_MATRIX g_sCalMat = { 13321, -53, -1069280, 96, 8461, -1863312, 65536 };
 #endif
 
+#endif
 
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
 static volatile uint32_t s_vu32Displayblank = 0;
@@ -38,16 +45,120 @@ static void lcd_vpost_handler(void)
 }
 #endif
 
+
+void dump_lcd_timings(void)
+{
+    int id;
+
+    for (id = 0 ; id < DIS_PANEL_CNT; id++)
+    {
+        VPOST_BF_T *psLCMInstance = (VPOST_BF_T*) vpostLCMGetInstance(id);
+        sysprintf("[%d]============================================================================\n", id);
+
+        sysprintf("CRTCSIZE: 0x%08X\n", psLCMInstance->u32Reg_CRTCSIZE);
+        sysprintf("\tHorizontal Total Pixels: %d (HBP+XRES+HFP)\n", psLCMInstance->sCRTCSIZE.HTT);
+        sysprintf("\tVertical Total Pixels: %d (VBP+YRES+VFP)\n", psLCMInstance->sCRTCSIZE.VTT);
+
+        sysprintf("CRTCDEND: 0x%08X\n", psLCMInstance->u32Reg_CRTCDEND);
+        sysprintf("\tHorizontal Display Enable End: %d (XRES)\n", psLCMInstance->sCRTCDEND.HDEND);
+        sysprintf("\tVertical Display Enable End: %d (YRES)\n", psLCMInstance->sCRTCDEND.VDEND);
+
+        sysprintf("CRTCHR: 0x%08X\n", psLCMInstance->u32Reg_CRTCHR);
+        sysprintf("\tInternal Horizontal Retrace Start Timing: %d (XRES+1)\n", psLCMInstance->sCRTCHR.HRS);
+        sysprintf("\tInternal Horizontal Retrace End Low: %d (XRES+5)\n", psLCMInstance->sCRTCHR.HRE);
+
+        sysprintf("CRTCHSYNC: 0x%08X\n", psLCMInstance->u32Reg_CRTCHSYNC);
+        sysprintf("\tHorizontal Sync Start Timing: %d (XRES+HFP+0)\n", psLCMInstance->sCRTCHSYNC.HSYNC_S);
+        sysprintf("\tHorizontal Sync End Timing: %d (XRES+HFP+HPW)\n", psLCMInstance->sCRTCHSYNC.HSYNC_E);
+        sysprintf("\tHsync Signal Adjustment For Multi-Cycles Per Pixel Mode Of Sync-Based Unipac-LCD: %d\n", psLCMInstance->sCRTCHSYNC.HSYNC_SHIFT);
+
+        sysprintf("CRTCVR: 0x%08X\n", psLCMInstance->u32Reg_CRTCVR);
+        sysprintf("\tInternal Vertical Retrace Start Timing: %d (YRES+VFP+0)\n", psLCMInstance->sCRTCVR.VRS);
+        sysprintf("\tInternal Vertical Retrace End Low: %d (YRES+VFP+VPW)\n", psLCMInstance->sCRTCVR.VRE);
+
+        sysprintf("LCD_TIMING_WIDTH(XRES): %d\n", psLCMInstance->sCRTCDEND.HDEND);
+        sysprintf("LCD_TIMING_HEIGHT(YRES): %d\n", psLCMInstance->sCRTCDEND.VDEND);
+        sysprintf("LCD_TIMING_MARGIN_LEFT(HBP): %d\n", psLCMInstance->sCRTCSIZE.HTT - psLCMInstance->sCRTCHSYNC.HSYNC_S);
+        sysprintf("LCD_TIMING_MARGIN_RIGHT(HFP): %d\n", psLCMInstance->sCRTCHSYNC.HSYNC_S - psLCMInstance->sCRTCDEND.HDEND);
+        sysprintf("LCD_TIMING_HSYNC_LEN(HPW): %d\n", psLCMInstance->sCRTCHSYNC.HSYNC_E - psLCMInstance->sCRTCHSYNC.HSYNC_S);
+
+        sysprintf("LCD_TIMING_MARGIN_UPPER(VBP): %d\n", psLCMInstance->sCRTCSIZE.VTT - psLCMInstance->sCRTCVR.VRS);
+        sysprintf("LCD_TIMING_MARGIN_LOWER(VFP): %d\n", psLCMInstance->sCRTCVR.VRS - psLCMInstance->sCRTCDEND.VDEND);
+        sysprintf("LCD_TIMING_VSYNC_LEN(VPW): %d\n", psLCMInstance->sCRTCVR.VRE - psLCMInstance->sCRTCVR.VRS);
+
+        sysprintf("[%d]@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n", id);
+
+    }
+}
+
 int lcd_device_initialize(void)
 {
+    int i32DisplayPanel;
 
 #if defined(__800x480__)
-    vpostLCMInit(DIS_PANEL_FW070TFT);
-#elif defined(__480x272__)
-    vpostLCMInit(DIS_PANEL_FW043TFT);
-#else
-#error "Unsupported resolution definition. Please correct".
+
+    // Override
+#if (USE_DISP_PANEL==5)
+
+#define LCD_TIMING_WIDTH         800   /*!< XRES */
+#define LCD_TIMING_HEIGHT        480   /*!< YRES */
+
+#define LCD_TIMING_MARGIN_LEFT   88    /*!< HBP (Horizontal Back Porch) */
+#define LCD_TIMING_MARGIN_RIGHT  255   /*!< HFP (Horizontal Front Porch) */
+#define LCD_TIMING_HSYNC_LEN     255   /*!< HPW (HSYNC plus width) */
+
+#define LCD_TIMING_MARGIN_UPPER  32    /*!< VBP (Vertical Back Porch) */
+#define LCD_TIMING_MARGIN_LOWER  13    /*!< VFP (Vertical Front Porch) */
+#define LCD_TIMING_VSYNC_LEN     3     /*!< VPW (VSYNC width) */
+    i32DisplayPanel = DIS_PANEL_E50A2V1;
+
+#elif (USE_DISP_PANEL==7)
+
+#define LCD_TIMING_WIDTH         800   /*!< XRES */
+#define LCD_TIMING_HEIGHT        480   /*!< YRES */
+
+#define LCD_TIMING_MARGIN_LEFT   40    /*!< HBP (Horizontal Back Porch) */
+#define LCD_TIMING_MARGIN_RIGHT  196   /*!< HFP (Horizontal Front Porch) */
+#define LCD_TIMING_HSYNC_LEN     40    /*!< HPW (HSYNC plus width) */
+
+#define LCD_TIMING_MARGIN_UPPER  23    /*!< VBP (Vertical Back Porch) */
+#define LCD_TIMING_MARGIN_LOWER  19    /*!< VFP (Vertical Front Porch) */
+#define LCD_TIMING_VSYNC_LEN     3     /*!< VPW (VSYNC width) */
+    i32DisplayPanel = DIS_PANEL_FW070TFT;
+	
 #endif
+
+#if 0
+    VPOST_BF_T *psLCMInstance             = (VPOST_BF_T *)vpostLCMGetInstance(i32DisplayPanel);
+    psLCMInstance->sCRTCSIZE.HTT          = LCD_TIMING_MARGIN_LEFT + LCD_TIMING_WIDTH + LCD_TIMING_MARGIN_RIGHT;
+    psLCMInstance->sCRTCSIZE.VTT          = LCD_TIMING_MARGIN_UPPER + LCD_TIMING_HEIGHT + LCD_TIMING_MARGIN_LOWER;
+
+    psLCMInstance->sCRTCDEND.HDEND        = LCD_TIMING_WIDTH;
+    psLCMInstance->sCRTCDEND.VDEND        = LCD_TIMING_HEIGHT;
+
+    psLCMInstance->sCRTCHR.HRS            = LCD_TIMING_WIDTH + 1;
+    psLCMInstance->sCRTCHR.HRE            = LCD_TIMING_WIDTH + 5;
+
+    psLCMInstance->sCRTCHSYNC.HSYNC_S     = LCD_TIMING_WIDTH + LCD_TIMING_MARGIN_RIGHT;
+    psLCMInstance->sCRTCHSYNC.HSYNC_E     = LCD_TIMING_WIDTH + LCD_TIMING_MARGIN_RIGHT + LCD_TIMING_HSYNC_LEN;
+    psLCMInstance->sCRTCHSYNC.HSYNC_SHIFT = 0 ;
+
+    psLCMInstance->sCRTCVR.VRS            = LCD_TIMING_HEIGHT + LCD_TIMING_MARGIN_LOWER;
+    psLCMInstance->sCRTCVR.VRE            = LCD_TIMING_HEIGHT + LCD_TIMING_MARGIN_LOWER + LCD_TIMING_VSYNC_LEN;
+
+#endif
+
+#elif defined(__480x272__)
+
+    i32DisplayPanel = DIS_PANEL_FW043TFT;
+	
+#else
+
+#error "Unsupported resolution definition. Please correct".
+
+#endif
+
+    vpostLCMInit(i32DisplayPanel);
 
     // Set scale to 1:1
     vpostVAScalingCtrl(1, 0, 1, 0, VA_SCALE_INTERPOLATION);

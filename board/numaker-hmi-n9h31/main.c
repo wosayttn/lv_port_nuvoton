@@ -8,36 +8,6 @@
 
 #include "lv_glue.h"
 
-/**
-  * @brief      Disable register write-protection function
-  * @param      None
-  * @return     None
-  * @details    This function disable register write-protection function.
-  *             To unlock the protected register to allow write access.
-  */
-static __inline void SYS_UnlockReg(void)
-{
-    do
-    {
-        outpw(0xB00001FC, 0x59UL);
-        outpw(0xB00001FC, 0x16UL);
-        outpw(0xB00001FC, 0x88UL);
-    }
-    while (inpw(0xB00001FC) == 0UL);
-}
-
-/**
-  * @brief      Enable register write-protection function
-  * @param      None
-  * @return     None
-  * @details    This function is used to enable register write-protection function.
-  *             To lock the protected register to forbid write access.
-  */
-static __inline void SYS_LockReg(void)
-{
-    outpw(0xB00001FC, 0);
-}
-
 static void sys_init(void)
 {
     SYS_UnlockReg();
@@ -83,8 +53,16 @@ static void sys_init(void)
     /* Close WDT first, to avoid WDT timer is enabled IBR timeout reset. */
     outpw(REG_WDT_CTL, 0);
 
+    /* LCD_PWM */
+    outpw(REG_SYS_GPH_MFPL, (inpw(REG_SYS_GPH_MFPL) & ~0xF00) | 0x0);
+    GPIO_OpenBit(GPIOH, BIT2, DIR_OUTPUT, NO_PULL_UP);
+    GPIO_ClrBit(GPIOH, BIT2);
+
     sysInitializeUART();
     sysSetLocalInterrupt(ENABLE_IRQ);   // Enable CPSR I bit
+
+    void dump_lcd_timings(void);
+    dump_lcd_timings();
 }
 
 int main(void)
