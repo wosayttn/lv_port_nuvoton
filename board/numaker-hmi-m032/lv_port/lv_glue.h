@@ -20,7 +20,7 @@
 #define PORT_OFFSET                     0x40
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
-#define CONFIG_DISP_LINE_BUFFER_NUMBER   24
+#define CONFIG_DISP_LINE_BUFFER_NUMBER   16
 
 #if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
     #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
