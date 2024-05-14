@@ -74,7 +74,7 @@
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
-                    <state>M46xxJHAE series	Nuvoton M46xxJHAE series</state>
+                    <state>M481AE series	Nuvoton M480AE series (M481AE,M482AE,M483AE,M484AE,M485AE,M487AE)</state>
                 </option>
                 <option>
                     <name>GenLowLevelInterface</name>
@@ -120,7 +120,7 @@
                 </option>
                 <option>
                     <name>GFPUDeviceSlave</name>
-                    <state>M46xxJHAE series	Nuvoton M46xxJHAE series</state>
+                    <state>M481AE series	Nuvoton M480AE series (M481AE,M482AE,M483AE,M484AE,M485AE,M487AE)</state>
                 </option>
                 <option>
                     <name>FPU2</name>
@@ -229,9 +229,9 @@
                     <name>CCDefines</name>
                     <state>NDEBUG</state>
                     <state>ARM_MATH_CM4</state>
-                    <state>M467HJ=1</state>
+                    <state>M487JI=1</state>
                     <state>LV_CONF_INCLUDE_SIMPLE</state>
-                    <state>__480x272__</state>
+                    <state>__320x240__</state>
                     <state>__FPU_PRESENT=1</state>
                 </option>
                 <option>
@@ -353,9 +353,9 @@
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
-                    <state>$PROJ_DIR$/../../../bsp/m460/Library/Device/Nuvoton/M460/Include</state>
-                    <state>$PROJ_DIR$/../../../bsp/m460/Library/CMSIS/Include</state>
-                    <state>$PROJ_DIR$/../../../bsp/m460/Library/StdDriver/inc</state>
+                    <state>$PROJ_DIR$/../../../bsp/m480/Library/Device/Nuvoton/M480/Include</state>
+                    <state>$PROJ_DIR$/../../../bsp/m480/Library/CMSIS/Include</state>
+                    <state>$PROJ_DIR$/../../../bsp/m480/Library/StdDriver/inc</state>
                     <state>$PROJ_DIR$/../</state>
                     <state>$PROJ_DIR$/../../../thirdparty/FreeRTOS/include</state>
                     <state>$PROJ_DIR$/../../../thirdparty/FreeRTOS/portable/IAR/ARM_CM4F</state>
@@ -577,7 +577,7 @@
                 </option>
                 <option>
                     <name>ADebug</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>AltRegisterNames</name>
@@ -719,7 +719,7 @@
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state>lvgl_m460.bin</state>
+                    <state>lvgl_m480.bin</state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -758,7 +758,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>lvgl_m460.out</state>
+                    <state>lvgl_m480.out</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>
@@ -822,7 +822,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$\M467HJ.icf</state>
+                    <state>$PROJ_DIR$\M487JI.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -1145,10 +1145,10 @@
     <group>
         <name>CMSIS</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Source\IAR\startup_M460.s</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m480\Library\Device\Nuvoton\M480\Source\IAR\startup_M480.s</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Source\system_m460.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m480\Library\Device\Nuvoton\M480\Source\system_M480.c</name>
         </file>
     </group>
     <group>
@@ -1184,34 +1184,34 @@
     <group>
         <name>Library</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\StdDriver\src\clk.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m480\Library\StdDriver\src\clk.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\StdDriver\src\ebi.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m480\Library\StdDriver\src\eadc.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\StdDriver\src\gpio.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m480\Library\StdDriver\src\ebi.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\StdDriver\src\i2c.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m480\Library\StdDriver\src\gpio.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\StdDriver\src\pdma.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m480\Library\StdDriver\src\pdma.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\StdDriver\src\retarget.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m480\Library\StdDriver\src\retarget.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\StdDriver\src\sys.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m480\Library\StdDriver\src\sys.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\StdDriver\src\uart.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m480\Library\StdDriver\src\uart.c</name>
         </file>
     </group>
     <group>
         <name>lv_port</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_disp\disp_fsa506.c</name>
+            <name>$PROJ_DIR$\..\..\..\common\drv_disp\disp_ili9341.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\lv_port\drv_pdma.c</name>
@@ -1220,7 +1220,7 @@
             <name>$PROJ_DIR$\..\lv_port\drv_pdma.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_disp\fsa506_ebi.c</name>
+            <name>$PROJ_DIR$\..\..\..\common\drv_disp\ili9341_ebi.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\common\lv_demo.c</name>
@@ -1241,7 +1241,10 @@
             <name>$PROJ_DIR$\..\..\..\common\nu_misc.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_st1663i.c</name>
+            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_adc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_adc_calibration.c</name>
         </file>
     </group>
     <group>
