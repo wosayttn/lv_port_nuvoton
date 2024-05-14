@@ -20,8 +20,8 @@
 #define FREERTOS_CONFIG_H
 
 /* Prevent C code being included by the IAR assembler. */
-#include "NuMicro.h"
 #ifndef __IASMARM__
+    #include "NuMicro.h"
     #include <stdint.h>
     extern uint32_t SystemCoreClock;
 #endif
