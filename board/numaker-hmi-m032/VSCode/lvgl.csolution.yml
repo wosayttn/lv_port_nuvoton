@@ -1,0 +1,13 @@
+solution:
+  created-by: uv2csolution@1.3.0
+  created-for: CMSIS-Toolbox@2.2.0
+  compiler: GCC@>=10.3.1
+  target-types:
+    - type: M032KI320x240
+      device: M032KIAAE
+      optimize: size
+  build-types:
+    - type: Debug
+      warnings: "on"
+  projects:
+    - project: lvgl.cproject.yml

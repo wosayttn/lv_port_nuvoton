@@ -10,8 +10,8 @@
       <TargetName>M032KI_320x240</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
+      <pCCUsed>6130001::V6.13.1::.\ARMCLANG</pCCUsed>
+      <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>M032KIAAE</Device>
@@ -83,7 +83,7 @@
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>fromelf --bin "$L@L.axf" --output "$L@L.bin"</UserProg1Name>
-            <UserProg2Name>fromelf --bin "$L@L.axf" --output "$P../Bin/@L.bin" </UserProg2Name>
+            <UserProg2Name>fromelf --bin "$L@L.axf" --output "$P../Bin/@L.bin"</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
@@ -185,8 +185,6 @@
             <uocXRam>0</uocXRam>
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
-            <RvdsCdeCp>0</RvdsCdeCp>
-            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -314,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>3</Optim>
+            <Optim>7</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -323,7 +321,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>1</wLevel>
+            <wLevel>3</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
@@ -340,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\bsp\m031\Library\CMSIS\Include;..\..\..\bsp\m031\Library\Device\Nuvoton\M031\Include;..\..\..\bsp\m031\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files;..\..\..\thirdparty\CherryUSB\core;..\..\..\thirdparty\CherryUSB\class\msc;..\..\..\thirdparty\CherryUSB\common;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM_CM0</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\m031\Library\CMSIS\Include;..\..\..\bsp\m031\Library\Device\Nuvoton\M031\Include;..\..\..\bsp\m031\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files;..\..\..\thirdparty\CherryUSB\core;..\..\..\thirdparty\CherryUSB\class\msc;..\..\..\thirdparty\CherryUSB\common;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM0</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -353,7 +351,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <ClangAsOpt>4</ClangAsOpt>
+            <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>M032KI Heap_Size=0x800</Define>
@@ -568,7 +566,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <ClangAsOpt>0</ClangAsOpt>
+                <uClangAs>2</uClangAs>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -2192,7 +2190,7 @@
             <File>
               <FileName>port.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM_CM0\port.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM0\port.c</FilePath>
             </File>
           </Files>
         </Group>

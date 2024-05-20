@@ -28,7 +28,7 @@ if __name__ == "__main__":
             os.chdir(dirPath)
             try:
                 print(os.getcwd() + "\\" + file +  " building ...\n")
-                subprocess.call("C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.2\\common\\bin\\iarbuild.exe " + file + " -build Release -log warnings", startupinfo=si, stdout=f, stderr=f)
+                subprocess.call("C:\\Program Files\\IAR Systems\\Embedded Workbench 9.4\\common\\bin\\iarbuild.exe " + file + " -build Release -log warnings", startupinfo=si, stdout=f, stderr=f)
             except OSError:
                 pass 	#Silently ignore
             os.chdir(root)
