@@ -374,33 +374,6 @@
                     <state>$PROJ_DIR$/../../../lvgl/src/font</state>
                     <state>$PROJ_DIR$/../../../lvgl/src/misc</state>
                     <state>$PROJ_DIR$/../../../lvgl/src/widgets</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/layouts</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/libs</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/others</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/themes</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/layouts/flex</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/layouts/grid</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/themes/basic</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/themes/default</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/themes/mono</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/animimg</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/calendar</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/chart</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/colorwheel</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/imgbtn</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/keyboard</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/led</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/list</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/menu</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/meter</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/msgbox</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/span</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/spinbox</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/spinner</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/tabview</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/tileview</state>
-                    <state>$PROJ_DIR$/../../../lvgl/src/extra/widgets/win</state>
                     <state>$PROJ_DIR$/../../../lvgl/demos/</state>
                     <state>$PROJ_DIR$/../../../lvgl/demos/benchmark</state>
                     <state>$PROJ_DIR$/../../../lvgl/demos/music</state>
