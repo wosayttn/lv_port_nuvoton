@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE NVT_DCACHE_ON</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port\spim_hyperram;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\lv_port\spim_hyperram;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\thirdparty\arm2d\Library\Include;..\..\..\thirdparty\arm2d\Helper\Include;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2411,6 +2411,81 @@
         </Group>
         <Group>
           <GroupName>sls_ui</GroupName>
+        </Group>
+        <Group>
+          <GroupName>arm2d</GroupName>
+          <Files>
+            <File>
+              <FileName>arm_2d_helper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helper_list.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_list.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helper_map.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_map.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helper_pfb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_pfb.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helper_scene.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_scene.c</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_tile.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_tile.c</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_transform_helium.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_transform_helium.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_alpha_blending.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_alpha_blending.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_async.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_async.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_conversion.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_conversion.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_draw.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_draw.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helium.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_helium.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_transform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_transform.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>
@@ -2748,7 +2823,7 @@
               <MiscControls></MiscControls>
               <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE NVT_DCACHE_ON</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port\spim_hyperram;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\lv_port\spim_hyperram;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\thirdparty\arm2d\Library\Include;..\..\..\thirdparty\arm2d\Helper\Include;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -4819,6 +4894,81 @@
         </Group>
         <Group>
           <GroupName>sls_ui</GroupName>
+        </Group>
+        <Group>
+          <GroupName>arm2d</GroupName>
+          <Files>
+            <File>
+              <FileName>arm_2d_helper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helper_list.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_list.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helper_map.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_map.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helper_pfb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_pfb.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helper_scene.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_scene.c</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_tile.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_tile.c</FilePath>
+            </File>
+            <File>
+              <FileName>__arm_2d_transform_helium.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_transform_helium.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_alpha_blending.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_alpha_blending.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_async.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_async.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_conversion.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_conversion.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_draw.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_draw.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_helium.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_helium.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_2d_transform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_transform.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>

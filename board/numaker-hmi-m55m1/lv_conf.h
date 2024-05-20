@@ -23,7 +23,8 @@
 
 #define LV_COLOR_DEPTH                  16
 
-//#define LV_USE_GPU_ARM2D                1
+#define LV_USE_DRAW_ARM2D_SYNC          1
+#define LV_USE_DRAW_SW_ASM              LV_DRAW_SW_ASM_HELIUM
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_16           1
 
