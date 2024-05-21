@@ -2441,16 +2441,6 @@
               <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_scene.c</FilePath>
             </File>
             <File>
-              <FileName>__arm_2d_tile.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_tile.c</FilePath>
-            </File>
-            <File>
-              <FileName>__arm_2d_transform_helium.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_transform_helium.c</FilePath>
-            </File>
-            <File>
               <FileName>arm_2d.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d.c</FilePath>
@@ -4922,16 +4912,6 @@
               <FileName>arm_2d_helper_scene.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_scene.c</FilePath>
-            </File>
-            <File>
-              <FileName>__arm_2d_tile.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_tile.c</FilePath>
-            </File>
-            <File>
-              <FileName>__arm_2d_transform_helium.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_transform_helium.c</FilePath>
             </File>
             <File>
               <FileName>arm_2d.c</FileName>

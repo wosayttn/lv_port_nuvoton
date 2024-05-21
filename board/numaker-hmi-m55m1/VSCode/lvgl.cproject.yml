@@ -13,17 +13,18 @@ project:
         endian: little
         trustzone: "off"
       add-path:
+        - ..
+        - ../lv_port/spim_hyperram
         - ../../../bsp/m55m1/Library/CMSIS/DSP/Include
         - ../../../bsp/m55m1/Library/CMSIS/Core/Include
         - ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Include
         - ../../../bsp/m55m1/Library/StdDriver/inc
-        - ..
-        - ../../..
-        - ../lv_port/spim_hyperram
         - ../lv_port
         - ../../../common/drv_disp
         - ../../../common/drv_indev
         - ../../../common
+        - ../../../thirdparty/arm2d/Library/Include
+        - ../../../thirdparty/arm2d/Helper/Include
         - ../../../lvgl/src
         - ../../../lvgl/src/core
         - ../../../lvgl/src/draw
@@ -40,6 +41,7 @@ project:
         - ../../../lvgl/demos/keypad_encoder
         - ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure
         - ../../../thirdparty/FreeRTOS/include
+        - ../../..
         - ../sls_files
       debug: "on"
       define:
@@ -57,12 +59,10 @@ project:
             - -fsigned-char
             - -ffunction-sections
             - -fdata-sections
-            - -g
           Link:
             - -mthumb
             - -fmessage-length=0
             - -fsigned-char
-            - -g
             - --specs=nano.specs
             - --specs=nosys.specs
             - -Wl,--gc-sections,-Map=$elf()$.map
@@ -84,6 +84,8 @@ project:
         - ../../../common/drv_disp
         - ../../../common/drv_indev
         - ../../../common
+        - ../../../thirdparty/arm2d/Library/Include
+        - ../../../thirdparty/arm2d/Helper/Include
         - ../../../lvgl/src
         - ../../../lvgl/src/core
         - ../../../lvgl/src/draw
@@ -118,12 +120,10 @@ project:
             - -fsigned-char
             - -ffunction-sections
             - -fdata-sections
-            - -g
           Link:
             - -mthumb
             - -fmessage-length=0
             - -fsigned-char
-            - -g
             - --specs=nano.specs
             - --specs=nosys.specs
             - -Wl,--gc-sections,-Map=$elf()$.map
@@ -495,6 +495,20 @@ project:
         - file: ../../../thirdparty/FreeRTOS/portable/MemMang/heap_4.c
         - file: ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure/port.c
         - file: ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure/portasm.c
+    - group: arm2d
+      files:
+        - file: ../../../thirdparty/arm2d/Helper/Source/arm_2d_helper.c
+        - file: ../../../thirdparty/arm2d/Helper/Source/arm_2d_helper_list.c
+        - file: ../../../thirdparty/arm2d/Helper/Source/arm_2d_helper_map.c
+        - file: ../../../thirdparty/arm2d/Helper/Source/arm_2d_helper_pfb.c
+        - file: ../../../thirdparty/arm2d/Helper/Source/arm_2d_helper_scene.c
+        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d.c
+        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_alpha_blending.c
+        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_async.c
+        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_conversion.c
+        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_draw.c
+        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_helium.c
+        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_transform.c
     - group: lv_port
       for-context: +M55M1800x480
       files:

@@ -272,7 +272,7 @@
                 </option>
                 <option>
                     <name>CCDiagSuppress</name>
-                    <state>Pa089,Pa082,Pe236,Pa118,Pe111,Pe188,Pe546,Pe144,Pe177,Pe513,Pe1757,Pe167</state>
+                    <state>Pa089,Pa082,Pe236,Pa118,Pe111,Pe188,Pe546,Pe144,Pe177,Pe513,Pe1757,Pe167,Pe191,Pe174</state>
                 </option>
                 <option>
                     <name>CCDiagRemark</name>
@@ -381,6 +381,8 @@
                     <state>$PROJ_DIR$/../../../lvgl/demos/keypad_encoder</state>
                     <state>$PROJ_DIR$/../../../</state>
                     <state>$PROJ_DIR$/../sls_files</state>
+                    <state>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Include</state>
+                    <state>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Include</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1117,6 +1119,45 @@
             <data />
         </settings>
     </configuration>
+    <group>
+        <name>arm2d</name>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_alpha_blending.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_async.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_conversion.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_draw.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_helium.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_list.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_map.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_pfb.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_scene.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_transform.c</name>
+        </file>
+    </group>
     <group>
         <name>CMSIS</name>
         <file>

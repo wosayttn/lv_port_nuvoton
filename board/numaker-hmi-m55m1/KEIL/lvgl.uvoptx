@@ -4558,7 +4558,7 @@
 
   <Group>
     <GroupName>arm2d</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -4629,30 +4629,6 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_tile.c</PathWithFileName>
-      <FilenameWithoutPath>__arm_2d_tile.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>8</GroupNumber>
-      <FileNumber>352</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\thirdparty\arm2d\Library\Source\__arm_2d_transform_helium.c</PathWithFileName>
-      <FilenameWithoutPath>__arm_2d_transform_helium.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>8</GroupNumber>
-      <FileNumber>353</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\thirdparty\arm2d\Library\Source\arm_2d.c</PathWithFileName>
       <FilenameWithoutPath>arm_2d.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -4660,7 +4636,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>354</FileNumber>
+      <FileNumber>352</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4672,7 +4648,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>355</FileNumber>
+      <FileNumber>353</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4684,7 +4660,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>356</FileNumber>
+      <FileNumber>354</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4696,7 +4672,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>357</FileNumber>
+      <FileNumber>355</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4708,7 +4684,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>358</FileNumber>
+      <FileNumber>356</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -4720,7 +4696,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>359</FileNumber>
+      <FileNumber>357</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>

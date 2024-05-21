@@ -40,6 +40,16 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>arm2d</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>cmsis_dsp</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>lv_port</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -60,24 +70,24 @@
 			<locationURI>PARENT-0-PROJECT_LOC/GCC.ld</locationURI>
 		</link>
 		<link>
-			<name>Driver/startup_M55M1.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/Device/Nuvoton/M55M1/Source/startup_M55M1.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/i2c.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/i2c.c</locationURI>
-		</link>
-		<link>
 			<name>Driver/clk.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/clk.c</locationURI>
 		</link>
 		<link>
+			<name>Driver/ebi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/ebi.c</locationURI>
+		</link>
+		<link>
 			<name>Driver/gpio.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/gpio.c</locationURI>
+		</link>
+		<link>
+			<name>Driver/i2c.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/i2c.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/pdma.c</name>
@@ -88,6 +98,11 @@
 			<name>Driver/retarget.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/retarget.c</locationURI>
+		</link>
+		<link>
+			<name>Driver/startup_M55M1.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/Device/Nuvoton/M55M1/Source/startup_M55M1.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/sys.c</name>
@@ -103,11 +118,6 @@
 			<name>Driver/uart.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/uart.c</locationURI>
-		</link>
-		<link>
-			<name>Driver/ebi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/ebi.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/event_groups.c</name>
@@ -133,7 +143,7 @@
 			<name>FreeRTOS/portasm.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure/portasm.c</locationURI>
-		</link>		
+		</link>
 		<link>
 			<name>FreeRTOS/queue.c</name>
 			<type>1</type>
@@ -158,6 +168,91 @@
 			<name>Src/task_lv.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/components/task_lv.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_alpha_blending.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_alpha_blending.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_async.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_async.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_conversion.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_conversion.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_draw.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_draw.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_helium.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_helium.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_helper.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Helper/Source/arm_2d_helper.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_helper_list.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Helper/Source/arm_2d_helper_list.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_helper_map.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Helper/Source/arm_2d_helper_map.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_helper_pfb.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Helper/Source/arm_2d_helper_pfb.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_helper_scene.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Helper/Source/arm_2d_helper_scene.c</locationURI>
+		</link>
+		<link>
+			<name>arm2d/arm_2d_transform.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_transform.c</locationURI>
+		</link>
+		<link>
+			<name>cmsis_dsp/arm_common_tables.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/CMSIS/DSP/Source/CommonTables/arm_common_tables.c</locationURI>
+		</link>
+		<link>
+			<name>cmsis_dsp/arm_cos_f32.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_cos_f32.c</locationURI>
+		</link>
+		<link>
+			<name>cmsis_dsp/arm_cos_q31.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q31.c</locationURI>
+		</link>
+		<link>
+			<name>cmsis_dsp/arm_sin_f32.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_sin_f32.c</locationURI>
+		</link>
+		<link>
+			<name>cmsis_dsp/arm_sin_q31.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q31.c</locationURI>
 		</link>
 		<link>
 			<name>lv_port/disp_fsa506.c</name>
@@ -200,14 +295,14 @@
 			<locationURI>PARENT-3-PROJECT_LOC/common/nu_misc.c</locationURI>
 		</link>
 		<link>
-			<name>lv_port/touch_st1663i.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_st1663i.c</locationURI>
-		</link>
-		<link>
 			<name>lv_port/touch_adc_calibration.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_adc_calibration.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/touch_st1663i.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_st1663i.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/_lv_cache_lru_rb.c</name>
