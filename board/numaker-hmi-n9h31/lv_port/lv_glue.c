@@ -191,9 +191,6 @@ int lcd_device_open(void)
     /* GDMA engine clock */
     outpw(REG_CLK_HCLKEN, inpw(REG_CLK_HCLKEN) | 0x00001000);
 
-#if (CONFIG_LV_GPU_USE_N9H31_2DGE==1)
-#endif
-
     return 0;
 }
 
@@ -252,10 +249,6 @@ void lcd_device_close(void)
 {
     vpostVAStopTrigger();
     vpostLCMDeinit();
-
-#if (CONFIG_LV_GPU_USE_N9H31_2DGE==1)
-#endif
-
 }
 
 int lcd_device_finalize(void)

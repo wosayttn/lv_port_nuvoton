@@ -12,7 +12,8 @@
 #define LV_NUVOTON_INCLUDE     "N9H20.h"
 #include LV_NUVOTON_INCLUDE
 
-#define LV_USE_OS   LV_OS_NONE
+//#define LV_USE_OS   LV_OS_NONE
+#define LV_USE_OS   LV_OS_FREERTOS
 
 #if defined(__800x480__)
     #define LV_HOR_RES_MAX              800
@@ -28,6 +29,7 @@
     #define LV_COLOR_DEPTH              16
 #endif
 
+#define CONFIG_LV_DEF_REFR_PERIOD       25
 #define CONFIG_LV_DISP_FULL_REFRESH     0
 
 #define lv_snprintf                     snprintf
@@ -65,15 +67,15 @@
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      1
+#define LV_USE_LOG                      0
 
-#if LV_USE_LOG
+#if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
 #endif
 
 #endif

@@ -8,36 +8,6 @@
 
 #include "lv_glue.h"
 
-/**
-  * @brief      Disable register write-protection function
-  * @param      None
-  * @return     None
-  * @details    This function disable register write-protection function.
-  *             To unlock the protected register to allow write access.
-  */
-static __inline void SYS_UnlockReg(void)
-{
-    do
-    {
-        outpw(0xB00001FC, 0x59UL);
-        outpw(0xB00001FC, 0x16UL);
-        outpw(0xB00001FC, 0x88UL);
-    }
-    while (inpw(0xB00001FC) == 0UL);
-}
-
-/**
-  * @brief      Enable register write-protection function
-  * @param      None
-  * @return     None
-  * @details    This function is used to enable register write-protection function.
-  *             To lock the protected register to forbid write access.
-  */
-static __inline void SYS_LockReg(void)
-{
-    outpw(0xB00001FC, 0);
-}
-
 static void sys_init(void)
 {
     SYS_UnlockReg();

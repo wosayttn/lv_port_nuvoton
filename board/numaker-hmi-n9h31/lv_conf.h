@@ -12,7 +12,8 @@
 #define LV_NUVOTON_INCLUDE     "N9H31.h"
 #include LV_NUVOTON_INCLUDE
 
-#define LV_USE_OS   LV_OS_NONE
+//#define LV_USE_OS   LV_OS_NONE
+#define LV_USE_OS   LV_OS_FREERTOS
 
 #if defined(__800x480__)
     #define LV_HOR_RES_MAX              800
@@ -24,6 +25,7 @@
     #define LV_COLOR_DEPTH              16
 #endif
 
+#define CONFIG_LV_DEF_REFR_PERIOD       25
 #define CONFIG_LV_DISP_FULL_REFRESH     0
 
 #define lv_snprintf                     snprintf

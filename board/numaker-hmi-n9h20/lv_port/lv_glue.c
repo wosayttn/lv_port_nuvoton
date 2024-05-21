@@ -203,10 +203,6 @@ int lcd_device_open(void)
     sysEnableInterrupt(IRQ_VPOST);
 #endif
 
-#if (CONFIG_LV_GPU_USE_N9H20_BLT==1)
-    bltOpen();
-#endif
-
     return 0;
 }
 
@@ -267,11 +263,6 @@ void lcd_device_close(void)
     sysDisableInterrupt(IRQ_VPOST);
     vpostDisableInt(eDRVVPOST_VINT);
 #endif
-
-#if (CONFIG_LV_GPU_USE_N9H20_BLT==1)
-    bltClose();
-#endif
-
 }
 
 int lcd_device_finalize(void)
