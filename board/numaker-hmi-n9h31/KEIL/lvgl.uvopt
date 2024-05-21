@@ -22,7 +22,7 @@
   </DaveTm>
 
   <Target>
-    <TargetName>N9H31F6_800x480</TargetName>
+    <TargetName>N9H31K5_800x480</TargetName>
     <ToolsetNumber>0x4</ToolsetNumber>
     <ToolsetName>ARM-ADS</ToolsetName>
     <TargetOption>

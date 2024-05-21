@@ -1,22 +1,15 @@
 # **NuMaker-HMI-MA35H0**
 
-## **Folder Structure**
-
-| Folder Name | Description |
+| Major Folder | Description |
 |-|-|
 | GCC | GCC project file |
-| lv_port | lvgl porting files |
-| sls_files | User UI files SLS exported |
-| [nuwriter_scripts](./nuwriter_scripts) | User UI files SLS exported |
-| lv_conf.h | Major lvgl configuration file |
-| main.c | main routine |
 
 ## **GCC project**
 
-User can select listed **Build configurations** to build target execution using Eclipse-base IDE.
+To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 | Target | Description |
 |-|-|
-| MA35H0_1024x600 | Use 1024x600 LCD panel |
+| MA35H0_1024x600 | Use 1024x600 LCD panel with resistive touch screen(H/W ADC Sampling) |
 
 ## **Compiling options**
 

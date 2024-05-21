@@ -1,21 +1,23 @@
 # **NuMaker-IIoT-NUC980G2D**
 
-## **Folder Structure**
-
-| Folder Name | Description |
+| Major Folder | Description |
 |-|-|
+| GCC | GCC project file |
 | KEIL | MDK4 project file |
-| lv_port | lvgl porting files |
-| sls_files | User UI files SLS exported |
-| lv_conf.h | Major lvgl configuration file |
-| main.c | main routine |
 
 ## **KEIL project**
 
 User can select listed **Target Name** to build target execution using uVision MDK4.
 | Target | Description |
 |-|-|
-| NUC980DK_320x240 | Use ILI9431 SPI LCD panel with resistive touch screen |
+| NUC980DK_320x240 | Use ILI9431 SPI LCD panel with resistive touch screen(H/W ADC Sampling) |
+
+## **GCC project**
+
+To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
+| Target | Description |
+|-|-|
+| NUC980DK_320x240 | Use ILI9431 SPI LCD panel with resistive touch screen(H/W ADC Sampling) |
 
 ## **Compiling options**
 
@@ -35,6 +37,7 @@ User can select listed **Target Name** to build target execution using uVision M
 - The partial update approach is applied in this port.
 
 ## **SPI NAND flash using NuWriter**
+
 You can use NuWriter to program lvgl_demo.bin into SPI NAND flash.
 <br>
 Choose type: SPINAND<br>

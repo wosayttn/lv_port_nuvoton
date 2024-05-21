@@ -1,46 +1,31 @@
 # **NuMaker-HMI-N9H30**
 
-## **Folder Structure**
-
-| Folder Name | Description |
+| Major Folder | Description |
 |-|-|
 | GCC | GCC project file |
 | KEIL | MDK4 project file |
-| lv_port | lvgl porting files |
-| sls_files | User UI files SLS exported |
-| lv_conf.h | Major lvgl configuration file |
-| main.c | main routine |
-| standalone.c | minimal C library bootstrap for MDK4 |
-| wb_init.s | start-up routine for MDK4 |
 
 ## **KEIL project**
 
 User can select listed **Target Name** to build target execution using uVision MDK4.
 | Target | Description |
 |-|-|
-| N9H30F6_800x480 | Use 800x480 LCD panel |
+| N9H30F6_800x480 | Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling) |
 
 ## **GCC project**
 
-User can select listed **Build configurations** to build target execution using Eclipse-base IDE.
+To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 | Target | Description |
 |-|-|
-| N9H30F6_800x480 | Use 800x480 LCD panel |
+| N9H30F6_800x480 | Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling) |
 
 ## **Compiling options**
 
 - The porting given CONFIG_LV_DISP_FULL_REFRESH to 0 by default, partial update approach is applied.
 
-  ```c
-   #define CONFIG_LV_DISP_FULL_REFRESH      0
-  ```
-
-- The porting given LV_USE_DEMO_WIDGETS to 1 by default, LVGL Widgets will executed at startup.
-
-  ```c
-  #define LV_USE_DEMO_WIDGETS             1
-  //#define LV_USE_DEMO_MUSIC               1
-  ```
+```c
+  #define CONFIG_LV_DISP_FULL_REFRESH      0
+```
 
 ## **Purchase**
 

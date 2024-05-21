@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>N9H31F6_800x480</TargetName>
+      <TargetName>N9H31K5_800x480</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
