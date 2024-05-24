@@ -1,6 +1,6 @@
-#include <stdlib.h>
 #include <stdint.h>
 #include "nu_misc.h"
+#include "FreeRTOS.h"
 
 void *nvt_malloc_align(uint32_t size, uint32_t align)
 {
@@ -11,9 +11,7 @@ void *nvt_malloc_align(uint32_t size, uint32_t align)
 
     align_size = NVT_ALIGN(size, sizeof(void *)) + align;
 
-    ptr = malloc(align_size);
-
-    if (ptr != NULL)
+    if ((ptr=pvPortMalloc(align_size)) != NULL)
     {
         void *align_ptr;
 
@@ -31,6 +29,7 @@ void *nvt_malloc_align(uint32_t size, uint32_t align)
         ptr = align_ptr;
     }
 
+
     return ptr;
 }
 
@@ -38,5 +37,5 @@ void nvt_free_align(void *ptr)
 {
     if (ptr == NULL) return;
 
-    free((void *) * ((uintptr_t *)((uintptr_t)ptr - sizeof(void *))));
+    vPortFree((void *) * ((uintptr_t *)((uintptr_t)ptr - sizeof(void *))));
 }

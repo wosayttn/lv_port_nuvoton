@@ -9,7 +9,7 @@ ENTRY(__vector)
 
 MEMORY
 {
-    RAM  (rwx)   : ORIGIN = 0x008000, LENGTH = 0x10000000
+    RAM  (rwx)   : ORIGIN = 0x008000, LENGTH = 0x07FF8000
 }
 
 SECTIONS
@@ -69,9 +69,12 @@ SECTIONS
 
     .heap :
     {
-        . = ALIGN(8);
+        . = ALIGN(32);
         end = .;
     } >RAM
 
+  PROVIDE_HIDDEN (__exidx_start = .);
+  .ARM.exidx : { *(.ARM.exidx* .gnu.linkonce.armexidx.*) }
+  PROVIDE_HIDDEN (__exidx_end = .);
 }
 
