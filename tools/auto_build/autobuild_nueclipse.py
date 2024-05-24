@@ -27,7 +27,7 @@ if __name__ == "__main__":
                 ###
                 ###print("Building" + " " + file + " " + os.path.basename(os.getcwd()))
                 print(dirPath + "\\" + file +  " building ...\n")                
-                subprocess.check_call("C:\\Program Files (x86)\\Nuvoton Tools\\NuEclipse\\V1.02.023r\\NuEclipse\\eclipse\\eclipsec.exe " +
+                subprocess.check_call("C:\\Program Files (x86)\\Nuvoton Tools\\NuEclipse\\V1.02.025c\\NuEclipse\\eclipse\\eclipsec.exe " +
                                       "-nosplash --launcher.suppressErrors -application org.eclipse.cdt.managedbuilder.core.headlessbuild " +
                                       "-data Temp -import " + dirPath + " -build all",
                                       startupinfo=si, stdout=f, stderr=f)

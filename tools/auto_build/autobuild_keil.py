@@ -28,7 +28,7 @@ if __name__ == "__main__":
     os.chdir(root)
 
     for dirPath, dirNames, fileNames in os.walk(PROJ_FOLDER_NAME):
-        for file in fnmatch.filter(fileNames, '*.uvproj'):
+        for file in fnmatch.filter(fileNames, '*.uvproj*'):
             os.chdir(dirPath)
             try:
                 f1 = open(file, 'r+')

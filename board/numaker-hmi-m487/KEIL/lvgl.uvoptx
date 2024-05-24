@@ -3998,7 +3998,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\lv_port\lv_demo.c</PathWithFileName>
+      <PathWithFileName>..\..\..\common\lv_demo.c</PathWithFileName>
       <FilenameWithoutPath>lv_demo.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4010,7 +4010,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\lv_port\lv_port_disp.c</PathWithFileName>
+      <PathWithFileName>..\..\..\common\lv_port_disp.c</PathWithFileName>
       <FilenameWithoutPath>lv_port_disp.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4022,7 +4022,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\lv_port\lv_port_indev.c</PathWithFileName>
+      <PathWithFileName>..\..\..\common\lv_port_indev.c</PathWithFileName>
       <FilenameWithoutPath>lv_port_indev.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>

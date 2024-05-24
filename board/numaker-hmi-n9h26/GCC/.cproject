@@ -207,32 +207,30 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.1642501125" name="GNU ARM Cross C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.659765404" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/n9h26/BSP/Driver/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/portable/GCC/ARM9_N9H26&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../lv_port/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_disp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_indev&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/core&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/sw&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/font&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/hal&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/misc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/widgets&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/arm2d&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/renesas&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/sdl&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/stm32_dma2d&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/sw&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/swm341_dma2d&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/nxp\pxp&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw/nxp\vglite&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/benchmark&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/keypad_encoder&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/music&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/stress&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/widgets&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/music/assets&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/demos/keypad_encoder&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../sls_files&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1758450561" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="N9H26K6=1"/>
@@ -246,7 +244,7 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.291705750" name="GNU ARM Cross C Linker" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.gcsections.723688485" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.gcsections" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.libs.1931110845" name="Libraries (-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value="N9H26_SYS"/>
+									<listOptionValue builtIn="false" value="N9H26_SYS_FreeRTOS"/>
 									<listOptionValue builtIn="false" value="N9H26_VPOST_FW050TFT_800x480"/>
 									<listOptionValue builtIn="false" value="N9H26_ADC"/>
 									<listOptionValue builtIn="false" value="N9H26_SIC"/>
