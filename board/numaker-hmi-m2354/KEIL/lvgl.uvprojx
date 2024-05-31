@@ -1308,11 +1308,6 @@
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_vector.c</FilePath>
             </File>
             <File>
-              <FileName>lv_image_buf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\lv_image_buf.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_image_decoder.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\lv_image_decoder.c</FilePath>

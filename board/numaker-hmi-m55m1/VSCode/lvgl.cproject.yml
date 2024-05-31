@@ -306,7 +306,6 @@ project:
         - file: ../../../lvgl/src/draw/lv_draw_rect.c
         - file: ../../../lvgl/src/draw/lv_draw_triangle.c
         - file: ../../../lvgl/src/draw/lv_draw_vector.c
-        - file: ../../../lvgl/src/draw/lv_image_buf.c
         - file: ../../../lvgl/src/draw/lv_image_decoder.c
         - file: ../../../lvgl/src/draw/sdl/lv_draw_sdl.c
         - file: ../../../lvgl/src/draw/sw/lv_draw_sw.c

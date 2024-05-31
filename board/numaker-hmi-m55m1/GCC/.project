@@ -960,11 +960,6 @@
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/widgets/image/lv_image.c</locationURI>
 		</link>
 		<link>
-			<name>lvgl/lv_image_buf.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/lv_image_buf.c</locationURI>
-		</link>
-		<link>
 			<name>lvgl/lv_image_cache.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/misc/cache/lv_image_cache.c</locationURI>

@@ -2216,18 +2216,6 @@
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
-      <FileNumber>157</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\lvgl\src\draw\lv_image_buf.c</PathWithFileName>
-      <FilenameWithoutPath>lv_image_buf.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
       <FileNumber>158</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>

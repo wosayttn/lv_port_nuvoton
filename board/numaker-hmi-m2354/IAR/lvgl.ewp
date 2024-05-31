@@ -1926,9 +1926,6 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\image\lv_image.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\lv_image_buf.c</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\lv_image_cache.c</name>
         </file>
         <file>
