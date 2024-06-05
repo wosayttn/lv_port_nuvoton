@@ -2218,6 +2218,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>lv_draw</GroupName>
+          <Files>
+            <File>
+              <FileName>lv_draw_bitblt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_bitblt_fill.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_fill.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>sls_ui</GroupName>
         </Group>
       </Groups>
@@ -4430,6 +4445,21 @@
               <FileName>heap_4.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lv_draw</GroupName>
+          <Files>
+            <File>
+              <FileName>lv_draw_bitblt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_bitblt_fill.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_fill.c</FilePath>
             </File>
           </Files>
         </Group>
