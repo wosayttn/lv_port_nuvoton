@@ -79,15 +79,15 @@ static void lv_port_disp_partial(lv_display_t *disp, const lv_area_t *area, uint
 #elif (LV_COLOR_DEPTH==16)
 
         uint16_t *pDisp = (uint16_t *)((uint32_t)psLCDInfo->pvVramStartAddr | BIT31) + (LV_HOR_RES_MAX * area->y1 + area->x1);
+        //uint16_t *pDisp = (uint16_t *)(uint32_t)psLCDInfo->pvVramStartAddr + (LV_HOR_RES_MAX * area->y1 + area->x1);
         uint16_t *pSrc = (uint16_t *)px_map;
 
 #endif
         for (y = 0; y < h; y++)
         {
             for (x = 0; x < w; x++)
-            {
                 pDisp[x] = pSrc[x];
-            }
+            //sysCleanInvalidatedDcache((UINT32)pDisp, w * (LV_COLOR_DEPTH / 8));
             pDisp += LV_HOR_RES_MAX;
             pSrc += w;
         }
