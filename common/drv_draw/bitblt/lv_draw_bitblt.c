@@ -94,7 +94,7 @@ void lv_draw_bitblt_init(void)
 #if LV_USE_OS
     lv_thread_init(&draw_bitblt_unit->thread, LV_THREAD_PRIO_HIGH, _bitblt_render_thread_cb, 2 * 1024, draw_bitblt_unit);
 #endif
-	
+
     bltOpen();
 }
 
@@ -170,14 +170,6 @@ static int32_t _bitblt_evaluate(lv_draw_unit_t *u, lv_draw_task_t *t)
                 (draw_dsc->grad.dir != (lv_grad_dir_t)LV_GRAD_DIR_NONE) ||
                 (draw_dsc->opa < LV_OPA_MAX))
             return 0;
-
-#if 0
-        sysprintf("buf_area x1: %d\n", draw_dsc_base->layer->buf_area.x1);
-        sysprintf("buf_area x2: %d\n", draw_dsc_base->layer->buf_area.x2);
-        sysprintf("buf_area y1: %d\n", draw_dsc_base->layer->buf_area.y1);
-        sysprintf("buf_area y2: %d\n", draw_dsc_base->layer->buf_area.y2);
-        sysprintf("buf_area size: %d\n", lv_area_get_size(&draw_dsc_base->layer->buf_area));
-#endif
 
         if (t->preference_score > 70)
         {
@@ -374,11 +366,11 @@ static void _bitblt_render_thread_cb(void *ptr)
 
 static void _bitblt_invalidate_cache(const lv_draw_buf_t *draw_buf, const lv_area_t *area)
 {
-    const lv_image_header_t * header = &draw_buf->header;
+    const lv_image_header_t *header = &draw_buf->header;
     uint32_t stride = header->stride;
     lv_color_format_t cf = header->cf;
 
-    uint8_t * address = draw_buf->data;
+    uint8_t *address = draw_buf->data;
     int32_t i = 0;
     uint32_t bytes_per_pixel = lv_color_format_get_size(cf);
     int32_t width = lv_area_get_width(area);
@@ -388,7 +380,8 @@ static void _bitblt_invalidate_cache(const lv_draw_buf_t *draw_buf, const lv_are
     /* Stride is in bytes, not pixels */
     address = address + (area->x1 * (int32_t)bytes_per_pixel) + (stride * (uint32_t)area->y1);
 
-    for(i = 0; i < lines; i++) {
+    for (i = 0; i < lines; i++)
+    {
         sysCleanInvalidatedDcache((UINT32)address, bytes_to_flush_per_line);
         address += stride;
     }

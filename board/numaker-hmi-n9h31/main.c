@@ -60,9 +60,6 @@ static void sys_init(void)
 
     sysInitializeUART();
     sysSetLocalInterrupt(ENABLE_IRQ);   // Enable CPSR I bit
-
-    void dump_lcd_timings(void);
-    dump_lcd_timings();
 }
 
 int main(void)

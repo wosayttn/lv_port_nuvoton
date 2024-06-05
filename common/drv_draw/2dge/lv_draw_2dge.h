@@ -35,9 +35,10 @@ extern "C" {
  *      TYPEDEFS
  **********************/
 
-typedef struct {
+typedef struct
+{
     lv_draw_unit_t base_unit;
-    lv_draw_task_t * task_act;
+    lv_draw_task_t *task_act;
 #if LV_USE_OS
     lv_thread_sync_t sync;
     lv_thread_t thread;
@@ -68,7 +69,7 @@ void lv_draw_2dge_deinit(void);
  * @param dsc           the draw descriptor
  * @param coords        the coordinates of the rectangle
  */
-void lv_draw_2dge_fill(lv_draw_unit_t * draw_unit, const lv_draw_fill_dsc_t * dsc, const lv_area_t * coords);
+void lv_draw_2dge_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *dsc, const lv_area_t *coords);
 
 /***********************
  * GLOBAL VARIABLES

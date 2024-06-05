@@ -50,7 +50,7 @@
  **********************/
 
 void lv_draw_bitblt_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *dsc,
-                       const lv_area_t *coords)
+                         const lv_area_t *coords)
 {
     lv_layer_t *layer = draw_unit->target_layer;
     lv_draw_buf_t *draw_buf = layer->draw_buf;
@@ -101,9 +101,9 @@ void lv_draw_bitblt_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *ds
 
         bltSetDestFrameBuf(sDestFB);
 
-        if (px_size==2)
+        if (px_size == 2)
             bltSetDisplayFormat(eDRVBLT_DEST_RGB565);
-				else
+        else
             bltSetDisplayFormat(eDRVBLT_DEST_ARGB8888);
 
         bltSetFillAlpha(0);

@@ -48,12 +48,6 @@
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
-
-void _dump_area(uint8_t* puDst, lv_area_t *a, const char* func, int line)
-{
-    //sysprintf("[%s, %d] %08x (%d, %d) -> (%d, %d)\n", func, line, puDst, a->x1, a->y1, a->x2, a->y2);
-}
-
 void lv_draw_2dge_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *dsc,
                        const lv_area_t *coords)
 {
@@ -83,28 +77,40 @@ void lv_draw_2dge_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *dsc,
         int32_t dest_h = lv_area_get_height(dest_area);
         uint8_t px_size = lv_color_format_get_size(dest_cf);
 
-#if 0
-    sysprintf("================================================\n");
-        sysprintf("opa: %d\n",  dsc->opa);
-        sysprintf("radius: %d\n", dsc->radius);
-        sysprintf("grad.dir: %d\n", dsc->grad.dir);
-        sysprintf("color: %08x\n", dsc->color);
-        sysprintf("color: R:%02x, G:%02x, B:%02x,  %d\n", dsc->color.red, dsc->color.green, dsc->color.blue, sizeof(lv_color_t));
-        if (px_size == 4)
-            sysprintf("lv_color_to_u32(color): %08x\n", lv_color_to_u32(dsc->color));
-        else
-            sysprintf("lv_color_to_u16(color): %08x\n", lv_color_to_u16(dsc->color));
-        sysprintf("dest_buf: %08x\n", dest_buf);
-        sysprintf("px_size: %d %d\n", px_size, px_size << 3);
-        sysprintf("size: %d\n", lv_area_get_size(dest_area));
-        _dump_area(dest_buf, &blend_area, __func__, __LINE__);
-    sysprintf("================================================\n");
-#endif
-
         // Enter GE2D ->
-        ge2dInit(px_size << 3, dest_stride, dest_h, (void *)dest_buf);
+        /**
+          * @brief Graphics engine initialization.
+          * @param[in] bpp bit per pixel
+          * @param[in] width is width of display memory
+          * @param[in] height is height of display memory
+          * @param[in] destination is pointer of destination buffer address
+          * @return none
+          */
+        void ge2dInit(int bpp, int width, int height, void *destination);
+        ge2dInit(px_size << 3,  dest_stride / px_size, dest_h, (void *)dest_buf);
 
+        /**
+          * @brief Set the clip rectangle. (top-left to down-right).
+          * @param[in] x1 is top-left x position
+          * @param[in] y1 is top-left y position
+          * @param[in] x2 is down-right x position
+          * @param[in] y2 is down-right y position
+          * @return none
+          */
+        void ge2dClip_SetClip(int x1, int y1, int x2, int y2);
         ge2dClip_SetClip(dest_area->x1, dest_area->y1, dest_area->x2, dest_area->y2);
+
+        /**
+          * @brief Rectangle solid color fill with RGB565 color.
+          * @param[in] dx x position
+          * @param[in] dy y position
+          * @param[in] width is display width
+          * @param[in] height is display height
+          * @param[in] color is RGB565 color of foreground
+          * @return none
+          */
+        void ge2dFill_Solid_RGB565(int dx, int dy, int width, int height, int color);
+        void ge2dFill_Solid(int dx, int dy, int width, int height, int color);
 
         if (px_size == 4)
             ge2dFill_Solid(dest_area->x1, dest_area->y1, dest_w, dest_h, lv_color_to_u32(dsc->color));

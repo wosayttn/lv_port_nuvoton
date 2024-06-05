@@ -2211,6 +2211,21 @@
         <Group>
           <GroupName>sls_ui</GroupName>
         </Group>
+        <Group>
+          <GroupName>lv_draw</GroupName>
+          <Files>
+            <File>
+              <FileName>lv_draw_2dge.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\2dge\lv_draw_2dge.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_2dge_fill.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\2dge\lv_draw_2dge_fill.c</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
   </Targets>

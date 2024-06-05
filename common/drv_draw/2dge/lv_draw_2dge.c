@@ -148,7 +148,7 @@ static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *t)
     const lv_draw_dsc_base_t *draw_dsc_base = (lv_draw_dsc_base_t *) t->draw_dsc;
 
     uint8_t px_size = lv_color_format_get_size(draw_dsc_base->layer->color_format);
-	
+
     /* Check capacity. */
     if (!_2dge_dest_cf_supported(draw_dsc_base->layer->color_format))
         return 0;
@@ -157,13 +157,13 @@ static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *t)
         return 0;
 
     /* for 2DGE limitation. */
-    if (px_size == 2)   
+    if (px_size == 2)
     {
         lv_area_t blend_area;
+        uint32_t blend_area_stride;
 
         lv_area_copy(&blend_area, &draw_dsc_base->layer->buf_area);
-
-        uint32_t blend_area_stride = lv_area_get_width(&blend_area) * px_size;
+        blend_area_stride = lv_area_get_width(&blend_area) * px_size;
 
         /* Check Hardware constraint: The stride must be a word-alignment. */
         bool bAlignedWord = ((blend_area_stride & 0x3) == 0) &&
@@ -173,24 +173,15 @@ static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *t)
             return 0;
     }
 
+
     switch (t->type)
     {
     case LV_DRAW_TASK_TYPE_FILL:
     {
         const lv_draw_fill_dsc_t *draw_dsc = (lv_draw_fill_dsc_t *) t->draw_dsc;
-		
-        if ((draw_dsc->radius != 0) ||
-                (draw_dsc->grad.dir != (lv_grad_dir_t)LV_GRAD_DIR_NONE) ||
-                (draw_dsc->opa < LV_OPA_MAX))
-            return 0;
 
-#if 0
-        sysprintf("buf_area x1: %d\n", draw_dsc_base->layer->buf_area.x1);
-        sysprintf("buf_area x2: %d\n", draw_dsc_base->layer->buf_area.x2);
-        sysprintf("buf_area y1: %d\n", draw_dsc_base->layer->buf_area.y1);
-        sysprintf("buf_area y2: %d\n", draw_dsc_base->layer->buf_area.y2);
-        sysprintf("buf_area size: %d\n", lv_area_get_size(&draw_dsc_base->layer->buf_area));
-#endif
+        if (!((draw_dsc->radius == 0) && (draw_dsc->grad.dir == LV_GRAD_DIR_NONE) && (draw_dsc->opa >= LV_OPA_MAX)))
+            return 0;
 
         if (t->preference_score > 70)
         {
@@ -387,12 +378,11 @@ static void _2dge_render_thread_cb(void *ptr)
 
 static void _2dge_invalidate_cache(const lv_draw_buf_t *draw_buf, const lv_area_t *area)
 {
-	
-    const lv_image_header_t * header = &draw_buf->header;
+    const lv_image_header_t *header = &draw_buf->header;
     uint32_t stride = header->stride;
     lv_color_format_t cf = header->cf;
 
-    uint8_t * address = draw_buf->data;
+    uint8_t *address = draw_buf->data;
     int32_t i = 0;
     uint32_t bytes_per_pixel = lv_color_format_get_size(cf);
     int32_t width = lv_area_get_width(area);
@@ -402,7 +392,8 @@ static void _2dge_invalidate_cache(const lv_draw_buf_t *draw_buf, const lv_area_
     /* Stride is in bytes, not pixels */
     address = address + (area->x1 * (int32_t)bytes_per_pixel) + (stride * (uint32_t)area->y1);
 
-    for(i = 0; i < lines; i++) {
+    for (i = 0; i < lines; i++)
+    {
         sysCleanInvalidatedDcache((UINT32)address, bytes_to_flush_per_line);
         address += stride;
     }
