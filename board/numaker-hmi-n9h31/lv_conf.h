@@ -12,8 +12,6 @@
 #define LV_NUVOTON_INCLUDE     "N9H31.h"
 #include LV_NUVOTON_INCLUDE
 
-#define LV_USE_DRAW_2DGE 0
-
 //#define LV_USE_OS   LV_OS_NONE
 #define LV_USE_OS   LV_OS_FREERTOS
 
