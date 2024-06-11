@@ -64,12 +64,28 @@ void lv_draw_2dge_init(void);
 void lv_draw_2dge_deinit(void);
 
 /**
- * Fill an area using SW render. Handle gradient and radius.
+ * Fill an area using 2dge render. Handle gradient and radius.
  * @param draw_unit     pointer to a draw unit
  * @param dsc           the draw descriptor
  * @param coords        the coordinates of the rectangle
  */
 void lv_draw_2dge_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *dsc, const lv_area_t *coords);
+
+/**
+ * Draw an image with 2dge render. It handles image decoding, tiling, transformations, and recoloring.
+ * @param draw_unit     pointer to a draw unit
+ * @param dsc           the draw descriptor
+ * @param coords        the coordinates of the image
+ */
+void lv_draw_2dge_image(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *dsc, const lv_area_t *coords);
+
+/**
+ * Blend a layer with 2dge render
+ * @param draw_unit     pointer to a draw unit
+ * @param dsc           the draw descriptor
+ * @param coords        the coordinates of the rectangle
+ */
+void lv_draw_2dge_layer(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *dsc, const lv_area_t *coords);
 
 /***********************
  * GLOBAL VARIABLES

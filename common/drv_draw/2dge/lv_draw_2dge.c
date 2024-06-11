@@ -141,61 +141,112 @@ static inline bool _2dge_dest_cf_supported(lv_color_format_t cf)
     return is_cf_supported;
 }
 
-static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *t)
+static bool _2dge_draw_img_supported(const lv_draw_image_dsc_t *draw_dsc)
+{
+    const lv_image_dsc_t *img_dsc = draw_dsc->src;
+
+    bool has_recolor = (draw_dsc->recolor_opa > LV_OPA_MIN);
+    bool has_transform = (draw_dsc->rotation != 0 || draw_dsc->scale_x != LV_SCALE_NONE ||
+                          draw_dsc->scale_y != LV_SCALE_NONE);
+
+    /* Recolor and transformation are not supported at the same time. */
+    if (has_recolor || has_transform)
+        return false;
+
+    bool has_opa = (draw_dsc->opa < (lv_opa_t)LV_OPA_MAX);
+    bool src_has_alpha = (img_dsc->header.cf == LV_COLOR_FORMAT_ARGB8888);
+
+    if (draw_dsc->rotation)
+        return false;
+
+    return true;
+}
+
+
+static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 {
     LV_UNUSED(u);
 
-    const lv_draw_dsc_base_t *draw_dsc_base = (lv_draw_dsc_base_t *) t->draw_dsc;
+    const lv_draw_dsc_base_t *draw_dsc_base = (lv_draw_dsc_base_t *) task->draw_dsc;
 
     uint8_t px_size = lv_color_format_get_size(draw_dsc_base->layer->color_format);
 
+    lv_area_t blend_area;
+    uint32_t blend_area_stride;
+
     /* Check capacity. */
     if (!_2dge_dest_cf_supported(draw_dsc_base->layer->color_format))
-        return 0;
+        goto _2dge_evaluate_not_ok;
 
-    if (lv_area_get_size(&draw_dsc_base->layer->buf_area) < 7200u)
-        return 0;
+    lv_area_copy(&blend_area, &draw_dsc_base->layer->buf_area);
+    blend_area_stride = lv_area_get_width(&blend_area) * px_size;
 
     /* for 2DGE limitation. */
     if (px_size == 2)
     {
-        lv_area_t blend_area;
-        uint32_t blend_area_stride;
-
-        lv_area_copy(&blend_area, &draw_dsc_base->layer->buf_area);
-        blend_area_stride = lv_area_get_width(&blend_area) * px_size;
 
         /* Check Hardware constraint: The stride must be a word-alignment. */
         bool bAlignedWord = ((blend_area_stride & 0x3) == 0) &&
                             (((blend_area.x1 * px_size) & 0x3) == 0) ? true : false;
 
         if (!bAlignedWord)
-            return 0;
+            goto _2dge_evaluate_not_ok;
     }
 
-
-    switch (t->type)
+    switch (task->type)
     {
     case LV_DRAW_TASK_TYPE_FILL:
     {
-        const lv_draw_fill_dsc_t *draw_dsc = (lv_draw_fill_dsc_t *) t->draw_dsc;
+        const lv_draw_fill_dsc_t *draw_dsc = (lv_draw_fill_dsc_t *) task->draw_dsc;
 
         if (!((draw_dsc->radius == 0) && (draw_dsc->grad.dir == LV_GRAD_DIR_NONE) && (draw_dsc->opa >= LV_OPA_MAX)))
-            return 0;
+            goto _2dge_evaluate_not_ok;
 
-        if (t->preference_score > 70)
+        if (task->preference_score > 70)
         {
-            t->preference_score = 70;
-            t->preferred_draw_unit_id = DRAW_UNIT_ID_2DGE;
+            task->preference_score = 70;
+            task->preferred_draw_unit_id = DRAW_UNIT_ID_2DGE;
         }
-        return 1;
+        goto _2dge_evaluate_ok;
     }
+    break;
+
+    case LV_DRAW_TASK_TYPE_LAYER:
+    case LV_DRAW_TASK_TYPE_IMAGE:
+    {
+        const lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
+        lv_layer_t *layer_to_draw = (lv_layer_t *)draw_dsc->src;
+        int32_t src_stride = layer_to_draw->draw_buf->header.stride;
+        int32_t dest_stride = u->target_layer->draw_buf->header.stride;
+
+        if (!_2dge_src_cf_supported(layer_to_draw->color_format))
+            goto _2dge_evaluate_not_ok;
+
+        if (!_2dge_draw_img_supported(draw_dsc))
+            goto _2dge_evaluate_not_ok;
+
+        if (src_stride != dest_stride)
+            goto _2dge_evaluate_not_ok;
+
+        if (task->preference_score > 70)
+        {
+            task->preference_score = 70;
+            task->preferred_draw_unit_id = DRAW_UNIT_ID_2DGE;
+        }
+
+        goto _2dge_evaluate_ok;
+    }
+    break;
 
     default:
-        return 0;
+        break;
     }
 
+_2dge_evaluate_not_ok:
     return 0;
+
+_2dge_evaluate_ok:
+    return 1;
 }
 
 static int32_t _2dge_dispatch(lv_draw_unit_t *draw_unit, lv_layer_t *layer)
@@ -261,13 +312,13 @@ static int32_t _2dge_delete(lv_draw_unit_t *draw_unit)
 
 static void _2dge_execute_drawing(lv_draw_2dge_unit_t *u)
 {
-    lv_draw_task_t *t = u->task_act;
+    lv_draw_task_t *task = u->task_act;
     lv_draw_unit_t *draw_unit = (lv_draw_unit_t *)u;
     lv_layer_t *layer = draw_unit->target_layer;
     lv_draw_buf_t *draw_buf = layer->draw_buf;
 
     lv_area_t draw_area;
-    if (!_lv_area_intersect(&draw_area, &t->area, draw_unit->clip_area))
+    if (!_lv_area_intersect(&draw_area, &task->area, draw_unit->clip_area))
         return; /*Fully clipped, nothing to do*/
 
     /* Make area relative to the buffer */
@@ -276,10 +327,16 @@ static void _2dge_execute_drawing(lv_draw_2dge_unit_t *u)
     /* Invalidate only the drawing area */
     lv_draw_buf_invalidate_cache(draw_buf, &draw_area);
 
-    switch (t->type)
+    switch (task->type)
     {
     case LV_DRAW_TASK_TYPE_FILL:
-        lv_draw_2dge_fill(draw_unit, t->draw_dsc, &t->area);
+        lv_draw_2dge_fill(draw_unit, task->draw_dsc, &task->area);
+        break;
+    case LV_DRAW_TASK_TYPE_LAYER:
+        lv_draw_2dge_layer((lv_draw_unit_t *)u, task->draw_dsc, &task->area);
+        break;
+    case LV_DRAW_TASK_TYPE_IMAGE:
+        lv_draw_2dge_image((lv_draw_unit_t *)u, task->draw_dsc, &task->area);
         break;
     default:
         break;
@@ -287,10 +344,10 @@ static void _2dge_execute_drawing(lv_draw_2dge_unit_t *u)
 
 #if LV_USE_PARALLEL_DRAW_DEBUG
     /*Layers manage it for themselves*/
-    if (t->type != LV_DRAW_TASK_TYPE_LAYER)
+    if (task->type != LV_DRAW_TASK_TYPE_LAYER)
     {
         lv_area_t draw_area;
-        if (!_lv_area_intersect(&draw_area, &t->area, u->base_unit.clip_area))
+        if (!_lv_area_intersect(&draw_area, &task->area, u->base_unit.clip_area))
             return;
 
         int32_t idx = 0;

@@ -33,7 +33,7 @@
 #endif
 
 #define CONFIG_LV_DEF_REFR_PERIOD       25
-#define CONFIG_LV_DISP_FULL_REFRESH     0
+#define CONFIG_LV_DISP_FULL_REFRESH     1
 
 #define lv_snprintf                     snprintf
 #define lv_vsnprintf                    vsnprintf
@@ -63,6 +63,7 @@
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
+#define LV_USE_DEMO_BENCHMARK           1
 //#define LV_USE_DEMO_MUSIC             1
 #if LV_USE_DEMO_MUSIC
     #define LV_DEMO_MUSIC_AUTO_PLAY     1
