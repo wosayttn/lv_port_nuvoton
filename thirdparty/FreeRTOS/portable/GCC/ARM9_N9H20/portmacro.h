@@ -135,6 +135,7 @@ extern void vTaskSwitchContext(void);						 \
 		}													 \
 }															 \
 
+#define portYIELD_FROM_ISR          portEXIT_SWITCHING_ISR
 #define portYIELD() asm volatile ("SWI 0\n")
 
 //#define	portYIELD()	vPortYieldProcessor(){}

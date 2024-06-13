@@ -29,10 +29,7 @@ static void *buf3_next = NULL;
 static int32_t s_i32GDMAIdx = -1;
 static void lv_port_disp_partial(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map)
 {
-
     S_LCD_INFO *psLCDInfo = (S_LCD_INFO *)lv_display_get_driver_data(disp);
-
-
 
     /* Update dirty region. */
     /* Only catch full-screen case due to GDMA constraint(No stride feature). */
@@ -61,14 +58,11 @@ static void lv_port_disp_partial(lv_display_t *disp, const lv_area_t *area, uint
         outpw(REG_GDMA_CTL0, inpw(REG_GDMA_CTL0) | 0x10000);
 
         s_i32GDMAIdx = 0;
-
-
     }
     else
     {
         int32_t x, y;
         int32_t w = lv_area_get_width(area);
-
         int32_t h = lv_area_get_height(area);
 
 #if (LV_COLOR_DEPTH==32)
@@ -92,7 +86,6 @@ static void lv_port_disp_partial(lv_display_t *disp, const lv_area_t *area, uint
         }
     }
     lv_display_flush_ready(disp);
-
 }
 
 static void lv_port_disp_flush_wait(lv_display_t *disp)

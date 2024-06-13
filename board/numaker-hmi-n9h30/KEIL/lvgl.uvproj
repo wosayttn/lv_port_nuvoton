@@ -566,7 +566,7 @@
               <StopOnExitCode>11</StopOnExitCode>
               <CustomArgument></CustomArgument>
               <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
+              <ComprImg>0</ComprImg>
             </CommonProperty>
             <GroupArmAds>
               <Cads>
@@ -2233,6 +2233,11 @@
               <FileName>lv_draw_2dge_layer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_draw\2dge\lv_draw_2dge_layer.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_2dge.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drv_2dge.c</FilePath>
             </File>
           </Files>
         </Group>

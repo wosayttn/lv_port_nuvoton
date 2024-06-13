@@ -9,7 +9,7 @@
 #include "lvgl.h"
 #include "lv_glue.h"
 
-#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * LV_VER_RES_MAX * (LV_COLOR_DEPTH / 8) * CONFIG_LCD_FB_NUM), DEF_CACHE_LINE_SIZE)
+#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * LV_VER_RES_MAX * (LV_COLOR_DEPTH/8) * CONFIG_LCD_FB_NUM), DEF_CACHE_LINE_SIZE)
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DEF_CACHE_LINE_SIZE)));
 
@@ -28,6 +28,12 @@ S_CALIBRATION_MATRIX g_sCalMat = { 13321, -53, -1069280, 96, 8461, -1863312, 655
 
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
 static volatile uint32_t s_vu32Displayblank = 0;
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    static xQueueHandle s_VSyncQ = NULL;
+    static uint8_t dummy = 0x87;
+#endif
+
 static void lcd_vpost_handler(void)
 {
     /* clear VPOST interrupt state */
@@ -37,6 +43,15 @@ static void lcd_vpost_handler(void)
     {
         outpw(REG_LCM_INT_CS, inpw(REG_LCM_INT_CS) | VPOSTB_DISP_F_INT);
         s_vu32Displayblank++;
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+        xQueueSendFromISR(s_VSyncQ, &dummy, &xHigherPriorityTaskWoken);
+
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#endif
+
     }
     else if (uintstatus & VPOSTB_BUS_ERROR_INT)
     {
@@ -52,7 +67,7 @@ void dump_lcd_timings(void)
 
     for (id = 0 ; id < DIS_PANEL_CNT; id++)
     {
-        VPOST_BF_T *psLCMInstance = (VPOST_BF_T*) vpostLCMGetInstance(id);
+        VPOST_BF_T *psLCMInstance = (VPOST_BF_T *) vpostLCMGetInstance(id);
         sysprintf("[%d]============================================================================\n", id);
 
         sysprintf("CRTCSIZE: 0x%08X\n", psLCMInstance->u32Reg_CRTCSIZE);
@@ -125,7 +140,7 @@ int lcd_device_initialize(void)
 #define LCD_TIMING_MARGIN_LOWER  19    /*!< VFP (Vertical Front Porch) */
 #define LCD_TIMING_VSYNC_LEN     3     /*!< VPW (VSYNC width) */
     i32DisplayPanel = DIS_PANEL_FW070TFT;
-	
+
 #endif
 
 #if 0
@@ -151,7 +166,7 @@ int lcd_device_initialize(void)
 #elif defined(__480x272__)
 
     i32DisplayPanel = DIS_PANEL_FW043TFT;
-	
+
 #else
 
 #error "Unsupported resolution definition. Please correct".
@@ -172,6 +187,13 @@ int lcd_device_initialize(void)
     vpostSetFrameBuffer(s_au8FrameBuf);
 
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    /* Create a queue of length 1 */
+    s_VSyncQ = xQueueGenericCreate(1, sizeof(uint8_t), 0);
+    LV_ASSERT(s_VSyncQ != NULL);
+#endif
+
     // Enable LCD interrupt
     outpw(REG_LCM_DCCS, inpw(REG_LCM_DCCS) | VPOSTB_DISP_INT_EN);
     outpw(REG_LCM_INT_CS, inpw(REG_LCM_INT_CS) | VPOSTB_DISP_F_EN);
@@ -224,9 +246,17 @@ int lcd_device_control(int cmd, void *argv)
     case evLCD_CTRL_WAIT_VSYNC:
     {
         volatile uint32_t next = s_vu32Displayblank + 1;
-        while (s_vu32Displayblank <  next)
         {
+#if (LV_USE_OS==LV_OS_FREERTOS)
+            /* First make sure the queue is empty, by trying to remove an element with 0 timeout. */
+            xQueueReceive(s_VSyncQ, &dummy, 0);
+
+            /* Wait for next VSYNC to occur. */
+            xQueueReceive(s_VSyncQ, &dummy, portMAX_DELAY);
+#else
             //Wait next blank coming;
+            while (s_vu32Displayblank <  next);
+#endif
         }
     }
     break;

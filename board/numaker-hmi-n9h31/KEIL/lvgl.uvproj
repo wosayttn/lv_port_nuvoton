@@ -2226,6 +2226,21 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_draw\2dge\lv_draw_2dge_fill.c</FilePath>
             </File>
+            <File>
+              <FileName>lv_draw_2dge_image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\2dge\lv_draw_2dge_image.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_2dge_layer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\2dge\lv_draw_2dge_layer.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_2dge.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\2dge\drv_2dge.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

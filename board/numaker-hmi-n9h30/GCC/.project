@@ -50,6 +50,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>lv_draw</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>sls_files</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -178,6 +183,31 @@
 			<name>lv_port/touch_adc_calibration.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_adc_calibration.c</locationURI>
+		</link>
+		<link>
+			<name>lv_draw/drv_2dge.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/2dge/drv_2dge.c</locationURI>
+		</link>
+		<link>
+			<name>lv_draw/lv_draw_2dge.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/2dge/lv_draw_2dge.c</locationURI>
+		</link>
+		<link>
+			<name>lv_draw/lv_draw_2dge_fill.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/2dge/lv_draw_2dge_fill.c</locationURI>
+		</link>
+		<link>
+			<name>lv_draw/lv_draw_2dge_image.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/2dge/lv_draw_2dge_image.c</locationURI>
+		</link>
+		<link>
+			<name>lv_draw/lv_draw_2dge_layer.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/2dge/lv_draw_2dge_layer.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/_lv_cache_lru_rb.c</name>

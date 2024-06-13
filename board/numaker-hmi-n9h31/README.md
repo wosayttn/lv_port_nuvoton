@@ -1,17 +1,9 @@
 # **NuMaker-HMI-N9H31**
 
-## **Folder Structure**
-
-| Folder Name | Description |
+| Major Folder | Description |
 |-|-|
 | GCC | GCC project file |
 | KEIL | MDK4 project file |
-| lv_port | lvgl porting files |
-| sls_files | User UI files SLS exported |
-| lv_conf.h | Major lvgl configuration file |
-| main.c | main routine |
-| standalone.c | minimal C library bootstrap for MDK4 |
-| wb_init.s | start-up routine for MDK4 |
 
 ## **KEIL project**
 

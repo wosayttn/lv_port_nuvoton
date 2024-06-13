@@ -12,10 +12,9 @@
 #define LV_NUVOTON_INCLUDE     "N9H31.h"
 #include LV_NUVOTON_INCLUDE
 
-#define LV_USE_DRAW_2DGE                       1
-#define LV_USE_PARALLEL_DRAW_DEBUG             0
+#define LV_USE_DRAW_2DGE                1
+#define LV_USE_PARALLEL_DRAW_DEBUG      0
 
-//#define LV_USE_OS   LV_OS_NONE
 #define LV_USE_OS   LV_OS_FREERTOS
 
 #if defined(__800x480__)
@@ -59,6 +58,7 @@
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
+//#define LV_USE_DEMO_BENCHMARK           1
 //#define LV_USE_DEMO_MUSIC             1
 #if LV_USE_DEMO_MUSIC
     #define LV_DEMO_MUSIC_AUTO_PLAY     1

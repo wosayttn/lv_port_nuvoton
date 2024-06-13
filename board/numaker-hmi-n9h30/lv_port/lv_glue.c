@@ -21,6 +21,12 @@ S_CALIBRATION_MATRIX g_sCalMat = { 13292, 56, -1552344, -79, 8401, -1522648, 655
 
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
 static volatile uint32_t s_vu32Displayblank = 0;
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    static xQueueHandle s_VSyncQ = NULL;
+    static uint8_t dummy = 0x87;
+#endif
+
 static void lcd_vpost_handler(void)
 {
     /* clear VPOST interrupt state */
@@ -30,6 +36,15 @@ static void lcd_vpost_handler(void)
     {
         outpw(REG_LCM_INT_CS, inpw(REG_LCM_INT_CS) | VPOSTB_DISP_F_INT);
         s_vu32Displayblank++;
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+        xQueueSendFromISR(s_VSyncQ, &dummy, &xHigherPriorityTaskWoken);
+
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#endif
+
     }
     else if (uintstatus & VPOSTB_BUS_ERROR_INT)
     {
@@ -38,16 +53,69 @@ static void lcd_vpost_handler(void)
 }
 #endif
 
+
+void dump_lcd_timings(void)
+{
+    int id;
+
+    for (id = 0 ; id < DIS_PANEL_CNT; id++)
+    {
+        VPOST_BF_T *psLCMInstance = (VPOST_BF_T *) vpostLCMGetInstance(id);
+        sysprintf("[%d]============================================================================\n", id);
+
+        sysprintf("CRTCSIZE: 0x%08X\n", psLCMInstance->u32Reg_CRTCSIZE);
+        sysprintf("\tHorizontal Total Pixels: %d (HBP+XRES+HFP)\n", psLCMInstance->sCRTCSIZE.HTT);
+        sysprintf("\tVertical Total Pixels: %d (VBP+YRES+VFP)\n", psLCMInstance->sCRTCSIZE.VTT);
+
+        sysprintf("CRTCDEND: 0x%08X\n", psLCMInstance->u32Reg_CRTCDEND);
+        sysprintf("\tHorizontal Display Enable End: %d (XRES)\n", psLCMInstance->sCRTCDEND.HDEND);
+        sysprintf("\tVertical Display Enable End: %d (YRES)\n", psLCMInstance->sCRTCDEND.VDEND);
+
+        sysprintf("CRTCHR: 0x%08X\n", psLCMInstance->u32Reg_CRTCHR);
+        sysprintf("\tInternal Horizontal Retrace Start Timing: %d (XRES+1)\n", psLCMInstance->sCRTCHR.HRS);
+        sysprintf("\tInternal Horizontal Retrace End Low: %d (XRES+5)\n", psLCMInstance->sCRTCHR.HRE);
+
+        sysprintf("CRTCHSYNC: 0x%08X\n", psLCMInstance->u32Reg_CRTCHSYNC);
+        sysprintf("\tHorizontal Sync Start Timing: %d (XRES+HFP+0)\n", psLCMInstance->sCRTCHSYNC.HSYNC_S);
+        sysprintf("\tHorizontal Sync End Timing: %d (XRES+HFP+HPW)\n", psLCMInstance->sCRTCHSYNC.HSYNC_E);
+        sysprintf("\tHsync Signal Adjustment For Multi-Cycles Per Pixel Mode Of Sync-Based Unipac-LCD: %d\n", psLCMInstance->sCRTCHSYNC.HSYNC_SHIFT);
+
+        sysprintf("CRTCVR: 0x%08X\n", psLCMInstance->u32Reg_CRTCVR);
+        sysprintf("\tInternal Vertical Retrace Start Timing: %d (YRES+VFP+0)\n", psLCMInstance->sCRTCVR.VRS);
+        sysprintf("\tInternal Vertical Retrace End Low: %d (YRES+VFP+VPW)\n", psLCMInstance->sCRTCVR.VRE);
+
+        sysprintf("LCD_TIMING_WIDTH(XRES): %d\n", psLCMInstance->sCRTCDEND.HDEND);
+        sysprintf("LCD_TIMING_HEIGHT(YRES): %d\n", psLCMInstance->sCRTCDEND.VDEND);
+        sysprintf("LCD_TIMING_MARGIN_LEFT(HBP): %d\n", psLCMInstance->sCRTCSIZE.HTT - psLCMInstance->sCRTCHSYNC.HSYNC_S);
+        sysprintf("LCD_TIMING_MARGIN_RIGHT(HFP): %d\n", psLCMInstance->sCRTCHSYNC.HSYNC_S - psLCMInstance->sCRTCDEND.HDEND);
+        sysprintf("LCD_TIMING_HSYNC_LEN(HPW): %d\n", psLCMInstance->sCRTCHSYNC.HSYNC_E - psLCMInstance->sCRTCHSYNC.HSYNC_S);
+
+        sysprintf("LCD_TIMING_MARGIN_UPPER(VBP): %d\n", psLCMInstance->sCRTCSIZE.VTT - psLCMInstance->sCRTCVR.VRS);
+        sysprintf("LCD_TIMING_MARGIN_LOWER(VFP): %d\n", psLCMInstance->sCRTCVR.VRS - psLCMInstance->sCRTCDEND.VDEND);
+        sysprintf("LCD_TIMING_VSYNC_LEN(VPW): %d\n", psLCMInstance->sCRTCVR.VRE - psLCMInstance->sCRTCVR.VRS);
+
+        sysprintf("[%d]@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n", id);
+
+    }
+}
+
 int lcd_device_initialize(void)
 {
+    int i32DisplayPanel;
 
 #if defined(__800x480__)
-    vpostLCMInit(DIS_PANEL_FW070TFT);
+    i32DisplayPanel = DIS_PANEL_FW070TFT;
 #elif defined(__480x272__)
-    vpostLCMInit(DIS_PANEL_FW043TFT);
+
+    i32DisplayPanel = DIS_PANEL_FW043TFT;
+
 #else
+
 #error "Unsupported resolution definition. Please correct".
+
 #endif
+
+    vpostLCMInit(i32DisplayPanel);
 
     // Set scale to 1:1
     vpostVAScalingCtrl(1, 0, 1, 0, VA_SCALE_INTERPOLATION);
@@ -61,6 +129,13 @@ int lcd_device_initialize(void)
     vpostSetFrameBuffer(s_au8FrameBuf);
 
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    /* Create a queue of length 1 */
+    s_VSyncQ = xQueueGenericCreate(1, sizeof(uint8_t), 0);
+    LV_ASSERT(s_VSyncQ != NULL);
+#endif
+
     // Enable LCD interrupt
     outpw(REG_LCM_DCCS, inpw(REG_LCM_DCCS) | VPOSTB_DISP_INT_EN);
     outpw(REG_LCM_INT_CS, inpw(REG_LCM_INT_CS) | VPOSTB_DISP_F_EN);
@@ -113,9 +188,17 @@ int lcd_device_control(int cmd, void *argv)
     case evLCD_CTRL_WAIT_VSYNC:
     {
         volatile uint32_t next = s_vu32Displayblank + 1;
-        while (s_vu32Displayblank <  next)
         {
+#if (LV_USE_OS==LV_OS_FREERTOS)
+            /* First make sure the queue is empty, by trying to remove an element with 0 timeout. */
+            xQueueReceive(s_VSyncQ, &dummy, 0);
+
+            /* Wait for next VSYNC to occur. */
+            xQueueReceive(s_VSyncQ, &dummy, portMAX_DELAY);
+#else
             //Wait next blank coming;
+            while (s_vu32Displayblank <  next);
+#endif
         }
     }
     break;

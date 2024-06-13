@@ -92,12 +92,19 @@ void lv_draw_2dge_init(void)
     draw_2dge_unit->base_unit.delete_cb = _2dge_delete;
 
 #if LV_USE_OS
+    void ge2dInterruptInit(void);
+    ge2dInterruptInit();
+
     lv_thread_init(&draw_2dge_unit->thread, LV_THREAD_PRIO_HIGH, _2dge_render_thread_cb, 2 * 1024, draw_2dge_unit);
 #endif
 }
 
 void lv_draw_2dge_deinit(void)
 {
+#if LV_USE_OS
+    void ge2dInterruptDeinit(void);
+    ge2dInterruptDeinit();
+#endif
 }
 
 /**********************
@@ -148,20 +155,28 @@ static bool _2dge_draw_img_supported(const lv_draw_image_dsc_t *draw_dsc)
     bool has_recolor = (draw_dsc->recolor_opa > LV_OPA_MIN);
     bool has_transform = (draw_dsc->rotation != 0 || draw_dsc->scale_x != LV_SCALE_NONE ||
                           draw_dsc->scale_y != LV_SCALE_NONE);
-
-    /* Recolor and transformation are not supported at the same time. */
-    if (has_recolor || has_transform)
-        return false;
-
     bool has_opa = (draw_dsc->opa < (lv_opa_t)LV_OPA_MAX);
     bool src_has_alpha = (img_dsc->header.cf == LV_COLOR_FORMAT_ARGB8888);
 
-    if (draw_dsc->rotation)
+    /* Recolor and transformation are not supported at the same time. */
+    if (has_recolor || has_transform || draw_dsc->rotation)
         return false;
 
     return true;
 }
 
+static bool _2dge_buf_aligned(const void *buf, uint32_t stride)
+{
+    /* Test for pointer alignment */
+    if ((uintptr_t)buf % 4)
+        return false;
+
+    /* Test for invalid stride (no stride alignment required) */
+    if (stride == 0)
+        return false;
+
+    return true;
+}
 
 static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 {
@@ -184,7 +199,6 @@ static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
     /* for 2DGE limitation. */
     if (px_size == 2)
     {
-
         /* Check Hardware constraint: The stride must be a word-alignment. */
         bool bAlignedWord = ((blend_area_stride & 0x3) == 0) &&
                             (((blend_area.x1 * px_size) & 0x3) == 0) ? true : false;
@@ -201,52 +215,59 @@ static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 
         if (!((draw_dsc->radius == 0) && (draw_dsc->grad.dir == LV_GRAD_DIR_NONE) && (draw_dsc->opa >= LV_OPA_MAX)))
             goto _2dge_evaluate_not_ok;
-
-        if (task->preference_score > 70)
-        {
-            task->preference_score = 70;
-            task->preferred_draw_unit_id = DRAW_UNIT_ID_2DGE;
-        }
-        goto _2dge_evaluate_ok;
     }
     break;
 
     case LV_DRAW_TASK_TYPE_LAYER:
-    case LV_DRAW_TASK_TYPE_IMAGE:
     {
         const lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
         lv_layer_t *layer_to_draw = (lv_layer_t *)draw_dsc->src;
-        int32_t src_stride = layer_to_draw->draw_buf->header.stride;
-        int32_t dest_stride = u->target_layer->draw_buf->header.stride;
 
-        if (!_2dge_src_cf_supported(layer_to_draw->color_format))
+        if (!_2dge_src_cf_supported(layer_to_draw->color_format) ||
+                !_2dge_buf_aligned(layer_to_draw->draw_buf->data, layer_to_draw->draw_buf->header.stride) ||
+                (layer_to_draw->color_format != draw_dsc_base->layer->color_format))
             goto _2dge_evaluate_not_ok;
 
         if (!_2dge_draw_img_supported(draw_dsc))
             goto _2dge_evaluate_not_ok;
+    }
+    break;
 
-        if (src_stride != dest_stride)
+    case LV_DRAW_TASK_TYPE_IMAGE:
+    {
+        lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
+        const lv_image_dsc_t *img_dsc = draw_dsc->src;
+
+        int32_t src_stride = img_dsc->header.stride;
+        int32_t dest_stride = u->target_layer->draw_buf->header.stride;
+
+        if (!_2dge_src_cf_supported(img_dsc->header.cf) ||
+                !_2dge_buf_aligned(img_dsc->data, img_dsc->header.stride) ||
+                (img_dsc->header.cf != draw_dsc_base->layer->color_format))
             goto _2dge_evaluate_not_ok;
 
-        if (task->preference_score > 70)
-        {
-            task->preference_score = 70;
-            task->preferred_draw_unit_id = DRAW_UNIT_ID_2DGE;
-        }
-
-        goto _2dge_evaluate_ok;
+        if (!_2dge_draw_img_supported(draw_dsc))
+            goto _2dge_evaluate_not_ok;
     }
     break;
 
     default:
-        break;
+        goto _2dge_evaluate_not_ok;
     }
 
-_2dge_evaluate_not_ok:
-    return 0;
-
 _2dge_evaluate_ok:
+
+    if (task->preference_score > 70)
+    {
+        task->preference_score = 70;
+        task->preferred_draw_unit_id = DRAW_UNIT_ID_2DGE;
+    }
+
     return 1;
+
+_2dge_evaluate_not_ok:
+
+    return 0;
 }
 
 static int32_t _2dge_dispatch(lv_draw_unit_t *draw_unit, lv_layer_t *layer)
