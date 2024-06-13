@@ -2230,6 +2230,21 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_fill.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_bitblt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\drv_bitblt.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_bitblt_image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_image.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_bitblt_layer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_layer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2380,7 +2395,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>18</TargetSelection>
+          <TargetSelection>16</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -2394,7 +2409,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile>..\..\..\bsp\n9h26\BSP\Script\N9H26\N9H26K6.ini</InitializationFile>
-            <Driver>Segger\JLTAgdi.dll</Driver>
+            <Driver>BIN\UL2ARM.DLL</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>
@@ -4460,6 +4475,21 @@
               <FileName>lv_draw_bitblt_fill.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_fill.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_bitblt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\drv_bitblt.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_bitblt_image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_image.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_bitblt_layer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_layer.c</FilePath>
             </File>
           </Files>
         </Group>

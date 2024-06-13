@@ -13,7 +13,10 @@
 #include LV_NUVOTON_INCLUDE
 
 #define LV_USE_DRAW_2DGE                1
-#define LV_USE_PARALLEL_DRAW_DEBUG      0
+#define LV_USE_PARALLEL_DRAW_DEBUG             0
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     32
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
+#define CONFIG_LV_DRAW_BUF_ALIGN               32
 
 #define LV_USE_OS   LV_OS_FREERTOS
 

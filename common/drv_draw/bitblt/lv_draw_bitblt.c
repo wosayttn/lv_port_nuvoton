@@ -92,15 +92,19 @@ void lv_draw_bitblt_init(void)
     draw_bitblt_unit->base_unit.delete_cb = _bitblt_delete;
 
 #if LV_USE_OS
+    void bitbltInterruptInit(void);
+    bitbltInterruptInit();
+
     lv_thread_init(&draw_bitblt_unit->thread, LV_THREAD_PRIO_HIGH, _bitblt_render_thread_cb, 2 * 1024, draw_bitblt_unit);
 #endif
-
-    bltOpen();
 }
 
 void lv_draw_bitblt_deinit(void)
 {
-    bltClose();
+#if LV_USE_OS
+    void bitbltInterruptDeinit(void);
+    bitbltInterruptDeinit();
+#endif
 }
 
 /**********************
@@ -144,44 +148,172 @@ static inline bool _bitblt_dest_cf_supported(lv_color_format_t cf)
     return is_cf_supported;
 }
 
-static int32_t _bitblt_evaluate(lv_draw_unit_t *u, lv_draw_task_t *t)
+static bool _bitblt_draw_img_supported(const lv_draw_image_dsc_t *draw_dsc)
+{
+    const lv_image_dsc_t *img_dsc = draw_dsc->src;
+
+    bool has_recolor = (draw_dsc->recolor_opa > LV_OPA_MIN);
+
+    bool has_transform = (draw_dsc->rotation != 0 || draw_dsc->scale_x != LV_SCALE_NONE || draw_dsc->scale_y != LV_SCALE_NONE);
+    bool has_opa = (draw_dsc->opa < (lv_opa_t)LV_OPA_MAX);
+    bool src_has_alpha = (img_dsc->header.cf == LV_COLOR_FORMAT_ARGB8888);
+
+    //sysprintf("draw_dsc->rotation: %d\n", draw_dsc->rotation);
+    //sysprintf("src_has_alpha: %d\n", src_has_alpha);
+    //sysprintf("scale_x: %d, scale_y: %d\n", draw_dsc->scale_x, draw_dsc->scale_y);
+
+    /* Recolor and transformation are not supported at the same time. */
+    if (has_recolor || has_transform)
+        return false;
+
+    return true;
+}
+
+static bool _bitblt_buf_aligned(const void *buf, uint32_t stride)
+{
+    /* Test for pointer alignment */
+    if ((uintptr_t)buf % 4)
+        return false;
+
+    /* Test for invalid stride (no stride alignment required) */
+    if (stride % 4)
+        return false;
+
+    return true;
+}
+
+void dump_draw_info(
+    const char *str1,
+    const char *str2,
+    const lv_area_t *area,
+    const lv_draw_buf_t *draw_buf)
+{
+    return;
+
+    sysprintf("[%s]%s\n", str1, str2);
+
+    if (area)
+    {
+        sysprintf("\tarea(%d-%d): (%d, %d) -> (%d, %d)\n",
+                  lv_area_get_width(area),
+                  lv_area_get_height(area),
+                  area->x1,
+                  area->y1,
+                  area->x2,
+                  area->y2);
+    }
+
+    if (draw_buf)
+    {
+        sysprintf("\tdraw_buf@%08x, sz: %d\n",
+                  draw_buf->data,
+                  draw_buf->data_size);
+
+        sysprintf("\t\theader(%08x): cf: %d, w:%d, h:%d, stride:%d\n",
+                  draw_buf->header.magic,
+                  draw_buf->header.cf,
+                  draw_buf->header.w,
+                  draw_buf->header.h,
+                  draw_buf->header.stride);
+    }
+}
+
+static int32_t _bitblt_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 {
     LV_UNUSED(u);
 
-    const lv_draw_dsc_base_t *draw_dsc_base = (lv_draw_dsc_base_t *) t->draw_dsc;
+    const lv_draw_dsc_base_t *draw_dsc_base = (lv_draw_dsc_base_t *) task->draw_dsc;
 
     uint8_t px_size = lv_color_format_get_size(draw_dsc_base->layer->color_format);
+
+    lv_area_t blend_area;
+    uint32_t blend_area_stride;
 
     /* Check capacity. */
     if (!_bitblt_dest_cf_supported(draw_dsc_base->layer->color_format))
         return 0;
 
-    if (lv_area_get_size(&draw_dsc_base->layer->buf_area) < 7200u)
-        return 0;
+    lv_area_copy(&blend_area, &draw_dsc_base->layer->buf_area);
+    blend_area_stride = lv_area_get_width(&blend_area) * px_size;
 
+    /* for 2DGE limitation. */
+    if (px_size == 2)
+    {
+        /* Check Hardware constraint: The stride must be a word-alignment. */
+        bool bAlignedWord = ((blend_area_stride & 0x3) == 0) &&
+                            (((blend_area.x1 * px_size) & 0x3) == 0) ? true : false;
 
-    switch (t->type)
+        if (!bAlignedWord)
+            goto _bitblt_evaluate_not_ok;
+    }
+
+    switch (task->type)
     {
     case LV_DRAW_TASK_TYPE_FILL:
     {
-        const lv_draw_fill_dsc_t *draw_dsc = (lv_draw_fill_dsc_t *) t->draw_dsc;
+        const lv_draw_fill_dsc_t *draw_dsc = (lv_draw_fill_dsc_t *) task->draw_dsc;
 
         if ((draw_dsc->radius != 0) ||
-                (draw_dsc->grad.dir != (lv_grad_dir_t)LV_GRAD_DIR_NONE) ||
-                (draw_dsc->opa < LV_OPA_MAX))
-            return 0;
-
-        if (t->preference_score > 70)
-        {
-            t->preference_score = 70;
-            t->preferred_draw_unit_id = DRAW_UNIT_ID_BITBLT;
-        }
-        return 1;
+                (draw_dsc->grad.dir != (lv_grad_dir_t)LV_GRAD_DIR_NONE))
+            goto _bitblt_evaluate_not_ok;
     }
+    break;
+
+    case LV_DRAW_TASK_TYPE_LAYER:
+    {
+        const lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
+        lv_layer_t *layer_to_draw = (lv_layer_t *)draw_dsc->src;
+
+        if (!_bitblt_src_cf_supported(layer_to_draw->color_format) ||
+                !_bitblt_buf_aligned(layer_to_draw->draw_buf->data, layer_to_draw->draw_buf->header.stride))
+            goto _bitblt_evaluate_not_ok;
+
+        if (!_bitblt_draw_img_supported(draw_dsc))
+            goto _bitblt_evaluate_not_ok;
+    }
+    break;
+
+    case LV_DRAW_TASK_TYPE_IMAGE:
+    {
+        lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
+        const lv_image_dsc_t *img_dsc = draw_dsc->src;
+
+        int32_t src_stride = img_dsc->header.stride;
+        int32_t dest_x = blend_area.x1;
+        int32_t dest_y = blend_area.y1;
+        int32_t dest_w = lv_area_get_width(&blend_area);
+        int32_t dest_h = lv_area_get_height(&blend_area);
+        int32_t dest_stride = blend_area_stride;
+        uint8_t *dest_buf = draw_dsc_base->layer->draw_buf->data;
+
+        dump_draw_info(__func__, "Source", NULL, img_dsc);
+        dump_draw_info(__func__, "Destination", &draw_dsc_base->layer->buf_area, draw_dsc_base->layer->draw_buf);
+
+        if (!_bitblt_src_cf_supported(img_dsc->header.cf) ||
+                !_bitblt_buf_aligned(img_dsc->data, img_dsc->header.stride) ||
+                !_bitblt_buf_aligned(dest_buf + dest_stride * dest_h + dest_x * px_size, dest_stride))
+            goto _bitblt_evaluate_not_ok;
+
+        if (!_bitblt_draw_img_supported(draw_dsc))
+            goto _bitblt_evaluate_not_ok;
+    }
+    break;
 
     default:
-        return 0;
+        goto _bitblt_evaluate_not_ok;
     }
+
+_bitblt_evaluate_ok:
+
+    if (task->preference_score > 70)
+    {
+        task->preference_score = 70;
+        task->preferred_draw_unit_id = DRAW_UNIT_ID_BITBLT;
+    }
+
+    return 1;
+
+_bitblt_evaluate_not_ok:
 
     return 0;
 }
@@ -249,13 +381,13 @@ static int32_t _bitblt_delete(lv_draw_unit_t *draw_unit)
 
 static void _bitblt_execute_drawing(lv_draw_bitblt_unit_t *u)
 {
-    lv_draw_task_t *t = u->task_act;
+    lv_draw_task_t *task = u->task_act;
     lv_draw_unit_t *draw_unit = (lv_draw_unit_t *)u;
     lv_layer_t *layer = draw_unit->target_layer;
     lv_draw_buf_t *draw_buf = layer->draw_buf;
 
     lv_area_t draw_area;
-    if (!_lv_area_intersect(&draw_area, &t->area, draw_unit->clip_area))
+    if (!_lv_area_intersect(&draw_area, &task->area, draw_unit->clip_area))
         return; /*Fully clipped, nothing to do*/
 
     /* Make area relative to the buffer */
@@ -264,10 +396,16 @@ static void _bitblt_execute_drawing(lv_draw_bitblt_unit_t *u)
     /* Invalidate only the drawing area */
     lv_draw_buf_invalidate_cache(draw_buf, &draw_area);
 
-    switch (t->type)
+    switch (task->type)
     {
     case LV_DRAW_TASK_TYPE_FILL:
-        lv_draw_bitblt_fill(draw_unit, t->draw_dsc, &t->area);
+        lv_draw_bitblt_fill(draw_unit, task->draw_dsc, &task->area);
+        break;
+    case LV_DRAW_TASK_TYPE_LAYER:
+        lv_draw_bitblt_layer((lv_draw_unit_t *)u, task->draw_dsc, &task->area);
+        break;
+    case LV_DRAW_TASK_TYPE_IMAGE:
+        lv_draw_bitblt_image((lv_draw_unit_t *)u, task->draw_dsc, &task->area);
         break;
     default:
         break;
@@ -275,10 +413,10 @@ static void _bitblt_execute_drawing(lv_draw_bitblt_unit_t *u)
 
 #if LV_USE_PARALLEL_DRAW_DEBUG
     /*Layers manage it for themselves*/
-    if (t->type != LV_DRAW_TASK_TYPE_LAYER)
+    if (task->type != LV_DRAW_TASK_TYPE_LAYER)
     {
         lv_area_t draw_area;
-        if (!_lv_area_intersect(&draw_area, &t->area, u->base_unit.clip_area))
+        if (!_lv_area_intersect(&draw_area, &task->area, u->base_unit.clip_area))
             return;
 
         int32_t idx = 0;

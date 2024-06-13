@@ -18,7 +18,6 @@
 #define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
 #define CONFIG_LV_DRAW_BUF_ALIGN               32
 
-//#define LV_USE_OS   LV_OS_NONE
 #define LV_USE_OS   LV_OS_FREERTOS
 
 #if defined(__800x480__)
@@ -66,6 +65,7 @@
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
+//#define LV_USE_DEMO_BENCHMARK           1
 //#define LV_USE_DEMO_MUSIC             1
 #if LV_USE_DEMO_MUSIC
     #define LV_DEMO_MUSIC_AUTO_PLAY     1

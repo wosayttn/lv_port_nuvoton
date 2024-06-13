@@ -165,14 +165,30 @@ static int nuvoton_fs_fini(void)
     return 0;
 }
 
+
+#if (CONFIG_LV_DISP_FULL_REFRESH==1)
 static volatile uint32_t s_vu32Displayblank = 0;
 
-int lcd_vpost_handler(UINT8 *pu8, UINT32 u32)
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    static xQueueHandle s_VSyncQ = NULL;
+    static uint8_t dummy = 0x87;
+#endif
+
+static int lcd_vpost_handler(UINT8 *pu8, UINT32 u32)
 {
     s_vu32Displayblank++;
 
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    xQueueSendFromISR(s_VSyncQ, &dummy, &xHigherPriorityTaskWoken);
+
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#endif
     return 0;
 }
+#endif
+
 
 int lcd_device_initialize(void)
 {
@@ -197,6 +213,14 @@ int lcd_device_open(void)
     LV_ASSERT(vpostLCMInit(&lcdFormat, (UINT32 *)s_au8FrameBuf) == 0);
 
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    /* Create a queue of length 1 */
+    s_VSyncQ = xQueueGenericCreate(1, sizeof(uint8_t), 0);
+    LV_ASSERT(s_VSyncQ != NULL);
+#endif
+
+    // Enable LCD interrupt
     PFN_DRVVPOST_INT_CALLBACK pfnOld;
     vpostInstallCallBack(eDRVVPOST_VINT, lcd_vpost_handler, &pfnOld);
     vpostEnableInt(eDRVVPOST_VINT);
@@ -232,15 +256,25 @@ int lcd_device_control(int cmd, void *argv)
     }
     break;
 
+#if (CONFIG_LV_DISP_FULL_REFRESH==1)
     case evLCD_CTRL_WAIT_VSYNC:
     {
         volatile uint32_t next = s_vu32Displayblank + 1;
-        while (s_vu32Displayblank <  next)
         {
+#if (LV_USE_OS==LV_OS_FREERTOS)
+            /* First make sure the queue is empty, by trying to remove an element with 0 timeout. */
+            xQueueReceive(s_VSyncQ, &dummy, 0);
+
+            /* Wait for next VSYNC to occur. */
+            xQueueReceive(s_VSyncQ, &dummy, portMAX_DELAY);
+#else
             //Wait next blank coming;
+            while (s_vu32Displayblank <  next);
+#endif
         }
     }
     break;
+#endif
 
     case evLCD_CTRL_RECT_UPDATE:
     {
@@ -374,4 +408,3 @@ int touchpad_device_finalize(void)
 {
     return 0;
 }
-

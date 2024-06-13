@@ -2293,6 +2293,21 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_fill.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_bitblt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\drv_bitblt.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_bitblt_image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_image.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_bitblt_layer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_layer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -4586,6 +4601,21 @@
               <FileName>lv_draw_bitblt_fill.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_fill.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_bitblt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\drv_bitblt.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_bitblt_image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_image.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_bitblt_layer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_layer.c</FilePath>
             </File>
           </Files>
         </Group>
