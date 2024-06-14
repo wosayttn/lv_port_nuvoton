@@ -99,9 +99,79 @@ void dump_lcd_timings(void)
     }
 }
 
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    static SemaphoreHandle_t s_xGDMASem = NULL;
+#endif
+
+static void gdma0ISR(void)
+{
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    outpw(REG_GDMA_INTCS, 0x100);
+
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    xSemaphoreGiveFromISR(s_xGDMASem, &xHigherPriorityTaskWoken);
+
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#endif
+}
+
+void GDMA_M2M_Transfer(uint32_t u32DestAddr, uint32_t u32SrcAddr, uint32_t u32TransferSize)
+{
+    sysCleanDcache((UINT32)u32SrcAddr, u32TransferSize);
+
+    /* Disable/Reset GDMA Channel 0 */
+    outpw(REG_GDMA_CTL0,  0);
+
+    /* GDMA Channel 0 Source Base Address Register */
+    outpw(REG_GDMA_SRCB0, (uint32_t)u32SrcAddr);
+
+    /* GDMA Channel 0 Destination Base Address Register */
+    outpw(REG_GDMA_DSTB0, (uint32_t)u32DestAddr);
+
+    /* GDMA Channel 0 Transfer byte count */
+    outpw(REG_GDMA_TCNT0, u32TransferSize >> 5);
+
+    /* Configurae GDMAEN, BME, TWS=2, Data-width=32.*/
+    outpw(REG_GDMA_CTL0, 0x2003);
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    /* Enable Channel-0 interrupt .*/
+    outpw(REG_GDMA_INTCS, inpw(REG_GDMA_INTCS) | 0x1);
+#else
+    /* Disable Channel-0 interrupt .*/
+    outpw(REG_GDMA_INTCS, inpw(REG_GDMA_INTCS) & ~0x1);
+#endif
+
+    /* SoftReq field of GDMA Channel 0.*/
+    outpw(REG_GDMA_CTL0, inpw(REG_GDMA_CTL0) | 0x10000);
+}
+
+void GDMA_WaitForCompletion(void)
+{
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    while (xSemaphoreTake(s_xGDMASem, portMAX_DELAY) != pdTRUE);
+#else
+    while (!(inpw(REG_GDMA_INTCS) & 0x100));
+    outpw(REG_GDMA_INTCS, 0x100);
+#endif
+}
+
 int lcd_device_initialize(void)
 {
     int i32DisplayPanel;
+
+    /* GDMA engine clock */
+    outpw(REG_CLK_HCLKEN, inpw(REG_CLK_HCLKEN) | 0x00001000);
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    s_xGDMASem = xSemaphoreCreateBinary();
+    LV_ASSERT(s_xGDMASem != NULL);
+	
+    sysInstallISR(HIGH_LEVEL_SENSITIVE | IRQ_LEVEL_1, GDMA0_IRQn, (PVOID)gdma0ISR);
+    sysSetLocalInterrupt(ENABLE_IRQ);
+    sysEnableInterrupt(GDMA0_IRQn);
+#endif
 
 #if defined(__800x480__)
     i32DisplayPanel = DIS_PANEL_FW070TFT;
@@ -151,9 +221,6 @@ int lcd_device_initialize(void)
 int lcd_device_open(void)
 {
     vpostVAStartTrigger();
-
-    /* GDMA engine clock */
-    outpw(REG_CLK_HCLKEN, inpw(REG_CLK_HCLKEN) | 0x00001000);
 
     return 0;
 }

@@ -105,7 +105,8 @@ void lv_draw_2dge_image(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *ds
             ge2dBitblt_SetAlphaMode(1, dsc->opa, dsc->opa);
         }
 
-        ge2dSpriteBlt_Screen(dest_area->x1, dest_area->y1, dest_w, dest_h, (void *)src_buf);
+        //ge2dSpriteBlt_Screen(dest_area->x1, dest_area->y1, dest_w, dest_h, (void *)src_buf);
+        ge2dSpriteBltx_Screen(dest_area->x1, dest_area->y1, src_area.x1, src_area.y1, dest_w, dest_h, src_w, src_h, (void *)src_buf);
         // -> Leave GE2D
     }
 }

@@ -2237,7 +2237,7 @@
             <File>
               <FileName>drv_2dge.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\drv_2dge.c</FilePath>
+              <FilePath>..\..\..\common\drv_draw\2dge\drv_2dge.c</FilePath>
             </File>
           </Files>
         </Group>

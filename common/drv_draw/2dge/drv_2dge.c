@@ -27,11 +27,6 @@ void ge2dISR(void)
 
     xSemaphoreGiveFromISR(s_xGE2DSem, &xHigherPriorityTaskWoken);
 
-    /* If xHigherPriorityTaskWoken is now set to pdTRUE then a context switch
-       should be performed to ensure the interrupt returns directly to the highest
-       priority task.  The macro used for this purpose is dependent on the port in
-       use and may be called portEND_SWITCHING_ISR(). */
-
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 #endif

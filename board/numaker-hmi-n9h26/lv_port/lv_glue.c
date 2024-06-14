@@ -108,11 +108,40 @@ static int lcd_vpost_handler(UINT8 *pu8, UINT32 u32)
 #endif
 
 
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    static SemaphoreHandle_t s_xVDMASem = NULL;
+#endif
+
+void vdmaISR(unsigned int arg)
+{
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    xSemaphoreGiveFromISR(s_xVDMASem, &xHigherPriorityTaskWoken);
+
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#endif
+}
+
 int lcd_device_initialize(void)
 {
     EDMA_Init();
 
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    s_xVDMASem = xSemaphoreCreateBinary();
+    LV_ASSERT(s_xVDMASem != NULL);
+#endif
+
     return 0;
+}
+
+void EDMA_WaitForCompletion()
+{
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    while (xSemaphoreTake(s_xVDMASem, portMAX_DELAY) != pdTRUE);
+#else
+    while (EDMA_IsBusy(0));
+#endif
 }
 
 int lcd_device_open(void)

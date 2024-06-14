@@ -172,7 +172,7 @@ static bool _2dge_buf_aligned(const void *buf, uint32_t stride)
         return false;
 
     /* Test for invalid stride (no stride alignment required) */
-    if (stride == 0)
+    if (stride % 4)
         return false;
 
     return true;
@@ -243,7 +243,7 @@ static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 
         if (!_2dge_src_cf_supported(img_dsc->header.cf) ||
                 !_2dge_buf_aligned(img_dsc->data, img_dsc->header.stride) ||
-                (img_dsc->header.cf != draw_dsc_base->layer->color_format))
+         				    (img_dsc->header.cf != draw_dsc_base->layer->color_format) )
             goto _2dge_evaluate_not_ok;
 
         if (!_2dge_draw_img_supported(draw_dsc))

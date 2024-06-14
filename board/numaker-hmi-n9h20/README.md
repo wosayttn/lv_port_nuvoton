@@ -15,7 +15,7 @@ User can select listed **Target Name** to build target execution using uVision M
 
 ## **GCC project**
 
-User can select listed **Build configurations** to build target execution using Eclipse-base IDE.
+To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 | Target | Description |
 |-|-|
 | N9H20K5_480x272 | Use 480x272 LCD panel with resistive touch screen(H/W ADC Sampling) |

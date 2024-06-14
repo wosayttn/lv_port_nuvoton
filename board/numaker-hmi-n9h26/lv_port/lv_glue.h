@@ -13,6 +13,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
+
 #define CONFIG_EXTERN_FREQUENCY     sysGetExternalClock()
 
 #define CONFIG_LCD_FB_NUM            3
