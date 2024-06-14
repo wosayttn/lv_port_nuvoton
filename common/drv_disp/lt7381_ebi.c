@@ -57,13 +57,7 @@ static uint32_t lt7381_vram_fifo_isempty(void)
 
 void disp_send_pixels(uint16_t *pixels, int byte_len)
 {
-
     int count = byte_len / sizeof(uint16_t);
-
-    /* REG[03h] Input Control Register（ICR）*/
-    /* Select Graphics mode. */
-    DISP_WRITE_REG(0x03);
-    DISP_WRITE_DATA(DISP_READ_STATUS() & ~BIT2);
 
     /* Set Graphic Read/Write position */
     disp_write_reg(0x5F, 0);
@@ -71,6 +65,7 @@ void disp_send_pixels(uint16_t *pixels, int byte_len)
     disp_write_reg(0x61, 0);
     disp_write_reg(0x62, 0);
 
+    /* Memory Data Read/Write Port */
     DISP_WRITE_REG(0x04);
 
 #if defined(CONFIG_DISP_USE_PDMA)
