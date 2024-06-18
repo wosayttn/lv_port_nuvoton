@@ -59,7 +59,11 @@ struct nu_pdma_memfun_actor
 {
     int         m_i32ChannID;
     uint32_t    m_u32Result;
-    volatile uint32_t    m_psSemMemFun;
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    SemaphoreHandle_t m_psSemMemFun;
+#else
+    volatile uint32_t m_psSemMemFun;
+#endif
 } ;
 typedef struct nu_pdma_memfun_actor *nu_pdma_memfun_actor_t;
 
@@ -1006,7 +1010,12 @@ static void nu_pdma_memfun_actor_init(void)
         memset(&nu_pdma_memfun_actor_arr[i], 0, sizeof(struct nu_pdma_memfun_actor));
         if (-(1) != (nu_pdma_memfun_actor_arr[i].m_i32ChannID = nu_pdma_channel_allocate(PDMA_MEM)))
         {
+#if (LV_USE_OS==LV_OS_FREERTOS)
+            nu_pdma_memfun_actor_arr[i].m_psSemMemFun = xSemaphoreCreateBinary();
+            LV_ASSERT(nu_pdma_memfun_actor_arr[i].m_psSemMemFun != NULL);
+#else
             nu_pdma_memfun_actor_arr[i].m_psSemMemFun = 0;
+#endif
         }
         else
             break;
@@ -1023,7 +1032,14 @@ static void nu_pdma_memfun_cb(void *pvUserData, uint32_t u32Events)
     nu_pdma_memfun_actor_t psMemFunActor = (nu_pdma_memfun_actor_t)pvUserData;
     psMemFunActor->m_u32Result = u32Events;
 
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    xSemaphoreGiveFromISR(psMemFunActor->m_psSemMemFun, &xHigherPriorityTaskWoken);
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#else
     psMemFunActor->m_psSemMemFun = 1;
+#endif
 }
 
 static int nu_pdma_memfun_employ(void)
@@ -1088,8 +1104,12 @@ static int nu_pdma_memfun(void *dest, void *src, uint32_t u32DataWidth, unsigned
                      0);
 
     /* Wait it done. */
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    while (xSemaphoreTake(psMemFunActor->m_psSemMemFun, portMAX_DELAY) != pdTRUE);
+#else
     while (psMemFunActor->m_psSemMemFun == 0);
     psMemFunActor->m_psSemMemFun = 0;
+#endif
 
     /* Give result if get NU_PDMA_EVENT_TRANSFER_DONE.*/
     if (psMemFunActor->m_u32Result & NU_PDMA_EVENT_TRANSFER_DONE)

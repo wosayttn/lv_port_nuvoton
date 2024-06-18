@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE NVT_DCACHE_ON</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port\spim_hyperram;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\thirdparty\arm2d\Library\Include;..\..\..\thirdparty\arm2d\Helper\Include;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\lv_port\spim_hyperram;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\m55m1\Library\StdDriver\inc\gdma;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\thirdparty\arm2d\Library\Include;..\..\..\thirdparty\arm2d\Helper\Include;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -519,6 +519,26 @@
               <FileName>spim_hyper.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\lv_port\spim_hyperram\spim_hyper.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma350_ch_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_ch_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma350_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma350_lib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_lib.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma350_address_remap_template.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_address_remap_template.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2469,6 +2489,36 @@
               <FileName>arm_2d_transform.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_transform.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lv_draw</GroupName>
+          <Files>
+            <File>
+              <FileName>drv_gdma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\gdma\drv_gdma.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_gdma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\gdma\lv_draw_gdma.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_gdma_fill.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\gdma\lv_draw_gdma_fill.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_gdma_image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\gdma\lv_draw_gdma_image.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_gdma_layer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\gdma\lv_draw_gdma_layer.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2808,7 +2858,7 @@
               <MiscControls></MiscControls>
               <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE NVT_DCACHE_ON</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port\spim_hyperram;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\thirdparty\arm2d\Library\Include;..\..\..\thirdparty\arm2d\Helper\Include;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\lv_port\spim_hyperram;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\m55m1\Library\StdDriver\inc\gdma;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\thirdparty\arm2d\Library\Include;..\..\..\thirdparty\arm2d\Helper\Include;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2987,6 +3037,26 @@
               <FileName>spim_hyper.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\lv_port\spim_hyperram\spim_hyper.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma350_ch_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_ch_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma350_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma350_lib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_lib.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma350_address_remap_template.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_address_remap_template.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -4937,6 +5007,36 @@
               <FileName>arm_2d_transform.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_transform.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lv_draw</GroupName>
+          <Files>
+            <File>
+              <FileName>drv_gdma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\gdma\drv_gdma.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_gdma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\gdma\lv_draw_gdma.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_gdma_fill.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\gdma\lv_draw_gdma_fill.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_gdma_image.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\gdma\lv_draw_gdma_image.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_gdma_layer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_draw\gdma\lv_draw_gdma_layer.c</FilePath>
             </File>
           </Files>
         </Group>

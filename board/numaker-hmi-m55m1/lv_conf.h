@@ -9,7 +9,8 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
-#define LV_USE_OS   LV_OS_NONE
+#define LV_USE_OS   LV_OS_FREERTOS
+#define LV_USE_DRAW_GDMA                1
 
 #if defined(__480x272__)
     #define LV_HOR_RES_MAX              480
@@ -25,11 +26,15 @@
 
 #define LV_USE_DRAW_ARM2D_SYNC          1
 #define LV_USE_DRAW_SW_ASM              LV_DRAW_SW_ASM_HELIUM
+//#define LV_USE_NATIVE_HELIUM_ASM        1
+
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_16           1
+#define LV_FONT_MONTSERRAT_24           1
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
+#define LV_USE_DEMO_BENCHMARK           1
 //#define LV_USE_DEMO_MUSIC             1
 #if LV_USE_DEMO_MUSIC
     #define LV_DEMO_MUSIC_AUTO_PLAY     1

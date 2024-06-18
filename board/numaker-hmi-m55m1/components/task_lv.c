@@ -35,6 +35,11 @@ void lv_nuvoton_task(void *pdata)
     lv_log_register_print_cb(lv_nuvoton_log);
 #endif /* LV_USE_LOG */
 
+#if LV_USE_DRAW_GDMA
+    void lv_draw_gdma_init(void);
+    lv_draw_gdma_init();
+#endif
+
     lv_tick_set_cb(xTaskGetTickCount);    /*Expression evaluating to current system time in ms*/
     lv_delay_set_cb(vTaskDelay);
 

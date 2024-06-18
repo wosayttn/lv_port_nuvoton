@@ -83,9 +83,18 @@ static const lt7381_pll_t s_PllSettings[XI_CNT] =
 static void lt7381_hw_reset(void)
 {
     /* Hardware reset */
-    DISP_CLR_RST;
-    disp_delay_ms(100);
     DISP_SET_RST;
+    disp_delay_ms(50);
+    DISP_CLR_RST;
+    disp_delay_ms(50);
+    DISP_SET_RST;
+    disp_delay_ms(50);
+}
+
+static void lt7381_sw_reset(void)
+{
+    DISP_WRITE_REG(0x00);
+    DISP_WRITE_DATA(0x01);
     disp_delay_ms(100);
 }
 
@@ -93,9 +102,6 @@ static void lt7381_wait_ready(void)
 {
     uint8_t i = 0;
     uint8_t system_ok = 0;
-
-    /* Hardware reset */
-    lt7381_hw_reset();
 
     while (1)
     {
@@ -465,8 +471,16 @@ int disp_init(void)
     DISP_SET_RST;
     DISP_CLR_BACKLIGHT;
 
+    /* Hardware reset */
+    disp_delay_ms(100);
+    lt7381_hw_reset();
+    disp_delay_ms(100);
+	
     lt7381_wait_ready();
 
+    /* Software reset */	
+    lt7381_sw_reset();
+	
     lt7381_initial_pll();
 
     lt7381_initial_sdram();
