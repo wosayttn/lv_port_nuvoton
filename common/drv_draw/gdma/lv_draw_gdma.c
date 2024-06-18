@@ -232,7 +232,7 @@ static int32_t _gdma_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 
         if (!_gdma_src_cf_supported(img_dsc->header.cf) ||
                 !_gdma_buf_aligned(img_dsc->data, img_dsc->header.stride) ||
-         				    (img_dsc->header.cf != draw_dsc_base->layer->color_format) )
+                (img_dsc->header.cf != draw_dsc_base->layer->color_format))
             goto _gdma_evaluate_not_ok;
 
         if (!_gdma_draw_img_supported(draw_dsc))

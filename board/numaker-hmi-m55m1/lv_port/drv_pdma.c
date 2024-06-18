@@ -172,6 +172,10 @@ static void nu_pdma_init(void)
         PDMA_Open(psPDMA, PDMA_CH_Msk);
         PDMA_Close(psPDMA);
 
+#if (LV_USE_OS==LV_OS_FREERTOS)
+        NVIC_SetPriority(nu_pdma_arr[i].eIRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
+#endif
+
         /* Enable PDMA interrupt */
         NVIC_EnableIRQ(nu_pdma_arr[i].eIRQn);
 
@@ -676,8 +680,6 @@ fail_nu_pdma_sgtbls_allocate:
 
     /* Release allocated tables. */
     nu_pdma_sgtbls_free(ppsSgtbls, i);
-
-    //rt_hw_interrupt_enable(level);
 
     return -1;
 }

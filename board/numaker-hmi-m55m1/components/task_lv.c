@@ -9,7 +9,7 @@
 #include "lv_glue.h"
 
 #define CONFIG_LV_TASK_STACKSIZE     4096
-#define CONFIG_LV_TASK_PRIORITY      (configMAX_PRIORITIES-1)
+#define CONFIG_LV_TASK_PRIORITY      (tskIDLE_PRIORITY + LV_THREAD_PRIO_HIGH)
 
 #if LV_USE_LOG
 static void lv_nuvoton_log(lv_log_level_t level, const char *buf)
@@ -62,7 +62,7 @@ void lv_nuvoton_task(void *pdata)
 
 int task_lv_init(void)
 {
-    xTaskCreate(lv_tick_task, "lv_tick", configMINIMAL_STACK_SIZE, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
+    xTaskCreate(lv_tick_task, "lv_tick", configMINIMAL_STACK_SIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
     xTaskCreate(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
     return 0;
 }

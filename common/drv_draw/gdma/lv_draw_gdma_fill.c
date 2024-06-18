@@ -48,7 +48,55 @@
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
-static uint32_t fill_color[8] __attribute__((aligned(DCACHE_LINE_SIZE)));
+static enum dma350_lib_error_t dma350_runcmd(struct dma350_ch_dev_t *dev,
+        enum dma350_lib_exec_type_t exec_type)
+{
+    union dma350_ch_status_t status;
+
+    /* Extra setup based on execution type */
+    switch (exec_type)
+    {
+    case DMA350_LIB_EXEC_IRQ:
+        dma350_ch_enable_intr(dev, DMA350_CH_INTREN_DONE);
+        break;
+
+    case DMA350_LIB_EXEC_START_ONLY:
+    case DMA350_LIB_EXEC_BLOCKING:
+        dma350_ch_disable_intr(dev, DMA350_CH_INTREN_DONE);
+        break;
+
+    default:
+        return DMA350_LIB_ERR_INVALID_EXEC_TYPE;
+    }
+
+    dma350_ch_cmd(dev, DMA350_CH_CMD_ENABLECMD);
+
+    /* Return or check based on execution type */
+    switch (exec_type)
+    {
+    case DMA350_LIB_EXEC_IRQ:
+    case DMA350_LIB_EXEC_START_ONLY:
+        if (dma350_ch_is_stat_set(dev, DMA350_CH_STAT_ERR))
+        {
+            return DMA350_LIB_ERR_CMD_ERR;
+        }
+
+        break;
+
+    case DMA350_LIB_EXEC_BLOCKING:
+        status = dma350_ch_wait_status(dev);
+
+        if (!status.b.STAT_DONE || status.b.STAT_ERR)
+        {
+            return DMA350_LIB_ERR_CMD_ERR;
+        }
+
+        break;
+        /* default is handled above */
+    }
+
+    return DMA350_LIB_ERR_NONE;
+}
 
 void lv_draw_gdma_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *dsc,
                        const lv_area_t *coords)
@@ -71,74 +119,44 @@ void lv_draw_gdma_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *dsc,
         return; /*Fully clipped, nothing to do*/
 
     {
-        uint8_t *dest_buf = draw_buf->data;
         const lv_area_t *dest_area = &blend_area;
         int32_t dest_stride = draw_buf->header.stride;
         lv_color_format_t dest_cf = draw_buf->header.cf;
+
+        uint8_t px_size = lv_color_format_get_size(dest_cf);
 
         int32_t dest_x = dest_area->x1;
         int32_t dest_y = dest_area->y1;
         int32_t dest_w = lv_area_get_width(dest_area);
         int32_t dest_h = lv_area_get_height(dest_area);
-        uint8_t px_size = lv_color_format_get_size(dest_cf);
-        fill_color[0] = (px_size == 2) ? (uint32_t)lv_color_to_u16(dsc->color) : lv_color_to_u32(dsc->color);
+        uint8_t *dest_buf = draw_buf->data + (dest_y * dest_stride + dest_x * px_size);
+        uint32_t fill_color = (px_size == 2) ? (uint32_t)lv_color_to_u16(dsc->color) : lv_color_to_u32(dsc->color);
 
-        volatile void *src_start_buf = (volatile void *)&fill_color[0];
-        void *dest_start_buf = (void *)(dest_buf + dest_y * dest_stride + dest_x * px_size);
-
-        /* Flush fill_color integrr buffer from cache to memory. */
-        SCB_CleanDCache_by_Addr(src_start_buf, 4);
-        int32_t UseBlockingWait = 1; /*(dest_w * dest_h) < 1200 ? 1 : 0;*/
-
+        int32_t UseBlockingWait = (dest_w * dest_h) < 120 ? 1 : 0;
         {
             enum dma350_lib_error_t lib_err;
-            /**
-             * \brief 2D Copy from canvas (area within a source bitmap) to within a
-             *        destination bitmap, while applying various possible transformations.
-             *        If the destination size is larger than the source, the source image
-             *        will be wrapped (repeated).
-             *
-             * \param[in] dev             DMA350 channel device struct \ref dma350_ch_dev_t
-             * \param[in] src             Source address, top left corner
-             * \param[in] des             Destination address, top left corner
-             * \param[in] src_width       Source width
-             * \param[in] src_height      Source height
-             * \param[in] src_line_width  Source line width
-             * \param[in] des_width       Destination width
-             * \param[in] des_height      Destination height
-             * \param[in] des_line_width  Destination line width
-             * \param[in] pixelsize       Size of a pixel as in \ref dma350_ch_transize_t
-             * \param[in] transform       Transform type as in \ref dma350_lib_transform_t
-             * \param[in] exec_type       Execution type as in \ref dma350_lib_exec_type_t
-             *
-             * \return Result of the operation \ref dma350_lib_error_t
-             *
-             * \note Destination width and height denote the area which will be filled at
-             *       the destination address. The copy always starts from the top left
-             *       corner of the source. If the requested destination size does not match
-             *       the source, the resulting image will be repeated / cropped.
-             */
-            lib_err = dma350_draw_from_canvas(
-                          GDMA_CH_DEV_S[0],
-                          (const void *)src_start_buf, dest_start_buf,
-                          1, 1, 1,
-                          dest_w,  dest_h, (dest_stride / px_size),
-                          (px_size == 2) ? DMA350_CH_TRANSIZE_16BITS : DMA350_CH_TRANSIZE_32BITS,
-                          DMA350_LIB_TRANSFORM_NONE,
-                          UseBlockingWait ? DMA350_LIB_EXEC_BLOCKING : DMA350_LIB_EXEC_IRQ);
+            enum dma350_ch_transize_t pixelsize = (px_size == 2) ? DMA350_CH_TRANSIZE_16BITS : DMA350_CH_TRANSIZE_32BITS;
+            enum dma350_lib_exec_type_t exec_type = UseBlockingWait ? DMA350_LIB_EXEC_BLOCKING : DMA350_LIB_EXEC_IRQ;
+            struct dma350_ch_dev_t *dev = GDMA_CH_DEV_S[0];
 
-            /* Check transfer result */
-            if (lib_err != DMA350_LIB_ERR_NONE)
-            {
-                printf("\nGDMA transfer error !!\n");
-                return;
-            }
+            lib_err = verify_dma350_ch_dev_ready(dev);
+            LV_ASSERT(lib_err == DMA350_LIB_ERR_NONE);
 
-            if (!UseBlockingWait)
-            {
-                void gdmaWaitForCompletion(void);
-                gdmaWaitForCompletion();
-            }
+            lib_err = dma350_lib_set_des(dev, &dest_buf[0]);
+            LV_ASSERT(lib_err == DMA350_LIB_ERR_NONE);
+
+            dma350_ch_set_xaddr_inc(dev, 1, 1);
+            dma350_ch_set_xsize32(dev, 0, dest_w);
+            dma350_ch_set_ysize16(dev, 0, dest_h);
+            dma350_ch_set_yaddrstride(dev, 0, (dest_stride / px_size));
+
+            dma350_ch_set_transize(dev, pixelsize);
+            dma350_ch_set_xtype(dev, DMA350_CH_XTYPE_FILL);
+            dma350_ch_set_ytype(dev, DMA350_CH_YTYPE_FILL);
+            dma350_ch_set_fill_value(dev, fill_color);
+
+            void gdmaWaitForCompletion(struct dma350_ch_dev_t *dev, enum dma350_lib_exec_type_t exec_type);
+            gdmaWaitForCompletion(dev, exec_type);
         }
     }
 

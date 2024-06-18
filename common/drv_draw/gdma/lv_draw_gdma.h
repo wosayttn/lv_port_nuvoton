@@ -29,9 +29,9 @@ extern "C" {
 #include "dma350_lib.h"
 
 #if defined(__ICCARM__)
-    #include "arm_cmse.h" // patch from EWARM 9.50.2 service pack
+#include "arm_cmse.h" // patch from EWARM 9.50.2 service pack
 #else
-    #include <arm_cmse.h>
+#include <arm_cmse.h>
 #endif
 
 /*********************
