@@ -80,10 +80,8 @@ void lv_draw_bitblt_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *ds
         int32_t dest_h = lv_area_get_height(dest_area);
         uint8_t dest_px_size = lv_color_format_get_size(dest_cf);
 
-#if 0
-        sysprintf("fill dsc->opa: %d\n", dsc->opa);
-        sysprintf("dest_buf@%08x, stride: %d, x: %d, y: %d, w: %d, h: %d, cf: %d, px_size: %d\n", dest_buf, dest_stride, dest_x, dest_y, dest_w, dest_h, dest_cf, dest_px_size);
-#endif
+        LV_LOG_USER("fill dsc->opa: %d", dsc->opa);
+        LV_LOG_USER("dest_buf@%08x, stride: %d, x: %d, y: %d, w: %d, h: %d, cf: %d, px_size: %d", dest_buf, dest_stride, dest_x, dest_y, dest_w, dest_h, dest_cf, dest_px_size);
 
         uint32_t u32Color = lv_color_to_u32(dsc->color);
         {

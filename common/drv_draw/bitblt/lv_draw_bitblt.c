@@ -136,7 +136,6 @@ static inline bool _bitblt_dest_cf_supported(lv_color_format_t cf)
     switch (cf)
     {
     case LV_COLOR_FORMAT_RGB565:
-    case LV_COLOR_FORMAT_RGB888:
     case LV_COLOR_FORMAT_ARGB8888:
     case LV_COLOR_FORMAT_XRGB8888:
         is_cf_supported = true;
@@ -154,13 +153,13 @@ static bool _bitblt_draw_img_supported(const lv_draw_image_dsc_t *draw_dsc)
 
     bool has_recolor = (draw_dsc->recolor_opa > LV_OPA_MIN);
 
-    bool has_transform = (draw_dsc->rotation != 0 || draw_dsc->scale_x != LV_SCALE_NONE || draw_dsc->scale_y != LV_SCALE_NONE);
+    bool has_transform = (/*draw_dsc->rotation != 0 ||*/ draw_dsc->scale_x != LV_SCALE_NONE || draw_dsc->scale_y != LV_SCALE_NONE);
     bool has_opa = (draw_dsc->opa < (lv_opa_t)LV_OPA_MAX);
     bool src_has_alpha = (img_dsc->header.cf == LV_COLOR_FORMAT_ARGB8888);
 
-    //sysprintf("draw_dsc->rotation: %d\n", draw_dsc->rotation);
-    //sysprintf("src_has_alpha: %d\n", src_has_alpha);
-    //sysprintf("scale_x: %d, scale_y: %d\n", draw_dsc->scale_x, draw_dsc->scale_y);
+    LV_LOG_USER("draw_dsc->rotation: %d", draw_dsc->rotation);
+    LV_LOG_USER("src_has_alpha: %d", src_has_alpha);
+    LV_LOG_USER("scale_x: %d, scale_y: %d", draw_dsc->scale_x, draw_dsc->scale_y);
 
     /* Recolor and transformation are not supported at the same time. */
     if (has_recolor || has_transform)
@@ -171,6 +170,8 @@ static bool _bitblt_draw_img_supported(const lv_draw_image_dsc_t *draw_dsc)
 
 static bool _bitblt_buf_aligned(const void *buf, uint32_t stride)
 {
+    LV_LOG_USER("\tbuf@%08x, stride: %d", buf, stride);
+
     /* Test for pointer alignment */
     if ((uintptr_t)buf % 4)
         return false;
@@ -190,31 +191,31 @@ void dump_draw_info(
 {
     return;
 
-    sysprintf("[%s]%s\n", str1, str2);
+    LV_LOG_USER("[%s]%s", str1, str2);
 
     if (area)
     {
-        sysprintf("\tarea(%d-%d): (%d, %d) -> (%d, %d)\n",
-                  lv_area_get_width(area),
-                  lv_area_get_height(area),
-                  area->x1,
-                  area->y1,
-                  area->x2,
-                  area->y2);
+        LV_LOG_USER("\tarea(%d-%d): (%d, %d) -> (%d, %d)",
+                    lv_area_get_width(area),
+                    lv_area_get_height(area),
+                    area->x1,
+                    area->y1,
+                    area->x2,
+                    area->y2);
     }
 
     if (draw_buf)
     {
-        sysprintf("\tdraw_buf@%08x, sz: %d\n",
-                  draw_buf->data,
-                  draw_buf->data_size);
+        LV_LOG_USER("\tdraw_buf@%08x, sz: %d",
+                    draw_buf->data,
+                    draw_buf->data_size);
 
-        sysprintf("\t\theader(%08x): cf: %d, w:%d, h:%d, stride:%d\n",
-                  draw_buf->header.magic,
-                  draw_buf->header.cf,
-                  draw_buf->header.w,
-                  draw_buf->header.h,
-                  draw_buf->header.stride);
+        LV_LOG_USER("\t\theader(%08x): cf: %d, w:%d, h:%d, stride:%d",
+                    draw_buf->header.magic,
+                    draw_buf->header.cf,
+                    draw_buf->header.w,
+                    draw_buf->header.h,
+                    draw_buf->header.stride);
     }
 }
 
@@ -224,19 +225,24 @@ static int32_t _bitblt_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 
     const lv_draw_dsc_base_t *draw_dsc_base = (lv_draw_dsc_base_t *) task->draw_dsc;
 
-    uint8_t px_size = lv_color_format_get_size(draw_dsc_base->layer->color_format);
-
-    lv_area_t blend_area;
-    uint32_t blend_area_stride;
-
     /* Check capacity. */
     if (!_bitblt_dest_cf_supported(draw_dsc_base->layer->color_format))
         return 0;
 
-    lv_area_copy(&blend_area, &draw_dsc_base->layer->buf_area);
-    blend_area_stride = lv_area_get_width(&blend_area) * px_size;
+    uint8_t px_size = lv_color_format_get_size(draw_dsc_base->layer->color_format);
 
-    /* for 2DGE limitation. */
+    lv_area_t blend_area;
+    lv_area_copy(&blend_area, &draw_dsc_base->layer->buf_area);
+    uint32_t blend_area_stride = lv_area_get_width(&blend_area) * px_size;
+
+    LV_LOG_USER("[%d] px_size:%d, dest_cf:%d, blend_area_stride:%d, blend.x:%d",
+                task->type,
+                px_size,
+                draw_dsc_base->layer->color_format,
+                blend_area_stride,
+                blend_area.x1);
+
+    /* for bitblt limitation. */
     if (px_size == 2)
     {
         /* Check Hardware constraint: The stride must be a word-alignment. */
@@ -286,8 +292,11 @@ static int32_t _bitblt_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
         int32_t dest_stride = blend_area_stride;
         uint8_t *dest_buf = draw_dsc_base->layer->draw_buf->data;
 
-        dump_draw_info(__func__, "Source", NULL, img_dsc);
-        dump_draw_info(__func__, "Destination", &draw_dsc_base->layer->buf_area, draw_dsc_base->layer->draw_buf);
+        LV_LOG_USER("[%d] cf:%d, src_buf:%08x, src_stride:%d",
+                    task->type,
+                    img_dsc->header.cf,
+                    img_dsc->data,
+                    img_dsc->header.stride);
 
         if (!_bitblt_src_cf_supported(img_dsc->header.cf) ||
                 !_bitblt_buf_aligned(img_dsc->data, img_dsc->header.stride) ||
