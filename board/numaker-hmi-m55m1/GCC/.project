@@ -40,17 +40,12 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>arm2d</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>cmsis_dsp</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>lv_port</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>lv_draw</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
@@ -108,6 +103,26 @@
 			<name>Driver/sys.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/sys.c</locationURI>
+		</link>
+		<link>
+			<name>Driver/dma350_address_remap_template.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/gdma/dma350_address_remap_template.c</locationURI>
+		</link>
+		<link>
+			<name>Driver/dma350_ch_drv.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/gdma/dma350_ch_drv.c</locationURI>
+		</link>
+		<link>
+			<name>Driver/dma350_drv.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/gdma/dma350_drv.c</locationURI>
+		</link>
+		<link>
+			<name>Driver/dma350_lib.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/gdma/dma350_lib.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/system_M55M1.c</name>
@@ -170,94 +185,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/components/task_lv.c</locationURI>
 		</link>
 		<link>
-			<name>arm2d/arm_2d.c</name>
+			<name>lv_port/disp_lt7381.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_alpha_blending.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_alpha_blending.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_async.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_async.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_conversion.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_conversion.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_draw.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_draw.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_helium.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_helium.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_helper.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Helper/Source/arm_2d_helper.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_helper_list.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Helper/Source/arm_2d_helper_list.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_helper_map.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Helper/Source/arm_2d_helper_map.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_helper_pfb.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Helper/Source/arm_2d_helper_pfb.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_helper_scene.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Helper/Source/arm_2d_helper_scene.c</locationURI>
-		</link>
-		<link>
-			<name>arm2d/arm_2d_transform.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/arm2d/Library/Source/arm_2d_transform.c</locationURI>
-		</link>
-		<link>
-			<name>cmsis_dsp/arm_common_tables.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/CMSIS/DSP/Source/CommonTables/arm_common_tables.c</locationURI>
-		</link>
-		<link>
-			<name>cmsis_dsp/arm_cos_f32.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_cos_f32.c</locationURI>
-		</link>
-		<link>
-			<name>cmsis_dsp/arm_cos_q31.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q31.c</locationURI>
-		</link>
-		<link>
-			<name>cmsis_dsp/arm_sin_f32.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_sin_f32.c</locationURI>
-		</link>
-		<link>
-			<name>cmsis_dsp/arm_sin_q31.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q31.c</locationURI>
-		</link>
-		<link>
-			<name>lv_port/disp_fsa506.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/disp_fsa506.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/disp_lt7381.c</locationURI>
 		</link>
 		<link>
 			<name>lv_port/drv_pdma.c</name>
@@ -265,9 +195,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/lv_port/drv_pdma.c</locationURI>
 		</link>
 		<link>
-			<name>lv_port/fsa506_ebi.c</name>
+			<name>lv_port/lt7381_ebi.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/fsa506_ebi.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/lt7381_ebi.c</locationURI>
 		</link>
 		<link>
 			<name>lv_port/lv_demo.c</name>
@@ -300,9 +230,34 @@
 			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_adc_calibration.c</locationURI>
 		</link>
 		<link>
-			<name>lv_port/touch_st1663i.c</name>
+			<name>lv_port/touch_ft5316.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_st1663i.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_ft5316.c</locationURI>
+		</link>
+		<link>
+			<name>lv_draw/drv_gdma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gdma/drv_gdma.c</locationURI>
+		</link>
+		<link>
+			<name>lv_draw/lv_draw_gdma.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gdma/lv_draw_gdma.c</locationURI>
+		</link>
+		<link>
+			<name>lv_draw/lv_draw_gdma_fill.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gdma/lv_draw_gdma_fill.c</locationURI>
+		</link>
+		<link>
+			<name>lv_draw/lv_draw_gdma_image.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gdma/lv_draw_gdma_image.c</locationURI>
+		</link>
+		<link>
+			<name>lv_draw/lv_draw_gdma_layer.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gdma/lv_draw_gdma_layer.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/_lv_cache_lru_rb.c</name>
@@ -528,6 +483,11 @@
 			<name>lvgl/lv_demo_transform.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/transform/lv_demo_transform.c</locationURI>
+		</link>
+		<link>
+			<name>lvgl/img_transform_avatar_15.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/transform/assets/img_transform_avatar_15.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/lv_demo_vector_graphic.c</name>
@@ -778,6 +738,16 @@
 			<name>lvgl/lv_font.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/font/lv_font.c</locationURI>
+		</link>
+		<link>
+			<name>lvgl/img_benchmark_cogwheel_argb.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/img_benchmark_cogwheel_argb.c</locationURI>
+		</link>
+		<link>
+			<name>lvgl/img_benchmark_cogwheel_rgb.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/img_benchmark_cogwheel_rgb.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/lv_font_benchmark_montserrat_12_compr_az.c.c</name>

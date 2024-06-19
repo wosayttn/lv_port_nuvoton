@@ -187,14 +187,12 @@ static int32_t _gdma_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
     uint8_t px_size = lv_color_format_get_size(draw_dsc_base->layer->color_format);
 
     lv_area_t blend_area;
-    uint32_t blend_area_stride;
 
     /* Check capacity. */
     if (!_gdma_dest_cf_supported(draw_dsc_base->layer->color_format))
         goto _gdma_evaluate_not_ok;
 
     lv_area_copy(&blend_area, &draw_dsc_base->layer->buf_area);
-    blend_area_stride = lv_area_get_width(&blend_area) * px_size;
 
     switch (task->type)
     {

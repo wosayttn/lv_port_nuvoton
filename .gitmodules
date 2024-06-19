@@ -38,9 +38,6 @@
 	path = bsp/m55m1
 	url = https://github.com/OpenNuvoton/M55M1BSP
 	branch = master	
-[submodule "thirdparty/arm2d"]
-	path = thirdparty/arm2d
-	url = https://github.com/ARM-software/Arm-2D
 [submodule "thirdparty/SFUD"]
 	path = thirdparty/SFUD
 	url = https://github.com/armink/SFUD

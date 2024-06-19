@@ -2355,36 +2355,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>cmsis_dsp</GroupName>
-          <Files>
-            <File>
-              <FileName>arm_cos_f32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_cos_f32.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_cos_q31.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_cos_q31.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_sin_f32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_sin_f32.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_sin_q31.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_sin_q31.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_common_tables.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\CommonTables\arm_common_tables.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>FreeRTOS</GroupName>
           <Files>
             <File>
@@ -2425,74 +2395,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>sls_ui</GroupName>
-        </Group>
-        <Group>
-          <GroupName>arm2d</GroupName>
-          <Files>
-            <File>
-              <FileName>arm_2d_helper.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_helper_list.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_list.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_helper_map.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_map.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_helper_pfb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_pfb.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_helper_scene.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_scene.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_alpha_blending.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_alpha_blending.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_async.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_async.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_conversion.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_conversion.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_draw.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_draw.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_helium.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_helium.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_transform.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_transform.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>lv_draw</GroupName>
           <Files>
             <File>
@@ -2521,6 +2423,9 @@
               <FilePath>..\..\..\common\drv_draw\gdma\lv_draw_gdma_layer.c</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>sls_ui</GroupName>
         </Group>
       </Groups>
     </Target>
@@ -4873,36 +4778,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>cmsis_dsp</GroupName>
-          <Files>
-            <File>
-              <FileName>arm_cos_f32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_cos_f32.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_cos_q31.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_cos_q31.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_sin_f32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_sin_f32.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_sin_q31.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_sin_q31.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_common_tables.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\CommonTables\arm_common_tables.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>FreeRTOS</GroupName>
           <Files>
             <File>
@@ -4943,74 +4818,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>sls_ui</GroupName>
-        </Group>
-        <Group>
-          <GroupName>arm2d</GroupName>
-          <Files>
-            <File>
-              <FileName>arm_2d_helper.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_helper_list.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_list.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_helper_map.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_map.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_helper_pfb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_pfb.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_helper_scene.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_scene.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_alpha_blending.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_alpha_blending.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_async.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_async.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_conversion.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_conversion.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_draw.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_draw.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_helium.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_helium.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_2d_transform.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\arm2d\Library\Source\arm_2d_transform.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>lv_draw</GroupName>
           <Files>
             <File>
@@ -5040,6 +4847,9 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>sls_ui</GroupName>
+        </Group>
       </Groups>
     </Target>
   </Targets>
@@ -5049,5 +4859,14 @@
     <components/>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>lvgl</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>

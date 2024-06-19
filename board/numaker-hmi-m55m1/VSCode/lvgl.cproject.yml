@@ -18,13 +18,12 @@ project:
         - ../../../bsp/m55m1/Library/CMSIS/DSP/Include
         - ../../../bsp/m55m1/Library/CMSIS/Core/Include
         - ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Include
+        - ../../../bsp/m55m1/Library/StdDriver/inc/gdma
         - ../../../bsp/m55m1/Library/StdDriver/inc
         - ../lv_port
         - ../../../common/drv_disp
         - ../../../common/drv_indev
         - ../../../common
-        - ../../../thirdparty/arm2d/Library/Include
-        - ../../../thirdparty/arm2d/Helper/Include
         - ../../../lvgl/src
         - ../../../lvgl/src/core
         - ../../../lvgl/src/draw
@@ -79,13 +78,12 @@ project:
         - ../../../bsp/m55m1/Library/CMSIS/DSP/Include
         - ../../../bsp/m55m1/Library/CMSIS/Core/Include
         - ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Include
+        - ../../../bsp/m55m1/Library/StdDriver/inc/gdma
         - ../../../bsp/m55m1/Library/StdDriver/inc
         - ../lv_port
         - ../../../common/drv_disp
         - ../../../common/drv_indev
         - ../../../common
-        - ../../../thirdparty/arm2d/Library/Include
-        - ../../../thirdparty/arm2d/Helper/Include
         - ../../../lvgl/src
         - ../../../lvgl/src/core
         - ../../../lvgl/src/draw
@@ -149,8 +147,12 @@ project:
         - file: ../../../bsp/m55m1/Library/StdDriver/src/retarget.c
         - file: ../../../bsp/m55m1/Library/StdDriver/src/sys.c
         - file: ../../../bsp/m55m1/Library/StdDriver/src/uart.c
-        - file: ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Source/system_M55M1.c
         - file: ../../../bsp/m55m1/Library/StdDriver/src/i2c.c
+        - file: ../../../bsp/m55m1/Library/StdDriver/src/gdma/dma350_address_remap_template.c
+        - file: ../../../bsp/m55m1/Library/StdDriver/src/gdma/dma350_ch_drv.c
+        - file: ../../../bsp/m55m1/Library/StdDriver/src/gdma/dma350_drv.c
+        - file: ../../../bsp/m55m1/Library/StdDriver/src/gdma/dma350_lib.c
+        - file: ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Source/system_M55M1.c
         - file: ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Source/startup_M55M1.c
         - file: ../lv_port/spim_hyperram/hyperram_code.c
         - file: ../lv_port/spim_hyperram/spim.c
@@ -464,6 +466,13 @@ project:
         - file: ../../../lvgl/src/widgets/win/lv_win.c
         - file: ../../../lvgl/src/libs/bin_decoder/lv_bin_decoder.c
         - file: ../../../lvgl/src/libs/fsdrv/lv_fs_fatfs.c
+    - group: lv_draw
+      files:
+        - file:  ../../../common/drv_draw/gdma/drv_gdma.c
+        - file:  ../../../common/drv_draw/gdma/lv_draw_gdma.c
+        - file:  ../../../common/drv_draw/gdma/lv_draw_gdma_fill.c
+        - file:  ../../../common/drv_draw/gdma/lv_draw_gdma_image.c
+        - file:  ../../../common/drv_draw/gdma/lv_draw_gdma_layer.c
     - group: lv_port
       for-context: +M55M1480x272
       files:
@@ -478,13 +487,6 @@ project:
         - file: ../../../common/drv_indev/touch_st1663i.c
         - file: ../../../common/drv_disp/disp_fsa506.c
         - file: ../../../common/drv_disp/fsa506_ebi.c
-    - group: cmsis_dsp
-      files:
-        - file: ../../../bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_cos_f32.c
-        - file: ../../../bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q31.c
-        - file: ../../../bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_sin_f32.c
-        - file: ../../../bsp/m55m1/Library/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q31.c
-        - file: ../../../bsp/m55m1/Library/CMSIS/DSP/Source/CommonTables/arm_common_tables.c
     - group: FreeRTOS
       files:
         - file: ../../../thirdparty/FreeRTOS/list.c
@@ -494,20 +496,6 @@ project:
         - file: ../../../thirdparty/FreeRTOS/portable/MemMang/heap_4.c
         - file: ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure/port.c
         - file: ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure/portasm.c
-    - group: arm2d
-      files:
-        - file: ../../../thirdparty/arm2d/Helper/Source/arm_2d_helper.c
-        - file: ../../../thirdparty/arm2d/Helper/Source/arm_2d_helper_list.c
-        - file: ../../../thirdparty/arm2d/Helper/Source/arm_2d_helper_map.c
-        - file: ../../../thirdparty/arm2d/Helper/Source/arm_2d_helper_pfb.c
-        - file: ../../../thirdparty/arm2d/Helper/Source/arm_2d_helper_scene.c
-        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d.c
-        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_alpha_blending.c
-        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_async.c
-        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_conversion.c
-        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_draw.c
-        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_helium.c
-        - file: ../../../thirdparty/arm2d/Library/Source/arm_2d_transform.c
     - group: lv_port
       for-context: +M55M1800x480
       files:

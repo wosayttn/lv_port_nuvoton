@@ -134,7 +134,7 @@
                 </option>
                 <option>
                     <name>NEON</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
@@ -184,7 +184,7 @@
                 </option>
                 <option>
                     <name>TrustZone</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>TrustZoneModes</name>
@@ -231,7 +231,7 @@
                     <state>ARM_MATH_CM55</state>
                     <state>M55M1=1</state>
                     <state>LV_CONF_INCLUDE_SIMPLE</state>
-                    <state>__480x272__</state>
+                    <state>__800x480__</state>
                     <state>NVT_DCACHE_ON=1</state>
                 </option>
                 <option>
@@ -272,7 +272,7 @@
                 </option>
                 <option>
                     <name>CCDiagSuppress</name>
-                    <state>Pa089,Pa082,Pe236,Pa118,Pe111,Pe188,Pe546,Pe144,Pe177,Pe513,Pe1757,Pe167,Pe191,Pe174</state>
+                    <state>Pa089,Pa082,Pe236,Pa118,Pe111,Pe188,Pe546,Pe144,Pe177,Pe513,Pe1757,Pe167,Pe191,Pe174,Pe186</state>
                 </option>
                 <option>
                     <name>CCDiagRemark</name>
@@ -357,6 +357,7 @@
                     <state>$PROJ_DIR$/../../../bsp\m55m1/Library/CMSIS/Core/Include</state>
                     <state>$PROJ_DIR$/../../../bsp/m55m1/Library/CMSIS/DSP/Include</state>
                     <state>$PROJ_DIR$/../../../bsp/m55m1/Library/CMSIS/Include</state>
+                    <state>$PROJ_DIR$/../../../bsp/m55m1/Library/StdDriver/inc/gdma</state>
                     <state>$PROJ_DIR$/../../../bsp/m55m1/Library/StdDriver/inc</state>
                     <state>$PROJ_DIR$/../</state>
                     <state>$PROJ_DIR$/../../../thirdparty/FreeRTOS/include</state>
@@ -1120,69 +1121,12 @@
         </settings>
     </configuration>
     <group>
-        <name>arm2d</name>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_alpha_blending.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_async.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_conversion.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_draw.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_helium.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_list.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_map.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_pfb.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Source\arm_2d_helper_scene.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Source\arm_2d_transform.c</name>
-        </file>
-    </group>
-    <group>
         <name>CMSIS</name>
         <file>
             <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\Device\Nuvoton\M55M1\Source\startup_M55M1.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\Device\Nuvoton\M55M1\Source\system_M55M1.c</name>
-        </file>
-    </group>
-    <group>
-        <name>cmsis_dsp</name>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\CommonTables\arm_common_tables.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_cos_f32.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_cos_q31.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_sin_f32.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\CMSIS\DSP\Source\FastMathFunctions\arm_sin_q31.c</name>
         </file>
     </group>
     <group>
@@ -1221,6 +1165,18 @@
             <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\clk.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_address_remap_template.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_ch_drv.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_drv.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_lib.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\ebi.c</name>
         </file>
         <file>
@@ -1243,9 +1199,30 @@
         </file>
     </group>
     <group>
+        <name>lv_draw</name>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_draw\gdma\drv_gdma.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_draw\gdma\lv_draw_gdma.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_draw\gdma\lv_draw_gdma.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_draw\gdma\lv_draw_gdma_fill.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_draw\gdma\lv_draw_gdma_image.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_draw\gdma\lv_draw_gdma_layer.c</name>
+        </file>
+    </group>
+    <group>
         <name>lv_port</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_disp\disp_fsa506.c</name>
+            <name>$PROJ_DIR$\..\..\..\common\drv_disp\disp_lt7381.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\lv_port\drv_pdma.c</name>
@@ -1254,7 +1231,7 @@
             <name>$PROJ_DIR$\..\lv_port\drv_pdma.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_disp\fsa506_ebi.c</name>
+            <name>$PROJ_DIR$\..\..\..\common\drv_disp\lt7381_ebi.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\common\lv_demo.c</name>
@@ -1275,7 +1252,7 @@
             <name>$PROJ_DIR$\..\..\..\common\nu_misc.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_st1663i.c</name>
+            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_ft5316.c</name>
         </file>
     </group>
     <group>
