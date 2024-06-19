@@ -204,7 +204,7 @@ static int32_t _gdma_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
             goto _gdma_evaluate_not_ok;
     }
     break;
-#if 0
+
     case LV_DRAW_TASK_TYPE_LAYER:
     {
         const lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
@@ -237,7 +237,7 @@ static int32_t _gdma_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
             goto _gdma_evaluate_not_ok;
     }
     break;
-#endif
+
     default:
         goto _gdma_evaluate_not_ok;
     }
