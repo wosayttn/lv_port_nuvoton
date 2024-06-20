@@ -29,8 +29,8 @@ $ git clone --recurse-submodules https://github.com/OpenNuvoton/lv_port_nuvoton
 | **NuMaker-HMI-N9H31** | [numaker-hmi-n9h31](./board/numaker-hmi-n9h31) |
 | **NuMaker-HMI-MA35D1** | [numaker-hmi-ma35d1](./board/numaker-hmi-ma35d1) |
 | **NuMaker-HMI-MA35H0** | [numaker-hmi-ma35h0](./board/numaker-hmi-ma35h0) |
-| **NuMaker-IIoT-NUC980G1D** | [numaker-iiot-nuc980g1d](./board/numaker-iiot-nuc980gxd) |
-| **NuMaker-IIoT-NUC980G2D** | [numaker-iiot-nuc980g2d](./board/numaker-iiot-nuc980gxd) |
+| **NuMaker-IIoT-NUC980G1D** | [numaker-iiot-nuc980gxd](./board/numaker-iiot-nuc980gxd) |
+| **NuMaker-IIoT-NUC980G2D** | [numaker-iiot-nuc980gxd](./board/numaker-iiot-nuc980gxd) |
 | **NuMaker-HMI-M467** | [numaker-hmi-m467](./board/numaker-hmi-m467) |
 | **NuMaker-HMI-M2354** | [numaker-hmi-m2354](./board/numaker-hmi-m2354) |
 | **NuMaker-IoT-M2354** | [numaker-iot-m2354](./board/numaker-iot-m2354) |

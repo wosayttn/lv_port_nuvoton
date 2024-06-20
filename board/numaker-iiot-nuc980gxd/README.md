@@ -77,8 +77,9 @@ Enjoy!! <br>
 
 ## **Purchase**
 
-[Nuvoton Direct - NuMaker-IIoT-NUC980G1D](https://direct.nuvoton.com/tw/numaker-iiot-nuc980g1d)
-[Nuvoton Direct - NuMaker-IIoT-NUC980G2D](https://direct.nuvoton.com/tw/numaker-iiot-nuc980g2d)
+[NuMaker-IIoT-NUC980G1D](https://direct.nuvoton.com/tw/numaker-iiot-nuc980g1d)
+
+[NuMaker-IIoT-NUC980G2D](https://direct.nuvoton.com/tw/numaker-iiot-nuc980g2d)
 
 ## **Resources**
 

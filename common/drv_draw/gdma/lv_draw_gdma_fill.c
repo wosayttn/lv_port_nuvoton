@@ -48,55 +48,6 @@
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
-static enum dma350_lib_error_t dma350_runcmd(struct dma350_ch_dev_t *dev,
-        enum dma350_lib_exec_type_t exec_type)
-{
-    union dma350_ch_status_t status;
-
-    /* Extra setup based on execution type */
-    switch (exec_type)
-    {
-    case DMA350_LIB_EXEC_IRQ:
-        dma350_ch_enable_intr(dev, DMA350_CH_INTREN_DONE);
-        break;
-
-    case DMA350_LIB_EXEC_START_ONLY:
-    case DMA350_LIB_EXEC_BLOCKING:
-        dma350_ch_disable_intr(dev, DMA350_CH_INTREN_DONE);
-        break;
-
-    default:
-        return DMA350_LIB_ERR_INVALID_EXEC_TYPE;
-    }
-
-    dma350_ch_cmd(dev, DMA350_CH_CMD_ENABLECMD);
-
-    /* Return or check based on execution type */
-    switch (exec_type)
-    {
-    case DMA350_LIB_EXEC_IRQ:
-    case DMA350_LIB_EXEC_START_ONLY:
-        if (dma350_ch_is_stat_set(dev, DMA350_CH_STAT_ERR))
-        {
-            return DMA350_LIB_ERR_CMD_ERR;
-        }
-
-        break;
-
-    case DMA350_LIB_EXEC_BLOCKING:
-        status = dma350_ch_wait_status(dev);
-
-        if (!status.b.STAT_DONE || status.b.STAT_ERR)
-        {
-            return DMA350_LIB_ERR_CMD_ERR;
-        }
-
-        break;
-        /* default is handled above */
-    }
-
-    return DMA350_LIB_ERR_NONE;
-}
 
 void lv_draw_gdma_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *dsc,
                        const lv_area_t *coords)

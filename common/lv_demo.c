@@ -23,8 +23,8 @@
     extern void lv_demo_widgets(void);
     lv_demo_widgets();
 
-    void lv_demo_widgets_start_slideshow(void);
-    lv_demo_widgets_start_slideshow();
+    //void lv_demo_widgets_start_slideshow(void);
+    //lv_demo_widgets_start_slideshow();
 
 #elif (LV_USE_DEMO_MUSIC)
     extern void lv_demo_music(void);
