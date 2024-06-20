@@ -1,4 +1,4 @@
-# **NuMaker-IIoT-NUC980G2D**
+# **NuMaker-IIoT-NUC980G1D / NuMaker-IIoT-NUC980G2D**
 
 | Major Folder | Description |
 |-|-|
@@ -10,14 +10,16 @@
 User can select listed **Target Name** to build target execution using uVision MDK4.
 | Target | Description |
 |-|-|
-| NUC980DK_320x240 | Use ILI9431 SPI LCD panel with resistive touch screen(H/W ADC Sampling) |
+| G1D_NUC980DK_320x240 | Use ILI9431 SPI LCD panel with RTP(H/W ADC Sampling), for G1D board |
+| G2D_NUC980DK_320x240 | Use ILI9431 SPI LCD panel with RTP(H/W ADC Sampling), for G2D board |
 
 ## **GCC project**
 
 To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 | Target | Description |
 |-|-|
-| NUC980DK_320x240 | Use ILI9431 SPI LCD panel with resistive touch screen(H/W ADC Sampling) |
+| G1D_NUC980DK_320x240 | Use ILI9431 SPI LCD panel with RTP(H/W ADC Sampling), for G1D board |
+| G2D_NUC980DK_320x240 | Use ILI9431 SPI LCD panel with RTP(H/W ADC Sampling), for G2D board |
 
 ## **Compiling options**
 
@@ -75,7 +77,8 @@ Enjoy!! <br>
 
 ## **Purchase**
 
-[Nuvoton Direct](https://direct.nuvoton.com/tw/numaker-iiot-nuc980g2d)
+[Nuvoton Direct - NuMaker-IIoT-NUC980G1D](https://direct.nuvoton.com/tw/numaker-iiot-nuc980g1d)
+[Nuvoton Direct - NuMaker-IIoT-NUC980G2D](https://direct.nuvoton.com/tw/numaker-iiot-nuc980g2d)
 
 ## **Resources**
 
