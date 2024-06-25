@@ -8,6 +8,25 @@
 
 #include "touch_adc.h"
 
+#if defined(CONFIG_NG_MFP)
+
+#define NU_MFP_POS(PIN)   ((PIN % 4) * 8)
+#define NU_MFP_MSK(PIN)   (0x1ful << NU_MFP_POS(PIN))
+
+void nu_pin_func(uint32_t pin, int data)
+{
+    uint32_t GPx_MFPx_org;
+    uint32_t pin_index      = NU_GET_PIN(pin);
+    uint32_t port_index     = NU_GET_PORT(pin);
+    __IO uint32_t *GPx_MFPx = ((__IO uint32_t *) &SYS->GPA_MFP0 + (port_index * 4) + (pin_index / 4));
+    uint32_t MFP_Msk        = NU_MFP_MSK(pin_index);
+
+    GPx_MFPx_org = *GPx_MFPx;
+    *GPx_MFPx    = (GPx_MFPx_org & (~MFP_Msk)) | data;
+}
+
+#else
+
 #define NU_MFP_POS(PIN)                ((PIN % 8) * 4)
 #define NU_MFP_MSK(PIN)                (0xful << NU_MFP_POS(PIN))
 
@@ -15,11 +34,13 @@ static void nu_pin_func(uint32_t pin, int data)
 {
     uint32_t pin_index      = NU_GET_PIN(pin);
     uint32_t port_index     = NU_GET_PORT(pin);
-    __IO uint32_t *GPx_MFPx = ((__IO uint32_t *) &SYS->GPA_MFPL) + port_index * 2 + (pin_index / 8);
+    __IO uint32_t *GPx_MFPx = ((__IO uint32_t *) &SYS->GPA_MFPL + (port_index * 2) + (pin_index / 8));
     uint32_t MFP_Msk        = NU_MFP_MSK(pin_index);
 
     *GPx_MFPx  = (*GPx_MFPx & (~MFP_Msk)) | data;
 }
+
+#endif
 
 static void tp_switch_to_analog(uint32_t pin)
 {
