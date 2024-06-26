@@ -37,12 +37,6 @@ static void sys_init(void)
     CLK_EnableModuleClock(UART0_MODULE);
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART0SEL_HXT, CLK_CLKDIV0_UART0(1));
 
-    /* Enable EBI module clock */
-    CLK_EnableModuleClock(EBI_MODULE);
-
-    /* Enable I2C1 module clock */
-    CLK_EnableModuleClock(I2C1_MODULE);
-
     /* Enable PDMA0/PDMA1 module clock */
     CLK_EnableModuleClock(PDMA0_MODULE);
     CLK_EnableModuleClock(PDMA1_MODULE);
@@ -53,11 +47,29 @@ static void sys_init(void)
     /* Update System Core Clock */
     SystemCoreClockUpdate();
 
-    /* Set GPB multi-function pins for UART0 RXD and TXD */
-    SYS->GPB_MFP3 &= ~(SYS_GPB_MFP3_PB13MFP_Msk | SYS_GPB_MFP3_PB12MFP_Msk);
-    SYS->GPB_MFP3 |= (SYS_GPB_MFP3_PB13MFP_UART0_TXD | SYS_GPB_MFP3_PB12MFP_UART0_RXD);
+#if defined(USE_ILI9341_SPI)
 
-    /* EBI */
+    /* SPI2 */
+    CLK_EnableModuleClock(SPI2_MODULE);
+
+    SYS->GPA_MFP2 &= ~(SYS_GPA_MFP2_PA11MFP_Msk | SYS_GPA_MFP2_PA10MFP_Msk | SYS_GPA_MFP2_PA9MFP_Msk | SYS_GPA_MFP2_PA8MFP_Msk);
+    SYS->GPA_MFP2 |= (SYS_GPA_MFP2_PA11MFP_SPI2_SS | SYS_GPA_MFP2_PA10MFP_SPI2_CLK | SYS_GPA_MFP2_PA9MFP_SPI2_MISO | SYS_GPA_MFP2_PA8MFP_SPI2_MOSI);
+
+    /* EADC Analog Pin */
+    CLK_EnableModuleClock(EADC0_MODULE);
+
+    SYS->GPB_MFP1 &= ~(SYS_GPB_MFP1_PB7MFP_Msk | SYS_GPB_MFP1_PB6MFP_Msk);
+    SYS->GPB_MFP1 |= (SYS_GPB_MFP1_PB7MFP_EADC0_CH7 | SYS_GPB_MFP1_PB6MFP_EADC0_CH6);
+    SYS->GPB_MFP2 &= ~(SYS_GPB_MFP2_PB9MFP_Msk | SYS_GPB_MFP2_PB8MFP_Msk);
+    SYS->GPB_MFP2 |= (SYS_GPB_MFP2_PB9MFP_EADC0_CH9 | SYS_GPB_MFP2_PB8MFP_EADC0_CH8);
+
+    /* Disable digital path on these EADC pins */
+    GPIO_DISABLE_DIGITAL_PATH(PB, BIT6 | BIT7 | BIT8 | BIT9);
+
+#else
+    /* Enable EBI module clock */
+    CLK_EnableModuleClock(EBI_MODULE);
+
     SYS->GPC_MFP0 &= ~(SYS_GPC_MFP0_PC3MFP_Msk | SYS_GPC_MFP0_PC2MFP_Msk | SYS_GPC_MFP0_PC1MFP_Msk | SYS_GPC_MFP0_PC0MFP_Msk);
     SYS->GPC_MFP0 |= (SYS_GPC_MFP0_PC3MFP_EBI_AD3 | SYS_GPC_MFP0_PC2MFP_EBI_AD2 | SYS_GPC_MFP0_PC1MFP_EBI_AD1 | SYS_GPC_MFP0_PC0MFP_EBI_AD0);
     SYS->GPC_MFP1 &= ~(SYS_GPC_MFP1_PC5MFP_Msk | SYS_GPC_MFP1_PC4MFP_Msk);
@@ -85,11 +97,18 @@ static void sys_init(void)
     GPIO_SetSlewCtl(PJ, (BIT8 | BIT9), GPIO_SLEWCTL_FAST);
     GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_FAST);
 
-    /* I2C1 */
+    /* Enable I2C1 module clock */
+    CLK_EnableModuleClock(I2C1_MODULE);
+
     SYS->GPB_MFP2 &= ~(SYS_GPB_MFP2_PB11MFP_Msk | SYS_GPB_MFP2_PB10MFP_Msk);
     SYS->GPB_MFP2 |= (SYS_GPB_MFP2_PB11MFP_I2C1_SCL | SYS_GPB_MFP2_PB10MFP_I2C1_SDA);
 
     GPIO_SetPullCtl(PB, BIT11 | BIT10, GPIO_PUSEL_PULL_UP);
+#endif
+
+    /* Set GPB multi-function pins for UART0 RXD and TXD */
+    SYS->GPB_MFP3 &= ~(SYS_GPB_MFP3_PB13MFP_Msk | SYS_GPB_MFP3_PB12MFP_Msk);
+    SYS->GPB_MFP3 |= (SYS_GPB_MFP3_PB13MFP_UART0_TXD | SYS_GPB_MFP3_PB12MFP_UART0_RXD);
 
     UART_Open(UART0, 115200);
 

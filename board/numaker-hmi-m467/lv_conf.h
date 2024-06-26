@@ -11,8 +11,16 @@
 
 #define LV_USE_OS   LV_OS_NONE
 
-#define LV_HOR_RES_MAX                  480
-#define LV_VER_RES_MAX                  272
+#if defined(__320x240__)
+    #define LV_HOR_RES_MAX                  320
+    #define LV_VER_RES_MAX                  240
+#elif defined(__480x272__)
+    #define LV_HOR_RES_MAX                  480
+    #define LV_VER_RES_MAX                  272
+#else
+    #error "Miss resolution setting"
+#endif
+
 #define LV_COLOR_DEPTH                  16
 
 #define LV_FONT_MONTSERRAT_12           1

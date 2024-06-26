@@ -107,6 +107,32 @@ static const nu_pdma_periph_ctl_t g_nu_pdma_peripheral_ctl_pool[ ] =
 {
     // M2M
     { PDMA_MEM, eMemCtl_SrcInc_DstInc },
+
+    // M2P
+    { PDMA_SPI0_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_SPI1_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_SPI2_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_SPI3_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_SPI4_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_SPI5_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_SPI6_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_SPI7_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_SPI8_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_SPI9_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_SPI10_TX,  eMemCtl_SrcInc_DstFix },
+
+    // P2M
+    { PDMA_SPI0_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_SPI1_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_SPI2_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_SPI3_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_SPI4_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_SPI5_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_SPI6_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_SPI7_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_SPI8_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_SPI9_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_SPI10_RX, eMemCtl_SrcFix_DstInc },
 };
 #define NU_PERIPHERAL_SIZE ( sizeof(g_nu_pdma_peripheral_ctl_pool) / sizeof(g_nu_pdma_peripheral_ctl_pool[0]) )
 
