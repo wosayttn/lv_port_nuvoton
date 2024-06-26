@@ -14,14 +14,15 @@ User can select listed **Target Name** to build target execution using uVision M
 |-|-|
 | M467HJ_480x272_FSA506 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
 | M467HJ_480x272_SSD1963 | Use SSD1963 EBI LCD panel |
-| M467HJ_320x240_ILI9341 | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling)  |
+| M467HJ_320x240_ILI9341 | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
 
 ## **GCC project**
 
 To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 | Target | Description |
 |-|-|
-| M467HJ_480x272 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
+| M467HJ_480x272_FSA506 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
+| M467HJ_320x240_ILI9341 | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
 
 ## **IAR project**
 

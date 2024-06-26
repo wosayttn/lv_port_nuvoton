@@ -85,6 +85,16 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m460/Library/StdDriver/src/pdma.c</locationURI>
 		</link>
 		<link>
+			<name>Driver/spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m460/Library/StdDriver/src/spi.c</locationURI>
+		</link>
+		<link>
+			<name>Driver/eadc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m460/Library/StdDriver/src/eadc.c</locationURI>
+		</link>
+		<link>
 			<name>Driver/retarget.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m460/Library/StdDriver/src/retarget.c</locationURI>
@@ -165,9 +175,24 @@
 			<locationURI>PARENT-1-PROJECT_LOC/lv_port/drv_pdma.c</locationURI>
 		</link>
 		<link>
+			<name>lv_port/drv_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/lv_port/drv_spi.c</locationURI>
+		</link>
+		<link>
 			<name>lv_port/fsa506_ebi.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/fsa506_ebi.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/disp_ili9341.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/disp_ili9341.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/ili9341_spi.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/ili9341_spi.c</locationURI>
 		</link>
 		<link>
 			<name>lv_port/lv_demo.c</name>
@@ -198,6 +223,11 @@
 			<name>lv_port/touch_st1663i.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_st1663i.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/touch_adc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_adc.c</locationURI>
 		</link>
 		<link>
 			<name>lv_port/touch_adc_calibration.c</name>
