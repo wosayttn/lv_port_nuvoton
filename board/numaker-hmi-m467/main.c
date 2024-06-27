@@ -116,6 +116,8 @@ static void sys_init(void)
 
 int main(void)
 {
+    int task_lv_init(void);
+
     sys_init();
 
     task_lv_init();

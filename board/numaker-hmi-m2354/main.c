@@ -117,6 +117,10 @@ static void sys_init(void)
 
 int main(void)
 {
+    int task_fatfs_init(void);
+    int task_msc_sfd_init(void);
+    int task_lv_init(void);
+
     sys_init();
 
     /* Initial fatfs and access SPI-NOR flash device on NuTFT board. */

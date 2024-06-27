@@ -74,9 +74,10 @@ static void sys_init(void)
 
 int main(void)
 {
+    int task_lv_init(void);
+
     sys_init();
 
-    int task_lv_init(void);
     task_lv_init();
 
     /* Start scheduling. */
