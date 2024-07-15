@@ -18,9 +18,9 @@ project:
         - ../../../bsp/m55m1/Library/CMSIS/DSP/Include
         - ../../../bsp/m55m1/Library/CMSIS/Core/Include
         - ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Include
-        - ../../../bsp/m55m1/Library/StdDriver/inc/gdma
         - ../../../bsp/m55m1/Library/StdDriver/inc
         - ../lv_port
+        - ../lv_port/gdma
         - ../../../common/drv_disp
         - ../../../common/drv_indev
         - ../../../common
@@ -78,7 +78,7 @@ project:
         - ../../../bsp/m55m1/Library/CMSIS/DSP/Include
         - ../../../bsp/m55m1/Library/CMSIS/Core/Include
         - ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Include
-        - ../../../bsp/m55m1/Library/StdDriver/inc/gdma
+        - ../lv_port/gdma
         - ../../../bsp/m55m1/Library/StdDriver/inc
         - ../lv_port
         - ../../../common/drv_disp
@@ -140,6 +140,8 @@ project:
         - file: ../FreeRTOSConfig.h
     - group: libraries
       files:
+        - file: ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Source/system_M55M1.c
+        - file: ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Source/startup_M55M1.c
         - file: ../../../bsp/m55m1/Library/StdDriver/src/clk.c
         - file: ../../../bsp/m55m1/Library/StdDriver/src/ebi.c
         - file: ../../../bsp/m55m1/Library/StdDriver/src/gpio.c
@@ -148,12 +150,9 @@ project:
         - file: ../../../bsp/m55m1/Library/StdDriver/src/sys.c
         - file: ../../../bsp/m55m1/Library/StdDriver/src/uart.c
         - file: ../../../bsp/m55m1/Library/StdDriver/src/i2c.c
-        - file: ../../../bsp/m55m1/Library/StdDriver/src/gdma/dma350_address_remap_template.c
-        - file: ../../../bsp/m55m1/Library/StdDriver/src/gdma/dma350_ch_drv.c
-        - file: ../../../bsp/m55m1/Library/StdDriver/src/gdma/dma350_drv.c
-        - file: ../../../bsp/m55m1/Library/StdDriver/src/gdma/dma350_lib.c
-        - file: ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Source/system_M55M1.c
-        - file: ../../../bsp/m55m1/Library/Device/Nuvoton/M55M1/Source/startup_M55M1.c
+        - file: ../lv_port/gdma/dma350_ch_drv.c
+        - file: ../lv_port/gdma/dma350_drv.c
+        - file: ../lv_port/gdma/dma350_lib.c
         - file: ../lv_port/spim_hyperram/hyperram_code.c
         - file: ../lv_port/spim_hyperram/spim.c
         - file: ../lv_port/spim_hyperram/spim_hyper.c

@@ -105,24 +105,19 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/sys.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/dma350_address_remap_template.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/gdma/dma350_address_remap_template.c</locationURI>
-		</link>
-		<link>
 			<name>Driver/dma350_ch_drv.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/gdma/dma350_ch_drv.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/lv_port/gdma/dma350_ch_drv.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/dma350_drv.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/gdma/dma350_drv.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/lv_port/gdma/dma350_drv.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/dma350_lib.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m55m1/Library/StdDriver/src/gdma/dma350_lib.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/lv_port/gdma/dma350_lib.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/system_M55M1.c</name>

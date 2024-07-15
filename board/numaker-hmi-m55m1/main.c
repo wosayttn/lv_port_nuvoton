@@ -7,41 +7,61 @@
  ******************************************************************************/
 
 #include "lv_glue.h"
+#include <arm_cmse.h>
 
 #if defined(NVT_DCACHE_ON)
-enum { DEVICE_IDX, CODE_IDX, DATA_IDX, DEVICE_MEMORY_IDX };
+typedef enum
+{
+    evMR_CODE,       /* 0x00000000 ~ 0x1FFFFFFF, Normal, WT RA */
+    evMR_SRAM,       /* 0x20000000 ~ 0x3FFFFFFF, Normal, WB WA RA */
+    evMR_PERIPHERAL, /* 0x40000000 ~ 0x5FFFFFFF, Device, nGnRE, XN */
+    evMR_EBI,        /* 0x60000000 ~ 0x7FFFFFFF, Normal, WB WA RA */
+    evMR_SPIM,       /* 0x80000000 ~ 0x9FFFFFFF, Normal, WT RA */
+    evMR_DEVICE1,    /* 0xA0000000 ~ 0xBFFFFFFF, Device, nGnRE, XN */
+    evMR_DEVICE2,    /* 0xC0000000 ~ 0xDFFFFFFF, Device, nGnRE, XN */
+    evMR_SYS_PPB,    /* 0xE0000000 ~ 0xE00FFFFF, Device, nGnRE, XN */
+    evMR_SYS_VENDOR, /* 0xE0100000 ~ 0xFFFFFFFF, Device, nGnRE, XN */
+} E_MEM_REGION;
 
 /* Cache policy function */
 static ARM_MPU_Region_t const mpuConfig[] =
 {
     {
         /* EBI address space. */
-        ARM_MPU_RBAR((uint32_t)EBI_BANK0_BASE_ADDR,          // Base
-                     ARM_MPU_SH_NON,    // Non-shareable
-                     0,                 // Read-only
-                     1,                 // Non-Privileged
-                     1),                // eXecute Never enabled
-        ARM_MPU_RLAR((uint32_t)EBI_BANK0_BASE_ADDR + EBI_MAX_SIZE - 1,          // Limit
-                     DEVICE_MEMORY_IDX) // Attribute index - Write-Through, Read-allocate
+        ARM_MPU_RBAR((uint32_t)0x60000000, // Base
+                     ARM_MPU_SH_NON,       // Non-shareable
+                     0,                    // Read-only
+                     1,                    // Non-Privileged
+                     1),                   // eXecute Never enabled
+        ARM_MPU_RLAR((uint32_t)0x6FFFFFFF, // Limit
+                     evMR_EBI)             // DEVICE_nGnRnE
+    },
+    {
+        /* Change Cache policy to WBWARA from WTRA by default. */
+        /* SPIM address space. */
+        ARM_MPU_RBAR((uint32_t)0x80000000, // Base
+                     ARM_MPU_SH_NON,       // Non-shareable
+                     0,                    // Read-only
+                     1,                    // Non-Privileged
+                     1),                   // eXecute Never enabled
+        ARM_MPU_RLAR((uint32_t)0x8FFFFFFF, // Limit
+                     evMR_SPIM)            // WBWARA
     }
 };
 
 static void mpu_init(void)
 {
-
     /* Initialize attributes corresponding to the enums defined in mpu.hpp */
     const uint8_t WTRA = ARM_MPU_ATTR_MEMORY_(1, 0, 1, 0); // Non-transient, Write-Through, Read-allocate, Not Write-allocate
     const uint8_t WBWARA = ARM_MPU_ATTR_MEMORY_(1, 1, 1, 1); // Non-transient, Write-Back, Read-allocate, Write-allocate
 
     ARM_MPU_Disable();
 
-    ARM_MPU_SetMemAttr(DEVICE_IDX, ARM_MPU_ATTR(ARM_MPU_ATTR_NON_CACHEABLE, ARM_MPU_ATTR_NON_CACHEABLE));
-    ARM_MPU_SetMemAttr(CODE_IDX, ARM_MPU_ATTR(WTRA, WTRA));
-    ARM_MPU_SetMemAttr(DATA_IDX, ARM_MPU_ATTR(WBWARA, WBWARA));
-    ARM_MPU_SetMemAttr(DEVICE_MEMORY_IDX, ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE_nGnRnE, ARM_MPU_ATTR_DEVICE_nGnRnE));
+    ARM_MPU_SetMemAttr(evMR_EBI, ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE_nGnRnE, ARM_MPU_ATTR_DEVICE_nGnRnE));
+    ARM_MPU_SetMemAttr(evMR_SPIM, ARM_MPU_ATTR(WBWARA, WBWARA));
     /* See https://developer.arm.com/documentation/den0024/a/Memory-Ordering/Memory-types/Device-memory */
 
-    ARM_MPU_Load(0, &mpuConfig[0], sizeof(mpuConfig) / sizeof(ARM_MPU_Region_t));
+    ARM_MPU_Load(evMR_EBI, &mpuConfig[0], sizeof(mpuConfig) / sizeof(ARM_MPU_Region_t));
 
     /* Enable MPU with default priv access to all other regions */
     ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);

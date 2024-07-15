@@ -357,7 +357,7 @@
                     <state>$PROJ_DIR$/../../../bsp\m55m1/Library/CMSIS/Core/Include</state>
                     <state>$PROJ_DIR$/../../../bsp/m55m1/Library/CMSIS/DSP/Include</state>
                     <state>$PROJ_DIR$/../../../bsp/m55m1/Library/CMSIS/Include</state>
-                    <state>$PROJ_DIR$/../../../bsp/m55m1/Library/StdDriver/inc/gdma</state>
+                    <state>$PROJ_DIR$/../lv_port/gdma</state>
                     <state>$PROJ_DIR$/../../../bsp/m55m1/Library/StdDriver/inc</state>
                     <state>$PROJ_DIR$/../</state>
                     <state>$PROJ_DIR$/../../../thirdparty/FreeRTOS/include</state>
@@ -715,7 +715,7 @@
             <data>
                 <extensions></extensions>
                 <cmdline></cmdline>
-                <hasPrio>1</hasPrio>
+                <hasPrio>24</hasPrio>
                 <buildSequence>inputOutputBased</buildSequence>
             </data>
         </settings>
@@ -1165,16 +1165,13 @@
             <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\clk.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_address_remap_template.c</name>
+            <name>$PROJ_DIR$\..\lv_port\gdma\dma350_ch_drv.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_ch_drv.c</name>
+            <name>$PROJ_DIR$\..\lv_port\gdma\dma350_drv.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_drv.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\gdma\dma350_lib.c</name>
+            <name>$PROJ_DIR$\..\lv_port\gdma\dma350_lib.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\ebi.c</name>
