@@ -39,14 +39,6 @@
     #define CONFIG_TIMING_VPW            17   /*!< VPW (VSYNC width) */
 #endif
 
-#define CONFIG_DISP_VPW_ACTIVE_LOW        1   /*!< Enable VPW active low */
-#define CONFIG_DISP_HPW_ACTIVE_LOW        1   /*!< Enable HPW active low */
-#define CONFIG_DISP_DE_ACTIVE_LOW         0   /*!< Disable DE active low */
-
-#define CONFIG_DISP_VSYNC_BITIDX          1   /*!< SET_EBI_ADR0_PH7 */
-#define CONFIG_DISP_HSYNC_BITIDX          2   /*!< SET_EBI_ADR1_PH6 */
-#define CONFIG_DISP_DE_BITIDX             8   /*!< SET_EBI_ADR7_PH0 */
-
 /* Don't touch me */
 #define CONFIG_DISP_VSYNC_BITMASK        (1<<CONFIG_DISP_VSYNC_BITIDX)
 #define CONFIG_DISP_HSYNC_BITMASK        (1<<CONFIG_DISP_HSYNC_BITIDX)
@@ -93,7 +85,7 @@ typedef struct
 #if defined(NVT_NONCACHEABLE)
     NVT_NONCACHEABLE static S_DSC_LCD s_sDscLCD;
 #endif
-static uint32_t s_u32DummyData = 0;
+static uint32_t s_u32DummyData = 0xffffffff;
 static nu_pdma_desc_t s_head = (nu_pdma_desc_t) &s_sDscLCD;
 static nu_pdma_desc_t s_end  = (nu_pdma_desc_t) &s_sDscLCD + (sizeof(s_sDscLCD) / sizeof(DSCT_T) - 1);
 static volatile uint16_t *s_pu16BufAddr = NULL;

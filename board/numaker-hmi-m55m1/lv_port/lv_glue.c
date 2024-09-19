@@ -11,7 +11,12 @@
 #include "disp.h"
 #include "indev_touch.h"
 
-#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), DCACHE_LINE_SIZE)
+#if defined(CONFIG_DISP_USE_EBI_SYNC)
+    #define CONFIG_VRAM_BUFFER_NUM              2
+#else
+    #define CONFIG_VRAM_BUFFER_NUM              1
+#endif
+#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((CONFIG_VRAM_BUFFER_NUM * LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), DCACHE_LINE_SIZE)
 
 #if defined(USE_HYPERRAM_AS_FRAMEBUFFER)
     static uint8_t *s_au8FrameBuf = (uint8_t *)SPIM_DMM1_SADDR;
@@ -24,8 +29,62 @@ void sysDelay(uint32_t ms)
     vTaskDelay(ms / portTICK_PERIOD_MS);
 }
 
+#if defined(CONFIG_DISP_USE_EBI_SYNC)
+
+void disp_set_vrambufaddr(void *pvBufAddr);
+
+#if (CONFIG_LV_DISP_FULL_REFRESH==1)
+static volatile uint32_t s_vu32Displayblank = 0;
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    static xQueueHandle s_VSyncQ = NULL;
+    static uint8_t dummy = 0x87;
+#endif
+
+static void disp_blank_handler(void *p)
+{
+    s_vu32Displayblank++;
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    xQueueSendFromISR(s_VSyncQ, &dummy, &xHigherPriorityTaskWoken);
+
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#endif
+}
+#endif
+#endif
+
 int lcd_device_initialize(void)
 {
+#if defined(CONFIG_DISP_USE_EBI_SYNC)
+
+    /* Open EBI  */
+    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_FASTEST, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
+
+    /* Optimization timing. */
+    EBI_SetBusTiming(CONFIG_DISP_EBI, 0, EBI_MCLKDIV_4);
+
+    /* Set VRAM buffer address. */
+    disp_set_vrambufaddr((void *)s_au8FrameBuf);
+
+
+#if (CONFIG_LV_DISP_FULL_REFRESH==1)
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    /* Create a queue of length 1 */
+    s_VSyncQ = xQueueGenericCreate(1, sizeof(uint8_t), 0);
+    LV_ASSERT(s_VSyncQ != NULL);
+#endif
+
+    /* Set blank callback. */
+    void disp_set_blankcb(void *pvpfnBlank);
+    disp_set_blankcb(disp_blank_handler);
+#endif
+
+#else
+
     GPIO_T *PORT;
 
     /* Set GPIO Output mode for display pins. */
@@ -47,12 +106,10 @@ int lcd_device_initialize(void)
     EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_SLOW, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
 #endif
 
-    printf("EBI->CTL0: %08x\n", EBI->CTL0);
-    printf("EBI->TCTL0: %08x\n", EBI->TCTL0);
+#endif
 
-    disp_init();
 
-    return 0;
+    return disp_init();
 }
 
 int lcd_device_open(void)
@@ -75,13 +132,51 @@ int lcd_device_control(int cmd, void *argv)
         psLCDInfo->u32ResWidth = LV_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = LV_VER_RES_MAX;
         psLCDInfo->u32BytePerPixel = (LV_COLOR_DEPTH / 8);
+#if defined(CONFIG_DISP_USE_EBI_SYNC)
+        psLCDInfo->evLCDType = evLCD_TYPE_SYNC;
+#else
         psLCDInfo->evLCDType = evLCD_TYPE_MPU;
+#endif
     }
     break;
 
+#if defined(CONFIG_DISP_USE_EBI_SYNC)
+    case evLCD_CTRL_PAN_DISPLAY:
+    {
+        LV_ASSERT(argv != NULL);
+        disp_set_vrambufaddr(argv);
+    }
+    break;
+
+#if (CONFIG_LV_DISP_FULL_REFRESH==1)
+    case evLCD_CTRL_WAIT_VSYNC:
+    {
+        volatile uint32_t next = s_vu32Displayblank + 1;
+        {
+#if (LV_USE_OS==LV_OS_FREERTOS)
+            /* First make sure the queue is empty, by trying to remove an element with 0 timeout. */
+            xQueueReceive(s_VSyncQ, &dummy, 0);
+
+            /* Wait for next VSYNC to occur. */
+            xQueueReceive(s_VSyncQ, &dummy, portMAX_DELAY);
+#else
+            //Wait next blank coming;
+            while (s_vu32Displayblank <  next);
+#endif
+        }
+    }
+    break;
+#endif
+
+#endif
+
     case evLCD_CTRL_RECT_UPDATE:
     {
+#if defined(CONFIG_DISP_USE_EBI_SYNC)
+        SCB_CleanDCache_by_Addr(s_au8FrameBuf, CONFIG_VRAM_TOTAL_ALLOCATED_SIZE);
+#else
         disp_fillrect((uint16_t *)s_au8FrameBuf, (const lv_area_t *)argv);
+#endif
     }
     break;
 

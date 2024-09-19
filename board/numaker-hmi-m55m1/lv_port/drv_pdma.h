@@ -76,6 +76,8 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
 int nu_pdma_sg_transfer(int i32ChannID, nu_pdma_desc_t head, uint32_t u32IdleTimeout_us);
 int nu_pdma_sgtbls_allocate(nu_pdma_desc_t *ppsSgtbls, int num);
 void nu_pdma_sgtbls_free(nu_pdma_desc_t *ppsSgtbls, int num);
+int nu_pdma_m2m_desc_setup(nu_pdma_desc_t dma_desc, uint32_t u32DataWidth, uint32_t u32AddrSrc,
+                           uint32_t u32AddrDst, int32_t i32TransferCnt, nu_pdma_memctrl_t evMemCtrl, nu_pdma_desc_t next, uint32_t u32BeSilent);
 
 // For memory actor
 void *nu_pdma_memcpy(void *dest, void *src, unsigned int count);

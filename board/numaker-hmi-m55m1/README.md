@@ -14,6 +14,7 @@ User can select listed **Target Name** to build target execution using uVision M
 |-|-|
 | M55M1_800x480 | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
 | M55M1_480x272 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
+| M55M1_480x272_SYNC | Use Sync-type LCD panel with capacitive touch screen(FT5446) |
 
 ## **GCC project**
 
