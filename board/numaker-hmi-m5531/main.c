@@ -14,7 +14,7 @@ static void sys_init(void)
     /* Unlock protected registers */
     SYS_UnlockReg();
 
-    /* Enable PLL0 180MHz clock from HIRC and switch SCLK clock source to PLL0 */
+    /* Enable PLL0 clock from HXT and switch SCLK clock source to PLL0 */
     CLK_SetBusClock(CLK_SCLKSEL_SCLKSEL_APLL0, CLK_APLLCTL_APLLSRC_HXT, FREQ_200MHZ);
 
     /* Update System Core Clock */

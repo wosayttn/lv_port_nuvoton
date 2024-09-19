@@ -97,7 +97,7 @@
 //   <e> MPU Region 1
 //   <i> Setup MPU Region 1 Attributes
 */
-#define MPU_INIT_REGION1    0
+#define MPU_INIT_REGION1    1
 /*
 //     <o>Base Address <0-0xFFFFFFE0>
 */
@@ -117,14 +117,14 @@
 //      <5=> Cacheable-WTRA
 //      <6=> Cacheable-WBWARA
 */
-#define MPU_MEM_ATTR1       0x0
+#define MPU_MEM_ATTR1       0x6
 /*
 //  <h> Access attribute
 //   <q.1> Read-Only
 //   <q.2> Non-Privileged
 //   <q.3> Non-executable
 */
-#define MPU_MEM_ACC_ATTR1    0xC
+#define MPU_MEM_ACC_ATTR1    0x4
 /*
 //   </h>
 */
