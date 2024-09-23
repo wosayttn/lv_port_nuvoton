@@ -416,6 +416,110 @@ enum dma350_lib_error_t dma350_lib_set_src_des(struct dma350_ch_dev_t *dev,
     return DMA350_LIB_ERR_NONE;
 }
 
+
+enum dma350_lib_error_t dma350_cmdlink_set_src(struct dma350_cmdlink_gencfg_t* cl_cfg, const void *src)
+{
+    struct dma350_memattr memattr;
+
+    enum dma350_lib_error_t lib_err = dma350_get_memattr((void *)src, &memattr, false);
+    if (lib_err != DMA350_LIB_ERR_NONE)
+    {
+        return lib_err;
+    }
+
+    if (memattr.nonsecure)
+    {
+        dma350_cmdlink_set_src_trans_nonsecure(cl_cfg);
+    }
+    else
+    {
+  			dma350_cmdlink_set_src_trans_secure(cl_cfg);
+    }
+
+    if (memattr.unprivileged)
+    {
+  			dma350_cmdlink_set_src_trans_unprivileged(cl_cfg);
+    }
+    else
+    {
+        dma350_cmdlink_set_src_trans_privileged(cl_cfg);
+    }
+
+		dma350_cmdlink_set_srcmemattrlo(cl_cfg, memattr.mpu_attribute);		
+		dma350_cmdlink_set_srcmemattrhi(cl_cfg, 0);
+		dma350_cmdlink_set_srcshareattr(cl_cfg, memattr.mpu_shareability);
+    dma350_cmdlink_set_srcaddr32(cl_cfg, (uint32_t)src);
+
+    return DMA350_LIB_ERR_NONE;
+}
+
+enum dma350_lib_error_t dma350_cmdlink_set_des(struct dma350_cmdlink_gencfg_t* cl_cfg, void *des)
+{
+    struct dma350_memattr memattr;
+
+    enum dma350_lib_error_t lib_err = dma350_get_memattr(des, &memattr, true);
+    if (lib_err != DMA350_LIB_ERR_NONE)
+    {
+        return lib_err;
+    }
+
+    if (memattr.nonsecure)
+    {		
+        dma350_cmdlink_set_des_trans_nonsecure(cl_cfg);
+    }
+    else
+    {
+  			dma350_cmdlink_set_des_trans_secure(cl_cfg);
+    }
+
+    if (memattr.unprivileged)
+    {		
+        dma350_cmdlink_set_des_trans_unprivileged(cl_cfg);
+    }
+    else
+    {
+  			dma350_cmdlink_set_des_trans_privileged(cl_cfg);
+    }
+
+		dma350_cmdlink_set_desmemattrlo(cl_cfg, memattr.mpu_attribute);
+		dma350_cmdlink_set_desmemattrhi(cl_cfg, 0);
+		dma350_cmdlink_set_desshareattr(cl_cfg, memattr.mpu_shareability);
+    dma350_cmdlink_set_desaddr32(cl_cfg, (uint32_t)des);
+
+    return DMA350_LIB_ERR_NONE;
+}
+
+
+enum dma350_lib_error_t dma350_cmdlink_set_src_des(struct dma350_cmdlink_gencfg_t* cl_cfg,
+                                               const void *src, void *des,
+                                               uint32_t src_size, uint32_t des_size)
+{
+    enum dma350_lib_error_t lib_err;
+
+    if (NULL == cmse_check_address_range((void *)src, src_size, CMSE_MPU_READ))
+    {
+        return DMA350_LIB_ERR_RANGE_NOT_ACCESSIBLE;
+    }
+    if (NULL == cmse_check_address_range(des, des_size, CMSE_MPU_READWRITE))
+    {
+        return DMA350_LIB_ERR_RANGE_NOT_ACCESSIBLE;
+    }
+
+    lib_err = dma350_cmdlink_set_src(cl_cfg, src);
+    if (lib_err != DMA350_LIB_ERR_NONE)
+    {
+        return lib_err;
+    }
+
+    lib_err = dma350_cmdlink_set_des(cl_cfg, des);
+    if (lib_err != DMA350_LIB_ERR_NONE)
+    {
+        return lib_err;
+    }
+
+    return DMA350_LIB_ERR_NONE;
+}
+
 enum dma350_lib_error_t dma350_memcpy(struct dma350_ch_dev_t *dev,
                                       const void *src, void *des, uint32_t size,
                                       enum dma350_lib_exec_type_t exec_type)

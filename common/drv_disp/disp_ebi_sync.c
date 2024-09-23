@@ -28,15 +28,6 @@
     #define CONFIG_TIMING_VBP             2   /*!< VBP (Vertical Back Porch) */
     #define CONFIG_TIMING_VFP            27   /*!< VFP (Vertical Front Porch) */
     #define CONFIG_TIMING_VPW            10   /*!< VPW (VSYNC width) */
-#elif defined(__320x240__)
-    #define CONFIG_TIMING_HACT          320   /*!< XRES */
-    #define CONFIG_TIMING_VACT          240   /*!< YRES */
-    #define CONFIG_TIMING_HBP           202   /*!< HBP (Horizontal Back Porch) */
-    #define CONFIG_TIMING_HFP            60   /*!< HFP (Horizontal Front Porch) */
-    #define CONFIG_TIMING_HPW             2   /*!< HPW (HSYNC plus width) */
-    #define CONFIG_TIMING_VBP            18   /*!< VBP (Vertical Back Porch) */
-    #define CONFIG_TIMING_VFP             2   /*!< VFP (Vertical Front Porch) */
-    #define CONFIG_TIMING_VPW            17   /*!< VPW (VSYNC width) */
 #endif
 
 /* Don't touch me */
@@ -249,6 +240,9 @@ static void nu_pdma_memfun_cb(void *pvUserData, uint32_t u32Events)
             /* Update every lines. */
             s_sDscLCD.m_dscV[DEF_VACT_INDEX + i].m_dscH[evHStageHACT].SA = (uint32_t)&s_pu16BufAddr[i * CONFIG_TIMING_HACT];
         }
+    }
+    else
+    {
     }
 
     if (s_pfnBlankCb)

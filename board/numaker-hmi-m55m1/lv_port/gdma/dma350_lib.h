@@ -115,6 +115,49 @@ enum dma350_lib_error_t dma350_lib_set_src_des(struct dma350_ch_dev_t *dev,
                                                const void *src, void *des,
                                                uint32_t src_size,
                                                uint32_t des_size);
+																							 
+/**
+ * \brief Set src address with memory attributes based on MPU
+ *
+ * \param[in] cl_cfg    DMA350 commandlink configuration
+ * \param[in] src       Source address, where to copy from
+ *
+ * \return Result of the operation \ref dma350_lib_error_t
+ *
+ * \note This function should only be called from privileged level.
+ */
+enum dma350_lib_error_t dma350_cmdlink_set_src(struct dma350_cmdlink_gencfg_t* cl_cfg, const void *src);
+																							 
+																							 
+/**
+ * \brief Set des address with memory attributes based on MPU
+ *
+ * \param[in] cl_cfg    DMA350 commandlink configuration
+ * \param[in] des       Destination address, where to copy to
+ *
+ * \return Result of the operation \ref dma350_lib_error_t
+ *
+ * \note This function should only be called from privileged level.
+ */
+enum dma350_lib_error_t dma350_cmdlink_set_des(struct dma350_cmdlink_gencfg_t* cl_cfg, void *des);
+
+/**
+ * \brief Set src, des and memory attributes based on MPU, with range check
+ *
+ * \param[in] cl_cfg    DMA350 commandlink configuration
+ * \param[in] src       Source address, where to copy from
+ * \param[in] des       Destination address, where to copy to
+ * \param[in] src_size  Source size in bytes
+ * \param[in] des_size  Destination size in bytes
+ *
+ * \return Result of the operation \ref dma350_lib_error_t
+ *
+ * \note This function should only be called from privileged level.
+ */
+enum dma350_lib_error_t dma350_cmdlink_set_src_des(struct dma350_cmdlink_gencfg_t* cl_cfg,
+                                                   const void *src, void *des,
+                                                   uint32_t src_size,
+					                                         uint32_t des_size);
 
 /**
  * \brief Copy a specified number of bytes from one memory to another

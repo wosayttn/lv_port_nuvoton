@@ -9,6 +9,73 @@
 #include "lv_glue.h"
 #include <arm_cmse.h>
 
+/* DMA350 driver structures */
+static const struct dma350_dev_cfg_t GDMA_DEV_CFG_S =
+{
+    .dma_sec_cfg = (DMASECCFG_TypeDef *)(GDMA_S + 0x0UL),
+    .dma_sec_ctrl = (DMASECCTRL_TypeDef *)(GDMA_S + 0x100UL),
+    .dma_nsec_ctrl = (DMANSECCTRL_TypeDef *)(GDMA_S + 0x200UL),
+    .dma_info = (DMAINFO_TypeDef *)(GDMA_S + 0xF00UL)
+};
+
+static struct dma350_dev_data_t GDMA_DEV_DATA_S =
+{
+    .state = 0
+};
+
+static struct dma350_dev_t GDMA_DEV_S =
+{
+    &(GDMA_DEV_CFG_S),
+    &(GDMA_DEV_DATA_S)
+};
+
+static struct dma350_ch_dev_t GDMA_CH0_DEV_S =
+{
+    .cfg = {
+        .ch_base = (DMACH_TypeDef *)(GDMA_S + 0x1000UL),
+        .channel = 0
+    },
+    .data = {0}
+};
+
+static struct dma350_ch_dev_t GDMA_CH1_DEV_S =
+{
+    .cfg = {
+        .ch_base = (DMACH_TypeDef *)(GDMA_S + 0x1100UL),
+        .channel = 1
+    },
+    .data = {0}
+};
+
+struct dma350_ch_dev_t *const GDMA_CH_DEV_S[] =
+{
+    &GDMA_CH0_DEV_S,
+    &GDMA_CH1_DEV_S	
+};
+
+static void DNA350DevInit(void)
+{
+    /* Unlock protected registers */
+    SYS_UnlockReg();
+
+    /* Enable GDMA0 clock source */
+    CLK_EnableModuleClock(GDMA0_MODULE);
+
+    /* Reset GDMA module */
+    SYS_ResetModule(SYS_GDMA0RST);
+
+    dma350_init(&GDMA_DEV_S);
+
+    NVIC_SetPriority(GDMACH0_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
+    NVIC_SetPriority(GDMACH1_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
+
+    /* Enable NVIC for GDMA CH0 */
+    NVIC_EnableIRQ(GDMACH0_IRQn);
+
+    /* Enable NVIC for GDMA CH1 */
+    NVIC_EnableIRQ(GDMACH1_IRQn);    
+}
+
 static void sys_init(void)
 {
     /* Unlock protected registers */
@@ -36,6 +103,10 @@ static void sys_init(void)
     CLK_EnableModuleClock(GPIOJ_MODULE);
 
     /* Enable EBI clock */
+    /* Notice: EBI must set to non-privileged for accessing. */
+    CLK->SCUCTL |= CLK_SCUCTL_SCU0CKEN_Msk;
+    SCU->D1PNP1 |= SCU_D1PNP1_EBI_Msk;		
+
     CLK_EnableModuleClock(EBI0_MODULE);
     SET_EBI_AD0_PC0();
     SET_EBI_AD1_PC1();
@@ -137,6 +208,8 @@ static void sys_init(void)
 
     SPIM_HYPER_EnterDirectMapMode(SPIM1);
 #endif
+
+    DNA350DevInit();
 }
 
 int main(void)

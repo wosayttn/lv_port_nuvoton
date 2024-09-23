@@ -15,11 +15,6 @@
 #define LV_USE_NATIVE_HELIUM_ASM        1
 //#define CONFIG_LV_DISP_FULL_REFRESH     1
 
-#if defined(__320x240__)
-    #define LV_HOR_RES_MAX              320
-    #define LV_VER_RES_MAX              240
-#endif
-
 #if defined(__480x272__)
     #define LV_HOR_RES_MAX              480
     #define LV_VER_RES_MAX              272

@@ -16,40 +16,7 @@
     static SemaphoreHandle_t s_xGDMASem = NULL;
 #endif
 
-/* DMA350 driver structures */
-static const struct dma350_dev_cfg_t GDMA_DEV_CFG_S =
-{
-    .dma_sec_cfg = (DMASECCFG_TypeDef *)(GDMA_S + 0x0UL),
-    .dma_sec_ctrl = (DMASECCTRL_TypeDef *)(GDMA_S + 0x100UL),
-    .dma_nsec_ctrl = (DMANSECCTRL_TypeDef *)(GDMA_S + 0x200UL),
-    .dma_info = (DMAINFO_TypeDef *)(GDMA_S + 0xF00UL)
-};
-
-static struct dma350_dev_data_t GDMA_DEV_DATA_S =
-{
-    .state = 0
-};
-
-static struct dma350_dev_t GDMA_DEV_S =
-{
-    &(GDMA_DEV_CFG_S),
-    &(GDMA_DEV_DATA_S)
-};
-
-static struct dma350_ch_dev_t GDMA_CH0_DEV_S =
-{
-    .cfg = {
-        .ch_base = (DMACH_TypeDef *)(GDMA_S + 0x1000UL),
-        .channel = 0
-    },
-    .data = {0}
-};
-
-struct dma350_ch_dev_t *const GDMA_CH_DEV_S[] =
-{
-    &GDMA_CH0_DEV_S
-};
-
+extern struct dma350_ch_dev_t *const GDMA_CH_DEV_S[];
 void gdmaWaitForCompletion(struct dma350_ch_dev_t *dev, enum dma350_lib_exec_type_t exec_type)
 {
     union dma350_ch_status_t status;
@@ -110,22 +77,6 @@ void gdmaInterruptInit(void)
 #if (LV_USE_OS==LV_OS_FREERTOS)
     s_xGDMASem = xSemaphoreCreateBinary();
     LV_ASSERT(s_xGDMASem != NULL);
-
-    /* Unlock protected registers */
-    SYS_UnlockReg();
-
-    /* Enable GDMA0 clock source */
-    CLK_EnableModuleClock(GDMA0_MODULE);
-
-    /* Reset GDMA module */
-    SYS_ResetModule(SYS_GDMA0RST);
-
-    dma350_init(&GDMA_DEV_S);
-
-    NVIC_SetPriority(GDMACH0_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
-
-    /* Enable NVIC for GDMA CH0 */
-    NVIC_EnableIRQ(GDMACH0_IRQn);
 #endif
 }
 
