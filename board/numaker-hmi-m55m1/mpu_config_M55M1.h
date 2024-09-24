@@ -76,7 +76,7 @@
 //   <q.2> Non-Privileged
 //   <q.3> Non-executable
 */
-#define MPU_MEM_ACC_ATTR0   0xC
+#define MPU_MEM_ACC_ATTR0   0x0
 /*
 //   </h>
 */
@@ -124,7 +124,7 @@
 //   <q.2> Non-Privileged
 //   <q.3> Non-executable
 */
-#define MPU_MEM_ACC_ATTR1    0x4
+#define MPU_MEM_ACC_ATTR1    0x0
 /*
 //   </h>
 */

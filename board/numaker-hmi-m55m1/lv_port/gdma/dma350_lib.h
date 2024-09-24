@@ -83,7 +83,7 @@ extern const struct dma350_remap_list_t dma350_address_remap;
  * \note This function should only be called from privileged level.
  */
 enum dma350_lib_error_t dma350_lib_set_src(struct dma350_ch_dev_t *dev,
-                                           const void *src);
+        const void *src);
 
 /**
  * \brief Set des address with memory attributes based on MPU
@@ -96,7 +96,7 @@ enum dma350_lib_error_t dma350_lib_set_src(struct dma350_ch_dev_t *dev,
  * \note This function should only be called from privileged level.
  */
 enum dma350_lib_error_t dma350_lib_set_des(struct dma350_ch_dev_t *dev,
-                                           void *des);
+        void *des);
 
 /**
  * \brief Set src, des and memory attributes based on MPU, with range check
@@ -112,10 +112,10 @@ enum dma350_lib_error_t dma350_lib_set_des(struct dma350_ch_dev_t *dev,
  * \note This function should only be called from privileged level.
  */
 enum dma350_lib_error_t dma350_lib_set_src_des(struct dma350_ch_dev_t *dev,
-                                               const void *src, void *des,
-                                               uint32_t src_size,
-                                               uint32_t des_size);
-																							 
+        const void *src, void *des,
+        uint32_t src_size,
+        uint32_t des_size);
+
 /**
  * \brief Set src address with memory attributes based on MPU
  *
@@ -126,9 +126,9 @@ enum dma350_lib_error_t dma350_lib_set_src_des(struct dma350_ch_dev_t *dev,
  *
  * \note This function should only be called from privileged level.
  */
-enum dma350_lib_error_t dma350_cmdlink_set_src(struct dma350_cmdlink_gencfg_t* cl_cfg, const void *src);
-																							 
-																							 
+enum dma350_lib_error_t dma350_cmdlink_set_src(struct dma350_cmdlink_gencfg_t *cl_cfg, const void *src);
+
+
 /**
  * \brief Set des address with memory attributes based on MPU
  *
@@ -139,7 +139,7 @@ enum dma350_lib_error_t dma350_cmdlink_set_src(struct dma350_cmdlink_gencfg_t* c
  *
  * \note This function should only be called from privileged level.
  */
-enum dma350_lib_error_t dma350_cmdlink_set_des(struct dma350_cmdlink_gencfg_t* cl_cfg, void *des);
+enum dma350_lib_error_t dma350_cmdlink_set_des(struct dma350_cmdlink_gencfg_t *cl_cfg, void *des);
 
 /**
  * \brief Set src, des and memory attributes based on MPU, with range check
@@ -154,10 +154,10 @@ enum dma350_lib_error_t dma350_cmdlink_set_des(struct dma350_cmdlink_gencfg_t* c
  *
  * \note This function should only be called from privileged level.
  */
-enum dma350_lib_error_t dma350_cmdlink_set_src_des(struct dma350_cmdlink_gencfg_t* cl_cfg,
-                                                   const void *src, void *des,
-                                                   uint32_t src_size,
-					                                         uint32_t des_size);
+enum dma350_lib_error_t dma350_cmdlink_set_src_des(struct dma350_cmdlink_gencfg_t *cl_cfg,
+        const void *src, void *des,
+        uint32_t src_size,
+        uint32_t des_size);
 
 /**
  * \brief Copy a specified number of bytes from one memory to another
@@ -207,8 +207,8 @@ enum dma350_lib_error_t dma350_memmove(struct dma350_ch_dev_t *dev,
  * \return Result of the operation \ref dma350_lib_error_t
  */
 enum dma350_lib_error_t dma350_endian_swap(struct dma350_ch_dev_t *dev,
-                                           const void *src, void *des,
-                                           uint8_t size, uint32_t count);
+        const void *src, void *des,
+        uint8_t size, uint32_t count);
 
 /**
  * \brief 2D Copy from canvas (area within a source bitmap) to within a
@@ -237,14 +237,14 @@ enum dma350_lib_error_t dma350_endian_swap(struct dma350_ch_dev_t *dev,
  *       the source, the resulting image will be repeated / cropped.
  */
 enum dma350_lib_error_t dma350_draw_from_canvas(struct dma350_ch_dev_t *dev,
-                                                const void *src, void *des,
-                                                uint32_t src_width, uint16_t src_height,
-                                                uint16_t src_line_width,
-                                                uint32_t des_width, uint16_t des_height,
-                                                uint16_t des_line_width,
-                                                enum dma350_ch_transize_t pixelsize,
-                                                enum dma350_lib_transform_t transform,
-                                                enum dma350_lib_exec_type_t exec_type);
+        const void *src, void *des,
+        uint32_t src_width, uint16_t src_height,
+        uint16_t src_line_width,
+        uint32_t des_width, uint16_t des_height,
+        uint16_t des_line_width,
+        enum dma350_ch_transize_t pixelsize,
+        enum dma350_lib_transform_t transform,
+        enum dma350_lib_exec_type_t exec_type);
 
 /**
  * \brief 2D Copy from a bitmap to within a destination bitmap, while applying
@@ -271,13 +271,13 @@ enum dma350_lib_error_t dma350_draw_from_canvas(struct dma350_ch_dev_t *dev,
  */
 __STATIC_INLINE
 enum dma350_lib_error_t dma350_draw_from_bitmap(struct dma350_ch_dev_t *dev,
-                                                const void *src, void *des,
-                                                uint32_t src_width, uint16_t src_height,
-                                                uint32_t des_width, uint16_t des_height,
-                                                uint16_t des_line_width,
-                                                enum dma350_ch_transize_t pixelsize,
-                                                enum dma350_lib_transform_t transform,
-                                                enum dma350_lib_exec_type_t exec_type);
+        const void *src, void *des,
+        uint32_t src_width, uint16_t src_height,
+        uint32_t des_width, uint16_t des_height,
+        uint16_t des_line_width,
+        enum dma350_ch_transize_t pixelsize,
+        enum dma350_lib_transform_t transform,
+        enum dma350_lib_exec_type_t exec_type);
 
 /**
  * \brief 2D Copy a source bitmap to a destination bitmap, while applying
@@ -354,7 +354,7 @@ enum dma350_lib_error_t verify_dma350_ch_dev_ready(struct dma350_ch_dev_t *dev);
  */
 __STATIC_INLINE
 enum dma350_lib_error_t dma350_get_status(struct dma350_ch_dev_t *dev,
-                                          union dma350_ch_status_t *status);
+        union dma350_ch_status_t *status);
 
 __STATIC_INLINE
 enum dma350_lib_error_t dma350_clear_done_irq(struct dma350_ch_dev_t *dev)
@@ -416,7 +416,7 @@ enum dma350_lib_error_t verify_dma350_ch_dev_ready(struct dma350_ch_dev_t *dev)
 
 __STATIC_INLINE
 enum dma350_lib_error_t dma350_get_status(struct dma350_ch_dev_t *dev,
-                                          union dma350_ch_status_t *status)
+        union dma350_ch_status_t *status)
 {
     enum dma350_lib_error_t lib_err;
     lib_err = verify_dma350_ch_dev_init(dev);
@@ -432,13 +432,13 @@ enum dma350_lib_error_t dma350_get_status(struct dma350_ch_dev_t *dev,
 
 __STATIC_INLINE
 enum dma350_lib_error_t dma350_draw_from_bitmap(struct dma350_ch_dev_t *dev,
-                                                const void *src, void *des,
-                                                uint32_t src_width, uint16_t src_height,
-                                                uint32_t des_width, uint16_t des_height,
-                                                uint16_t des_line_width,
-                                                enum dma350_ch_transize_t pixelsize,
-                                                enum dma350_lib_transform_t transform,
-                                                enum dma350_lib_exec_type_t exec_type)
+        const void *src, void *des,
+        uint32_t src_width, uint16_t src_height,
+        uint32_t des_width, uint16_t des_height,
+        uint16_t des_line_width,
+        enum dma350_ch_transize_t pixelsize,
+        enum dma350_lib_transform_t transform,
+        enum dma350_lib_exec_type_t exec_type)
 {
     return dma350_draw_from_canvas(dev, src, des,
                                    src_width, src_height, (uint16_t)src_width,

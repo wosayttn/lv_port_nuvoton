@@ -42,24 +42,24 @@ static uint32_t dma350_remap(uint32_t addr)
 }
 
 static enum dma350_lib_error_t dma350_runcmd(struct dma350_ch_dev_t *dev,
-                                             enum dma350_lib_exec_type_t exec_type)
+        enum dma350_lib_exec_type_t exec_type)
 {
     union dma350_ch_status_t status;
 
     /* Extra setup based on execution type */
     switch (exec_type)
     {
-        case DMA350_LIB_EXEC_IRQ:
-            dma350_ch_enable_intr(dev, DMA350_CH_INTREN_DONE);
-            break;
+    case DMA350_LIB_EXEC_IRQ:
+        dma350_ch_enable_intr(dev, DMA350_CH_INTREN_DONE);
+        break;
 
-        case DMA350_LIB_EXEC_START_ONLY:
-        case DMA350_LIB_EXEC_BLOCKING:
-            dma350_ch_disable_intr(dev, DMA350_CH_INTREN_DONE);
-            break;
+    case DMA350_LIB_EXEC_START_ONLY:
+    case DMA350_LIB_EXEC_BLOCKING:
+        dma350_ch_disable_intr(dev, DMA350_CH_INTREN_DONE);
+        break;
 
-        default:
-            return DMA350_LIB_ERR_INVALID_EXEC_TYPE;
+    default:
+        return DMA350_LIB_ERR_INVALID_EXEC_TYPE;
     }
 
     dma350_ch_cmd(dev, DMA350_CH_CMD_ENABLECMD);
@@ -67,25 +67,25 @@ static enum dma350_lib_error_t dma350_runcmd(struct dma350_ch_dev_t *dev,
     /* Return or check based on execution type */
     switch (exec_type)
     {
-        case DMA350_LIB_EXEC_IRQ:
-        case DMA350_LIB_EXEC_START_ONLY:
-            if (dma350_ch_is_stat_set(dev, DMA350_CH_STAT_ERR))
-            {
-                return DMA350_LIB_ERR_CMD_ERR;
-            }
+    case DMA350_LIB_EXEC_IRQ:
+    case DMA350_LIB_EXEC_START_ONLY:
+        if (dma350_ch_is_stat_set(dev, DMA350_CH_STAT_ERR))
+        {
+            return DMA350_LIB_ERR_CMD_ERR;
+        }
 
-            break;
+        break;
 
-        case DMA350_LIB_EXEC_BLOCKING:
-            status = dma350_ch_wait_status(dev);
+    case DMA350_LIB_EXEC_BLOCKING:
+        status = dma350_ch_wait_status(dev);
 
-            if (!status.b.STAT_DONE || status.b.STAT_ERR)
-            {
-                return DMA350_LIB_ERR_CMD_ERR;
-            }
+        if (!status.b.STAT_DONE || status.b.STAT_ERR)
+        {
+            return DMA350_LIB_ERR_CMD_ERR;
+        }
 
-            break;
-            /* default is handled above */
+        break;
+        /* default is handled above */
     }
 
     return DMA350_LIB_ERR_NONE;
@@ -97,49 +97,49 @@ static uint8_t get_default_memattr(uint32_t address)
 
     switch ((address >> 29) & 0x7) /* Get top 3 bits */
     {
-        case (0): // CODE region, WT-RA
-            // Use same attribute for inner and outer
-            mpu_attribute = ARM_MPU_ATTR((ARM_MPU_ATTR_MEMORY_(0, 0, 1, 0)), (ARM_MPU_ATTR_MEMORY_(0, 0, 1, 0))); // NT=0, WB=0, RA=1, WA=0
-            break;
+    case (0): // CODE region, WT-RA
+        // Use same attribute for inner and outer
+        mpu_attribute = ARM_MPU_ATTR((ARM_MPU_ATTR_MEMORY_(0, 0, 1, 0)), (ARM_MPU_ATTR_MEMORY_(0, 0, 1, 0))); // NT=0, WB=0, RA=1, WA=0
+        break;
 
-        case (1): // SRAM region, WB-WA-RA
-            // Use same attribute for inner and outer
-            mpu_attribute = ARM_MPU_ATTR((ARM_MPU_ATTR_MEMORY_(0, 1, 1, 1)), (ARM_MPU_ATTR_MEMORY_(0, 1, 1, 1))); // NT=0, WB=1, RA=1, WA=1
-            break;
+    case (1): // SRAM region, WB-WA-RA
+        // Use same attribute for inner and outer
+        mpu_attribute = ARM_MPU_ATTR((ARM_MPU_ATTR_MEMORY_(0, 1, 1, 1)), (ARM_MPU_ATTR_MEMORY_(0, 1, 1, 1))); // NT=0, WB=1, RA=1, WA=1
+        break;
 
-        case (2): // Peripheral region (Shareable)
-            mpu_attribute = ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE, ARM_MPU_ATTR_DEVICE_nGnRE);
-            break;
+    case (2): // Peripheral region (Shareable)
+        mpu_attribute = ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE, ARM_MPU_ATTR_DEVICE_nGnRE);
+        break;
 
-        case (3): // SRAM region, WB-WA-RA
-            // Use same attribute for inner and outer
-            mpu_attribute = ARM_MPU_ATTR((ARM_MPU_ATTR_MEMORY_(0, 1, 1, 1)), (ARM_MPU_ATTR_MEMORY_(0, 1, 1, 1))); // NT=0, WB=1, RA=1, WA=1
-            break;
+    case (3): // SRAM region, WB-WA-RA
+        // Use same attribute for inner and outer
+        mpu_attribute = ARM_MPU_ATTR((ARM_MPU_ATTR_MEMORY_(0, 1, 1, 1)), (ARM_MPU_ATTR_MEMORY_(0, 1, 1, 1))); // NT=0, WB=1, RA=1, WA=1
+        break;
 
-        case (4): // SRAM region, WT-RA
-            // Use same attribute for inner and outer
-            mpu_attribute = ARM_MPU_ATTR((ARM_MPU_ATTR_MEMORY_(0, 0, 1, 0)), (ARM_MPU_ATTR_MEMORY_(0, 0, 1, 0))); // NT=0, WB=0, RA=1, WA=0
-            break;
+    case (4): // SRAM region, WT-RA
+        // Use same attribute for inner and outer
+        mpu_attribute = ARM_MPU_ATTR((ARM_MPU_ATTR_MEMORY_(0, 0, 1, 0)), (ARM_MPU_ATTR_MEMORY_(0, 0, 1, 0))); // NT=0, WB=0, RA=1, WA=0
+        break;
 
-        case (5): // Device region (Shareable)
-            mpu_attribute = ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE, ARM_MPU_ATTR_DEVICE_nGnRE);
-            break;
+    case (5): // Device region (Shareable)
+        mpu_attribute = ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE, ARM_MPU_ATTR_DEVICE_nGnRE);
+        break;
 
-        case (6): // Device region (Shareable)
-            mpu_attribute = ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE, ARM_MPU_ATTR_DEVICE_nGnRE);
-            break;
+    case (6): // Device region (Shareable)
+        mpu_attribute = ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE, ARM_MPU_ATTR_DEVICE_nGnRE);
+        break;
 
-        default: // System / Vendor specific
-            if ((address < 0xE0100000UL))
-            {
-                mpu_attribute = ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE, ARM_MPU_ATTR_DEVICE_nGnRnE); // PPB
-            }
-            else
-            {
-                mpu_attribute = ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE, ARM_MPU_ATTR_DEVICE_nGnRE); // Vendor
-            }
+    default: // System / Vendor specific
+        if ((address < 0xE0100000UL))
+        {
+            mpu_attribute = ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE, ARM_MPU_ATTR_DEVICE_nGnRnE); // PPB
+        }
+        else
+        {
+            mpu_attribute = ARM_MPU_ATTR(ARM_MPU_ATTR_DEVICE, ARM_MPU_ATTR_DEVICE_nGnRE); // Vendor
+        }
 
-            break;
+        break;
     } /* end switch */
 
     return mpu_attribute;
@@ -154,8 +154,8 @@ struct dma350_memattr
 };
 
 static enum dma350_lib_error_t dma350_get_memattr(void *address,
-                                                  struct dma350_memattr *memattr,
-                                                  bool writable)
+        struct dma350_memattr *memattr,
+        bool writable)
 {
     cmse_address_info_t address_info;
     MPU_Type *Selected_MPU; /* Pointer to selected MPU (MPU / MPU_NS) */
@@ -286,7 +286,7 @@ static enum dma350_lib_error_t dma350_get_memattr(void *address,
 /**********************************************/
 
 enum dma350_lib_error_t dma350_lib_set_src(struct dma350_ch_dev_t *dev,
-                                           const void *src)
+        const void *src)
 {
     struct dma350_memattr memattr;
     enum dma350_lib_error_t lib_err;
@@ -331,7 +331,7 @@ enum dma350_lib_error_t dma350_lib_set_src(struct dma350_ch_dev_t *dev,
 }
 
 enum dma350_lib_error_t dma350_lib_set_des(struct dma350_ch_dev_t *dev,
-                                           void *des)
+        void *des)
 {
     struct dma350_memattr memattr;
     enum dma350_lib_error_t lib_err;
@@ -376,9 +376,9 @@ enum dma350_lib_error_t dma350_lib_set_des(struct dma350_ch_dev_t *dev,
 }
 
 enum dma350_lib_error_t dma350_lib_set_src_des(struct dma350_ch_dev_t *dev,
-                                               const void *src, void *des,
-                                               uint32_t src_size,
-                                               uint32_t des_size)
+        const void *src, void *des,
+        uint32_t src_size,
+        uint32_t des_size)
 {
     enum dma350_lib_error_t lib_err;
 
@@ -417,7 +417,7 @@ enum dma350_lib_error_t dma350_lib_set_src_des(struct dma350_ch_dev_t *dev,
 }
 
 
-enum dma350_lib_error_t dma350_cmdlink_set_src(struct dma350_cmdlink_gencfg_t* cl_cfg, const void *src)
+enum dma350_lib_error_t dma350_cmdlink_set_src(struct dma350_cmdlink_gencfg_t *cl_cfg, const void *src)
 {
     struct dma350_memattr memattr;
 
@@ -433,27 +433,27 @@ enum dma350_lib_error_t dma350_cmdlink_set_src(struct dma350_cmdlink_gencfg_t* c
     }
     else
     {
-  			dma350_cmdlink_set_src_trans_secure(cl_cfg);
+        dma350_cmdlink_set_src_trans_secure(cl_cfg);
     }
 
     if (memattr.unprivileged)
     {
-  			dma350_cmdlink_set_src_trans_unprivileged(cl_cfg);
+        dma350_cmdlink_set_src_trans_unprivileged(cl_cfg);
     }
     else
     {
         dma350_cmdlink_set_src_trans_privileged(cl_cfg);
     }
 
-		dma350_cmdlink_set_srcmemattrlo(cl_cfg, memattr.mpu_attribute);		
-		dma350_cmdlink_set_srcmemattrhi(cl_cfg, 0);
-		dma350_cmdlink_set_srcshareattr(cl_cfg, memattr.mpu_shareability);
+    dma350_cmdlink_set_srcmemattrlo(cl_cfg, memattr.mpu_attribute);
+    dma350_cmdlink_set_srcmemattrhi(cl_cfg, 0);
+    dma350_cmdlink_set_srcshareattr(cl_cfg, memattr.mpu_shareability);
     dma350_cmdlink_set_srcaddr32(cl_cfg, (uint32_t)src);
 
     return DMA350_LIB_ERR_NONE;
 }
 
-enum dma350_lib_error_t dma350_cmdlink_set_des(struct dma350_cmdlink_gencfg_t* cl_cfg, void *des)
+enum dma350_lib_error_t dma350_cmdlink_set_des(struct dma350_cmdlink_gencfg_t *cl_cfg, void *des)
 {
     struct dma350_memattr memattr;
 
@@ -464,35 +464,35 @@ enum dma350_lib_error_t dma350_cmdlink_set_des(struct dma350_cmdlink_gencfg_t* c
     }
 
     if (memattr.nonsecure)
-    {		
+    {
         dma350_cmdlink_set_des_trans_nonsecure(cl_cfg);
     }
     else
     {
-  			dma350_cmdlink_set_des_trans_secure(cl_cfg);
+        dma350_cmdlink_set_des_trans_secure(cl_cfg);
     }
 
     if (memattr.unprivileged)
-    {		
+    {
         dma350_cmdlink_set_des_trans_unprivileged(cl_cfg);
     }
     else
     {
-  			dma350_cmdlink_set_des_trans_privileged(cl_cfg);
+        dma350_cmdlink_set_des_trans_privileged(cl_cfg);
     }
 
-		dma350_cmdlink_set_desmemattrlo(cl_cfg, memattr.mpu_attribute);
-		dma350_cmdlink_set_desmemattrhi(cl_cfg, 0);
-		dma350_cmdlink_set_desshareattr(cl_cfg, memattr.mpu_shareability);
+    dma350_cmdlink_set_desmemattrlo(cl_cfg, memattr.mpu_attribute);
+    dma350_cmdlink_set_desmemattrhi(cl_cfg, 0);
+    dma350_cmdlink_set_desshareattr(cl_cfg, memattr.mpu_shareability);
     dma350_cmdlink_set_desaddr32(cl_cfg, (uint32_t)des);
 
     return DMA350_LIB_ERR_NONE;
 }
 
 
-enum dma350_lib_error_t dma350_cmdlink_set_src_des(struct dma350_cmdlink_gencfg_t* cl_cfg,
-                                               const void *src, void *des,
-                                               uint32_t src_size, uint32_t des_size)
+enum dma350_lib_error_t dma350_cmdlink_set_src_des(struct dma350_cmdlink_gencfg_t *cl_cfg,
+        const void *src, void *des,
+        uint32_t src_size, uint32_t des_size)
 {
     enum dma350_lib_error_t lib_err;
 
@@ -607,8 +607,8 @@ enum dma350_lib_error_t dma350_memmove(struct dma350_ch_dev_t *dev,
 }
 
 enum dma350_lib_error_t dma350_endian_swap(struct dma350_ch_dev_t *dev,
-                                           const void *src, void *des,
-                                           uint8_t size, uint32_t count)
+        const void *src, void *des,
+        uint8_t size, uint32_t count)
 {
     uint32_t remaining = 0;
     enum dma350_lib_error_t lib_err;
@@ -681,14 +681,14 @@ enum dma350_lib_error_t dma350_endian_swap(struct dma350_ch_dev_t *dev,
 }
 
 enum dma350_lib_error_t dma350_draw_from_canvas(struct dma350_ch_dev_t *dev,
-                                                const void *src, void *des,
-                                                uint32_t src_width, uint16_t src_height,
-                                                uint16_t src_line_width,
-                                                uint32_t des_width, uint16_t des_height,
-                                                uint16_t des_line_width,
-                                                enum dma350_ch_transize_t pixelsize,
-                                                enum dma350_lib_transform_t transform,
-                                                enum dma350_lib_exec_type_t exec_type)
+        const void *src, void *des,
+        uint32_t src_width, uint16_t src_height,
+        uint16_t src_line_width,
+        uint32_t des_width, uint16_t des_height,
+        uint16_t des_line_width,
+        enum dma350_ch_transize_t pixelsize,
+        enum dma350_lib_transform_t transform,
+        enum dma350_lib_exec_type_t exec_type)
 {
     uint8_t *des_uint8_t;
     uint32_t des_offset, des_xsize;
@@ -705,98 +705,98 @@ enum dma350_lib_error_t dma350_draw_from_canvas(struct dma350_ch_dev_t *dev,
 
     switch (transform)
     {
-        case DMA350_LIB_TRANSFORM_NONE:
-            des_offset = 0;
-            des_xsize = des_width;
-            des_ysize = des_height;
-            des_xaddrinc = 1;
-            des_yaddrstride = des_line_width;
-            break;
+    case DMA350_LIB_TRANSFORM_NONE:
+        des_offset = 0;
+        des_xsize = des_width;
+        des_ysize = des_height;
+        des_xaddrinc = 1;
+        des_yaddrstride = des_line_width;
+        break;
 
-        case DMA350_LIB_TRANSFORM_MIRROR_HOR:
-            /* Top right */
-            des_offset = des_width - 1;
-            des_xsize = des_width;
-            des_ysize = des_height;
-            des_xaddrinc = -1;
-            des_yaddrstride = des_line_width;
-            break;
+    case DMA350_LIB_TRANSFORM_MIRROR_HOR:
+        /* Top right */
+        des_offset = des_width - 1;
+        des_xsize = des_width;
+        des_ysize = des_height;
+        des_xaddrinc = -1;
+        des_yaddrstride = des_line_width;
+        break;
 
-        case DMA350_LIB_TRANSFORM_MIRROR_VER:
-            /* Bottom left */
-            des_offset = (des_height - 1) * des_line_width;
-            des_xsize = des_width;
-            des_ysize = des_height;
-            des_xaddrinc = 1;
-            des_yaddrstride = -des_line_width;
-            break;
+    case DMA350_LIB_TRANSFORM_MIRROR_VER:
+        /* Bottom left */
+        des_offset = (des_height - 1) * des_line_width;
+        des_xsize = des_width;
+        des_ysize = des_height;
+        des_xaddrinc = 1;
+        des_yaddrstride = -des_line_width;
+        break;
 
-        case DMA350_LIB_TRANSFORM_MIRROR_TLBR:
-            if (des_width > UINT16_MAX)
-            {
-                return DMA350_LIB_ERR_CFG_ERR;
-            }
-
-            /* Bottom right */
-            des_offset = (des_height - 1) * des_line_width + des_width - 1;
-            des_xsize = des_height;
-            des_ysize = (uint16_t)des_width;
-            des_xaddrinc = (int16_t)(-des_line_width);
-            des_yaddrstride = (uint16_t) -1;
-            break;
-
-        case DMA350_LIB_TRANSFORM_MIRROR_TRBL:
-            if (des_width > UINT16_MAX)
-            {
-                return DMA350_LIB_ERR_CFG_ERR;
-            }
-
-            des_offset = 0;
-            des_xsize = des_height;
-            des_ysize = (uint16_t)des_width;
-            des_xaddrinc = (int16_t)des_line_width;
-            des_yaddrstride = 1;
-            break;
-
-        case DMA350_LIB_TRANSFORM_ROTATE_90:
-            if (des_width > UINT16_MAX)
-            {
-                return DMA350_LIB_ERR_CFG_ERR;
-            }
-
-            /* Top right */
-            des_offset = des_width - 1;
-            des_xsize = des_height;
-            des_ysize = (uint16_t)des_width;
-            des_xaddrinc = (int16_t)des_line_width;
-            des_yaddrstride = (uint16_t) -1;
-            break;
-
-        case DMA350_LIB_TRANSFORM_ROTATE_180:
-            /* Bottom right */
-            des_offset = (des_height - 1) * des_line_width + des_width - 1;
-            des_xsize = des_width;
-            des_ysize = des_height;
-            des_xaddrinc = -1;
-            des_yaddrstride = -des_line_width;
-            break;
-
-        case DMA350_LIB_TRANSFORM_ROTATE_270:
-            if (des_width > UINT16_MAX)
-            {
-                return DMA350_LIB_ERR_CFG_ERR;
-            }
-
-            /* Bottom left */
-            des_offset = (des_height - 1) * des_line_width;
-            des_xsize = des_height;
-            des_ysize = (uint16_t)des_width;
-            des_xaddrinc = (int16_t)(-des_line_width);
-            des_yaddrstride = 1;
-            break;
-
-        default:
+    case DMA350_LIB_TRANSFORM_MIRROR_TLBR:
+        if (des_width > UINT16_MAX)
+        {
             return DMA350_LIB_ERR_CFG_ERR;
+        }
+
+        /* Bottom right */
+        des_offset = (des_height - 1) * des_line_width + des_width - 1;
+        des_xsize = des_height;
+        des_ysize = (uint16_t)des_width;
+        des_xaddrinc = (int16_t)(-des_line_width);
+        des_yaddrstride = (uint16_t) -1;
+        break;
+
+    case DMA350_LIB_TRANSFORM_MIRROR_TRBL:
+        if (des_width > UINT16_MAX)
+        {
+            return DMA350_LIB_ERR_CFG_ERR;
+        }
+
+        des_offset = 0;
+        des_xsize = des_height;
+        des_ysize = (uint16_t)des_width;
+        des_xaddrinc = (int16_t)des_line_width;
+        des_yaddrstride = 1;
+        break;
+
+    case DMA350_LIB_TRANSFORM_ROTATE_90:
+        if (des_width > UINT16_MAX)
+        {
+            return DMA350_LIB_ERR_CFG_ERR;
+        }
+
+        /* Top right */
+        des_offset = des_width - 1;
+        des_xsize = des_height;
+        des_ysize = (uint16_t)des_width;
+        des_xaddrinc = (int16_t)des_line_width;
+        des_yaddrstride = (uint16_t) -1;
+        break;
+
+    case DMA350_LIB_TRANSFORM_ROTATE_180:
+        /* Bottom right */
+        des_offset = (des_height - 1) * des_line_width + des_width - 1;
+        des_xsize = des_width;
+        des_ysize = des_height;
+        des_xaddrinc = -1;
+        des_yaddrstride = -des_line_width;
+        break;
+
+    case DMA350_LIB_TRANSFORM_ROTATE_270:
+        if (des_width > UINT16_MAX)
+        {
+            return DMA350_LIB_ERR_CFG_ERR;
+        }
+
+        /* Bottom left */
+        des_offset = (des_height - 1) * des_line_width;
+        des_xsize = des_height;
+        des_ysize = (uint16_t)des_width;
+        des_xaddrinc = (int16_t)(-des_line_width);
+        des_yaddrstride = 1;
+        break;
+
+    default:
+        return DMA350_LIB_ERR_CFG_ERR;
     }
 
     /* Up until this point, offset was set as number of pixels. It needs to be

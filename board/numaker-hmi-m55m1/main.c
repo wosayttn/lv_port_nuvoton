@@ -65,6 +65,8 @@ static void DNA350DevInit(void)
     SYS_ResetModule(SYS_GDMA0RST);
 
     dma350_init(&GDMA_DEV_S);
+    dma350_set_ch_privileged(&GDMA_DEV_S, 0);
+    dma350_set_ch_privileged(&GDMA_DEV_S, 1);
 
     NVIC_SetPriority(GDMACH0_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
     NVIC_SetPriority(GDMACH1_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
@@ -103,10 +105,6 @@ static void sys_init(void)
     CLK_EnableModuleClock(GPIOJ_MODULE);
 
     /* Enable EBI clock */
-    /* Notice: EBI must set to non-privileged for accessing. */
-    CLK->SCUCTL |= CLK_SCUCTL_SCU0CKEN_Msk;
-    SCU->D1PNP1 |= SCU_D1PNP1_EBI_Msk;		
-
     CLK_EnableModuleClock(EBI0_MODULE);
     SET_EBI_AD0_PC0();
     SET_EBI_AD1_PC1();

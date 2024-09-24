@@ -191,7 +191,6 @@ static void disp_gdma_dsc_init(void)
 
             dma350_cmdlink_init(&cmdlink_cfg);
             dma350_cmdlink_set_regclear(&cmdlink_cfg);
-            //dma350_cmdlink_set_regreloadtype(&cmdlink_cfg, DMA350_CH_REGRELOADTYPE_SRC_DES_ADDR_AND_SIZE);
             dma350_cmdlink_set_src_des(&cmdlink_cfg, (const void *)u32AddrSrc, (void *)u32AddrDst, u32XferCount, u32XferCount);
             dma350_cmdlink_set_xsize16(&cmdlink_cfg, (uint16_t)u32XferCount, (uint16_t)u32XferCount);
             dma350_cmdlink_set_transize(&cmdlink_cfg, DMA350_CH_TRANSIZE_16BITS);

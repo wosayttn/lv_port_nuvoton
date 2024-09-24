@@ -94,7 +94,7 @@ void dma350_clear_secaccvio_status(struct dma350_dev_t *dev)
 }
 
 enum dma350_error_t dma350_set_ch_secure(struct dma350_dev_t *dev,
-                                         uint8_t channel)
+        uint8_t channel)
 {
     if (!dma350_is_init(dev))
     {
@@ -115,7 +115,7 @@ enum dma350_error_t dma350_set_ch_secure(struct dma350_dev_t *dev,
 }
 
 enum dma350_error_t dma350_set_ch_nonsecure(struct dma350_dev_t *dev,
-                                            uint8_t channel)
+        uint8_t channel)
 {
     if (!dma350_is_init(dev))
     {
@@ -136,7 +136,7 @@ enum dma350_error_t dma350_set_ch_nonsecure(struct dma350_dev_t *dev,
 }
 
 enum dma350_error_t dma350_set_ch_privileged(struct dma350_dev_t *dev,
-                                             uint8_t channel)
+        uint8_t channel)
 {
     if (!dma350_is_init(dev))
     {
@@ -178,7 +178,7 @@ enum dma350_error_t dma350_set_ch_privileged(struct dma350_dev_t *dev,
 }
 
 enum dma350_error_t dma350_set_ch_unprivileged(struct dma350_dev_t *dev,
-                                               uint8_t channel)
+        uint8_t channel)
 {
     if (!dma350_is_init(dev))
     {
@@ -220,7 +220,7 @@ enum dma350_error_t dma350_set_ch_unprivileged(struct dma350_dev_t *dev,
 }
 
 enum dma350_error_t dma350_set_trigin_secure(struct dma350_dev_t *dev,
-                                             uint8_t trigger)
+        uint8_t trigger)
 {
     if (!dma350_is_init(dev))
     {
@@ -246,7 +246,7 @@ enum dma350_error_t dma350_set_trigin_secure(struct dma350_dev_t *dev,
 }
 
 enum dma350_error_t dma350_set_trigin_nonsecure(struct dma350_dev_t *dev,
-                                                uint8_t trigger)
+        uint8_t trigger)
 {
     if (!dma350_is_init(dev))
     {
@@ -272,7 +272,7 @@ enum dma350_error_t dma350_set_trigin_nonsecure(struct dma350_dev_t *dev,
 }
 
 enum dma350_error_t dma350_set_trigout_secure(struct dma350_dev_t *dev,
-                                              uint8_t trigger)
+        uint8_t trigger)
 {
     if (!dma350_is_init(dev))
     {
@@ -298,7 +298,7 @@ enum dma350_error_t dma350_set_trigout_secure(struct dma350_dev_t *dev,
 }
 
 enum dma350_error_t dma350_set_trigout_nonsecure(struct dma350_dev_t *dev,
-                                                 uint8_t trigger)
+        uint8_t trigger)
 {
     if (!dma350_is_init(dev))
     {
