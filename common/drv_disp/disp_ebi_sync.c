@@ -10,26 +10,6 @@
 #include "disp.h"
 #include "drv_pdma.h"
 
-#if defined(__800x480__)
-    #define CONFIG_TIMING_HACT          800   /*!< XRES */
-    #define CONFIG_TIMING_VACT          480   /*!< YRES */
-    #define CONFIG_TIMING_HBP            88   /*!< HBP (Horizontal Back Porch) */
-    #define CONFIG_TIMING_HFP           255   /*!< HFP (Horizontal Front Porch) */
-    #define CONFIG_TIMING_HPW           255   /*!< HPW (HSYNC plus width) */
-    #define CONFIG_TIMING_VBP            32   /*!< VBP (Vertical Back Porch) */
-    #define CONFIG_TIMING_VFP            13   /*!< VFP (Vertical Front Porch) */
-    #define CONFIG_TIMING_VPW             3   /*!< VPW (VSYNC width) */
-#elif defined(__480x272__)
-    #define CONFIG_TIMING_HACT          480   /*!< XRES */
-    #define CONFIG_TIMING_VACT          272   /*!< YRES */
-    #define CONFIG_TIMING_HBP            30   /*!< HBP (Horizontal Back Porch) */
-    #define CONFIG_TIMING_HFP             5   /*!< HFP (Horizontal Front Porch) */
-    #define CONFIG_TIMING_HPW            41   /*!< HPW (HSYNC plus width) */
-    #define CONFIG_TIMING_VBP             2   /*!< VBP (Vertical Back Porch) */
-    #define CONFIG_TIMING_VFP            27   /*!< VFP (Vertical Front Porch) */
-    #define CONFIG_TIMING_VPW            10   /*!< VPW (VSYNC width) */
-#endif
-
 /* Don't touch me */
 #define CONFIG_DISP_VSYNC_BITMASK        (1<<CONFIG_DISP_VSYNC_BITIDX)
 #define CONFIG_DISP_HSYNC_BITMASK        (1<<CONFIG_DISP_HSYNC_BITIDX)
