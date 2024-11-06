@@ -43,7 +43,7 @@ void disp_set_page(uint16_t StartPage, uint16_t EndPage)
 */
 static uint32_t lt7381_vram_fifo_isfull(void)
 {
-    return ((DISP_READ_STATUS() & BIT7) != 0) ? 1 : 0;
+    return (DISP_READ_STATUS() & BIT7);
 }
 
 /*
@@ -52,7 +52,7 @@ static uint32_t lt7381_vram_fifo_isfull(void)
 */
 static uint32_t lt7381_vram_fifo_isempty(void)
 {
-    return ((DISP_READ_STATUS() & 0x40) != 0) ? 1 : 0;
+    return (DISP_READ_STATUS() & BIT6);
 }
 
 void disp_send_pixels(uint16_t *pixels, int byte_len)
@@ -70,7 +70,7 @@ void disp_send_pixels(uint16_t *pixels, int byte_len)
 
 #if defined(CONFIG_DISP_USE_PDMA)
     // PDMA-M2M feed
-    if (count > 1024)
+    if (count > 512)
     {
         nu_pdma_mempush((void *)CONFIG_DISP_DAT_ADDR, (void *)pixels, 16, count);
     }
@@ -81,7 +81,10 @@ void disp_send_pixels(uint16_t *pixels, int byte_len)
         // Just support CPU-feed only
         while (i < count)
         {
+            /* Check VRAM FIFO is full or not. */
+            while (lt7381_vram_fifo_isfull());
             DISP_WRITE_DATA(pixels[i]);
+
             i++;
         }
     }
