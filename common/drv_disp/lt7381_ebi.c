@@ -84,6 +84,7 @@ void disp_send_pixels(uint16_t *pixels, int byte_len)
             /* Check VRAM FIFO is full or not. */
             while (lt7381_vram_fifo_isfull());
             DISP_WRITE_DATA(pixels[i]);
+            __DSB();
 
             i++;
         }
