@@ -176,14 +176,16 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
     uint32_t u32SrcAddr = 0;
     uint32_t u32ReTrimCnt = 0;
     uint32_t u32ReTrimMaxCnt = 6;
-    uint8_t au8TrimPattern[TRIM_PAT_SIZE * 2] = {0};
-    uint8_t au8VerifyBuf[TRIM_PAT_SIZE] = {0};
+    uint64_t au64TrimPattern[(TRIM_PAT_SIZE * 2) / 8] = {0};
+    uint64_t au64VerifyBuf[TRIM_PAT_SIZE / 8] = {0};
+    uint8_t *pu8TrimPattern = (uint8_t *)au64TrimPattern;
+    uint8_t *pu8VerfiyBuf = (uint8_t *)au64VerifyBuf;
     uint32_t u32DMMAddr = SPIM_HYPER_GET_DMMADDR(spim);
 
     SPIM_HYPER_DISABLE_CACHE(spim);
 
     /* Create Trim Pattern */
-    for (u32k = 0; u32k < sizeof(au8TrimPattern); u32k++)
+    for (u32k = 0; u32k < sizeof(au64TrimPattern); u32k++)
     {
         u32Val = (u32k & 0x0F) ^ (u32k >> 4) ^ (u32k >> 3);
 
@@ -192,10 +194,10 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
             u32Val = ~u32Val;
         }
 
-        au8TrimPattern[u32k] = ~(uint8_t)(u32Val ^ (u32k << 3) ^ (u32k >> 2));
+        pu8TrimPattern[u32k] = ~(uint8_t)(u32Val ^ (u32k << 3) ^ (u32k >> 2));
     }
 
-    SPIM_HYPER_DMAWrite(spim, u32SrcAddr, au8TrimPattern, sizeof(au8TrimPattern));
+    SPIM_HYPER_DMAWrite(spim, u32SrcAddr, pu8TrimPattern, sizeof(au64TrimPattern));
 
     for (u32ReTrimCnt = 0; u32ReTrimCnt < u32ReTrimMaxCnt; u32ReTrimCnt++)
     {
@@ -204,7 +206,7 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
             /* Set DLL calibration to select the valid delay step number */
             SPIM_HYPER_SetDLLDelayNum(spim, u8RdDelay);
 
-            memset(au8VerifyBuf, 0, TRIM_PAT_SIZE);
+            memset(pu8VerfiyBuf, 0, sizeof(au64VerifyBuf));
 
             if (u32ReTrimCnt == 5)
             {
@@ -229,19 +231,19 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
             {
                 if (u32ReTrimCnt == 1)
                 {
-                    SPIM_HYPER_DMARead(spim, u32SrcAddr + u32LoopAddr, &au8VerifyBuf[u32k], 8);
+                    SPIM_HYPER_DMARead(spim, u32SrcAddr + u32LoopAddr, &pu8VerfiyBuf[u32k], 8);
                 }
                 else
                 {
                     SPIM_HYPER_EnterDirectMapMode(spim);
 
                     /* Read 8 bytes of data from the HyperRAM */
-                    *(volatile uint64_t *)&au8VerifyBuf[u32k] = *(volatile uint64_t *)(u32DMMAddr + u32SrcAddr + u32LoopAddr);
+                    *(volatile uint64_t *)&pu8VerfiyBuf[u32k] = *(volatile uint64_t *)(u32DMMAddr + u32SrcAddr + u32LoopAddr);
 
                     SPIM_HYPER_ExitDirectMapMode(spim);
                 }
 
-                if ((u32i = memcmp(&au8TrimPattern[u32LoopAddr], &au8VerifyBuf[u32k], 0x08)) != 0)
+                if ((u32i = memcmp(&pu8TrimPattern[u32LoopAddr], &pu8VerfiyBuf[u32k], 0x08)) != 0)
                 {
                     break;
                 }
@@ -279,6 +281,9 @@ void HyperRAM_Init(SPIM_T *spim)
 
     /* SPIM Def. Enable Cipher, First Disable the test. */
     SPIM_HYPER_DISABLE_CIPHER(spim);
+
+    /* SPIM Def. Enable cache, First Disable the test. */
+    SPIM_HYPER_DISABLE_CACHE(spim);
 
     /* Set R/W Latency Number */
     SPIM_Hyper_DefaultConfig(spim, HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY, HYPERRAM_WR_LTCY);

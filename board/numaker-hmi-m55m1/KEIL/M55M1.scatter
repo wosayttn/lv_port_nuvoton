@@ -61,7 +61,7 @@
 ;   <o0> SRAM Size (in Bytes)    <0x0-0x00150000:8>
 ; </h>
  *----------------------------------------------------------------------------*/
-#define SRAM_CACHEABLE_SIZE	0x00130000
+#define SRAM_CACHEABLE_SIZE	0x00120000
 
 #define SRAM_START      0x20100000
 #define SRAM_SIZE       0x00150000
