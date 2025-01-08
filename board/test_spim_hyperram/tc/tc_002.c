@@ -26,7 +26,7 @@ static void tc002_exec(void)
             s_i32ErrCount++;
 
 #if (_DEBUG==0)
-            while (bFail);
+            while (1);
 #endif
         }
 

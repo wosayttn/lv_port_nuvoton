@@ -911,7 +911,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>NVT_DCACHE_ON=0 _DEBUG=0 CONFIG_SPIM_CACHE_ON=1</Define>
+              <Define>NVT_DCACHE_ON=0 _DEBUG=1 CONFIG_SPIM_CACHE_ON=1</Define>
               <Undefine></Undefine>
               <IncludePath>..\;..\tc;..\gdma;..\spim_hyperram;..\..\..\common;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc</IncludePath>
             </VariousControls>
@@ -1239,6 +1239,11 @@
               <FileName>tc_003.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\tc\tc_003.c</FilePath>
+            </File>
+            <File>
+              <FileName>tc_004.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\tc\tc_004.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -1290,11 +1295,6 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
-            </File>
-            <File>
-              <FileName>tc_004.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\tc\tc_004.c</FilePath>
             </File>
             <File>
               <FileName>tc_005.c</FileName>
@@ -1688,7 +1688,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>NVT_DCACHE_ON=0 _DEBUG=0 CONFIG_SPIM_CACHE_ON=1 CONFIG_SPIM_CSH_2_5=1</Define>
+              <Define>NVT_DCACHE_ON=0 _DEBUG=1 CONFIG_SPIM_CACHE_ON=1 CONFIG_SPIM_CSH_2_5=1</Define>
               <Undefine></Undefine>
               <IncludePath>..\;..\tc;..\gdma;..\spim_hyperram;..\..\..\common;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc</IncludePath>
             </VariousControls>
@@ -2016,6 +2016,11 @@
               <FileName>tc_003.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\tc\tc_003.c</FilePath>
+            </File>
+            <File>
+              <FileName>tc_004.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\tc\tc_004.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -2067,11 +2072,6 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
-            </File>
-            <File>
-              <FileName>tc_004.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\tc\tc_004.c</FilePath>
             </File>
             <File>
               <FileName>tc_005.c</FileName>
@@ -3014,7 +3014,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>5</Optim>
+            <Optim>3</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -3038,7 +3038,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>NVT_DCACHE_ON=0 _DEBUG=1 CONFIG_SPIM_CACHE_ON=0 CONFIG_SPIM_CSH_2_5=1</Define>
+              <Define>NVT_DCACHE_ON=0 _DEBUG=0 CONFIG_SPIM_CACHE_ON=0 CONFIG_SPIM_CSH_2_5=1</Define>
               <Undefine></Undefine>
               <IncludePath>..\;..\tc;..\gdma;..\spim_hyperram;..\..\..\common;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc</IncludePath>
             </VariousControls>

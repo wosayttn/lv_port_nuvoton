@@ -79,7 +79,7 @@ void tc_prepare(uint32_t u32BaseAddr, int i32BatchSize)
     }
 
     __ISB();
-    __DSB();	
+    __DSB();
 }
 
 

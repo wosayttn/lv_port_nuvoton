@@ -14,7 +14,7 @@ static void tc003_prepare(uint32_t u32BaseAddr, int i32BatchSize)
         ptr[i + i32BatchSize] = ptr[i] = i % 256;
     }
     __ISB();
-    __DSB();		
+    __DSB();
 }
 
 static int tc003_compare(uint32_t u32BaseAddr, int i32BatchSize)
@@ -84,7 +84,7 @@ static void tc003_exec(void)
             s_i32ErrCount++;
 
 #if (_DEBUG==0)
-            while (bFail);
+            while (1);
 #endif
         }
 
