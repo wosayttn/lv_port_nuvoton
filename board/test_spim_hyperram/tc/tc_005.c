@@ -110,8 +110,8 @@ static void tc005_exec(void)
             g_bDone = 0;
 
             {
-                union dma350_ch_status_t status = dma350_ch_get_status(GDMA_CH_DEV_S[1]);
-                TC_PRINTF("@@@@@@@@@@@@@@@@@@ %d, status.w: %08x\n", u32Count, status.w);
+                //union dma350_ch_status_t status = dma350_ch_get_status(GDMA_CH_DEV_S[1]);
+                //TC_PRINTF("@@@@@@@@@@@@@@@@@@ %d, status.w: %08x\n", u32Count, status.w);
             }
 
             __ISB();
@@ -121,7 +121,7 @@ static void tc005_exec(void)
             __DSB();
             PH4 = 0;
 
-            TC_PRINTF("[TS=%02dB][BS=%04dB] check busy\n", au32XferSize[i32TS], i32BS);
+            //TC_PRINTF("[TS=%02dB][BS=%04dB] check busy\n", au32XferSize[i32TS], i32BS);
 
             /* Hang up issue: CANNOT WAIT FOR ANY STAT. */
             /* Reference implementation with busy wait */
@@ -137,7 +137,8 @@ static void tc005_exec(void)
             while (dma350_ch_is_busy(GDMA_CH_DEV_S[1]));
             GDMA_CH_DEV_S[1]->cfg.ch_base->CH_STATUS = DMA350_CH_STAT_ALL;
             PH4 = 1;
-            TC_PRINTF("[TS=%02dB][BS=%04dB] check busy done\n", au32XferSize[i32TS], i32BS);
+
+            //TC_PRINTF("[TS=%02dB][BS=%04dB] check busy done\n", au32XferSize[i32TS], i32BS);
 
             if (tc_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
             {
@@ -151,7 +152,7 @@ static void tc005_exec(void)
             i32RunCount++;
         }
 
-        TC_PRINTF("Finish XferSize: %dB!! (%d/%d, Error percentage: %f%%)\n", au32XferSize[i32TS], s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
+        TC_PRINTF("Finish XferSize: %dB!! (%04d/%04d, Error percentage: %f%%)\n", au32XferSize[i32TS], s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
     }
 }
 

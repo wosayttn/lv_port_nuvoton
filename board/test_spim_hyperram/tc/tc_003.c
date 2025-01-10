@@ -9,12 +9,18 @@ static void tc003_prepare(uint32_t u32BaseAddr, int i32BatchSize)
     int i = 0;
     volatile uint8_t *ptr = (volatile uint8_t *)u32BaseAddr;
 
+#if 1
     for (i = 0; i < i32BatchSize; i++)
     {
         ptr[i + i32BatchSize] = ptr[i] = i % 256;
     }
     __ISB();
     __DSB();
+#else
+    SPIM_HYPER_DISABLE_CACHE(SPIM0);
+
+
+#endif
 }
 
 static int tc003_compare(uint32_t u32BaseAddr, int i32BatchSize)
@@ -75,9 +81,15 @@ static void tc003_exec(void)
     s_i32ErrCount = 0;
     i32RunCount = 0;
 
-    for (i32BS = CONFIG_BATCH_SIZE_START; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += CONFIG_BATCH_SIZE_STEP)
+    for (i32BS = 2048; i32BS <= 4096; i32BS += 2048)
     {
+        /* Disable CACHE before preparing test data. */
+        SPIM_HYPER_DISABLE_CACHE(SPIM0);
+
         tc003_prepare(CONFIG_BASE_ADDRESS, i32BS);
+
+        /* Enable CACHE before memcmp. */
+        SPIM_HYPER_ENABLE_CACHE(SPIM0);
 
         if (tc003_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
         {
@@ -91,7 +103,7 @@ static void tc003_exec(void)
         i32RunCount++;
     }
 
-    TC_PRINTF("Finish memcmp!! (%d/%d, Error percentage: %f%%)\n", s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
+    TC_PRINTF("Finish memcmp!! (%04d/%04d, Error percentage: %f%%)\n", s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
 }
 
 static int tc003_init(void)

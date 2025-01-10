@@ -21,13 +21,47 @@
 #define HYPERRAM_CSM_TIME           4000 /* ns */
 #define HYPERRAM_RD_LTCY            7
 #define HYPERRAM_WR_LTCY            7
-#define HYPERRAM_CSHI_CYCLE         2
+#define HYPERRAM_CSHI_CYCLE         4    //2
+
+#if (CONFIG_SPIM_CSH_2_5==1)
+    #define HYPERRAM_CSH_CYCLE          SPIM_HYPER_CSH_2_5_HCLK
+#else
+    #define HYPERRAM_CSH_CYCLE          SPIM_HYPER_CSH_3_5_HCLK
+#endif
+
 #define HYPER_RAM_RST_CNT           0xFF
 #define VERIFY_ERASE_PATTERN        0x0000
 #define CSMAXLT_CIPHER_OFF          21
 #define CSMAXLT_CIPHER_ON           54
 
 //------------------------------------------------------------------------------
+#define SPIM_HYPER_GET_CSST(spim)                                                \
+    ((spim->HYPER_CONFIG1 & SPIM_HYPER_CONFIG1_CSS_Msk) >> SPIM_HYPER_CONFIG1_CSS_Pos)
+
+#define SPIM_HYPER_GET_CSH(spim)                                                 \
+    ((spim->HYPER_CONFIG1 & SPIM_HYPER_CONFIG1_CSH_Msk) >> SPIM_HYPER_CONFIG1_CSH_Pos)
+
+#define SPIM_HYPER_GET_CSHI(spim)                                                 \
+    ((spim->HYPER_CONFIG1 & SPIM_HYPER_CONFIG1_CSHI_Msk) >> SPIM_HYPER_CONFIG1_CSHI_Pos)
+
+void SPIM_Hyper_CondifDump(SPIM_T *spim)
+{
+    uint32_t u32CoreFreq = (CLK_GetSCLKFreq() / 1000000);
+    float fFreq = (float)1000.0f / u32CoreFreq;
+    uint32_t u32DIV = SPIM_HYPER_GET_CLKDIV(spim);
+
+    TC_PRINTF("[%s]\n", __func__);
+    TC_PRINTF("\tHCLKFreq:%d MHz, fFreq:%f(ns), u32DIV:%d\n", u32CoreFreq, fFreq, u32DIV);
+
+    TC_PRINTF("\tSPIM_HYPER_SET_CSST:     %f\n",   SPIM_HYPER_GET_CSST(spim)?4.5:3.5);
+    TC_PRINTF("\tSPIM_HYPER_SET_CSH:      %lu\n",  SPIM_HYPER_GET_CSH(spim));
+    TC_PRINTF("\tSPIM_HYPER_SET_CSHI:     %lu\n",  SPIM_HYPER_GET_CSHI(spim));
+    TC_PRINTF("\tSPIM_HYPER_SET_CSMAXLT:  %lu\n",  SPIM_HYPER_GET_CSMAXLT(spim));
+    TC_PRINTF("\tSPIM_HYPER_SET_RSTNLT:   %lu\n",  SPIM_HYPER_GET_RSTNLT(spim));
+    TC_PRINTF("\tSPIM_HYPER_SET_ACCTRD:   %lu\n",  SPIM_HYPER_GET_ACCTRD(spim));
+    TC_PRINTF("\tSPIM_HYPER_SET_ACCTWR:   %lu\n",  SPIM_HYPER_GET_ACCTWR(spim));
+}
+
 /**
   * @brief      SPIM Default Config HyperBus Access Module Parameters.
   * @param      spim
@@ -50,15 +84,8 @@ void SPIM_Hyper_DefaultConfig(SPIM_T *spim, uint32_t u32CSM, uint32_t u32AcctRD,
     /* Chip Select Setup Time 3.5 HCLK */
     SPIM_HYPER_SET_CSST(spim, SPIM_HYPER_CSST_3_5_HCLK);
 
-#if	(CONFIG_SPIM_CSH_2_5==1)
-    /* Chip Select Hold Time 2.5 HCLK */
-    SPIM_HYPER_SET_CSH(spim, SPIM_HYPER_CSH_2_5_HCLK);
-    TC_PRINTF("%s, SPIM_HYPER_CSH_2_5_HCLK fFreq:%f, u32DIV:%d, u32CoreFreq:%d, u32CSMAXLT:%d\n", __func__, fFreq, u32DIV, u32CoreFreq, u32CSMAXLT);
-#else
-    /* Chip Select Hold Time 3.5 HCLK */
-    SPIM_HYPER_SET_CSH(spim, SPIM_HYPER_CSH_3_5_HCLK);
-    TC_PRINTF("%s, SPIM_HYPER_CSH_3_5_HCLK fFreq:%f, u32DIV:%d, u32CoreFreq:%d, u32CSMAXLT:%d\n", __func__, fFreq, u32DIV, u32CoreFreq, u32CSMAXLT);
-#endif
+    /* Chip Select Hold Time HCLK */
+    SPIM_HYPER_SET_CSH(spim, HYPERRAM_CSH_CYCLE);
 
     /* Chip Select High between Transaction as 2 HCLK cycles */
     SPIM_HYPER_SET_CSHI(spim, HYPERRAM_CSHI_CYCLE);
@@ -74,6 +101,8 @@ void SPIM_Hyper_DefaultConfig(SPIM_T *spim, uint32_t u32CSM, uint32_t u32AcctRD,
 
     /* Initial Write Access Time Clock cycle*/
     SPIM_HYPER_SET_ACCTWR(spim, u32AcctWR);
+
+    SPIM_Hyper_CondifDump(spim);
 }
 
 /**
@@ -100,7 +129,7 @@ void HyperRAM_Erase(SPIM_T *spim, uint32_t u32StartAddr, uint32_t u32EraseSize)
         /* Read back check and erase fail */
         if (SPIM_HYPER_Read1Word(spim, u32StartAddr + u32i) != VERIFY_ERASE_PATTERN)
         {
-            printf("Erase Hyper RAM fail!!\n");
+            TC_PRINTF("Erase Hyper RAM fail!!\n");
 
             while (1);
         }
@@ -115,8 +144,8 @@ void HyperRAM_Erase(SPIM_T *spim, uint32_t u32StartAddr, uint32_t u32EraseSize)
         /* Read back check and erase fail */
         if ((SPIM_HYPER_Read1Word(spim, (u32StartAddr + u32EraseSize - 1)) >> 8) & 0xFF)
         {
-            printf("Erase Remain HyperRAM fail, Read Data = %x !!\n",
-                   (SPIM_HYPER_Read1Word(spim, (u32StartAddr + u32EraseSize - 1)) >> 8));
+            TC_PRINTF("Erase Remain HyperRAM fail, Read Data = %x !!\n",
+                      (SPIM_HYPER_Read1Word(spim, (u32StartAddr + u32EraseSize - 1)) >> 8));
 
             while (1);
         }
@@ -277,7 +306,8 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
 
     u8RdDelay = (u32j < 2) ? u8RdDelayRes[0] : isConsecutive(u8RdDelayRes, u32j);
 
-    printf("Set DLL Delay Num : %d\r\n", u8RdDelay);
+    TC_PRINTF("[%s]\n", __func__);
+    TC_PRINTF("\tSet DLL Delay Num : %d\r\n", u8RdDelay);
     /* Set the number of intermediate delay steps */
     SPIM_HYPER_SetDLLDelayNum(spim, u8RdDelay);
 }

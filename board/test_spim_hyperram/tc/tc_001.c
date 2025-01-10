@@ -127,7 +127,7 @@ static void tc001_exec(void)
             i32RunCount++;
         }
 
-        TC_PRINTF("Finish XferSize: %dB!! (%d/%d, Error percentage: %f%%)\n", au32XferSize[i32TS], s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
+        TC_PRINTF("Finish XferSize: %dB!! (%04d/%04d, Error percentage: %f%%)\n", au32XferSize[i32TS], s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
     }
 }
 

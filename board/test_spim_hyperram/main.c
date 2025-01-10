@@ -120,10 +120,10 @@ static void sys_init(void)
 
 #if CONFIG_SPIM_CACHE_ON
     SPIM_HYPER_ENABLE_CACHE(SPIM0);
-    TC_PRINTF("[%s] CACHE ON!!\n", __func__);
+    TC_PRINTF("\tSPIM_HYPER_ENABLE_CACHE ON!!\n");
 #else
     SPIM_HYPER_DISABLE_CACHE(SPIM0);
-    TC_PRINTF("[%s] CACHE OFF!!\n", __func__);
+    TC_PRINTF("\tSPIM_HYPER_DISABLE_CACHE!!\n");
 #endif
 }
 

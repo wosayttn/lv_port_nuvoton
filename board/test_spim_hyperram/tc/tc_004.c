@@ -13,6 +13,8 @@ static void tc004_exec(void)
 
     for (i32BS = CONFIG_BATCH_SIZE_START; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += CONFIG_BATCH_SIZE_STEP)
     {
+        TC_PRINTF("PDMA MEMCPY %d\n", i32BS);
+
         tc_prepare(CONFIG_BASE_ADDRESS, i32BS);
 
         nu_pdma_memcpy((void *)(CONFIG_BASE_ADDRESS + i32BS), (void *)(CONFIG_BASE_ADDRESS), i32BS);
@@ -29,7 +31,7 @@ static void tc004_exec(void)
         i32RunCount++;
     }
 
-    TC_PRINTF("Finish XferSize: 1B!! (%d/%d, Error percentage: %f%%)\n", s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
+    TC_PRINTF("Finish XferSize: 1B!! (%04d/%04d, Error percentage: %f%%)\n", s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
 }
 
 static int tc004_init(void)

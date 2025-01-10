@@ -7,17 +7,17 @@
 extern "C" {
 #endif
 
-#define CONFIG_BASE_ADDRESS           SPIM_DMM0_SADDR //0x20110000   //SPIM_DMM0_SADDR
-#define SPIM_HYPERRAM_SIZE            (8*1024*1024)
+#define CONFIG_BASE_ADDRESS               (SPIM_DMM0_SADDR)   //0x20110000   //SPIM_DMM0_SADDR
+#define SPIM_HYPERRAM_SIZE                (8*1024*1024)
 
 #if 1
-    #define CONFIG_BATCH_SIZE_START       (1)
-    #define CONFIG_BATCH_SIZE_STOP        (4*1024) //(8)
-    #define CONFIG_BATCH_SIZE_STEP        (1)
+#define CONFIG_BATCH_SIZE_START       (1)
+#define CONFIG_BATCH_SIZE_STOP        (4*1024) //(8)
+#define CONFIG_BATCH_SIZE_STEP        (1)
 #else
-    #define CONFIG_BATCH_SIZE_START       (38)
-    #define CONFIG_BATCH_SIZE_STOP        (38) //(8)
-    #define CONFIG_BATCH_SIZE_STEP        (1)
+#define CONFIG_BATCH_SIZE_START       (2048)
+#define CONFIG_BATCH_SIZE_STOP        (8192) //(8)
+#define CONFIG_BATCH_SIZE_STEP        (2048)
 #endif
 
 #if (_DEBUG==1)

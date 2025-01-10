@@ -33,7 +33,7 @@ static void tc002_exec(void)
         i32RunCount++;
     }
 
-    TC_PRINTF("Finish XferSize: 1B!! (%d/%d, Error percentage: %f%%)\n", s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
+    TC_PRINTF("Finish XferSize: 1B!! (%04d/%04d, Error percentage: %f%%)\n", s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
 }
 
 static int tc002_init(void)
