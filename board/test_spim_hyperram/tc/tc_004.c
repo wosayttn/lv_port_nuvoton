@@ -13,7 +13,7 @@ static void tc004_exec(void)
 
     for (i32BS = CONFIG_BATCH_SIZE_START; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += CONFIG_BATCH_SIZE_STEP)
     {
-        TC_PRINTF("PDMA MEMCPY %d\n", i32BS);
+        //TC_PRINTF("PDMA MEMCPY %d\n", i32BS);
 
         tc_prepare(CONFIG_BASE_ADDRESS, i32BS);
 

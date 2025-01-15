@@ -44,7 +44,7 @@
 #define SPIM_HYPER_GET_CSHI(spim)                                                 \
     ((spim->HYPER_CONFIG1 & SPIM_HYPER_CONFIG1_CSHI_Msk) >> SPIM_HYPER_CONFIG1_CSHI_Pos)
 
-void SPIM_Hyper_CondifDump(SPIM_T *spim)
+static void SPIM_Hyper_CondifDump(SPIM_T *spim)
 {
     uint32_t u32CoreFreq = (CLK_GetSCLKFreq() / 1000000);
     float fFreq = (float)1000.0f / u32CoreFreq;

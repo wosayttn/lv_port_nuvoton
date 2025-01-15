@@ -8,19 +8,27 @@
 #define CONFIG_SRAM_ADDRESS           0x20110000
 #define CONFIG_HYPERRAM_ADDRESS       0x82000000
 
+#if 1
+    #define CONFIG_SRC_BUFFER_ADDRESS     CONFIG_SRAM_ADDRESS
+    #define CONFIG_DST_BUFFER_ADDRESS     CONFIG_HYPERRAM_ADDRESS
+#else
+    #define CONFIG_SRC_BUFFER_ADDRESS     CONFIG_HYPERRAM_ADDRESS
+    #define CONFIG_DST_BUFFER_ADDRESS     CONFIG_SRAM_ADDRESS
+#endif
+
 static S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER] = {0};
 static int volatile s_i32ErrCount = 0;
 
-static void tc006_prepare(int i32BatchSize, int i32Hopping)
+static void tc006_prepare(int i32DataWidth, int i32XferCount, int i32Hopping)
 {
     int i = 0;
-    volatile uint8_t *pu8SrcBufAddr = (volatile uint8_t *)CONFIG_SRAM_ADDRESS;
-    volatile uint8_t *pu8DstBufAddr = (volatile uint8_t *)CONFIG_HYPERRAM_ADDRESS;
+    volatile uint8_t *pu8SrcBufAddr = (volatile uint8_t *)CONFIG_SRC_BUFFER_ADDRESS;
+    volatile uint8_t *pu8DstBufAddr = (volatile uint8_t *)CONFIG_DST_BUFFER_ADDRESS;
 
-    for (i = 0; i < i32BatchSize; i++)
+    for (i = 0; i < i32XferCount; i++)
     {
-        pu8SrcBufAddr[i] = i % 256;
-        pu8DstBufAddr[i * i32Hopping] = 0xA5;
+        memset((void *)(pu8SrcBufAddr + (i32DataWidth * i)), i % 256, i32DataWidth);
+        memset((void *)(pu8DstBufAddr + (i32Hopping * i32DataWidth * i)), 0xA5, i32DataWidth);
     }
 
     __ISB();
@@ -29,19 +37,20 @@ static void tc006_prepare(int i32BatchSize, int i32Hopping)
 
 
 
-static int tc006_compare(int i32BatchSize, int i32Hopping)
+static int tc006_compare(int i32DataWidth, int i32XferCount, int i32Hopping)
 {
-    int j;
+    int i;
     int bFail = 0;
-    volatile uint8_t *pu8SrcBufAddr = (volatile uint8_t *)CONFIG_SRAM_ADDRESS;
-    volatile uint8_t *pu8DstBufAddr = (volatile uint8_t *)CONFIG_HYPERRAM_ADDRESS;
+    volatile uint8_t *pu8SrcBufAddr = (volatile uint8_t *)CONFIG_SRC_BUFFER_ADDRESS;
+    volatile uint8_t *pu8DstBufAddr = (volatile uint8_t *)CONFIG_DST_BUFFER_ADDRESS;
 
     /* Start comparison. */
     PD6 = 0;
 
-    for (j = 0; j < i32BatchSize; j++)
+    for (i = 0; i < i32XferCount; i++)
     {
-        if (pu8SrcBufAddr[j] != pu8DstBufAddr[j * i32Hopping])
+        //if (pu8SrcBufAddr[i * i32DataWidth] != (pu8DstBufAddr[i * i32DataWidth * i32Hopping]))
+        if (memcmp((void *)(pu8SrcBufAddr + (i32DataWidth * i)), (void *)(pu8DstBufAddr + (i32Hopping * i32DataWidth * i)), i32DataWidth) != 0)
         {
             bFail = 1;
             PH4 = 0;
@@ -58,15 +67,13 @@ exit_tc006_compare:
 
     if (1 & bFail)
     {
-        TC_PRINTF("[BS=%04dB] Compare [0x%08X ~ 0x%08X] and [0x%08X ~ 0x%08X] -> %s\n",
-                  i32BatchSize,
-                  (uint32_t)pu8SrcBufAddr,
-                  (uint32_t)pu8SrcBufAddr + (i32BatchSize - 1),
-                  (uint32_t)pu8DstBufAddr,
-                  (uint32_t)pu8DstBufAddr + i32Hopping * (i32BatchSize - 1),
+        TC_PRINTF("[BS=%04dB] Compare [0x%08X] and [0x%08X] -> %s\n",
+                  i32XferCount,
+                  (uint32_t)pu8SrcBufAddr + (i32DataWidth * i),
+                  (uint32_t)pu8DstBufAddr + (i32Hopping * i32DataWidth * i),
                   bFail ? "Fail" : "Okay");
 
-        TC_PRINTF("\tFirst: BS=%d, 0x%02X@0x%08X != 0x%02X@0x%08X\n", i32BatchSize, pu8SrcBufAddr[j], (uint32_t)&pu8SrcBufAddr[j], pu8DstBufAddr[j], (uint32_t)&pu8DstBufAddr[j]);
+        TC_PRINTF("\tFirst: DataWidth=%d, XferCount=%d, @0x%08X != @0x%08X\n", i32DataWidth, i32XferCount, (uint32_t)&pu8SrcBufAddr[i], (uint32_t)&pu8DstBufAddr[i]);
     }
 
     return -1;
@@ -91,7 +98,7 @@ static void tc006_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
     S_CMDBUF *next = psCmdBufHead; // first descriptor.
     struct dma350_cmdlink_gencfg_t cmdlink_cfg;
 
-    uint32_t u32XferCount = i32BatchSize / i32XferSize;
+    uint32_t u32XferCount = i32BatchSize;
     uint32_t u32AddrSrc;
     uint32_t u32AddrDst;
 
@@ -101,8 +108,8 @@ static void tc006_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
     for (i = 0; i < i32DescNum; i++)
     {
         uint32_t X;
-        u32AddrSrc = CONFIG_SRAM_ADDRESS;
-        u32AddrDst = CONFIG_HYPERRAM_ADDRESS;
+        u32AddrSrc = CONFIG_SRC_BUFFER_ADDRESS;
+        u32AddrDst = CONFIG_DST_BUFFER_ADDRESS;
 
         dma350_cmdlink_init(&cmdlink_cfg);
         //dma350_cmdlink_set_regclear(&cmdlink_cfg);
@@ -123,16 +130,14 @@ static void tc006_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
         dma350_cmdlink_set_ytype(&cmdlink_cfg, DMA350_CH_YTYPE_DISABLE);
         dma350_cmdlink_set_xaddrinc(&cmdlink_cfg, 1, i32Hop); //Src move 1 unit, Dst address move i32Hop unit.
 
-#if 0
         if (i == (i32DescNum - 1))
         {
             dma350_cmdlink_disable_linkaddr(&cmdlink_cfg);
             // Final cmdlink, raise a event.
-            dma350_cmdlink_enable_intr(&cmdlink_cfg, DMA350_CH_INTREN_DONE);
+            dma350_cmdlink_disable_intr(&cmdlink_cfg, DMA350_CH_INTREN_DONE);
             dma350_cmdlink_set_linkaddr32(&cmdlink_cfg, NULL);
         }
         else
-#endif
         {
             dma350_cmdlink_enable_linkaddr(&cmdlink_cfg);
             dma350_cmdlink_disable_intr(&cmdlink_cfg, DMA350_CH_INTREN_DONE);
@@ -152,19 +157,19 @@ static void tc006_exec(void)
     int i32BS, i32TS, i32Hopping;
     uint32_t u32Count = 0;
 
-    const static uint32_t au32XferSize[] = {1, /*2, 4, 8, 16, 32, 64, 128*/};
+    const static uint32_t au32XferSize[] = {1, 2, 4, 8};
 
     for (i32TS = 0; i32TS < sizeof(au32XferSize) / sizeof(uint32_t); i32TS++)
     {
         int i32RunCount = 0;
         s_i32ErrCount = 0;
-        for (i32BS = au32XferSize[i32TS]; i32BS <= 16; i32BS += au32XferSize[i32TS])
+        for (i32Hopping = au32XferSize[i32TS]; i32Hopping <= 32; i32Hopping += au32XferSize[i32TS])
         {
 
-            for (i32Hopping = au32XferSize[i32TS]; i32Hopping <= 1024; i32Hopping += au32XferSize[i32TS])
+            for (i32BS = au32XferSize[i32TS]; i32BS <= 256; i32BS += au32XferSize[i32TS])
             {
 
-                tc006_prepare(i32BS, i32Hopping);
+                tc006_prepare(au32XferSize[i32TS], i32BS, i32Hopping);
 
                 /* Initial all Lines descriptor-link. */
                 memset(&s_sGDMADsc[0], 0, sizeof(s_sGDMADsc));
@@ -204,7 +209,7 @@ static void tc006_exec(void)
                 GDMA_CH_DEV_S[1]->cfg.ch_base->CH_STATUS = DMA350_CH_STAT_ALL;
                 PH4 = 1;
 
-                if (tc006_compare(i32BS, i32Hopping) < 0)
+                if (tc006_compare(au32XferSize[i32TS], i32BS, i32Hopping) < 0)
                 {
                     s_i32ErrCount++;
 
@@ -250,5 +255,5 @@ static int tc006_cleanup(void)
     return 0;
 }
 
-TC_EXPORT(tc006_exec, "SPIM_HYPER_GDMA_SRAM_HYPERRAM_CPOY_HOPPING", tc006_init, tc006_cleanup);
+TC_EXPORT(tc006_exec, "SPIM_HYPER_GDMA_SRAM_HYPERRAM_COPY_HOPPING", tc006_init, tc006_cleanup);
 

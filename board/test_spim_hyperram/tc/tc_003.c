@@ -83,13 +83,7 @@ static void tc003_exec(void)
 
     for (i32BS = 2048; i32BS <= 4096; i32BS += 2048)
     {
-        /* Disable CACHE before preparing test data. */
-        SPIM_HYPER_DISABLE_CACHE(SPIM0);
-
         tc003_prepare(CONFIG_BASE_ADDRESS, i32BS);
-
-        /* Enable CACHE before memcmp. */
-        SPIM_HYPER_ENABLE_CACHE(SPIM0);
 
         if (tc003_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
         {

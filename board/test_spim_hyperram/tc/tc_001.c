@@ -113,7 +113,16 @@ static void tc001_exec(void)
             __ISB();
             __DSB();
 
-            while (!g_bDone); // Wait
+            uint32_t u32Count = 0;
+            do
+            {
+                union dma350_ch_status_t status = dma350_ch_get_status(GDMA_CH_DEV_S[1]);
+                u32Count++;
+                PH4 = u32Count & 0x1;
+                if (u32Count > 1024)
+                    TC_PRINTF("%04d, TS=%d, BS=%d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, au32XferSize[i32TS], i32BS, status.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
+            }
+            while (!g_bDone);   // Wait
 
             if (tc_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
             {

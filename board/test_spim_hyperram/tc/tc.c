@@ -113,7 +113,7 @@ int tc_compare(uint32_t u32BaseAddr, int i32BatchSize)
 
 exit_tc_compare:
 
-    if (0 & bFail)
+    if (1 & bFail)
     {
         TC_PRINTF("[BaseAddr=0x%08x, BS=%04dB] Compare [0x%08X ~ 0x%08X] and [0x%08X ~ 0x%08X] -> %s\n",
                   u32BaseAddr,
