@@ -2,8 +2,6 @@
 #include "tc_gdma.h"
 #include "string.h"
 
-static int volatile s_i32ErrCount = 0;
-
 static void tc003_prepare(uint32_t u32BaseAddr, int i32BatchSize)
 {
     int i = 0;
@@ -72,13 +70,13 @@ exit_tc003_compare:
     return -1;
 }
 
-static void tc003_exec(void)
+static int tc003_exec(void)
 {
     int i32BS;
     int i32RunCount;
     uint8_t u8RdDelay;
+    int i32ErrCount = 0;
 
-    s_i32ErrCount = 0;
     i32RunCount = 0;
 
     for (i32BS = 2048; i32BS <= 4096; i32BS += 2048)
@@ -87,7 +85,7 @@ static void tc003_exec(void)
 
         if (tc003_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
         {
-            s_i32ErrCount++;
+            i32ErrCount++;
 
 #if (_DEBUG==0)
             while (1);
@@ -97,16 +95,52 @@ static void tc003_exec(void)
         i32RunCount++;
     }
 
-    TC_PRINTF("Finish memcmp!! (%04d/%04d, Error percentage: %f%%)\n", s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
+    TC_PRINTF("Finish memcmp!! (%04d/%04d, Error percentage: %f%%)\n", i32ErrCount, i32RunCount, (float)i32ErrCount * 100 / i32RunCount);
+
+    return (i32ErrCount > 0) ? -1 : 0;
 }
 
 static int tc003_init(void)
 {
+    /* Unlock protected registers */
+    SYS_UnlockReg();
+
+    /* Enable GDMA0 clock source */
+    CLK_EnableModuleClock(GDMA0_MODULE);
+
+    /* Reset GDMA module */
+    SYS_ResetModule(SYS_GDMA0RST);
+
+    dma350_init(&GDMA_DEV_S);
+    dma350_set_ch_privileged(&GDMA_DEV_S, 0);
+    dma350_set_ch_privileged(&GDMA_DEV_S, 1);
+
+    /* Enable NVIC for GDMA CH0 */
+    NVIC_EnableIRQ(GDMACH0_IRQn);
+
+    /* Enable NVIC for GDMA CH1 */
+    NVIC_EnableIRQ(GDMACH1_IRQn);
+
+    extern void HyperRAM_Init(SPIM_T * spim);
+    HyperRAM_Init(SPIM0);
+
+#if CONFIG_SPIM_CACHE_ON
+    SPIM_HYPER_ENABLE_CACHE(SPIM0);
+    TC_PRINTF("\tSPIM_HYPER_ENABLE_CACHE ON!!\n");
+#else
+    SPIM_HYPER_DISABLE_CACHE(SPIM0);
+    TC_PRINTF("\tSPIM_HYPER_DISABLE_CACHE!!\n");
+#endif
+
+    SPIM_HYPER_EnterDirectMapMode(SPIM0);
+
     return 0;
 }
 
 static int tc003_cleanup(void)
 {
+    SPIM_HYPER_ExitDirectMapMode(SPIM0);
+
     return 0;
 }
 

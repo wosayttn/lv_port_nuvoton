@@ -333,4 +333,27 @@ void HyperRAM_Init(SPIM_T *spim)
     HyperRAM_TrimDLLDelayNumber(spim);
 }
 
+void HyperRAM_Init_WithoutTrim(SPIM_T *spim, uint8_t u8RxDlyNum)
+{
+    /* Enable SPIM Hyper Bus Mode */
+    SPIM_HYPER_Init(spim, SPIM_HYPERRAM_MODE, SPIM_HYPER_DIV);
+
+    /* SPIM Def. Enable Cipher, First Disable the test. */
+    SPIM_HYPER_DISABLE_CIPHER(spim);
+
+    /* SPIM Def. Enable cache, First Disable the test. */
+    SPIM_HYPER_DISABLE_CACHE(spim);
+
+    /* Set R/W Latency Number */
+    SPIM_Hyper_DefaultConfig(spim, HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY, HYPERRAM_WR_LTCY);
+
+    /* Reset HyperRAM */
+    SPIM_HYPER_Reset(spim);
+
+    TC_PRINTF("[%s]\n", __func__);
+    TC_PRINTF("\tSet DLL Delay Num : %d\r\n", u8RxDlyNum);
+    /* Set the number of intermediate delay steps */
+    SPIM_HYPER_SetDLLDelayNum(spim, u8RxDlyNum);
+}
+
 /*** (C) COPYRIGHT 2023 Nuvoton Technology Corp. ***/

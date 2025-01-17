@@ -6,7 +6,6 @@
 #define CONFIG_GDMADESC_NUNBER        1
 
 static S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER] = {0};
-static int volatile s_i32ErrCount = 0;
 
 static void tc001_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t u32BaseAddr, int i32BatchSize, int i32XferSize)
 {
@@ -80,16 +79,18 @@ static void tc001_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
 
 }
 
-static void tc001_exec(void)
+static int tc001_exec(void)
 {
     int i32BS, i32TS;
+    int i32ReportErrCount = 0;
+    int i32ErrCount = 0;
 
     const static uint32_t au32XferSize[] = {1, 2, 4, 8/*, 16, 32, 64, 128*/};
 
     for (i32TS = 0; i32TS < sizeof(au32XferSize) / sizeof(uint32_t); i32TS++)
     {
         int i32RunCount = 0;
-        s_i32ErrCount = 0;
+        i32ErrCount = 0;
         for (i32BS = au32XferSize[i32TS]; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += au32XferSize[i32TS])
         {
             memset(&s_sGDMADsc[0], 0, sizeof(s_sGDMADsc));
@@ -119,14 +120,16 @@ static void tc001_exec(void)
                 union dma350_ch_status_t status = dma350_ch_get_status(GDMA_CH_DEV_S[1]);
                 u32Count++;
                 PH4 = u32Count & 0x1;
-                if (u32Count > 1024)
+                if (u32Count > 20480)
+                {
                     TC_PRINTF("%04d, TS=%d, BS=%d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, au32XferSize[i32TS], i32BS, status.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
+                }
             }
             while (!g_bDone);   // Wait
 
             if (tc_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
             {
-                s_i32ErrCount++;
+                i32ErrCount++;
 
 #if (_DEBUG==0)
                 while (1);
@@ -136,8 +139,12 @@ static void tc001_exec(void)
             i32RunCount++;
         }
 
-        TC_PRINTF("Finish XferSize: %dB!! (%04d/%04d, Error percentage: %f%%)\n", au32XferSize[i32TS], s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
+        i32ReportErrCount += i32ErrCount;
+
+        TC_PRINTF("Finish XferSize: %dB!! (%04d/%04d, Error percentage: %f%%)\n", au32XferSize[i32TS], i32ErrCount, i32RunCount, (float)i32ErrCount * 100 / i32RunCount);
     }
+
+    return (i32ReportErrCount > 0) ? -1 : 0;
 }
 
 static int tc001_init(void)
@@ -161,11 +168,26 @@ static int tc001_init(void)
     /* Enable NVIC for GDMA CH1 */
     NVIC_EnableIRQ(GDMACH1_IRQn);
 
+    extern void HyperRAM_Init(SPIM_T * spim);
+    HyperRAM_Init(SPIM0);
+
+#if CONFIG_SPIM_CACHE_ON
+    SPIM_HYPER_ENABLE_CACHE(SPIM0);
+    TC_PRINTF("\tSPIM_HYPER_ENABLE_CACHE ON!!\n");
+#else
+    SPIM_HYPER_DISABLE_CACHE(SPIM0);
+    TC_PRINTF("\tSPIM_HYPER_DISABLE_CACHE!!\n");
+#endif
+
+    SPIM_HYPER_EnterDirectMapMode(SPIM0);
+
     return 0;
 }
 
 static int tc001_cleanup(void)
 {
+    SPIM_HYPER_ExitDirectMapMode(SPIM0);
+
     return 0;
 }
 

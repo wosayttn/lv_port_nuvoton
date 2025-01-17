@@ -6,7 +6,6 @@
 #define CONFIG_GDMADESC_NUNBER        1
 
 static S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER] = {0};
-static int volatile s_i32ErrCount = 0;
 
 static void tc005_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t u32BaseAddr, int i32BatchSize, int i32XferSize)
 {
@@ -58,12 +57,12 @@ static void tc005_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
         dma350_cmdlink_set_ytype(&cmdlink_cfg, DMA350_CH_YTYPE_DISABLE);
         dma350_cmdlink_set_xaddrinc(&cmdlink_cfg, 1, 1); //Src, Dst address move 1 unit.
 
-#if 0
+#if 1
         if (i == (i32DescNum - 1))
         {
             dma350_cmdlink_disable_linkaddr(&cmdlink_cfg);
             // Final cmdlink, raise a event.
-            dma350_cmdlink_enable_intr(&cmdlink_cfg, DMA350_CH_INTREN_DONE);
+            dma350_cmdlink_disable_intr(&cmdlink_cfg, DMA350_CH_INTREN_DONE);
             dma350_cmdlink_set_linkaddr32(&cmdlink_cfg, NULL);
         }
         else
@@ -82,20 +81,22 @@ static void tc005_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
 
 }
 
-static void tc005_exec(void)
+static int tc005_exec(void)
 {
     int i32BS, i32TS;
     uint32_t u32Count = 0;
+    int i32ReportErrCount = 0;
 
-    const static uint32_t au32XferSize[] = {1/*, 2, 4, 8, 16, 32, 64, 128*/};
+    const static uint32_t au32XferSize[] = {1/*, 2, 4, 8*/};
 
     for (i32TS = 0; i32TS < sizeof(au32XferSize) / sizeof(uint32_t); i32TS++)
     {
         int i32RunCount = 0;
-        s_i32ErrCount = 0;
-        for (i32BS = 23; i32BS <= 98; i32BS += au32XferSize[i32TS])
+        int i32ErrCount = 0;
+
+        for (i32BS = 98; i32BS <= 98; i32BS += au32XferSize[i32TS])
         {
-            tc_prepare(CONFIG_BASE_ADDRESS, i32BS);
+            //tc_prepare(CONFIG_BASE_ADDRESS, i32BS);
 
             /* Initial all Lines descriptor-link. */
             memset(&s_sGDMADsc[0], 0, sizeof(s_sGDMADsc));
@@ -128,6 +129,7 @@ static void tc005_exec(void)
                 if (u32Count > 10240)
                 {
                     TC_PRINTF("%04d, TS=%d, BS=%d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, au32XferSize[i32TS], i32BS, status.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
+                    i32ErrCount++;
                     break;
                 }
             }
@@ -135,20 +137,25 @@ static void tc005_exec(void)
             GDMA_CH_DEV_S[1]->cfg.ch_base->CH_STATUS = DMA350_CH_STAT_ALL;
             PH4 = 1;
 
-            if (tc_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
+            //if (tc_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
             {
-                s_i32ErrCount++;
+                //i32ErrCount++;
 
 #if (_DEBUG==0)
-                while (1);
+                if (i32ErrCount > 0)
+                    while (1);
 #endif
             }
 
             i32RunCount++;
         }
 
-        TC_PRINTF("Finish XferSize: %dB!! (%04d/%04d, Error percentage: %f%%)\n", au32XferSize[i32TS], s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
+        TC_PRINTF("Finish XferSize: %dB!! (%04d/%04d, Error percentage: %f%%)\n", au32XferSize[i32TS], i32ErrCount, i32RunCount, (float)i32ErrCount * 100 / i32RunCount);
+
+        i32ReportErrCount += i32ErrCount;
     }
+
+    return (i32ReportErrCount > 0) ? -1 : 0;
 }
 
 static int tc005_init(void)
@@ -172,11 +179,30 @@ static int tc005_init(void)
     /* Enable NVIC for GDMA CH1 */
     NVIC_EnableIRQ(GDMACH1_IRQn);
 
+    extern void HyperRAM_Init_WithoutTrim(SPIM_T * spim, uint8_t u8RxDlyNum);
+    HyperRAM_Init_WithoutTrim(SPIM0, 7);
+
+#if CONFIG_SPIM_CACHE_ON
+    SPIM_HYPER_ENABLE_CACHE(SPIM0);
+    TC_PRINTF("\tSPIM_HYPER_ENABLE_CACHE ON!!\n");
+#else
+    SPIM_HYPER_DISABLE_CACHE(SPIM0);
+    TC_PRINTF("\tSPIM_HYPER_DISABLE_CACHE!!\n");
+#endif
+
+    /* Chip Select High between Transaction as 2 HCLK cycles */
+    TC_PRINTF("Modified SPIM_HYPER_SET_CSHI to 2!!\n");
+    SPIM_HYPER_SET_CSHI(SPIM0, 2);
+
+    SPIM_HYPER_EnterDirectMapMode(SPIM0);
+
     return 0;
 }
 
 static int tc005_cleanup(void)
 {
+    SPIM_HYPER_ExitDirectMapMode(SPIM0);
+
     return 0;
 }
 

@@ -7,8 +7,8 @@
 extern "C" {
 #endif
 
-#define CONFIG_BASE_ADDRESS               (SPIM_DMM0_SADDR)   //0x20110000   //SPIM_DMM0_SADDR
-#define SPIM_HYPERRAM_SIZE                (8*1024*1024)
+#define CONFIG_BASE_ADDRESS           (SPIM_DMM0_SADDR)   //0x20110000   //SPIM_DMM0_SADDR
+#define SPIM_HYPERRAM_SIZE            (8*1024*1024)
 
 #if 1
 #define CONFIG_BATCH_SIZE_START       (1)
@@ -43,7 +43,7 @@ struct tc_export
 {
     const char  *name;
     int (*tc_init)(void);
-    void (*tc_exec)(void);
+    int (*tc_exec)(void);
     int (*tc_cleanup)(void);
 };
 typedef struct tc_export *tc_export_t;
@@ -77,6 +77,7 @@ void tc_list(void);
 int tc_run(void);
 void tc_prepare(uint32_t u32BaseAddr, int i32BatchSize);
 int tc_compare(uint32_t u32BaseAddr, int i32BatchSize);
+void tc_report(void);
 
 #ifdef __cplusplus
 }

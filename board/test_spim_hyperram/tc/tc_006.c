@@ -17,7 +17,6 @@
 #endif
 
 static S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER] = {0};
-static int volatile s_i32ErrCount = 0;
 
 static void tc006_prepare(int i32DataWidth, int i32XferCount, int i32Hopping)
 {
@@ -34,8 +33,6 @@ static void tc006_prepare(int i32DataWidth, int i32XferCount, int i32Hopping)
     __ISB();
     __DSB();
 }
-
-
 
 static int tc006_compare(int i32DataWidth, int i32XferCount, int i32Hopping)
 {
@@ -152,17 +149,19 @@ static void tc006_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
 
 }
 
-static void tc006_exec(void)
+static int tc006_exec(void)
 {
     int i32BS, i32TS, i32Hopping;
     uint32_t u32Count = 0;
+    int i32ReportErrCount = 0;
 
     const static uint32_t au32XferSize[] = {1, 2, 4, 8};
 
     for (i32TS = 0; i32TS < sizeof(au32XferSize) / sizeof(uint32_t); i32TS++)
     {
         int i32RunCount = 0;
-        s_i32ErrCount = 0;
+        int i32ErrCount = 0;
+
         for (i32Hopping = au32XferSize[i32TS]; i32Hopping <= 32; i32Hopping += au32XferSize[i32TS])
         {
 
@@ -199,7 +198,7 @@ static void tc006_exec(void)
                     status = dma350_ch_get_status(GDMA_CH_DEV_S[1]);
                     u32Count++;
                     PH4 = u32Count & 0x1;
-                    if (u32Count > 10240)
+                    if (u32Count > 20480)
                     {
                         TC_PRINTF("%04d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, status.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
                     }
@@ -211,7 +210,7 @@ static void tc006_exec(void)
 
                 if (tc006_compare(au32XferSize[i32TS], i32BS, i32Hopping) < 0)
                 {
-                    s_i32ErrCount++;
+                    i32ErrCount++;
 
 #if (_DEBUG==0)
                     while (1);
@@ -222,8 +221,13 @@ static void tc006_exec(void)
             }
         }
 
-        TC_PRINTF("Finish XferSize: %dB!! (%04d/%04d, Error percentage: %f%%)\n", au32XferSize[i32TS], s_i32ErrCount, i32RunCount, (float)s_i32ErrCount * 100 / i32RunCount);
+        TC_PRINTF("Finish XferSize: %dB!! (%04d/%04d, Error percentage: %f%%)\n", au32XferSize[i32TS], i32ErrCount, i32RunCount, (float)i32ErrCount * 100 / i32RunCount);
+
+        i32ReportErrCount += i32ErrCount;
+
     }
+
+    return (i32ReportErrCount > 0) ? -1 : 0;
 }
 
 static int tc006_init(void)
@@ -247,11 +251,32 @@ static int tc006_init(void)
     /* Enable NVIC for GDMA CH1 */
     NVIC_EnableIRQ(GDMACH1_IRQn);
 
+    extern void HyperRAM_Init(SPIM_T * spim);
+    //HyperRAM_Init(SPIM0);
+    extern void HyperRAM_Init_WithoutTrim(SPIM_T * spim, uint8_t u8RxDlyNum);
+    HyperRAM_Init_WithoutTrim(SPIM0, 7);
+
+#if CONFIG_SPIM_CACHE_ON
+    SPIM_HYPER_ENABLE_CACHE(SPIM0);
+    TC_PRINTF("\tSPIM_HYPER_ENABLE_CACHE ON!!\n");
+#else
+    SPIM_HYPER_DISABLE_CACHE(SPIM0);
+    TC_PRINTF("\tSPIM_HYPER_DISABLE_CACHE!!\n");
+#endif
+
+    /* Chip Select High between Transaction as 2 HCLK cycles */
+    //TC_PRINTF("Modified SPIM_HYPER_SET_CSHI to 2!!\n");
+    //SPIM_HYPER_SET_CSHI(SPIM0, 2);
+
+    SPIM_HYPER_EnterDirectMapMode(SPIM0);
+
     return 0;
 }
 
 static int tc006_cleanup(void)
 {
+    SPIM_HYPER_ExitDirectMapMode(SPIM0);
+
     return 0;
 }
 

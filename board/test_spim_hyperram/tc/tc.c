@@ -3,8 +3,12 @@
 #include "stdlib.h"
 #include "string.h"
 
+#define CONFIG_MAX_TC_NUM     64
+
 static tc_export_t tc_table = NULL;
 static int tc_num = 0;
+static int ai32tc_result[CONFIG_MAX_TC_NUM] = {0};
+static int tc_times = 0;
 
 static int tc_init(void)
 {
@@ -13,11 +17,12 @@ static int tc_init(void)
     tc_table = (tc_export_t)&TcTab$$Base;
     tc_num = (tc_export_t)&TcTab$$Limit - tc_table;
 
+    memset((void *)&ai32tc_result[0], 0, tc_num * sizeof(int));
+
     TC_PRINTF("\n\ntotal testcase num: (%d)\n", tc_num);
 
     return tc_num;
 }
-
 
 void tc_list(void)
 {
@@ -32,6 +37,20 @@ void tc_list(void)
     TC_PRINTF("\n");
 }
 
+void tc_report(void)
+{
+    int i = 0;
+
+    TC_PRINTF("\n\n\n");
+    TC_PRINTF("#################################################################\n");
+    TC_PRINTF("[%08d]#######################################################\n", tc_times);
+    for (i = 0; i < tc_num; i++)
+    {
+        TC_PRINTF("[%02d]%44s  [%08d-%4s]\n", i + 1, tc_table[i].name, ai32tc_result[i], (ai32tc_result[i] == 0) ? "PASS" : "FAIL");
+    }
+    TC_PRINTF("#################################################################\n");
+    TC_PRINTF("#################################################################\n");
+}
 
 int tc_run(void)
 {
@@ -49,7 +68,8 @@ int tc_run(void)
             }
 
             //TC_PRINTF("execute %s\n", tc_table[i].name);
-            tc_table[i].tc_exec();
+            if (tc_table[i].tc_exec() < 0)
+                ai32tc_result[i]++;
 
             if (tc_table[i].tc_cleanup)
             {
@@ -59,6 +79,8 @@ int tc_run(void)
             TC_PRINTF("**** [%d] %s Stop ****\n", i + 1, tc_table[i].name);
         }
     }
+
+    tc_times++;
 
     return 0;
 }
@@ -113,7 +135,7 @@ int tc_compare(uint32_t u32BaseAddr, int i32BatchSize)
 
 exit_tc_compare:
 
-    if (1 & bFail)
+    if (0 & bFail)
     {
         TC_PRINTF("[BaseAddr=0x%08x, BS=%04dB] Compare [0x%08X ~ 0x%08X] and [0x%08X ~ 0x%08X] -> %s\n",
                   u32BaseAddr,

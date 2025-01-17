@@ -6,6 +6,7 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
+#include "tc.h"
 #include "tc_pdma.h"
 
 #ifndef NU_PDMA_MEMFUN_ACTOR_MAX
@@ -776,7 +777,7 @@ static void _nu_pdma_transfer(int i32ChannID, uint32_t u32Peripheral, nu_pdma_de
                         Source, destination, DMA descriptor address and length should be aligned at len(CACHE_LINE_SIZE)
                     */
                     bNonCacheAlignedWarning = 0;
-                    printf("[PDMA-W]\n");
+                    //printf("[PDMA-W]\n");
                 }
             }
 
@@ -1105,6 +1106,7 @@ static int nu_pdma_memfun_employ(void)
 static int nu_pdma_memfun(void *dest, void *src, uint32_t u32DataWidth, unsigned int u32TransferCnt, nu_pdma_memctrl_t eMemCtl)
 {
     static int i32memActorInited = 0;
+    int i32Count = 0;
 
     nu_pdma_memfun_actor_t psMemFunActor = NULL;
     struct nu_pdma_chn_cb sChnCB;
@@ -1143,7 +1145,14 @@ static int nu_pdma_memfun(void *dest, void *src, uint32_t u32DataWidth, unsigned
                      0);
 
     /* Wait it done. */
-    while (psMemFunActor->m_psSemMemFun == 0);
+    while (psMemFunActor->m_psSemMemFun == 0)
+    {
+        if (i32Count > 10240)
+            TC_PRINTF("[%d]DMM_TIMEOUT_FLAG_STS:%08x\n", i32Count, SPIM0->DMM_TIMEOUT_FLAG_STS);
+
+        i32Count++;
+    }
+
     psMemFunActor->m_psSemMemFun = 0;
 
     /* Give result if get NU_PDMA_EVENT_TRANSFER_DONE.*/
