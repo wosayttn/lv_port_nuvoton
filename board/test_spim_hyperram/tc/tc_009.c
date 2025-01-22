@@ -3,9 +3,11 @@
 #include "string.h"
 #include <math.h>
 
-#define CONFIG_GDMADESC_NUNBER        1
+#define CONFIG_GDMADESC_NUNBER        2
+#define CONFIG_SRAM_ADDRESS           0x20110000
+#define CONFIG_HYPERRAM_ADDRESS       0x82000000
 
-static void tc005_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t u32BaseAddr, int i32BatchSize, int i32XferSize)
+static void tc009_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t u32AddrSrc, uint32_t u32AddrDst, int i32BatchSize, int i32XferSize)
 {
     const static uint32_t au32TS[] =
     {
@@ -24,8 +26,6 @@ static void tc005_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
     struct dma350_cmdlink_gencfg_t cmdlink_cfg;
 
     uint32_t u32XferCount = i32BatchSize / i32XferSize;
-    uint32_t u32AddrSrc;
-    uint32_t u32AddrDst;
 
     if ((i32XferSize < 1)  || (i32XferSize > 128))
         return;
@@ -33,8 +33,6 @@ static void tc005_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
     for (i = 0; i < i32DescNum; i++)
     {
         uint32_t X;
-        u32AddrSrc = u32BaseAddr + i * i32BatchSize;
-        u32AddrDst = u32BaseAddr + (i + 1) * i32BatchSize;
 
         dma350_cmdlink_init(&cmdlink_cfg);
         //dma350_cmdlink_set_regclear(&cmdlink_cfg);
@@ -55,7 +53,6 @@ static void tc005_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
         dma350_cmdlink_set_ytype(&cmdlink_cfg, DMA350_CH_YTYPE_DISABLE);
         dma350_cmdlink_set_xaddrinc(&cmdlink_cfg, 1, 1); //Src, Dst address move 1 unit.
 
-#if 1
         if (i == (i32DescNum - 1))
         {
             dma350_cmdlink_disable_linkaddr(&cmdlink_cfg);
@@ -64,7 +61,6 @@ static void tc005_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
             dma350_cmdlink_set_linkaddr32(&cmdlink_cfg, NULL);
         }
         else
-#endif
         {
             dma350_cmdlink_enable_linkaddr(&cmdlink_cfg);
             dma350_cmdlink_disable_intr(&cmdlink_cfg, DMA350_CH_INTREN_DONE);
@@ -79,15 +75,14 @@ static void tc005_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
 
 }
 
-static int tc005_exec(void)
+static int tc009_exec(void)
 {
     int i32BS, i32TS;
     uint32_t u32Count = 0;
     int i32ReportErrCount = 0;
-
     S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER];
 
-    const static uint32_t au32XferSize[] = {1/*1, 2, 4, 8*/};
+    const static uint32_t au32XferSize[] = {1/*, 2, 4, 8*/};
 
     for (i32TS = 0; i32TS < sizeof(au32XferSize) / sizeof(uint32_t); i32TS++)
     {
@@ -100,18 +95,24 @@ static int tc005_exec(void)
 
             /* Initial all Lines descriptor-link. */
             memset(&s_sGDMADsc[0], 0, sizeof(s_sGDMADsc));
-            tc005_gdma_dsc_init(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER, CONFIG_BASE_ADDRESS, i32BS, au32XferSize[i32TS]);
-            //tc_gdma_dsc_dump(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER);
+            tc009_gdma_dsc_init(&s_sGDMADsc[0], 1, CONFIG_HYPERRAM_ADDRESS, CONFIG_SRAM_ADDRESS, i32BS, au32XferSize[i32TS]);
+            tc009_gdma_dsc_init(&s_sGDMADsc[1], 1, CONFIG_SRAM_ADDRESS, CONFIG_HYPERRAM_ADDRESS + i32BS, 8, au32XferSize[i32TS]);
+
+            /* Link to external command */
+            dma350_ch_enable_linkaddr(GDMA_CH_DEV_S[0]);
+            dma350_ch_set_linkaddr32(GDMA_CH_DEV_S[0], (uint32_t) &s_sGDMADsc[0]);
+            dma350_ch_disable_intr(GDMA_CH_DEV_S[0], DMA350_CH_INTREN_DONE);
 
             /* Link to external command */
             dma350_ch_enable_linkaddr(GDMA_CH_DEV_S[1]);
-            dma350_ch_set_linkaddr32(GDMA_CH_DEV_S[1], (uint32_t) &s_sGDMADsc[0]);
+            dma350_ch_set_linkaddr32(GDMA_CH_DEV_S[1], (uint32_t) &s_sGDMADsc[1]);
             dma350_ch_disable_intr(GDMA_CH_DEV_S[1], DMA350_CH_INTREN_DONE);
 
             g_bDone = 0;
 
             __ISB();
             __DSB();
+            dma350_ch_cmd(GDMA_CH_DEV_S[0], DMA350_CH_CMD_ENABLECMD);
             dma350_ch_cmd(GDMA_CH_DEV_S[1], DMA350_CH_CMD_ENABLECMD);
             __ISB();
             __DSB();
@@ -122,19 +123,25 @@ static int tc005_exec(void)
             u32Count = 0;
             do
             {
-                union dma350_ch_status_t status = dma350_ch_get_status(GDMA_CH_DEV_S[1]);
+                union dma350_ch_status_t status0 = dma350_ch_get_status(GDMA_CH_DEV_S[0]);
+                union dma350_ch_status_t status1 = dma350_ch_get_status(GDMA_CH_DEV_S[1]);
                 u32Count++;
                 PH4 = u32Count & 0x1;
 
                 if (u32Count > 10240)
                 {
-                    TC_PRINTF("%04d, TS=%d, BS=%d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, au32XferSize[i32TS], i32BS, status.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
+                    TC_PRINTF("%04d, TS=%d, BS=%d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, au32XferSize[i32TS], i32BS, status0.w, GDMA_CH_DEV_S[0]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
+                    TC_PRINTF("%04d, TS=%d, BS=%d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, au32XferSize[i32TS], i32BS, status1.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
                     i32ErrCount++;
                     //break;
                 }
+
             }
-            while (dma350_ch_is_busy(GDMA_CH_DEV_S[1]));
+            while (dma350_ch_is_busy(GDMA_CH_DEV_S[0]) || dma350_ch_is_busy(GDMA_CH_DEV_S[1]));
+
+            GDMA_CH_DEV_S[0]->cfg.ch_base->CH_STATUS = DMA350_CH_STAT_ALL;
             GDMA_CH_DEV_S[1]->cfg.ch_base->CH_STATUS = DMA350_CH_STAT_ALL;
+
             PH4 = 1;
 
             //if (tc_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
@@ -158,7 +165,7 @@ static int tc005_exec(void)
     return (i32ReportErrCount > 0) ? -1 : 0;
 }
 
-static int tc005_init(void)
+static int tc009_init(void)
 {
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -181,8 +188,6 @@ static int tc005_init(void)
 
     extern void HyperRAM_Init_WithoutTrim(SPIM_T * spim, uint8_t u8RxDlyNum);
     HyperRAM_Init_WithoutTrim(SPIM0, 7);
-    //extern void HyperRAM_Init(SPIM_T * spim);
-    //HyperRAM_Init(SPIM0);
 
 #if CONFIG_SPIM_CACHE_ON
     SPIM_HYPER_ENABLE_CACHE(SPIM0);
@@ -193,21 +198,20 @@ static int tc005_init(void)
 #endif
 
     /* Chip Select High between Transaction as 2 HCLK cycles */
-    TC_PRINTF("Modified SPIM_HYPER_SET_CSH and SPIM_HYPER_SET_CSHI!!\n");
+    TC_PRINTF("Modified SPIM_HYPER_SET_CSHI to 2!!\n");
     SPIM_HYPER_SET_CSHI(SPIM0, 2);
-    SPIM_HYPER_SET_CSH(SPIM0, 2);
 
     SPIM_HYPER_EnterDirectMapMode(SPIM0);
 
     return 0;
 }
 
-static int tc005_cleanup(void)
+static int tc009_cleanup(void)
 {
     SPIM_HYPER_ExitDirectMapMode(SPIM0);
 
     return 0;
 }
 
-TC_EXPORT(tc005_exec, "SPIM_HYPER_TIMEOUT_GDMA_TS=1B_BS=23B", tc005_init, tc005_cleanup);
+TC_EXPORT(tc009_exec, "SPIM_HYPER_TIMEOUT_2GDMA_W98B_R8xNB", tc009_init, tc009_cleanup);
 

@@ -101,8 +101,8 @@ static void sys_init(void)
                   GPIO_SMTEN_SMTEN7_Msk);
 
     /* Set SPIM I/O pins as slew rate. */
-    //#define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST0
-#define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST1
+    #define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST0
+    //#define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST1
 
     GPIO_SetSlewCtl(PG, (BIT13 | BIT14 | BIT15), CONFIG_SLEW_RATE);
     GPIO_SetSlewCtl(PH, (BIT12 | BIT13 | BIT14 | BIT15), CONFIG_SLEW_RATE);

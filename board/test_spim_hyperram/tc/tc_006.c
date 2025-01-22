@@ -16,8 +16,6 @@
     #define CONFIG_DST_BUFFER_ADDRESS     CONFIG_SRAM_ADDRESS
 #endif
 
-static S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER] = {0};
-
 static void tc006_prepare(int i32DataWidth, int i32XferCount, int i32Hopping)
 {
     int i = 0;
@@ -154,6 +152,7 @@ static int tc006_exec(void)
     int i32BS, i32TS, i32Hopping;
     uint32_t u32Count = 0;
     int i32ReportErrCount = 0;
+    S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER];
 
     const static uint32_t au32XferSize[] = {1, 2, 4, 8};
 

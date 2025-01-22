@@ -5,8 +5,6 @@
 
 #define CONFIG_GDMADESC_NUNBER        1
 
-static S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER] = {0};
-
 static void tc001_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t u32BaseAddr, int i32BatchSize, int i32XferSize)
 {
     const static uint32_t au32TS[] =
@@ -84,6 +82,7 @@ static int tc001_exec(void)
     int i32BS, i32TS;
     int i32ReportErrCount = 0;
     int i32ErrCount = 0;
+    S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER];
 
     const static uint32_t au32XferSize[] = {1, 2, 4, 8/*, 16, 32, 64, 128*/};
 

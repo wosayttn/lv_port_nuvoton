@@ -44,7 +44,7 @@
 #define SPIM_HYPER_GET_CSHI(spim)                                                 \
     ((spim->HYPER_CONFIG1 & SPIM_HYPER_CONFIG1_CSHI_Msk) >> SPIM_HYPER_CONFIG1_CSHI_Pos)
 
-static void SPIM_Hyper_CondifDump(SPIM_T *spim)
+static void SPIM_Hyper_DumpConfig(SPIM_T *spim)
 {
     uint32_t u32CoreFreq = (CLK_GetSCLKFreq() / 1000000);
     float fFreq = (float)1000.0f / u32CoreFreq;
@@ -102,7 +102,7 @@ void SPIM_Hyper_DefaultConfig(SPIM_T *spim, uint32_t u32CSM, uint32_t u32AcctRD,
     /* Initial Write Access Time Clock cycle*/
     SPIM_HYPER_SET_ACCTWR(spim, u32AcctWR);
 
-    SPIM_Hyper_CondifDump(spim);
+    SPIM_Hyper_DumpConfig(spim);
 }
 
 /**
