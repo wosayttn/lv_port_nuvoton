@@ -9,9 +9,9 @@ static int tc004_exec(void)
     int i32RunCount = 0;
     int i32ErrCount = 0;
 
-    for (i32BS = 23; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += CONFIG_BATCH_SIZE_STEP)
+    for (i32BS = 1; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += CONFIG_BATCH_SIZE_STEP)
     {
-        TC_PRINTF("PDMA MEMCPY %d\n", i32BS);
+        //TC_PRINTF("PDMA MEMCPY %d\n", i32BS);
 
         tc_prepare(CONFIG_BASE_ADDRESS, i32BS);
 
@@ -41,8 +41,8 @@ static int tc004_init(void)
 
     extern void HyperRAM_Init_WithoutTrim(SPIM_T * spim, uint8_t u8RxDlyNum);
     extern void HyperRAM_Init(SPIM_T * spim);
-    HyperRAM_Init(SPIM0);
-    //HyperRAM_Init_WithoutTrim(SPIM0, 7);
+    //HyperRAM_Init(SPIM0);
+    HyperRAM_Init_WithoutTrim(SPIM0, 7);
 
 #if CONFIG_SPIM_CACHE_ON
     SPIM_HYPER_ENABLE_CACHE(SPIM0);
@@ -53,8 +53,9 @@ static int tc004_init(void)
 #endif
 
     /* Chip Select High between Transaction as 2 HCLK cycles */
-    TC_PRINTF("Modified SPIM_HYPER_SET_CSHI to 2!!\n");
+    TC_PRINTF("Modified SPIM_HYPER_SET_CSH and SPIM_HYPER_SET_CSHI!!\n");
     SPIM_HYPER_SET_CSHI(SPIM0, 2);
+    SPIM_HYPER_SET_CSH(SPIM0, 2);
 
     SPIM_HYPER_EnterDirectMapMode(SPIM0);
 
