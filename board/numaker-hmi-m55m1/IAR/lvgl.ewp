@@ -74,7 +74,7 @@
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
-                    <state>M55M1 series	Nuvoton M55M1 series</state>
+                    <state>M55M1x2LJAE series	Nuvoton M55M1x2LJAE series</state>
                 </option>
                 <option>
                     <name>GenLowLevelInterface</name>
@@ -120,7 +120,7 @@
                 </option>
                 <option>
                     <name>GFPUDeviceSlave</name>
-                    <state>M55M1 series	Nuvoton M55M1 series</state>
+                    <state>M55M1x2LJAE series	Nuvoton M55M1x2LJAE series</state>
                 </option>
                 <option>
                     <name>FPU2</name>
@@ -365,6 +365,7 @@
                     <state>$PROJ_DIR$/../../../common/drv_indev</state>
                     <state>$PROJ_DIR$/../../../common</state>
                     <state>$PROJ_DIR$/../lv_port</state>
+                    <state>$PROJ_DIR$\..\..\..\bsp\m55m1\Library\StdDriver\src\gdma</state>
                     <state>$PROJ_DIR$/../../../lvgl/src</state>
                     <state>$PROJ_DIR$/../../../lvgl/src/core</state>
                     <state>$PROJ_DIR$/../../../lvgl/src/draw</state>
@@ -381,8 +382,6 @@
                     <state>$PROJ_DIR$/../../../lvgl/demos/keypad_encoder</state>
                     <state>$PROJ_DIR$/../../../</state>
                     <state>$PROJ_DIR$/../sls_files</state>
-                    <state>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Helper\Include</state>
-                    <state>$PROJ_DIR$\..\..\..\thirdparty\arm2d\Library\Include</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>

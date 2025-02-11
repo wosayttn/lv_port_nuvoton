@@ -28,7 +28,7 @@ enum
 #define NU_PDMA_CH_MAX              (PDMA_CNT*PDMA_CH_MAX)     /* Specify maximum channels of PDMA */
 #define NU_PDMA_CH_Pos              (0)                        /* Specify first channel number of PDMA */
 #define NU_PDMA_CH_Msk              (PDMA_CH_Msk << NU_PDMA_CH_Pos)
-#define NU_PDMA_GET_BASE(ch)        (PDMA_T *)((((ch)/PDMA_CH_MAX)*0x10000UL) + PDMA0_BASE)
+#define NU_PDMA_GET_BASE(ch)        (PDMA_T *)((((ch)/PDMA_CH_MAX)*0x1000UL) + PDMA0_BASE)
 #define NU_PDMA_GET_MOD_IDX(ch)     ((ch)/PDMA_CH_MAX)
 #define NU_PDMA_GET_MOD_CHIDX(ch)   ((ch)%PDMA_CH_MAX)
 
