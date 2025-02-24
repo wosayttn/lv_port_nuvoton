@@ -575,16 +575,6 @@
               <FileType>1</FileType>
               <FilePath>..\tc\tc_007.c</FilePath>
             </File>
-            <File>
-              <FileName>tc_008.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\tc\tc_008.c</FilePath>
-            </File>
-            <File>
-              <FileName>tc_009.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\tc\tc_009.c</FilePath>
-            </File>
           </Files>
         </Group>
       </Groups>

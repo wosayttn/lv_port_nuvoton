@@ -12,7 +12,7 @@ extern "C" {
 
 #if 1
 #define CONFIG_BATCH_SIZE_START       (1)
-#define CONFIG_BATCH_SIZE_STOP        (2*1024) //(8)
+#define CONFIG_BATCH_SIZE_STOP        (4*1024) //(8)
 #define CONFIG_BATCH_SIZE_STEP        (1)
 #else
 #define CONFIG_BATCH_SIZE_START       (2048)

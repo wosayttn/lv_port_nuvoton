@@ -121,18 +121,11 @@ static int tc003_init(void)
     /* Enable NVIC for GDMA CH1 */
     NVIC_EnableIRQ(GDMACH1_IRQn);
 
-    extern void HyperRAM_Init(SPIM_T * spim);
-    HyperRAM_Init(SPIM0);
-
-    SPIM_HYPER_EnterDirectMapMode(SPIM0);
-
     return 0;
 }
 
 static int tc003_cleanup(void)
 {
-    SPIM_HYPER_ExitDirectMapMode(SPIM0);
-
     return 0;
 }
 

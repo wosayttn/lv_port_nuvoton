@@ -87,12 +87,12 @@ static void sys_init(void)
     SET_SPIM0_SS_PJ7();
 
     PG->SMTEN |= (GPIO_SMTEN_SMTEN13_Msk |
-                  GPIO_SMTEN_SMTEN14_Msk 
+                  GPIO_SMTEN_SMTEN14_Msk
                   /*| GPIO_SMTEN_SMTEN15_Msk*/);
     PH->SMTEN |= (/*GPIO_SMTEN_SMTEN12_Msk |
                   GPIO_SMTEN_SMTEN13_Msk |*/
-                  GPIO_SMTEN_SMTEN14_Msk |
-                  GPIO_SMTEN_SMTEN15_Msk);
+                     GPIO_SMTEN_SMTEN14_Msk |
+                     GPIO_SMTEN_SMTEN15_Msk);
     PJ->SMTEN |= (GPIO_SMTEN_SMTEN2_Msk |
                   GPIO_SMTEN_SMTEN3_Msk |
                   GPIO_SMTEN_SMTEN4_Msk |
@@ -102,7 +102,7 @@ static void sys_init(void)
 
     /* Set SPIM I/O pins as slew rate. */
     //#define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST0
-    #define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST1
+#define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST1
 
     GPIO_SetSlewCtl(PG, (BIT13 | BIT14 | BIT15), CONFIG_SLEW_RATE);
     GPIO_SetSlewCtl(PH, (/*BIT12 |*/ BIT13 | BIT14 | BIT15), CONFIG_SLEW_RATE);
@@ -115,9 +115,14 @@ static void sys_init(void)
     SET_GPIO_PD6();
     GPIO_SetMode(PD, BIT6, GPIO_MODE_OUTPUT);
     PD6 = 1;
+
+    extern void HyperRAM_Init(SPIM_T * spim);
+    HyperRAM_Init(SPIM0);
+
+    SPIM_HYPER_EnterDirectMapMode(SPIM0);
 }
 
-__WEAK void HardFault_Handler(void)
+void HardFault_Handler(void)
 {
     uint32_t u32IRQ = 0;
     struct StackFrame *psStackFrame = NULL;
@@ -131,11 +136,11 @@ __WEAK void HardFault_Handler(void)
                    "mrsne %1, psp           \n"
                    : "=r"(u32IRQ), "=r"(psStackFrame));
 
-		extern void ProcessHardFault(uint32_t *pu32StackFrame);
+    extern void ProcessHardFault(uint32_t *pu32StackFrame);
     // Get the instruction caused the hardfault
     ProcessHardFault((uint32_t *)psStackFrame);
     TC_PRINTF("\n\nSPIM_DMM_TIMEOUT_FLAG_STS:%08x\n\n", SPIM0->DMM_TIMEOUT_FLAG_STS);
-	
+
     // Halt here
     while (1);
 
@@ -147,7 +152,7 @@ int main(void)
 
     tc_list();
 
-    while(1)
+    while (1)
     {
         tc_run();
         tc_report();
