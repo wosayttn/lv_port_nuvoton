@@ -28,7 +28,7 @@ enum
 #define NU_PDMA_CH_MAX              (PDMA_CNT*PDMA_CH_MAX)     /* Specify maximum channels of PDMA */
 #define NU_PDMA_CH_Pos              (0)                        /* Specify first channel number of PDMA */
 #define NU_PDMA_CH_Msk              (PDMA_CH_Msk << NU_PDMA_CH_Pos)
-#define NU_PDMA_GET_BASE(ch)        (PDMA_T *)((((ch)/PDMA_CH_MAX)*0x10000UL) + PDMA0_BASE)
+#define NU_PDMA_GET_BASE(ch)        (PDMA_T *)((((ch)/PDMA_CH_MAX)*0x1000UL) + PDMA0_BASE)
 #define NU_PDMA_GET_MOD_IDX(ch)     ((ch)/PDMA_CH_MAX)
 #define NU_PDMA_GET_MOD_CHIDX(ch)   ((ch)%PDMA_CH_MAX)
 
@@ -673,8 +673,6 @@ fail_nu_pdma_sgtbls_allocate:
     /* Release allocated tables. */
     nu_pdma_sgtbls_free(ppsSgtbls, i);
 
-    //rt_hw_interrupt_enable(level);
-
     return -1;
 }
 
@@ -684,7 +682,7 @@ static void _nu_pdma_transfer(int i32ChannID, uint32_t u32Peripheral, nu_pdma_de
     PDMA_T *PDMA = NU_PDMA_GET_BASE(i32ChannID);
     nu_pdma_chn_t *psPdmaChann = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos];
 
-#if defined(NVT_DCACHE_ON)
+#if (NVT_DCACHE_ON == 1)
     /* Writeback data in dcache to memory before transferring. */
     {
         static uint32_t bNonCacheAlignedWarning = 1;

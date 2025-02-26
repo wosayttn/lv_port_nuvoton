@@ -26,7 +26,9 @@
     #endif
 		
 #elif defined (__GNUC__)
-    #define __CLZ     __builtin_clz
+    #if !defined(__CLZ)
+        #define __CLZ     __builtin_clz
+		#endif
 #endif
 
 #include <stdint.h>

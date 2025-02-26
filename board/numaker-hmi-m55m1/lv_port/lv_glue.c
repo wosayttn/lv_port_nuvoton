@@ -15,7 +15,7 @@
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * sizeof(lv_color_t)), DCACHE_LINE_SIZE)
 
 #if defined(USE_HYPERRAM_AS_FRAMEBUFFER)
-    static uint8_t *s_au8FrameBuf = (uint8_t *)SPIM_DMM1_SADDR;
+    static uint8_t *s_au8FrameBuf = (uint8_t *)SPIM_DMM0_SADDR;
 #else
     static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DCACHE_LINE_SIZE)));
 #endif
@@ -58,7 +58,7 @@ int lcd_device_initialize(void)
     GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_FSA506_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
 
     /* Open EBI  */
-    EBI_Open(CONFIG_FSA506_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_CACCESS, EBI_CS_ACTIVE_LOW);
+    EBI_Open(CONFIG_FSA506_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_SLOW, EBI_OPMODE_CACCESS, EBI_CS_ACTIVE_LOW);
 
     disp_fsa506_init();
 
