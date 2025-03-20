@@ -65,7 +65,7 @@ void lv_draw_bitblt_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *ds
     lv_area_move(&rel_clip_area, -layer->buf_area.x1, -layer->buf_area.y1);
 
     lv_area_t blend_area;
-    if (!_lv_area_intersect(&blend_area, &rel_coords, &rel_clip_area))
+    if (!lv_area_intersect(&blend_area, &rel_coords, &rel_clip_area))
         return; /*Fully clipped, nothing to do*/
 
     {

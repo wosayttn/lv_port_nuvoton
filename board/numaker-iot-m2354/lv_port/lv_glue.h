@@ -9,6 +9,7 @@
 #define __LV_GLUE_H__
 
 #include <stdio.h>
+#include <string.h>
 #include "NuMicro.h"
 #include "lvgl.h"
 #include "nu_misc.h"

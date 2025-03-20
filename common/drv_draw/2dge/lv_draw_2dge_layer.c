@@ -92,7 +92,7 @@ void lv_draw_2dge_layer(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *dr
         area_rot.y2 += coords->y1;
     }
     lv_area_t draw_area;
-    if (!_lv_area_intersect(&draw_area, &area_rot, draw_unit->clip_area)) return;
+    if (!lv_area_intersect(&draw_area, &area_rot, draw_unit->clip_area)) return;
 #endif
 
 #if LV_USE_LAYER_DEBUG

@@ -547,7 +547,6 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
                        uint32_t u32AddrDst, int32_t i32TransferCnt, nu_pdma_desc_t next, uint32_t u32BeSilent)
 {
     nu_pdma_periph_ctl_t *psPeriphCtl = NULL;
-    PDMA_T *pdma = NULL;
 
     uint32_t u32SrcCtl = 0;
     uint32_t u32DstCtl = 0;
@@ -564,8 +563,6 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
         goto exit_nu_pdma_desc_setup;
     else if (i32TransferCnt > NU_PDMA_MAX_TXCNT)
         goto exit_nu_pdma_desc_setup;
-
-    pdma = NU_PDMA_GET_BASE(i32ChannID);
 
     psPeriphCtl = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_spPeripCtl;
 

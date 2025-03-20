@@ -326,7 +326,7 @@ static void _gdma_execute_drawing(lv_draw_gdma_unit_t *u)
     lv_draw_buf_t *draw_buf = layer->draw_buf;
 
     lv_area_t draw_area;
-    if (!_lv_area_intersect(&draw_area, &task->area, draw_unit->clip_area))
+    if (!lv_area_intersect(&draw_area, &task->area, draw_unit->clip_area))
         return; /*Fully clipped, nothing to do*/
 
     /* Make area relative to the buffer */
@@ -355,7 +355,7 @@ static void _gdma_execute_drawing(lv_draw_gdma_unit_t *u)
     if (task->type != LV_DRAW_TASK_TYPE_LAYER)
     {
         lv_area_t draw_area;
-        if (!_lv_area_intersect(&draw_area, &task->area, u->base_unit.clip_area))
+        if (!lv_area_intersect(&draw_area, &task->area, u->base_unit.clip_area))
             return;
 
         int32_t idx = 0;

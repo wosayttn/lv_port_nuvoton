@@ -16,7 +16,10 @@ extern "C" {
 #include "../lv_draw.h"
 
 #if LV_USE_DRAW_GDMA
-
+#include "lv_draw_rect.h"
+#include "../lv_draw_private.h"
+#include "../lv_draw_buf_private.h"
+#include "../../misc/lv_area_private.h"
 #include "../../misc/lv_area.h"
 #include "../../misc/lv_color.h"
 #include "../../display/lv_display.h"

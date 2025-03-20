@@ -243,7 +243,7 @@ static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 
         if (!_2dge_src_cf_supported(img_dsc->header.cf) ||
                 !_2dge_buf_aligned(img_dsc->data, img_dsc->header.stride) ||
-         				    (img_dsc->header.cf != draw_dsc_base->layer->color_format) )
+                (img_dsc->header.cf != draw_dsc_base->layer->color_format))
             goto _2dge_evaluate_not_ok;
 
         if (!_2dge_draw_img_supported(draw_dsc))
@@ -339,7 +339,7 @@ static void _2dge_execute_drawing(lv_draw_2dge_unit_t *u)
     lv_draw_buf_t *draw_buf = layer->draw_buf;
 
     lv_area_t draw_area;
-    if (!_lv_area_intersect(&draw_area, &task->area, draw_unit->clip_area))
+    if (!lv_area_intersect(&draw_area, &task->area, draw_unit->clip_area))
         return; /*Fully clipped, nothing to do*/
 
     /* Make area relative to the buffer */
@@ -368,7 +368,7 @@ static void _2dge_execute_drawing(lv_draw_2dge_unit_t *u)
     if (task->type != LV_DRAW_TASK_TYPE_LAYER)
     {
         lv_area_t draw_area;
-        if (!_lv_area_intersect(&draw_area, &task->area, u->base_unit.clip_area))
+        if (!lv_area_intersect(&draw_area, &task->area, u->base_unit.clip_area))
             return;
 
         int32_t idx = 0;

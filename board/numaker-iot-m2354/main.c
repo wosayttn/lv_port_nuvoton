@@ -7,8 +7,6 @@
  ******************************************************************************/
 
 #include "lv_glue.h"
-#include "ff.h"
-#include "diskio.h"
 
 static void sys_init(void)
 {
@@ -78,19 +76,6 @@ static void sys_init(void)
     /* Enable PDMA0/PDMA1 module clock */
     CLK_EnableModuleClock(PDMA0_MODULE);
     CLK_EnableModuleClock(PDMA1_MODULE);
-
-    /* Select USB clock source as PLL and USB clock divider as 2 */
-    CLK_SetModuleClock(USBD_MODULE, CLK_CLKSEL0_USBSEL_PLL, CLK_CLKDIV0_USB(2));
-
-    /* Select USB Device role */
-    SYS->USBPHY = (SYS->USBPHY & ~SYS_USBPHY_USBROLE_Msk) | SYS_USBPHY_OTGPHYEN_Msk | SYS_USBPHY_SBO_Msk;
-
-    /* Enable USBD module clock */
-    CLK_EnableModuleClock(USBD_MODULE);
-
-    /* USBD multi-function pins for VBUS, D+, D-, and ID pins */
-    SYS->GPA_MFPH &= ~(SYS_GPA_MFPH_PA12MFP_Msk | SYS_GPA_MFPH_PA13MFP_Msk | SYS_GPA_MFPH_PA14MFP_Msk | SYS_GPA_MFPH_PA15MFP_Msk);
-    SYS->GPA_MFPH |= (SYS_GPA_MFPH_PA12MFP_USB_VBUS | SYS_GPA_MFPH_PA13MFP_USB_D_N | SYS_GPA_MFPH_PA14MFP_USB_D_P | SYS_GPA_MFPH_PA15MFP_USB_OTG_ID);
 
     UART_Open(UART0, 115200);
 

@@ -12,11 +12,11 @@
 #define LV_NUVOTON_INCLUDE     "N9H26.h"
 #include LV_NUVOTON_INCLUDE
 
-#define LV_USE_DRAW_BITBLT                     1
-#define LV_USE_PARALLEL_DRAW_DEBUG             0
-#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     32
-#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
-#define CONFIG_LV_DRAW_BUF_ALIGN               32
+//#define LV_USE_DRAW_BITBLT                     1
+//#define LV_USE_PARALLEL_DRAW_DEBUG             0
+//#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     32
+//#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
+//#define CONFIG_LV_DRAW_BUF_ALIGN               32
 
 #define LV_USE_OS   LV_OS_FREERTOS
 
@@ -65,7 +65,7 @@
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
-#define LV_USE_DEMO_BENCHMARK           1
+//#define LV_USE_DEMO_BENCHMARK           1
 //#define LV_USE_DEMO_MUSIC             1
 #if LV_USE_DEMO_MUSIC
     #define LV_DEMO_MUSIC_AUTO_PLAY     1
@@ -77,10 +77,10 @@
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_NONE
 #endif
 

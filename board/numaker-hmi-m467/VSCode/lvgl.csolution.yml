@@ -3,14 +3,14 @@ solution:
   created-for: CMSIS-Toolbox@2.2.0
   compiler: GCC@>=10.3.1
   target-types:
-    - type: M467HJ480x272FSA506
+    - type: M467HJ_480x272_FSA506
       device: M467HJHAE
       optimize: speed
-    - type: M467HJ480x272SSD1963
+    - type: M467HJ_480x272_SSD1963
       device: M467HJHAE
       optimize: speed
-  build-types:
-    - type: Debug
-      warnings: "on"
+    - type: M467HJ_320x240_ILI9341
+      device: M467HJHAE
+      optimize: speed
   projects:
     - project: lvgl.cproject.yml

@@ -2,7 +2,6 @@
 *.o
 *.d
 *.uvopt
-*.uvoptx
 *.htm
 *.xml
 *.dep
@@ -17,3 +16,13 @@
 *.iex
 *.txt
 settings.json
+*.log
+*.pbi
+*.xcl
+*ninja*
+*.rsp
+*.pbd*
+*.pbw
+*.out
+*.tmp
+*.obj

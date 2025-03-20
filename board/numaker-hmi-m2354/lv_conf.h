@@ -29,8 +29,6 @@
 #define LV_USE_PERF_MONITOR             1
 #define LV_USE_LOG                      0
 
-#define LV_USE_FS_FATFS                 1
-#define LV_FS_FATFS_LETTER              '0'
 #define CONFIG_LV_MEM_SIZE              (128*1024U)
 
 #if LV_USE_LOG == 1

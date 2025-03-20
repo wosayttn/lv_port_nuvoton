@@ -1,0 +1,10 @@
+solution:
+  created-by: uv2csolution@1.6.0
+  created-for: CMSIS-Toolbox@2.2.0
+  compiler: GCC@>=10.3.1
+  target-types:
+    - type: M2L31KI_320x240
+      device: M2L31KIDAE
+      optimize: speed
+  projects:
+    - project: lvgl.cproject.yml

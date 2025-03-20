@@ -46,6 +46,13 @@ git clone --recurse-submodules https://github.com/OpenNuvoton/lv_port_nuvoton
 | **NuMaker-IoT-M2354** | [numaker-iot-m2354](./board/numaker-iot-m2354) |
 | **NuMaker-HMI-M2L31** | [numaker-hmi-m2l31](./board/numaker-hmi-m2l31) |
 
+### **Cortex-M33 Processor**
+
+| **NuMaker Board Name** | **LVGL Demo Project Folder** |
+| ------------------------- | ------------------------- |
+| **NuMaker-HMI-M3333** | [numaker-hmi-m3333]() |
+| **NuMaker-HMI-CM3033** | [numaker-hmi-cm3033]() |
+
 ### **Cortex-M4F Processor**
 
 | **NuMaker Board Name** | **LVGL Demo Project Folder** |
@@ -58,6 +65,7 @@ git clone --recurse-submodules https://github.com/OpenNuvoton/lv_port_nuvoton
 | **NuMaker Board Name** | **LVGL Demo Project Folder** |
 | ------------------------- | ------------------------- |
 | **NuMaker-HMI-M55M1** | [numaker-hmi-m55m1](./board/numaker-hmi-m55m1) |
+| **NuMaker-HMI-M5531** | [numaker-hmi-m5531](./board/numaker-hmi-m5531) |
 
 ### **Cortex-A35 Processor**
 

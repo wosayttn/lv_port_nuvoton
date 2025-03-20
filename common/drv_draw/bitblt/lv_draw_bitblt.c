@@ -84,7 +84,9 @@ void lv_draw_bitblt_init(void)
 {
     lv_draw_buf_handlers_t *handlers = lv_draw_buf_get_handlers();
 
-    handlers->invalidate_cache_cb = _bitblt_invalidate_cache;
+    //handlers->invalidate_cache_cb = _bitblt_invalidate_cache;
+    handlers->invalidate_cache_cb  = _bitblt_invalidate_cache;
+    //handlers->flush_cache_cb  = _bitblt_invalidate_cache;
 
     lv_draw_bitblt_unit_t *draw_bitblt_unit = lv_draw_create_unit(sizeof(lv_draw_bitblt_unit_t));
     draw_bitblt_unit->base_unit.evaluate_cb = _bitblt_evaluate;
@@ -281,6 +283,9 @@ static int32_t _bitblt_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 
     case LV_DRAW_TASK_TYPE_IMAGE:
     {
+        // TO CHECK, Skip the request.
+        goto _bitblt_evaluate_not_ok;
+
         lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
         const lv_image_dsc_t *img_dsc = draw_dsc->src;
 
@@ -396,7 +401,7 @@ static void _bitblt_execute_drawing(lv_draw_bitblt_unit_t *u)
     lv_draw_buf_t *draw_buf = layer->draw_buf;
 
     lv_area_t draw_area;
-    if (!_lv_area_intersect(&draw_area, &task->area, draw_unit->clip_area))
+    if (!lv_area_intersect(&draw_area, &task->area, draw_unit->clip_area))
         return; /*Fully clipped, nothing to do*/
 
     /* Make area relative to the buffer */
@@ -425,7 +430,7 @@ static void _bitblt_execute_drawing(lv_draw_bitblt_unit_t *u)
     if (task->type != LV_DRAW_TASK_TYPE_LAYER)
     {
         lv_area_t draw_area;
-        if (!_lv_area_intersect(&draw_area, &task->area, u->base_unit.clip_area))
+        if (!lv_area_intersect(&draw_area, &task->area, u->base_unit.clip_area))
             return;
 
         int32_t idx = 0;

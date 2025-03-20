@@ -38,12 +38,6 @@
 	path = bsp/m55m1
 	url = https://github.com/OpenNuvoton/M55M1BSP
 	branch = master	
-[submodule "thirdparty/SFUD"]
-	path = thirdparty/SFUD
-	url = https://github.com/armink/SFUD
-[submodule "thirdparty/CherryUSB"]
-	path = thirdparty/CherryUSB
-	url = https://github.com/cherry-embedded/CherryUSB
 [submodule "bsp/n9h31"]
 	path = bsp/n9h31
 	url = https://github.com/OpenNuvoton/N9H31_NonOS
@@ -53,7 +47,10 @@
 [submodule "lvgl"]
 	path = lvgl
 	url = https://github.com/lvgl/lvgl
-	branch = release/v9.1
+	branch = release/v9.2
 [submodule "bsp/m2l31"]
 	path = bsp/m2l31
 	url = https://github.com/OpenNuvoton/M2L31BSP
+[submodule "bsp/m5531"]
+	path = bsp/m5531
+	url = https://github.com/OpenNuvoton/M5531BSP
