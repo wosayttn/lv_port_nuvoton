@@ -8,16 +8,16 @@ static void tc003_prepare(uint32_t u32BaseAddr, int i32BatchSize)
     volatile uint8_t *ptr = (volatile uint8_t *)u32BaseAddr;
 
 #if 1
+
     for (i = 0; i < i32BatchSize; i++)
     {
         ptr[i + i32BatchSize] = ptr[i] = i % 256;
+        __ISB();
+        __DSB();
     }
-    __ISB();
-    __DSB();
+
 #else
     SPIM_HYPER_DISABLE_CACHE(SPIM0);
-
-
 #endif
 }
 
@@ -54,7 +54,7 @@ static int tc003_compare(uint32_t u32BaseAddr, int i32BatchSize)
 
 exit_tc003_compare:
 
-    if (0 & bFail)
+    if (1 & bFail)
     {
         TC_PRINTF("[BaseAddr=0x%08x, BS=%04dB] Compare [0x%08X ~ 0x%08X] and [0x%08X ~ 0x%08X] -> %s\n",
                   u32BaseAddr,
@@ -78,8 +78,10 @@ static int tc003_exec(void)
     int i32ErrCount = 0;
 
     i32RunCount = 0;
+#define DEF_START_BS        513
 
-    for (i32BS = 2048; i32BS <= 4096; i32BS += 2048)
+    //for (i32BS = DEF_START_BS; i32BS <= DEF_START_BS; i32BS += 1)
+    for (i32BS = 0x100; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += 0x100)
     {
         tc003_prepare(CONFIG_BASE_ADDRESS, i32BS);
 
@@ -88,7 +90,9 @@ static int tc003_exec(void)
             i32ErrCount++;
 
 #if (_DEBUG==0)
+
             while (1);
+
 #endif
         }
 
@@ -102,25 +106,6 @@ static int tc003_exec(void)
 
 static int tc003_init(void)
 {
-    /* Unlock protected registers */
-    SYS_UnlockReg();
-
-    /* Enable GDMA0 clock source */
-    CLK_EnableModuleClock(GDMA0_MODULE);
-
-    /* Reset GDMA module */
-    SYS_ResetModule(SYS_GDMA0RST);
-
-    dma350_init(&GDMA_DEV_S);
-    dma350_set_ch_privileged(&GDMA_DEV_S, 0);
-    dma350_set_ch_privileged(&GDMA_DEV_S, 1);
-
-    /* Enable NVIC for GDMA CH0 */
-    NVIC_EnableIRQ(GDMACH0_IRQn);
-
-    /* Enable NVIC for GDMA CH1 */
-    NVIC_EnableIRQ(GDMACH1_IRQn);
-
     return 0;
 }
 

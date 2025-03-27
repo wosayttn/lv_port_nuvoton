@@ -163,7 +163,6 @@ static int tc006_exec(void)
 
         for (i32Hopping = au32XferSize[i32TS]; i32Hopping <= 32; i32Hopping += au32XferSize[i32TS])
         {
-
             for (i32BS = au32XferSize[i32TS]; i32BS <= 256; i32BS += au32XferSize[i32TS])
             {
 
@@ -192,17 +191,18 @@ static int tc006_exec(void)
                 /* Reference implementation with busy wait */
                 u32Count = 0;
                 union dma350_ch_status_t status;
+
                 do
                 {
                     status = dma350_ch_get_status(GDMA_CH_DEV_S[1]);
                     u32Count++;
                     PH4 = u32Count & 0x1;
+
                     if (u32Count > 20480)
                     {
                         TC_PRINTF("%04d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, status.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
                     }
-                }
-                while (dma350_ch_is_busy(GDMA_CH_DEV_S[1]));
+                } while (dma350_ch_is_busy(GDMA_CH_DEV_S[1]));
 
                 GDMA_CH_DEV_S[1]->cfg.ch_base->CH_STATUS = DMA350_CH_STAT_ALL;
                 PH4 = 1;
@@ -212,7 +212,9 @@ static int tc006_exec(void)
                     i32ErrCount++;
 
 #if (_DEBUG==0)
+
                     while (1);
+
 #endif
                 }
 

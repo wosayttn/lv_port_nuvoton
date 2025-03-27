@@ -108,39 +108,39 @@ void tc_gdma_dsc_dump(S_CMDBUF *psCmdBufHead, int i32Length)
 
             switch (1 << i)
             {
-            case DMA350_CMDLINK_LINKADDR_SET:     //(0x1UL << 30)
-                tmp_next = (S_CMDBUF *)((uint32_t)pu32Cfg[n] & DMA_CH_LINKADDR_LINKADDR_Msk);
-                break;
+                case DMA350_CMDLINK_LINKADDR_SET:     //(0x1UL << 30)
+                    tmp_next = (S_CMDBUF *)((uint32_t)pu32Cfg[n] & DMA_CH_LINKADDR_LINKADDR_Msk);
+                    break;
 
-            case DMA350_CMDLINK_REGCLEAR_SET:     //(0x1UL)
-            case DMA350_CMDLINK_INTREN_SET:       //(0x1UL << 2)
-            case DMA350_CMDLINK_CTRL_SET:         //(0x1UL << 3)
-            case DMA350_CMDLINK_SRC_ADDR_SET:     //(0x1UL << 4)
-            case DMA350_CMDLINK_SRC_ADDRHI_SET:   //(0x1UL << 5)
-            case DMA350_CMDLINK_DES_ADDR_SET:     //(0x1UL << 6)
-            case DMA350_CMDLINK_DES_ADDRHI_SET:   //(0x1UL << 7)
-            case DMA350_CMDLINK_XSIZE_SET:        //(0x1UL << 8)
-            case DMA350_CMDLINK_XSIZEHI_SET:      //(0x1UL << 9)
-            case DMA350_CMDLINK_SRCTRANSCFG_SET:  //(0x1UL << 10)
-            case DMA350_CMDLINK_DESTRANSCFG_SET:  //(0x1UL << 11)
-            case DMA350_CMDLINK_XADDRINC_SET:     //(0x1UL << 12)
-            case DMA350_CMDLINK_YADDRSTRIDE_SET:  //(0x1UL << 13)
-            case DMA350_CMDLINK_FILLVAL_SET:      //(0x1UL << 14)
-            case DMA350_CMDLINK_YSIZE_SET:        //(0x1UL << 15)
-            case DMA350_CMDLINK_TMPLTCFG_SET:     //(0x1UL << 16)
-            case DMA350_CMDLINK_SRCTMPLT_SET:     //(0x1UL << 17)
-            case DMA350_CMDLINK_DESTMPLT_SET:     //(0x1UL << 18)
-            case DMA350_CMDLINK_SRCTRIGINCFG_SET: //(0x1UL << 19)
-            case DMA350_CMDLINK_DESTRIGINCFG_SET: //(0x1UL << 20)
-            case DMA350_CMDLINK_TRIGOUTCFG_SET:   //(0x1UL << 21)
-            case DMA350_CMDLINK_GPOEN0_SET:       //(0x1UL << 22)
-            case DMA350_CMDLINK_GPOVAL0_SET:      //(0x1UL << 24)
-            case DMA350_CMDLINK_STREAMINTCFG_SET: //(0x1UL << 26)
-            case DMA350_CMDLINK_LINKATTR_SET:     //(0x1UL << 28)
-            case DMA350_CMDLINK_AUTOCFG_SET:      //(0x1UL << 29)
-            case DMA350_CMDLINK_LINKADDRHI_SET:   //(0x1UL << 31)
-            default:
-                break;
+                case DMA350_CMDLINK_REGCLEAR_SET:     //(0x1UL)
+                case DMA350_CMDLINK_INTREN_SET:       //(0x1UL << 2)
+                case DMA350_CMDLINK_CTRL_SET:         //(0x1UL << 3)
+                case DMA350_CMDLINK_SRC_ADDR_SET:     //(0x1UL << 4)
+                case DMA350_CMDLINK_SRC_ADDRHI_SET:   //(0x1UL << 5)
+                case DMA350_CMDLINK_DES_ADDR_SET:     //(0x1UL << 6)
+                case DMA350_CMDLINK_DES_ADDRHI_SET:   //(0x1UL << 7)
+                case DMA350_CMDLINK_XSIZE_SET:        //(0x1UL << 8)
+                case DMA350_CMDLINK_XSIZEHI_SET:      //(0x1UL << 9)
+                case DMA350_CMDLINK_SRCTRANSCFG_SET:  //(0x1UL << 10)
+                case DMA350_CMDLINK_DESTRANSCFG_SET:  //(0x1UL << 11)
+                case DMA350_CMDLINK_XADDRINC_SET:     //(0x1UL << 12)
+                case DMA350_CMDLINK_YADDRSTRIDE_SET:  //(0x1UL << 13)
+                case DMA350_CMDLINK_FILLVAL_SET:      //(0x1UL << 14)
+                case DMA350_CMDLINK_YSIZE_SET:        //(0x1UL << 15)
+                case DMA350_CMDLINK_TMPLTCFG_SET:     //(0x1UL << 16)
+                case DMA350_CMDLINK_SRCTMPLT_SET:     //(0x1UL << 17)
+                case DMA350_CMDLINK_DESTMPLT_SET:     //(0x1UL << 18)
+                case DMA350_CMDLINK_SRCTRIGINCFG_SET: //(0x1UL << 19)
+                case DMA350_CMDLINK_DESTRIGINCFG_SET: //(0x1UL << 20)
+                case DMA350_CMDLINK_TRIGOUTCFG_SET:   //(0x1UL << 21)
+                case DMA350_CMDLINK_GPOEN0_SET:       //(0x1UL << 22)
+                case DMA350_CMDLINK_GPOVAL0_SET:      //(0x1UL << 24)
+                case DMA350_CMDLINK_STREAMINTCFG_SET: //(0x1UL << 26)
+                case DMA350_CMDLINK_LINKATTR_SET:     //(0x1UL << 28)
+                case DMA350_CMDLINK_AUTOCFG_SET:      //(0x1UL << 29)
+                case DMA350_CMDLINK_LINKADDRHI_SET:   //(0x1UL << 31)
+                default:
+                    break;
             }
 
             n++;

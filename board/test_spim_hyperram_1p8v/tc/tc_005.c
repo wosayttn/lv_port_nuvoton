@@ -56,6 +56,7 @@ static void tc005_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t
         dma350_cmdlink_set_xaddrinc(&cmdlink_cfg, 1, 1); //Src, Dst address move 1 unit.
 
 #if 1
+
         if (i == (i32DescNum - 1))
         {
             dma350_cmdlink_disable_linkaddr(&cmdlink_cfg);
@@ -120,6 +121,7 @@ static int tc005_exec(void)
             /* Hang up issue: CANNOT WAIT FOR ANY STAT. */
             /* Reference implementation with busy wait */
             u32Count = 0;
+
             do
             {
                 union dma350_ch_status_t status = dma350_ch_get_status(GDMA_CH_DEV_S[1]);
@@ -128,12 +130,13 @@ static int tc005_exec(void)
 
                 if (u32Count > 10240)
                 {
-                    TC_PRINTF("%04d, TS=%d, BS=%d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, au32XferSize[i32TS], i32BS, status.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
+                    TC_PRINTF("%04d, TS=%d, BS=%d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, au32XferSize[i32TS], i32BS, status.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO,
+                              SPIM0->DMM_TIMEOUT_FLAG_STS);
                     i32ErrCount++;
                     //break;
                 }
-            }
-            while (dma350_ch_is_busy(GDMA_CH_DEV_S[1]));
+            } while (dma350_ch_is_busy(GDMA_CH_DEV_S[1]));
+
             GDMA_CH_DEV_S[1]->cfg.ch_base->CH_STATUS = DMA350_CH_STAT_ALL;
             PH4 = 1;
 
@@ -144,6 +147,7 @@ static int tc005_exec(void)
 #if (_DEBUG==0)
                 if (i32ErrCount > 0)
                     while (1);
+
 #endif
             }
 

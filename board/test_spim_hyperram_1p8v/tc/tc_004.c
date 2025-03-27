@@ -22,7 +22,9 @@ static int tc004_exec(void)
             i32ErrCount++;
 
 #if (_DEBUG==0)
+
             while (1);
+
 #endif
         }
 

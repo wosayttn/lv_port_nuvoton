@@ -66,12 +66,12 @@ typedef struct tc_export *tc_export_t;
 #define TC_EXPORT(testcase, name, init, cleanup)                \
     __attribute__((used)) static const struct tc_export _tc_testcase           \
     __attribute__((section("TcTab"))) =                                        \
-    {                                                                          \
-        name,                                                                  \
-        init,                                                                  \
-        testcase,                                                              \
-        cleanup                                                                \
-    }
+                                                                               {                                                                          \
+                                                                                                                                                          name,                                                                  \
+                                                                                                                                                          init,                                                                  \
+                                                                                                                                                          testcase,                                                              \
+                                                                                                                                                          cleanup                                                                \
+                                                                               }
 
 void tc_list(void);
 int tc_run(void);

@@ -72,7 +72,7 @@ static void sys_init(void)
     CLK_EnableModuleClock(OTFC0_MODULE);
 
     /* Init SPIM multi-function pins */
-    //SET_SPIM0_CLKN_PH12();
+    SET_SPIM0_CLKN_PH12();
     SET_SPIM0_CLK_PH13();
     SET_SPIM0_D2_PJ5();
     SET_SPIM0_D3_PJ6();
@@ -87,12 +87,12 @@ static void sys_init(void)
     SET_SPIM0_SS_PJ7();
 
     PG->SMTEN |= (GPIO_SMTEN_SMTEN13_Msk |
-                  GPIO_SMTEN_SMTEN14_Msk
-                  /*| GPIO_SMTEN_SMTEN15_Msk*/);
-    PH->SMTEN |= (/*GPIO_SMTEN_SMTEN12_Msk |
-                  GPIO_SMTEN_SMTEN13_Msk |*/
-                     GPIO_SMTEN_SMTEN14_Msk |
-                     GPIO_SMTEN_SMTEN15_Msk);
+                  GPIO_SMTEN_SMTEN14_Msk |
+                  GPIO_SMTEN_SMTEN15_Msk);
+    PH->SMTEN |= (GPIO_SMTEN_SMTEN12_Msk |
+                  GPIO_SMTEN_SMTEN13_Msk |
+                  GPIO_SMTEN_SMTEN14_Msk |
+                  GPIO_SMTEN_SMTEN15_Msk);
     PJ->SMTEN |= (GPIO_SMTEN_SMTEN2_Msk |
                   GPIO_SMTEN_SMTEN3_Msk |
                   GPIO_SMTEN_SMTEN4_Msk |
@@ -101,11 +101,11 @@ static void sys_init(void)
                   GPIO_SMTEN_SMTEN7_Msk);
 
     /* Set SPIM I/O pins as slew rate. */
-    //#define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST0
-#define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST1
+#define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST0
+    //#define CONFIG_SLEW_RATE      GPIO_SLEWCTL_FAST1
 
     GPIO_SetSlewCtl(PG, (BIT13 | BIT14 | BIT15), CONFIG_SLEW_RATE);
-    GPIO_SetSlewCtl(PH, (/*BIT12 |*/ BIT13 | BIT14 | BIT15), CONFIG_SLEW_RATE);
+    GPIO_SetSlewCtl(PH, (BIT12 | BIT13 | BIT14 | BIT15), CONFIG_SLEW_RATE);
     GPIO_SetSlewCtl(PJ, (BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7), CONFIG_SLEW_RATE);
 
     SET_GPIO_PH4();
@@ -115,6 +115,10 @@ static void sys_init(void)
     SET_GPIO_PD6();
     GPIO_SetMode(PD, BIT6, GPIO_MODE_OUTPUT);
     PD6 = 1;
+
+    SET_GPIO_PD5();
+    GPIO_SetMode(PD, BIT5, GPIO_MODE_OUTPUT);
+    PD5 = 0;
 
     extern void HyperRAM_Init(SPIM_T * spim);
     HyperRAM_Init(SPIM0);
@@ -126,6 +130,7 @@ void HardFault_Handler(void)
 {
     uint32_t u32IRQ = 0;
     struct StackFrame *psStackFrame = NULL;
+    TC_PRINTF("\n\nSPIM_DMM_TIMEOUT_FLAG_STS:%08x\n\n", SPIM0->DMM_TIMEOUT_FLAG_STS);
 
     (void)u32IRQ;
     __ASM volatile("mrs %0, ipsr            \n" // Read IPSR (Exception number)
@@ -139,7 +144,6 @@ void HardFault_Handler(void)
     extern void ProcessHardFault(uint32_t *pu32StackFrame);
     // Get the instruction caused the hardfault
     ProcessHardFault((uint32_t *)psStackFrame);
-    TC_PRINTF("\n\nSPIM_DMM_TIMEOUT_FLAG_STS:%08x\n\n", SPIM0->DMM_TIMEOUT_FLAG_STS);
 
     // Halt here
     while (1);

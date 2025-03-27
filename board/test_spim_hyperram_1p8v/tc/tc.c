@@ -34,6 +34,7 @@ void tc_list(void)
     {
         TC_PRINTF("[#%d]:%s \n", i + 1, tc_table[i].name);
     }
+
     TC_PRINTF("\n");
 }
 
@@ -44,10 +45,12 @@ void tc_report(void)
     TC_PRINTF("\n\n\n");
     TC_PRINTF("#################################################################\n");
     TC_PRINTF("[%08d]#######################################################\n", tc_times);
+
     for (i = 0; i < tc_num; i++)
     {
         TC_PRINTF("[%02d]%44s  [%08d-%4s]\n", i + 1, tc_table[i].name, ai32tc_result[i], (ai32tc_result[i] == 0) ? "PASS" : "FAIL");
     }
+
     TC_PRINTF("#################################################################\n");
     TC_PRINTF("#################################################################\n");
 }
@@ -61,6 +64,7 @@ int tc_run(void)
         if (tc_table[i].tc_exec)
         {
             TC_PRINTF("\n**** [%d] %s Start ****\n", i + 1, tc_table[i].name);
+
             if (tc_table[i].tc_init)
             {
                 TC_PRINTF("initial %s\n", tc_table[i].name);
@@ -68,6 +72,7 @@ int tc_run(void)
             }
 
             TC_PRINTF("execute %s\n", tc_table[i].name);
+
             if (tc_table[i].tc_exec() < 0)
                 ai32tc_result[i]++;
 
@@ -76,6 +81,7 @@ int tc_run(void)
                 TC_PRINTF("cleanup %s\n", tc_table[i].name);
                 tc_table[i].tc_cleanup();
             }
+
             TC_PRINTF("**** [%d] %s Stop ****\n", i + 1, tc_table[i].name);
         }
     }
@@ -92,7 +98,7 @@ void tc_prepare(uint32_t u32BaseAddr, int i32BatchSize)
     volatile uint8_t *pu8SrcBuf = &ptr[0];
     volatile uint8_t *pu8DstBuf = &ptr[i32BatchSize];
 
-  	memset((void *)pu8DstBuf, 0xa5, i32BatchSize);
+    memset((void *)pu8DstBuf, 0xa5, i32BatchSize);
     //memset((void *)pu8SrcBuf, 0xa5, 2*i32BatchSize);
 
     for (i = 0; i < i32BatchSize; i++)
@@ -104,8 +110,6 @@ void tc_prepare(uint32_t u32BaseAddr, int i32BatchSize)
     __DSB();
 }
 
-
-
 int tc_compare(uint32_t u32BaseAddr, int i32BatchSize)
 {
     uint8_t *ptr = (uint8_t *)u32BaseAddr;
@@ -115,27 +119,36 @@ int tc_compare(uint32_t u32BaseAddr, int i32BatchSize)
     int j;
     int bFail = 0;
 
-  	/* Start comparison. */
+    /* Start comparison. */
     PD6 = 0;
 
     for (j = 0; j < i32BatchSize; j++)
     {
         if (pu8V0[j] != pu8V1[j])
         {
+            PD5 = 1;
+            __NOP();
+            __NOP();
+            __NOP();
+            __NOP();
+            __NOP();
+            __ISB();
+            __DSB();
+
+            PD5 = 0;
+            __ISB();
+            __DSB();
+
             bFail = 1;
-            PH4 = 0;
+            __ISB();
+            __DSB();
             goto exit_tc_compare;
         }
     }
 
-    /* Stop comparison. */
-    PD6 = 1;
-
-    return 0;
-
 exit_tc_compare:
 
-    if (0 & bFail)
+    if (1 & bFail)
     {
         TC_PRINTF("[BaseAddr=0x%08x, BS=%04dB] Compare [0x%08X ~ 0x%08X] and [0x%08X ~ 0x%08X] -> %s\n",
                   u32BaseAddr,
@@ -147,7 +160,20 @@ exit_tc_compare:
                   bFail ? "Fail" : "Okay");
 
         TC_PRINTF("\tFirst: BS=%d, 0x%02X@0x%08X != 0x%02X@0x%08X\n", i32BatchSize, pu8V0[j], (uint32_t)&pu8V0[j], pu8V1[j], (uint32_t)&pu8V1[j]);
+
+        {
+            uint32_t u32DMAV0 = 0, u32DMAV1 = 0;
+
+            u32DMAV0 = SPIM_HYPER_Read2Word(SPIM0, ((uint32_t)&pu8V0[j]) & 0x00FFFFFC);
+            u32DMAV1 = SPIM_HYPER_Read2Word(SPIM0, ((uint32_t)&pu8V1[j]) & 0x00FFFFFC);
+            TC_PRINTF("\tCMD Read BS=%d, 0x%08X@0x%08X != 0x%08X@0x%08X\n",  i32BatchSize, u32DMAV0, ((uint32_t)&pu8V0[j]) & 0x00FFFFFC, u32DMAV1, ((uint32_t)&pu8V1[j]) & 0x00FFFFFC);
+        }
     }
 
-    return -1;
+    /* Stop comparison. */
+    PD6 = 1;
+    __ISB();
+    __DSB();
+
+    return (bFail ? -1 : 0);
 }

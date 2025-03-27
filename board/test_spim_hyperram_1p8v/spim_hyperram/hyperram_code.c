@@ -21,7 +21,7 @@
 #define HYPERRAM_CSM_TIME           4000 /* ns */
 #define HYPERRAM_RD_LTCY            7
 #define HYPERRAM_WR_LTCY            7
-#define HYPERRAM_CSHI_CYCLE         4
+#define HYPERRAM_CSHI_CYCLE         SPIM_HYPER_CSHI_5_HCLK
 #define HYPER_RAM_RST_CNT           0xFF
 #define VERIFY_ERASE_PATTERN        0x0000
 #define CSMAXLT_CIPHER_OFF          21
@@ -79,7 +79,7 @@ void SPIM_Hyper_DefaultConfig(SPIM_T *spim, uint32_t u32CSM, uint32_t u32AcctRD,
                                      (((!u32CipherEn) == SPIM_HYPER_OP_ENABLE) ? CSMAXLT_CIPHER_ON : CSMAXLT_CIPHER_OFF));
 
     /* Chip Select Setup Time 3.5 HCLK */
-    SPIM_HYPER_SET_CSST(spim, SPIM_HYPER_CSST_3_5_HCLK);
+    SPIM_HYPER_SET_CSST(spim, SPIM_HYPER_CSST_4_5_HCLK);
 
     /* Chip Select Hold Time 3.5 HCLK */
     SPIM_HYPER_SET_CSH(spim, SPIM_HYPER_CSH_3_5_HCLK);
@@ -368,44 +368,55 @@ void HyperRAM_DumpConfig(SPIM_T *spim)
     S_W956D8NBRA_REG sHRAMReg;
 
     sHRAMReg.ID0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_ID_REG0);
+
     if (sHRAMReg.ID0.u4Manufacturer == 0x6) //Winbond, W956D8NBRA
     {
-        TC_PRINTF("[%s] ID0.u4Manufacturer: %08X\n", __func__,          sHRAMReg.ID0.u4Manufacturer);
-        TC_PRINTF("[%s] ID0.u4ColumnAddressBitCount: %08X\n", __func__, sHRAMReg.ID0.u4ColumnAddressBitCount);
-        TC_PRINTF("[%s] ID0.u4RowAddressBitCount: %08X\n", __func__,    sHRAMReg.ID0.u4RowAddressBitCount);
-        TC_PRINTF("[%s] ID0.u3Reserved: %08X\n", __func__,              sHRAMReg.ID0.u3Reserved);
+        TC_PRINTF("[%s] ID0.u4Manufacturer: %08X\n", __func__,                      sHRAMReg.ID0.u4Manufacturer);
+        TC_PRINTF("[%s] ID0.u4ColumnAddressBitCount: %08X\n", __func__,             sHRAMReg.ID0.u4ColumnAddressBitCount);
+        TC_PRINTF("[%s] ID0.u4RowAddressBitCount: %08X\n", __func__,                sHRAMReg.ID0.u4RowAddressBitCount);
+        TC_PRINTF("[%s] ID0.u3Reserved: %08X\n", __func__,                          sHRAMReg.ID0.u3Reserved);
 
         sHRAMReg.ID1.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_ID_REG1);
-        TC_PRINTF("[%s] ID1.u4DeviceType: %08X\n", __func__,            sHRAMReg.ID1.u4DeviceType);
-        TC_PRINTF("[%s] ID1.u3Reserved0: %08X\n", __func__,                       sHRAMReg.ID1.u3Reserved0);
-        TC_PRINTF("[%s] ID1.u4DieStatus: %08X\n", __func__,                   sHRAMReg.ID1.u4DieStatus);
-        TC_PRINTF("[%s] ID1.u3Reserved1: %08X\n", __func__,             sHRAMReg.ID1.u8Reserved1);
+        TC_PRINTF("[%s] ID1.u4DeviceType: %08X\n", __func__,                        sHRAMReg.ID1.u4DeviceType);
+        TC_PRINTF("[%s] ID1.u3Reserved0: %08X\n", __func__,                         sHRAMReg.ID1.u3Reserved0);
+        TC_PRINTF("[%s] ID1.u4DieStatus: %08X\n", __func__,                         sHRAMReg.ID1.u4DieStatus);
+        TC_PRINTF("[%s] ID1.u3Reserved1: %08X\n", __func__,                         sHRAMReg.ID1.u8Reserved1);
 
         sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
         TC_PRINTF("[%s] CONFIG0.u2BurstLength: %08X\n", __func__,                   sHRAMReg.CONFIG0.u2BurstLength);
-        TC_PRINTF("[%s] CONFIG0.u1WrappedBrust: %08X\n", __func__,                            sHRAMReg.CONFIG0.u1WrappedBrust);
-        TC_PRINTF("[%s] CONFIG0.u1FixedLatencyEanble: %08X\n", __func__,              sHRAMReg.CONFIG0.u1FixedLatencyEanble);
+        TC_PRINTF("[%s] CONFIG0.u1WrappedBrust: %08X\n", __func__,                  sHRAMReg.CONFIG0.u1WrappedBrust);
+        TC_PRINTF("[%s] CONFIG0.u1FixedLatencyEanble: %08X\n", __func__,            sHRAMReg.CONFIG0.u1FixedLatencyEanble);
         TC_PRINTF("[%s] CONFIG0.u4InitialLatency: %08X\n", __func__,                sHRAMReg.CONFIG0.u4InitialLatency);
-        TC_PRINTF("[%s] CONFIG0.u1BrustLength: %08X\n", __func__,                         sHRAMReg.CONFIG0.u1BrustLength);
-        TC_PRINTF("[%s] CONFIG0.u3Reserved: %08X\n", __func__,                        sHRAMReg.CONFIG0.u3Reserved);
+        TC_PRINTF("[%s] CONFIG0.u1BrustLength: %08X\n", __func__,                   sHRAMReg.CONFIG0.u1BrustLength);
+        TC_PRINTF("[%s] CONFIG0.u3Reserved: %08X\n", __func__,                      sHRAMReg.CONFIG0.u3Reserved);
         TC_PRINTF("[%s] CONFIG0.u3DriveStrength: %08X\n", __func__,                 sHRAMReg.CONFIG0.u3DriveStrength);
         TC_PRINTF("[%s] CONFIG0.u1DeepPowerDownEnable: %08X\n", __func__,           sHRAMReg.CONFIG0.u1DeepPowerDownEnable);
+        //sHRAMReg.CONFIG0.u3DriveStrength = 0; // 25ohm (default)
+        sHRAMReg.CONFIG0.u3DriveStrength = 1; // 50ohm
+        //sHRAMReg.CONFIG0.u3DriveStrength = 2; //100ohm
+        //sHRAMReg.CONFIG0.u3DriveStrength = 3; //200ohm
+        //sHRAMReg.CONFIG0.u2BurstLength   = 4; //300ohm
+
+        TC_PRINTF("[%s] sHRAMReg.CONFIG0.u32REG: %08X\n", __func__,                 sHRAMReg.CONFIG0.u32REG);
+        SPIM_HYPER_WriteHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0, sHRAMReg.CONFIG0.u32REG);
+        sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
+        TC_PRINTF("[%s] sHRAMReg.CONFIG0.u32REG: %08X\n", __func__,                 sHRAMReg.CONFIG0.u32REG);
 
         sHRAMReg.CONFIG1.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG1);
         TC_PRINTF("[%s] CONFIG1.u2DistributedRefreshInerval: %08X\n", __func__,     sHRAMReg.CONFIG1.u2DistributedRefreshInerval);
-        TC_PRINTF("[%s] CONFIG1.u3PartialArrayRefresh: %08X\n", __func__,                     sHRAMReg.CONFIG1.u3PartialArrayRefresh);
-        TC_PRINTF("[%s] CONFIG1.u1HybirdSleep: %08X\n", __func__,                     sHRAMReg.CONFIG1.u1HybirdSleep);
+        TC_PRINTF("[%s] CONFIG1.u3PartialArrayRefresh: %08X\n", __func__,           sHRAMReg.CONFIG1.u3PartialArrayRefresh);
+        TC_PRINTF("[%s] CONFIG1.u1HybirdSleep: %08X\n", __func__,                   sHRAMReg.CONFIG1.u1HybirdSleep);
         TC_PRINTF("[%s] CONFIG1.u1SetRefreshRate: %08X\n", __func__,                sHRAMReg.CONFIG1.u1SetRefreshRate);
-        TC_PRINTF("[%s] CONFIG1.u4Reserved: %08X\n", __func__,                                sHRAMReg.CONFIG1.u4Reserved);
-        TC_PRINTF("[%s] CONFIG1.u4SoftwareReset: %08X\n", __func__,                   sHRAMReg.CONFIG1.u4SoftwareReset);
+        TC_PRINTF("[%s] CONFIG1.u4Reserved: %08X\n", __func__,                      sHRAMReg.CONFIG1.u4Reserved);
+        TC_PRINTF("[%s] CONFIG1.u4SoftwareReset: %08X\n", __func__,                 sHRAMReg.CONFIG1.u4SoftwareReset);
     }
 }
-
 
 void HyperRAM_Init(SPIM_T *spim)
 {
     /* Enable SPIM Hyper Bus Mode */
-    SPIM_HYPER_Init(spim, SPIM_HYPERRAM_MODE, SPIM_HYPER_DIV);
+    //SPIM_HYPER_Init(spim, SPIM_HYPERRAM_MODE, SPIM_HYPER_DIV);
+    SPIM_HYPER_Init(spim, SPIM_HYPERFLASH_MODE, SPIM_HYPER_DIV);
 
     /* SPIM Def. Enable Cipher, First Disable the test. */
     SPIM_HYPER_DISABLE_CIPHER(spim);
