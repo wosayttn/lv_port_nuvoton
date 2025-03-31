@@ -11,7 +11,7 @@
     #define CONFIG_SRC_BUFFER_ADDRESS     CONFIG_SRAM_ADDRESS
     #define CONFIG_DST_BUFFER_ADDRESS     CONFIG_HYPERRAM_ADDRESS
 #else
-    #define CONFIG_SRC_BUFFER_ADDRESS     (CONFIG_HYPERRAM_ADDRESS+0x200)
+    #define CONFIG_SRC_BUFFER_ADDRESS     (CONFIG_HYPERRAM_ADDRESS+0x400)
     #define CONFIG_DST_BUFFER_ADDRESS     CONFIG_SRAM_ADDRESS
 #endif
 
@@ -83,64 +83,6 @@ static void tc007d_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_
 
 }
 
-
-static void tc007d_prepare(uint8_t *pu8DstBufAddr, uint8_t *pu8SrcBufAddr, int i32XferCount)
-{
-    int i = 0;
-
-    for (i = 0; i < i32XferCount; i++)
-    {
-        *pu8SrcBufAddr = i % 256;
-        pu8SrcBufAddr++;
-    }
-
-    memset((void *)(pu8DstBufAddr), 0xA5,    i32XferCount);
-
-    __ISB();
-    __DSB();
-}
-
-static int tc007d_compare(uint8_t *pu8DstBufAddr, uint8_t *pu8SrcBufAddr, int i32XferCount)
-{
-    int i;
-    int bFail = 0;
-
-    /* Start comparison. */
-    PD6 = 0;
-
-    for (i = 0; i < i32XferCount; i++)
-    {
-        if (pu8SrcBufAddr[i] != pu8DstBufAddr[i])
-        {
-            bFail = 1;
-            PH4 = 0;
-            goto exit_tc007_compare;
-        }
-    }
-
-    /* Stop comparison. */
-    PD6 = 1;
-
-    return 0;
-
-exit_tc007_compare:
-
-    if (1 & bFail)
-    {
-        TC_PRINTF("[BS=%04dB] Compare [0x%08X ~ 0x%08X] and [0x%08X ~ 0x%08X] -> %s\n",
-                  i32XferCount,
-                  (uint32_t)pu8SrcBufAddr,
-                  (uint32_t)pu8SrcBufAddr + (i32XferCount - 1),
-                  (uint32_t)pu8DstBufAddr,
-                  (uint32_t)pu8DstBufAddr + (i32XferCount - 1),
-                  bFail ? "Fail" : "Okay");
-
-        TC_PRINTF("\tFirst: XferCount=%d, 0x%02X@0x%08X != 0x%02X@0x%08X\n", i32XferCount, pu8SrcBufAddr[i], (uint32_t)&pu8SrcBufAddr[i], pu8DstBufAddr[i], (uint32_t)&pu8DstBufAddr[i]);
-    }
-
-    return -1;
-}
-
 static int s_i32CSMMaxLt = 0;
 
 static int tc007d_exec(void)
@@ -150,19 +92,19 @@ static int tc007d_exec(void)
     int i32ReportErrCount = 0;
     int i32ErrCount = 0;
 
-    int i32CSMMaxLt = s_i32CSMMaxLt;
+    //int i32CSMMaxLt = s_i32CSMMaxLt;
     int i32CSM;
 
     S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER];
 
     const static uint32_t au32XferSize[] = {1, 2, 4, 8};
+    PD5 = 1;
 
-    for (i32CSM = i32CSMMaxLt; i32CSM >= 1; i32CSM--)
+    //for (i32CSM = i32CSMMaxLt; i32CSM >= 1; i32CSM--)
     {
-
-        SPIM_HYPER_SET_CSMAXLT(SPIM0, i32CSM);
-        TC_PRINTF("@@@ set i32CSM=%d\n", i32CSM);
-        TC_PRINTF("@@@ get i32CSM=%lu\n", SPIM_HYPER_GET_CSMAXLT(SPIM0));
+        //SPIM_HYPER_SET_CSMAXLT(SPIM0, i32CSM);
+        //TC_PRINTF("@@@ set i32CSM=%d\n", i32CSM);
+        //TC_PRINTF("@@@ get i32CSM=%lu\n", SPIM_HYPER_GET_CSMAXLT(SPIM0));
 
         for (i32TS = 0; i32TS < sizeof(au32XferSize) / sizeof(uint32_t); i32TS++)
         {
@@ -176,7 +118,7 @@ static int tc007d_exec(void)
                 /* Initial all Lines descriptor-link. */
                 tc007d_gdma_dsc_init(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER, CONFIG_DST_BUFFER_ADDRESS, CONFIG_SRC_BUFFER_ADDRESS - au32XferSize[i32TS], au32XferSize[i32TS] * 2, au32XferSize[i32TS]);
 
-                tc007d_prepare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS - au32XferSize[i32TS]), au32XferSize[i32TS] * 2);
+                tc_prepare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS - au32XferSize[i32TS]), au32XferSize[i32TS] * 2);
 
                 /* Link to external command */
                 dma350_ch_enable_linkaddr(GDMA_CH_DEV_S[1]);
@@ -207,14 +149,11 @@ static int tc007d_exec(void)
                     }
                 } while (!g_bDone); // Wait
 
-                if (tc007d_compare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS - au32XferSize[i32TS]), au32XferSize[i32TS] * 2) < 0)
+                if (tc_compare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS - au32XferSize[i32TS]), au32XferSize[i32TS] * 2) < 0)
                 {
                     i32ErrCount++;
-
 #if (_DEBUG==0)
-
                     while (1);
-
 #endif
                 }
 
@@ -226,6 +165,7 @@ static int tc007d_exec(void)
             TC_PRINTF("Finish XferSize: %dB!! (%04d/%04d, Error percentage: %f%%)\n", au32XferSize[i32TS], i32ErrCount, i32RunCount, (float)i32ErrCount * 100 / i32RunCount);
         }
     }
+    PD5 = 0;
 
     return (i32ReportErrCount > 0) ? -1 : 0;
 }
@@ -263,5 +203,5 @@ static int tc007d_cleanup(void)
     return 0;
 }
 
-TC_EXPORT(tc007d_exec, "SPIM_HYPER_GDMA_COPY_HRAM_TO_SRAM_INC_CSM", tc007d_init, tc007d_cleanup);
+TC_EXPORT(tc007d_exec, "GDMA_COPY_HRAM_TO_SRAM_CSM", tc007d_init, tc007d_cleanup);
 

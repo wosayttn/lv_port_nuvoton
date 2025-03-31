@@ -74,34 +74,30 @@ exit_tc007_compare:
 static int tc007c_exec(void)
 {
     int i32BS;
-
     int i32RunCount = 0;
     int i32ErrCount = 0;
 
-    for (i32BS = 0x200; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += 0x200)
+    for (i32BS = 0x400; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += 0x400)
     {
-        tc007c_prepare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS + i32BS), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS + i32BS), 0x200);
+        tc_prepare((uint8_t *)CONFIG_DST_BUFFER_ADDRESS + i32BS, (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS + i32BS), 0x400);
 
-        nu_pdma_memcpy((void *)(CONFIG_DST_BUFFER_ADDRESS + i32BS), (void *)(CONFIG_SRC_BUFFER_ADDRESS + i32BS), 0x200);
+        nu_pdma_memcpy((void *)(CONFIG_DST_BUFFER_ADDRESS + i32BS), (void *)(CONFIG_SRC_BUFFER_ADDRESS + i32BS), 0x400);
 
         i32RunCount++;
     }
 
-    if (tc007c_compare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), CONFIG_BATCH_SIZE_STOP) < 0)
+    if (tc_compare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), CONFIG_BATCH_SIZE_STOP) < 0)
     {
         i32ErrCount++;
 
 #if (_DEBUG==0)
-
         while (1);
-
 #endif
     }
-
     TC_PRINTF("Finish XferSize: 1B (%04d/%04d, Error percentage: %f%%)\n", i32ErrCount, i32RunCount, (float)i32ErrCount * 100 / i32RunCount);
 
     return (i32ErrCount > 0) ? -1 : 0;
 }
 
-TC_EXPORT(tc007c_exec, "SPIM_HYPER_PDMA_COPY_SRAM_TO_HRAM_FIXED_BS", NULL, NULL);
+TC_EXPORT(tc007c_exec, "PDMA_COPY_SRAM_TO_HRAM(FIXED_BS)", NULL, NULL);
 

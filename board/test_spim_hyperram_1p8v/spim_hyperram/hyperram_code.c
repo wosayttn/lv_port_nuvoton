@@ -28,8 +28,6 @@
 #define CSMAXLT_CIPHER_ON           54
 
 #define CONFIG_SPIM_OPTIM           1
-#define HYPERRAM_RD_LTCY_OPTIM      5
-#define HYPERRAM_WR_LTCY_OPTIM      5
 
 //------------------------------------------------------------------------------
 #define SPIM_HYPER_GET_CSST(spim)                                                \
@@ -40,6 +38,73 @@
 
 #define SPIM_HYPER_GET_CSHI(spim)                                                 \
     ((spim->HYPER_CONFIG1 & SPIM_HYPER_CONFIG1_CSHI_Msk) >> SPIM_HYPER_CONFIG1_CSHI_Pos)
+
+
+
+typedef struct
+{
+    union
+    {
+        uint32_t u32REG;
+        struct
+        {
+            uint32_t u4Manufacturer         : 4;
+            uint32_t u4ColumnAddressBitCount: 4;
+            uint32_t u4RowAddressBitCount   : 4;
+            uint32_t u3Reserved             : 3;
+            uint32_t : 17;
+        };
+    } ID0;
+
+    union
+    {
+        uint32_t u32REG;
+        struct
+        {
+            uint32_t u4DeviceType           : 4;
+            uint32_t u3Reserved0            : 3;
+            uint32_t u4DieStatus            : 1;
+            uint32_t u8Reserved1            : 8;
+            uint32_t : 16;
+        };
+    } ID1;
+
+    union
+    {
+        uint32_t u32REG;
+        struct
+        {
+            uint32_t u2BurstLength          : 2;
+            uint32_t u1WrappedBrust         : 1;
+            uint32_t u1FixedLatencyEanble   : 1;
+            uint32_t u4InitialLatency       : 4;
+            uint32_t u1BrustLength          : 1;
+            uint32_t u3Reserved             : 3;
+            uint32_t u3DriveStrength        : 3;
+            uint32_t u1DeepPowerDownEnable  : 1;
+            uint32_t : 16;
+        };
+    } CONFIG0;
+
+    union
+    {
+        uint32_t u32REG;
+        struct
+        {
+            uint32_t u2DistributedRefreshInerval     : 2;
+            uint32_t u3PartialArrayRefresh           : 3;
+            uint32_t u1HybirdSleep                   : 1;
+            uint32_t u1MasterClockType               : 1;
+            uint32_t u1SetRefreshRate                : 1;
+            uint32_t u4Reserved                      : 4;
+            uint32_t u4SoftwareReset                 : 4;
+            uint32_t : 16;
+        };
+    } CONFIG1;
+
+} S_W956D8NBRA_REG;
+
+#define W956D8NBRA_REG_DEFAULT    {0x0C86, 0x0002, 0x8F2F, 0xFF41}
 
 static void SPIM_Hyper_DumpConfig(SPIM_T *spim)
 {
@@ -79,7 +144,7 @@ void SPIM_Hyper_DefaultConfig(SPIM_T *spim, uint32_t u32CSM, uint32_t u32AcctRD,
                                      (((!u32CipherEn) == SPIM_HYPER_OP_ENABLE) ? CSMAXLT_CIPHER_ON : CSMAXLT_CIPHER_OFF));
 
     /* Chip Select Setup Time 3.5 HCLK */
-    SPIM_HYPER_SET_CSST(spim, SPIM_HYPER_CSST_4_5_HCLK);
+    SPIM_HYPER_SET_CSST(spim, SPIM_HYPER_CSST_3_5_HCLK);
 
     /* Chip Select Hold Time 3.5 HCLK */
     SPIM_HYPER_SET_CSH(spim, SPIM_HYPER_CSH_3_5_HCLK);
@@ -293,75 +358,13 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
 
     u8RdDelay = (u32j < 2) ? u8RdDelayRes[0] : isConsecutive(u8RdDelayRes, u32j);
 
+    while(u8RdDelay==0);
+
     TC_PRINTF("[%s]\n", __func__);
     TC_PRINTF("\tSet DLL Delay Num : %d\r\n", u8RdDelay);
     /* Set the number of intermediate delay steps */
     SPIM_HYPER_SetDLLDelayNum(spim, u8RdDelay);
 }
-
-typedef struct
-{
-    union
-    {
-        uint32_t u32REG;
-        struct
-        {
-            uint32_t u4Manufacturer         : 4;
-            uint32_t u4ColumnAddressBitCount: 4;
-            uint32_t u4RowAddressBitCount   : 4;
-            uint32_t u3Reserved             : 3;
-            uint32_t : 17;
-        };
-    } ID0;
-
-    union
-    {
-        uint32_t u32REG;
-        struct
-        {
-            uint32_t u4DeviceType           : 4;
-            uint32_t u3Reserved0            : 3;
-            uint32_t u4DieStatus            : 1;
-            uint32_t u8Reserved1            : 8;
-            uint32_t : 16;
-        };
-    } ID1;
-
-    union
-    {
-        uint32_t u32REG;
-        struct
-        {
-            uint32_t u2BurstLength          : 2;
-            uint32_t u1WrappedBrust         : 1;
-            uint32_t u1FixedLatencyEanble   : 1;
-            uint32_t u4InitialLatency       : 4;
-            uint32_t u1BrustLength          : 1;
-            uint32_t u3Reserved             : 3;
-            uint32_t u3DriveStrength        : 3;
-            uint32_t u1DeepPowerDownEnable  : 1;
-            uint32_t : 16;
-        };
-    } CONFIG0;
-
-    union
-    {
-        uint32_t u32REG;
-        struct
-        {
-            uint32_t u2DistributedRefreshInerval     : 2;
-            uint32_t u3PartialArrayRefresh           : 3;
-            uint32_t u1HybirdSleep                   : 1;
-            uint32_t u1MasterClockType               : 1;
-            uint32_t u1SetRefreshRate                : 1;
-            uint32_t u4Reserved                      : 4;
-            uint32_t u4SoftwareReset                 : 4;
-            uint32_t : 16;
-        };
-    } CONFIG1;
-
-} S_W956D8NBRA_REG;
-
 
 void HyperRAM_DumpConfig(SPIM_T *spim)
 {
@@ -369,20 +372,27 @@ void HyperRAM_DumpConfig(SPIM_T *spim)
 
     sHRAMReg.ID0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_ID_REG0);
 
-    if (sHRAMReg.ID0.u4Manufacturer == 0x6) //Winbond, W956D8NBRA
+    if ((sHRAMReg.ID0.u4Manufacturer == 0x6)) //Winbond, W956D8NBRA
     {
+        TC_PRINTF("[%s] ID0.u32REG: %08X\n", __func__,                              sHRAMReg.ID0.u32REG);
         TC_PRINTF("[%s] ID0.u4Manufacturer: %08X\n", __func__,                      sHRAMReg.ID0.u4Manufacturer);
         TC_PRINTF("[%s] ID0.u4ColumnAddressBitCount: %08X\n", __func__,             sHRAMReg.ID0.u4ColumnAddressBitCount);
         TC_PRINTF("[%s] ID0.u4RowAddressBitCount: %08X\n", __func__,                sHRAMReg.ID0.u4RowAddressBitCount);
         TC_PRINTF("[%s] ID0.u3Reserved: %08X\n", __func__,                          sHRAMReg.ID0.u3Reserved);
 
         sHRAMReg.ID1.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_ID_REG1);
+        TC_PRINTF("[%s] ID1.u32REG: %08X\n", __func__,                              sHRAMReg.ID1.u32REG);
         TC_PRINTF("[%s] ID1.u4DeviceType: %08X\n", __func__,                        sHRAMReg.ID1.u4DeviceType);
         TC_PRINTF("[%s] ID1.u3Reserved0: %08X\n", __func__,                         sHRAMReg.ID1.u3Reserved0);
         TC_PRINTF("[%s] ID1.u4DieStatus: %08X\n", __func__,                         sHRAMReg.ID1.u4DieStatus);
+        while(sHRAMReg.ID1.u4DieStatus)
+				{
+             TC_PRINTF("[%s] It is bed die.\n", __func__);
+				}
         TC_PRINTF("[%s] ID1.u3Reserved1: %08X\n", __func__,                         sHRAMReg.ID1.u8Reserved1);
 
         sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
+        TC_PRINTF("[%s] CONFIG0.u32REG: %08X\n", __func__,                          sHRAMReg.CONFIG0.u32REG);
         TC_PRINTF("[%s] CONFIG0.u2BurstLength: %08X\n", __func__,                   sHRAMReg.CONFIG0.u2BurstLength);
         TC_PRINTF("[%s] CONFIG0.u1WrappedBrust: %08X\n", __func__,                  sHRAMReg.CONFIG0.u1WrappedBrust);
         TC_PRINTF("[%s] CONFIG0.u1FixedLatencyEanble: %08X\n", __func__,            sHRAMReg.CONFIG0.u1FixedLatencyEanble);
@@ -391,18 +401,10 @@ void HyperRAM_DumpConfig(SPIM_T *spim)
         TC_PRINTF("[%s] CONFIG0.u3Reserved: %08X\n", __func__,                      sHRAMReg.CONFIG0.u3Reserved);
         TC_PRINTF("[%s] CONFIG0.u3DriveStrength: %08X\n", __func__,                 sHRAMReg.CONFIG0.u3DriveStrength);
         TC_PRINTF("[%s] CONFIG0.u1DeepPowerDownEnable: %08X\n", __func__,           sHRAMReg.CONFIG0.u1DeepPowerDownEnable);
-        //sHRAMReg.CONFIG0.u3DriveStrength = 0; // 25ohm (default)
-        sHRAMReg.CONFIG0.u3DriveStrength = 1; // 50ohm
-        //sHRAMReg.CONFIG0.u3DriveStrength = 2; //100ohm
-        //sHRAMReg.CONFIG0.u3DriveStrength = 3; //200ohm
-        //sHRAMReg.CONFIG0.u2BurstLength   = 4; //300ohm
-
-        TC_PRINTF("[%s] sHRAMReg.CONFIG0.u32REG: %08X\n", __func__,                 sHRAMReg.CONFIG0.u32REG);
-        SPIM_HYPER_WriteHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0, sHRAMReg.CONFIG0.u32REG);
-        sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
         TC_PRINTF("[%s] sHRAMReg.CONFIG0.u32REG: %08X\n", __func__,                 sHRAMReg.CONFIG0.u32REG);
 
         sHRAMReg.CONFIG1.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG1);
+        TC_PRINTF("[%s] CONFIG1.u32REG: %08X\n", __func__,                          sHRAMReg.CONFIG1.u32REG);
         TC_PRINTF("[%s] CONFIG1.u2DistributedRefreshInerval: %08X\n", __func__,     sHRAMReg.CONFIG1.u2DistributedRefreshInerval);
         TC_PRINTF("[%s] CONFIG1.u3PartialArrayRefresh: %08X\n", __func__,           sHRAMReg.CONFIG1.u3PartialArrayRefresh);
         TC_PRINTF("[%s] CONFIG1.u1HybirdSleep: %08X\n", __func__,                   sHRAMReg.CONFIG1.u1HybirdSleep);
@@ -414,7 +416,9 @@ void HyperRAM_DumpConfig(SPIM_T *spim)
 
 void HyperRAM_Init(SPIM_T *spim)
 {
-    /* Enable SPIM Hyper Bus Mode */
+    S_W956D8NBRA_REG sHRAMReg;
+
+   	/* Enable SPIM Hyper Bus Mode */
     //SPIM_HYPER_Init(spim, SPIM_HYPERRAM_MODE, SPIM_HYPER_DIV);
     SPIM_HYPER_Init(spim, SPIM_HYPERFLASH_MODE, SPIM_HYPER_DIV);
 
@@ -430,29 +434,44 @@ void HyperRAM_Init(SPIM_T *spim)
     /* Trim DLL component delay stop number */
     HyperRAM_TrimDLLDelayNumber(spim);
 
-    HyperRAM_DumpConfig(spim);
+	  {
+        HyperRAM_DumpConfig(spim);
 
-    if (0)
-    {
-        uint32_t u32HRAMReg0 = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
+        sHRAMReg.CONFIG0.u32REG	= SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
 
-        TC_PRINTF("Before u32HRAMReg0:%08x\n", u32HRAMReg0);
+				//sHRAMReg.CONFIG0.u3DriveStrength = 0; // 25ohm (default)
+				sHRAMReg.CONFIG0.u3DriveStrength = 1; // 50ohm
+				//sHRAMReg.CONFIG0.u3DriveStrength = 2; //100ohm
+				//sHRAMReg.CONFIG0.u3DriveStrength = 3; //200ohm
+				//sHRAMReg.CONFIG0.u2BurstLength   = 4; //300ohm
+				SPIM_HYPER_WriteHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0, sHRAMReg.CONFIG0.u32REG);
+				sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
+				TC_PRINTF("[%s] sHRAMReg.CONFIG0.u32REG: %08X\n", __func__, sHRAMReg.CONFIG0.u32REG);
 
-        u32HRAMReg0 &= ~0x00F0;     // 5 Clock Latency @ 133MHz Max Freq.
-        //u32HRAMReg0 |= 0xF0;     // 4 Clock Latency @ 104MHz Max Freq.
+			  if (CONFIG_SPIM_OPTIM)
+				{
+						//sHRAMReg.CONFIG0.u4InitialLatency = 0x0;  //  5 Clock Latency for clock rate <= 133MHz
+						//sHRAMReg.CONFIG0.u4InitialLatency = 0x1;  //  6 Clock Latency for clock rate <= 166MHz
+						//sHRAMReg.CONFIG0.u4InitialLatency = 0x2;  //  7 Clock Latency for clock rate <= 200MHz (default)
+						//sHRAMReg.CONFIG0.u4InitialLatency = 0x5;  // 10 Clock Latency for clock rate <= 250MHz
+						//sHRAMReg.CONFIG0.u4InitialLatency = 0xe;  // 3 Clock Latency for clock rate <= 85MHz
+						sHRAMReg.CONFIG0.u4InitialLatency = 0xf;  // 4 Clock Latency for clock rate <= 104MHz
 
-        TC_PRINTF("Updated u32HRAMReg0:%08x\n", u32HRAMReg0);
+					  sHRAMReg.CONFIG0.u1FixedLatencyEanble = 0x0;    // 0: Variable Latency. 1 or 2 times Initial Latency depending on RWDS during CA cycles.
+					  //sHRAMReg.CONFIG0.u1FixedLatencyEanble = 0x1;  // 1: Fixed Latency. Fixed 2 times Initial Latency
 
-        SPIM_HYPER_WriteHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0, u32HRAMReg0);
+						SPIM_HYPER_WriteHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0, sHRAMReg.CONFIG0.u32REG);
+						sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
+						TC_PRINTF("[%s] sHRAMReg.CONFIG0.u32REG: %08X\n", __func__, sHRAMReg.CONFIG0.u32REG);
+			
+						#define HYPERRAM_RD_LTCY_OPTIM      4
+						#define HYPERRAM_WR_LTCY_OPTIM      4
+						TC_PRINTF("Applied CSM_Time:%d  RdLatency:%d, WrLatency:%d\n", HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY_OPTIM, HYPERRAM_WR_LTCY_OPTIM);
+						SPIM_Hyper_DefaultConfig(spim, HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY_OPTIM, HYPERRAM_WR_LTCY_OPTIM);
 
-        TC_PRINTF("After u32HRAMReg0:%08x\n", SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0));
-
-        SPIM_Hyper_DefaultConfig(spim, HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY_OPTIM, HYPERRAM_WR_LTCY_OPTIM);
-        TC_PRINTF("Applied CSM_Time:%d  RdLatency:%d, WrLatency:%d\n", HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY_OPTIM, HYPERRAM_WR_LTCY_OPTIM);
-
-        /* Trim DLL component delay stop number */
-        HyperRAM_TrimDLLDelayNumber(spim);
-
+						/* Trim DLL component delay stop number */
+						HyperRAM_TrimDLLDelayNumber(spim);
+				}
     }
 }
 

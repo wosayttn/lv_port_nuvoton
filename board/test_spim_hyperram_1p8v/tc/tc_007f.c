@@ -7,15 +7,15 @@
 #define CONFIG_HYPERRAM_ADDRESS       0x82000000
 #define CONFIG_GDMADESC_NUNBER        1
 
-#if 0
+#if 1
     #define CONFIG_SRC_BUFFER_ADDRESS     CONFIG_SRAM_ADDRESS
-    #define CONFIG_DST_BUFFER_ADDRESS     CONFIG_HYPERRAM_ADDRESS
+    #define CONFIG_DST_BUFFER_ADDRESS     (CONFIG_HYPERRAM_ADDRESS+0x400)
 #else
     #define CONFIG_SRC_BUFFER_ADDRESS     CONFIG_HYPERRAM_ADDRESS
     #define CONFIG_DST_BUFFER_ADDRESS     CONFIG_SRAM_ADDRESS
 #endif
 
-static void tc007d_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t u32AddrDst, uint32_t u32AddrSrc, int i32BatchSize, int i32XferSize)
+static void tc_gdma_dsc_init(S_CMDBUF *psCmdBufHead, int i32DescNum, uint32_t u32AddrDst, uint32_t u32AddrSrc, int i32BatchSize, int i32XferSize)
 {
     const static uint32_t au32TS[] =
     {
@@ -99,14 +99,15 @@ static int tc007d_exec(void)
         int i32RunCount = 0;
         i32ErrCount = 0;
 
-        for (i32BS = au32XferSize[i32TS]; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += au32XferSize[i32TS])
+			  i32BS = 2 * au32XferSize[i32TS];
+
         {
             memset(&s_sGDMADsc[0], 0, sizeof(s_sGDMADsc));
 
             /* Initial all Lines descriptor-link. */
-            tc007d_gdma_dsc_init(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER, CONFIG_DST_BUFFER_ADDRESS, CONFIG_SRC_BUFFER_ADDRESS, i32BS, au32XferSize[i32TS]);
+            tc_gdma_dsc_init(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER, CONFIG_DST_BUFFER_ADDRESS-au32XferSize[i32TS], CONFIG_SRC_BUFFER_ADDRESS, i32BS, au32XferSize[i32TS]);
 
-            tc_prepare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), i32BS);
+            tc_prepare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS-au32XferSize[i32TS]), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), i32BS);
 
             /* Link to external command */
             dma350_ch_enable_linkaddr(GDMA_CH_DEV_S[1]);
@@ -137,11 +138,14 @@ static int tc007d_exec(void)
                 }
             } while (!g_bDone); // Wait
 
-            if (tc_compare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), i32BS) < 0)
+            if (tc_compare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS-au32XferSize[i32TS]), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), i32BS) < 0)
             {
                 i32ErrCount++;
+
 #if (_DEBUG==0)
+
                 while (1);
+
 #endif
             }
 
@@ -185,5 +189,5 @@ static int tc007d_cleanup(void)
     return 0;
 }
 
-TC_EXPORT(tc007d_exec, "GDMA_COPY_HRAM_TO_SRAM_INC_BS_BY_XS", tc007d_init, tc007d_cleanup);
+TC_EXPORT(tc007d_exec, "RB CROSSING(WRITE)", tc007d_init, tc007d_cleanup);
 

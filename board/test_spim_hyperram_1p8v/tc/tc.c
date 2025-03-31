@@ -67,18 +67,18 @@ int tc_run(void)
 
             if (tc_table[i].tc_init)
             {
-                TC_PRINTF("initial %s\n", tc_table[i].name);
+                //TC_PRINTF("initial %s\n", tc_table[i].name);
                 tc_table[i].tc_init();
             }
 
-            TC_PRINTF("execute %s\n", tc_table[i].name);
+            //TC_PRINTF("execute %s\n", tc_table[i].name);
 
             if (tc_table[i].tc_exec() < 0)
                 ai32tc_result[i]++;
 
             if (tc_table[i].tc_cleanup)
             {
-                TC_PRINTF("cleanup %s\n", tc_table[i].name);
+                //TC_PRINTF("cleanup %s\n", tc_table[i].name);
                 tc_table[i].tc_cleanup();
             }
 
@@ -91,57 +91,35 @@ int tc_run(void)
     return 0;
 }
 
-void tc_prepare(uint32_t u32BaseAddr, int i32BatchSize)
+void tc_prepare(uint8_t *pu8DstBuf, uint8_t *pu8SrcBuf, int i32BatchSize)
 {
     int i = 0;
-    volatile uint8_t *ptr = (volatile uint8_t *)u32BaseAddr;
-    volatile uint8_t *pu8SrcBuf = &ptr[0];
-    volatile uint8_t *pu8DstBuf = &ptr[i32BatchSize];
-
-    memset((void *)pu8DstBuf, 0xa5, i32BatchSize);
-    //memset((void *)pu8SrcBuf, 0xa5, 2*i32BatchSize);
 
     for (i = 0; i < i32BatchSize; i++)
     {
+        pu8DstBuf[i] = 0xA5;
+		    __DSB();
         pu8SrcBuf[i] = i % 256;
+		    __DSB();
     }
-
-    __ISB();
-    __DSB();
 }
 
-int tc_compare(uint32_t u32BaseAddr, int i32BatchSize)
+int tc_compare(uint8_t *pu8DstBuf, uint8_t *pu8SrcBuf, int i32BatchSize)
 {
-    uint8_t *ptr = (uint8_t *)u32BaseAddr;
-    uint8_t *pu8V0 = &ptr[0];
-    uint8_t *pu8V1 = &ptr[i32BatchSize];
-
     int j;
     int bFail = 0;
 
     /* Start comparison. */
     PD6 = 0;
+    __DSB();
 
     for (j = 0; j < i32BatchSize; j++)
     {
-        if (pu8V0[j] != pu8V1[j])
+        if (pu8SrcBuf[j] != pu8DstBuf[j])
         {
             PD5 = 1;
-            __NOP();
-            __NOP();
-            __NOP();
-            __NOP();
-            __NOP();
-            __ISB();
             __DSB();
-
-            PD5 = 0;
-            __ISB();
-            __DSB();
-
             bFail = 1;
-            __ISB();
-            __DSB();
             goto exit_tc_compare;
         }
     }
@@ -150,29 +128,27 @@ exit_tc_compare:
 
     if (1 & bFail)
     {
-        TC_PRINTF("[BaseAddr=0x%08x, BS=%04dB] Compare [0x%08X ~ 0x%08X] and [0x%08X ~ 0x%08X] -> %s\n",
-                  u32BaseAddr,
+        TC_PRINTF("[BS=%04dB] Compare [0x%08X ~ 0x%08X] and [0x%08X ~ 0x%08X] -> %s\n",
                   i32BatchSize,
-                  (uint32_t)pu8V0,
-                  (uint32_t)pu8V0 + (i32BatchSize - 1),
-                  (uint32_t)pu8V1,
-                  (uint32_t)pu8V1 + (i32BatchSize - 1),
+                  (uint32_t)pu8DstBuf,
+                  (uint32_t)pu8DstBuf + (i32BatchSize - 1),
+                  (uint32_t)pu8SrcBuf,
+                  (uint32_t)pu8SrcBuf + (i32BatchSize - 1),
                   bFail ? "Fail" : "Okay");
 
-        TC_PRINTF("\tFirst: BS=%d, 0x%02X@0x%08X != 0x%02X@0x%08X\n", i32BatchSize, pu8V0[j], (uint32_t)&pu8V0[j], pu8V1[j], (uint32_t)&pu8V1[j]);
+        TC_PRINTF("\tFirst: BS=%d, 0x%02X@0x%08X != 0x%02X@0x%08X\n", i32BatchSize, pu8DstBuf[j], (uint32_t)&pu8DstBuf[j], pu8SrcBuf[j], (uint32_t)&pu8SrcBuf[j]);
 
         {
             uint32_t u32DMAV0 = 0, u32DMAV1 = 0;
 
-            u32DMAV0 = SPIM_HYPER_Read2Word(SPIM0, ((uint32_t)&pu8V0[j]) & 0x00FFFFFC);
-            u32DMAV1 = SPIM_HYPER_Read2Word(SPIM0, ((uint32_t)&pu8V1[j]) & 0x00FFFFFC);
-            TC_PRINTF("\tCMD Read BS=%d, 0x%08X@0x%08X != 0x%08X@0x%08X\n",  i32BatchSize, u32DMAV0, ((uint32_t)&pu8V0[j]) & 0x00FFFFFC, u32DMAV1, ((uint32_t)&pu8V1[j]) & 0x00FFFFFC);
+            u32DMAV0 = SPIM_HYPER_Read2Word(SPIM0, ((uint32_t)&pu8DstBuf[j]) & 0x00FFFFFC);
+            u32DMAV1 = SPIM_HYPER_Read2Word(SPIM0, ((uint32_t)&pu8SrcBuf[j]) & 0x00FFFFFC);
+            TC_PRINTF("\tCMD Read BS=%d, 0x%08X@0x%08X != 0x%08X@0x%08X\n",  i32BatchSize, u32DMAV0, ((uint32_t)&pu8DstBuf[j]) & 0x00FFFFFC, u32DMAV1, ((uint32_t)&pu8SrcBuf[j]) & 0x00FFFFFC);
         }
     }
 
     /* Stop comparison. */
     PD6 = 1;
-    __ISB();
     __DSB();
 
     return (bFail ? -1 : 0);

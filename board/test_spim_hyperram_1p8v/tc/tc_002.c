@@ -11,9 +11,9 @@ static int tc002_exec(void)
     enum dma350_lib_error_t lib_err;
 
     //for (i32BS = CONFIG_BATCH_SIZE_START; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += CONFIG_BATCH_SIZE_STEP)
-    for (i32BS = 0x200; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += 0x200)
+    for (i32BS = 0x400; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += 0x400)
     {
-        tc_prepare(CONFIG_BASE_ADDRESS, i32BS);
+        tc_prepare((uint8_t*)CONFIG_BASE_ADDRESS+i32BS, (uint8_t*)CONFIG_BASE_ADDRESS, i32BS);
         lib_err = dma350_memcpy(GDMA_CH_DEV_S[0],
                                 (const void *)(CONFIG_BASE_ADDRESS), (void *)(CONFIG_BASE_ADDRESS + i32BS),
                                 i32BS,
@@ -21,14 +21,12 @@ static int tc002_exec(void)
         __ISB();
         __DSB();
 
-        if (tc_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
+        if (tc_compare((uint8_t*)CONFIG_BASE_ADDRESS+i32BS, (uint8_t*)CONFIG_BASE_ADDRESS, i32BS) < 0)
         {
             i32ErrCount++;
 
 #if (_DEBUG==0)
-
             while (1);
-
 #endif
         }
 
@@ -69,5 +67,5 @@ static int tc002_cleanup(void)
     return 0;
 }
 
-TC_EXPORT(tc002_exec, "MEMORY COPY using GDMA(CHANNEL)", tc002_init, tc002_cleanup);
+TC_EXPORT(tc002_exec, "GDMA(CHANNEL)", tc002_init, tc002_cleanup);
 

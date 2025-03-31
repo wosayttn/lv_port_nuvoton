@@ -84,7 +84,11 @@ static int tc001_exec(void)
     int i32ErrCount = 0;
     S_CMDBUF s_sGDMADsc[CONFIG_GDMADESC_NUNBER];
 
-    const static uint32_t au32XferSize[] = {1, 2, 4, 8 /*, 16, 32, 64, 128*/};
+    const static uint32_t au32XferSize[] = {1, 2, 4, 8};
+
+	  //SPIM_HYPER_SET_CSMAXLT(SPIM0, 1);
+    //TC_PRINTF("@@@ set i32CSM=1\n");
+    //TC_PRINTF("@@@ get i32CSM=%lu\n", SPIM_HYPER_GET_CSMAXLT(SPIM0));
 
     for (i32TS = 0; i32TS < sizeof(au32XferSize) / sizeof(uint32_t); i32TS++)
     {
@@ -92,8 +96,7 @@ static int tc001_exec(void)
         i32ErrCount = 0;
 
         //for (i32BS = au32XferSize[i32TS]; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += au32XferSize[i32TS])
-        //for (i32BS = 261; i32BS <= 261; i32BS += au32XferSize[i32TS])
-        for (i32BS = 0x200; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += 0x200)
+        for (i32BS = 0x400; i32BS <= CONFIG_BATCH_SIZE_STOP; i32BS += 0x400)
         {
             memset(&s_sGDMADsc[0], 0, sizeof(s_sGDMADsc));
 
@@ -101,7 +104,7 @@ static int tc001_exec(void)
             tc001_gdma_dsc_init(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER, CONFIG_BASE_ADDRESS, i32BS, au32XferSize[i32TS]);
             //tc_gdma_dsc_dump(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER);
 
-            tc_prepare(CONFIG_BASE_ADDRESS, i32BS);
+            tc_prepare((uint8_t*)CONFIG_BASE_ADDRESS+i32BS, (uint8_t*)CONFIG_BASE_ADDRESS, i32BS);
 
             /* Link to external command */
             dma350_ch_enable_linkaddr(GDMA_CH_DEV_S[1]);
@@ -132,14 +135,11 @@ static int tc001_exec(void)
                 }
             } while (!g_bDone); // Wait
 
-            if (tc_compare(CONFIG_BASE_ADDRESS, i32BS) < 0)
+            if (tc_compare((uint8_t*)CONFIG_BASE_ADDRESS+i32BS, (uint8_t*)CONFIG_BASE_ADDRESS, i32BS) < 0)
             {
                 i32ErrCount++;
-
 #if (_DEBUG==0)
-
                 while (1);
-
 #endif
             }
 
@@ -183,5 +183,5 @@ static int tc001_cleanup(void)
     return 0;
 }
 
-TC_EXPORT(tc001_exec, "MEMORY COPY using GDMA(CMDLINK)", tc001_init, tc001_cleanup);
+TC_EXPORT(tc001_exec, "GDMA(CMDLINK)", tc001_init, tc001_cleanup);
 

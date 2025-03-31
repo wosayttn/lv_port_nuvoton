@@ -4,7 +4,7 @@
 
 static int tc_boundary_crossing(void)
 {
-#if 1
+#if 0
 #define DEF_ROW_BOUNDARY          0x400
 #define DEF_SPIM_READ_FIFO_SIZE   16
 #define DEF_MAGIC                 (0xA5)
@@ -40,7 +40,7 @@ static int tc_boundary_crossing(void)
 #define DEF_MAGIC_NUM   0x000000
 #define DEF_OFFSET      0
 #define DEF_STEP        0x100
-#define DEF_STOP        0x800
+#define DEF_STOP        0x1000
 
     int32_t i32DMA;
     uint32_t u32RowAddr;
@@ -96,4 +96,4 @@ static int tc_boundary_crossing(void)
 
 #endif
 }
-TC_EXPORT(tc_boundary_crossing, "ROW BOUNDARY CROSSING", NULL, NULL);
+TC_EXPORT(tc_boundary_crossing, "RB CROSSING(READ)", NULL, NULL);

@@ -165,7 +165,6 @@ static int tc006_exec(void)
         {
             for (i32BS = au32XferSize[i32TS]; i32BS <= 256; i32BS += au32XferSize[i32TS])
             {
-
                 tc006_prepare(au32XferSize[i32TS], i32BS, i32Hopping);
 
                 /* Initial all Lines descriptor-link. */
@@ -210,11 +209,8 @@ static int tc006_exec(void)
                 if (tc006_compare(au32XferSize[i32TS], i32BS, i32Hopping) < 0)
                 {
                     i32ErrCount++;
-
 #if (_DEBUG==0)
-
                     while (1);
-
 #endif
                 }
 
@@ -260,5 +256,5 @@ static int tc006_cleanup(void)
     return 0;
 }
 
-TC_EXPORT(tc006_exec, "SPIM_HYPER_GDMA_SRAM_HYPERRAM_COPY_HOPPING", tc006_init, tc006_cleanup);
+TC_EXPORT(tc006_exec, "GDMA_COPY_SRAM_TO_HRAM_HOPPING", tc006_init, tc006_cleanup);
 

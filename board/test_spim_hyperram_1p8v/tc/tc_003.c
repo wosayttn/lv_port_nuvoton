@@ -7,19 +7,14 @@ static void tc003_prepare(uint32_t u32BaseAddr, int i32BatchSize)
     int i = 0;
     volatile uint8_t *ptr = (volatile uint8_t *)u32BaseAddr;
 
-#if 1
-
     for (i = 0; i < i32BatchSize; i++)
     {
         ptr[i + i32BatchSize] = ptr[i] = i % 256;
         __ISB();
         __DSB();
     }
-
-#else
-    SPIM_HYPER_DISABLE_CACHE(SPIM0);
-#endif
 }
+
 
 static int tc003_compare(uint32_t u32BaseAddr, int i32BatchSize)
 {
@@ -114,4 +109,4 @@ static int tc003_cleanup(void)
     return 0;
 }
 
-TC_EXPORT(tc003_exec, "MEMCMP only", tc003_init, tc003_cleanup);
+TC_EXPORT(tc003_exec, "CPU MEMCMP only", tc003_init, tc003_cleanup);

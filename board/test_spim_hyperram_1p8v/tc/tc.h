@@ -63,21 +63,20 @@ typedef struct tc_export *tc_export_t;
  * @return None
  *
 */
-#define TC_EXPORT(testcase, name, init, cleanup)                \
-    __attribute__((used)) static const struct tc_export _tc_testcase           \
-    __attribute__((section("TcTab"))) =                                        \
-                                                                               {                                                                          \
-                                                                                                                                                          name,                                                                  \
-                                                                                                                                                          init,                                                                  \
-                                                                                                                                                          testcase,                                                              \
-                                                                                                                                                          cleanup                                                                \
-                                                                               }
+#define TC_EXPORT(testcase, name, init, cleanup)                       \
+    __attribute__((used)) static const struct tc_export _tc_testcase   \
+    __attribute__((section("TcTab"))) = {                              \
+                                            name,                      \
+                                            init,                      \
+                                            testcase,                  \
+                                            cleanup                    \
+                                        }
 
 void tc_list(void);
 int tc_run(void);
-void tc_prepare(uint32_t u32BaseAddr, int i32BatchSize);
-int tc_compare(uint32_t u32BaseAddr, int i32BatchSize);
 void tc_report(void);
+void tc_prepare(uint8_t *pu8DstBuf, uint8_t *pu8SrcBuf, int i32BatchSize);
+int tc_compare(uint8_t *pu8DstBuf, uint8_t *pu8SrcBuf, int i32BatchSize);
 
 #ifdef __cplusplus
 }
