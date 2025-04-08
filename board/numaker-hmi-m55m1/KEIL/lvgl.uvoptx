@@ -253,7 +253,7 @@
       <OPTFL>
         <tvExp>1</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
-        <IsCurrentTarget>0</IsCurrentTarget>
+        <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
       <CpuCode>6</CpuCode>
       <DebugOpt>
@@ -321,24 +321,7 @@
           <Name>UL2V8M(-S0 -C0 -P0 -FD20000000 -FC8000 -FN2 -FF0M55M1_AP_2M -FS0100000 -FL0200000 -FF1M55M1_NS -FS110100000 -FL1200000 -FP0($$Device:M55M1H2LJAE$Flash\M55M1_AP_2M.FLM) -FP1($$Device:M55M1H2LJAE$Flash\M55M1_NS.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>272</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>1062076</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\lv_port\spim_hyperram\hyperram_code.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\lvgl_demo\../lv_port/spim_hyperram/hyperram_code.c\272</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
@@ -453,7 +436,7 @@
       <OPTFL>
         <tvExp>1</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
-        <IsCurrentTarget>1</IsCurrentTarget>
+        <IsCurrentTarget>0</IsCurrentTarget>
       </OPTFL>
       <CpuCode>6</CpuCode>
       <DebugOpt>
@@ -767,7 +750,7 @@
 
   <Group>
     <GroupName>src</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -3311,7 +3294,7 @@
 
   <Group>
     <GroupName>lv_port</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -3615,7 +3598,7 @@
 
   <Group>
     <GroupName>lv_draw</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
