@@ -1,0 +1,64 @@
+name: VSCode build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install jq on Windows
+        if: matrix.os == 'windows-latest'
+        run: choco install jq
+
+      - name: Install tools
+        uses: ARM-software/cmsis-actions/vcpkg@v1
+        with:
+          config: ".github/workflows/vcpkg-configuration.json"
+
+      - name: Activate Arm tool license
+        uses: ARM-software/cmsis-actions/armlm@v1     
+
+      - name: Activate & Build each csolution
+        shell: bash
+        run: |
+          mapfile -t solutions < <(find ./board/ -name '*.csolution.yml')
+
+          for sol in "${solutions[@]}"; do
+            proj_dir=$(dirname "$sol")
+            proj=$(basename "$sol")
+            cd "$proj_dir"
+            echo "current -> ${pwd}"
+
+            echo "Building: $sol"
+
+            vcpkg activate --downloads-root="${{ github.workspace }}/.vcpkg/downloads" --json=env.json
+            echo "Preserving vcpkg PATH ..."
+            jq '.paths.PATH[]' env.json | tr -d '\"' | tee -a $GITHUB_PATH
+            echo "Preserving vcpkg ENV ..."
+            jq '.tools | to_entries | map("\(.key)=\(.value)")[]' env.json | tr -d '\"' | tee -a $GITHUB_ENV
+
+            cbuild "$proj" --update-rte --packs
+            #cbuild "$proj" --update-rte --clean
+
+            vcpkg deactivate
+
+            cd - > /dev/null
+
+          done
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lvgl-release-${{ matrix.os }}
+          path: |
+            **/board/**/*.bin

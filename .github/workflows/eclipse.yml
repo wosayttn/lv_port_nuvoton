@@ -1,0 +1,73 @@
+# .github/workflows/eclipse-arm-multi-build.yml
+name: Eclipse build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies (Eclipse needs Java)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip default-jre gcc-arm-none-eabi make
+
+      - name: Install ARM AArch64 GCC Toolchain
+        run: |
+          wget -q https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-elf.tar.xz
+          tar -xf arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-elf.tar.xz
+          echo "$PWD/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-elf/bin" >> $GITHUB_PATH
+
+      - name: Download Eclipse CDT
+        run: |
+          wget -q https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2025-06/M1/eclipse-embedcpp-2025-06-M1-linux-gtk-x86_64.tar.gz
+          tar -xzf eclipse-embedcpp-2025-06-M1-linux-gtk-x86_64.tar.gz
+          mv eclipse eclipse-cdt
+      
+      - name: Build all Eclipse projects
+        run: |
+          #build_failed=0
+          mkdir -p "$GITHUB_WORKSPACE/workspace"
+
+          for dir in $(find ./board/numaker-hmi-m467 -type f -name .cproject -exec dirname {} \;); do
+
+            echo "Building project in $dir"
+            if ! ./eclipse-cdt/eclipse \
+              -nosplash \
+              -application org.eclipse.cdt.managedbuilder.core.headlessbuild \
+              -data "$GITHUB_WORKSPACE/workspace" \
+              -import "$GITHUB_WORKSPACE/$dir" \
+              -build all; then
+
+              echo "Failed to build $dir"
+              #build_failed=1
+
+            else
+
+              echo "succeed to build $dir"
+
+            fi
+
+            ls -al $GITHUB_WORKSPACE/workspace
+
+          done
+
+          #exit $build_failed
+
+      - name: Show ELF output
+        run: find "$GITHUB_WORKSPACE/workspace" -type f \( -name "*.elf" -o -name "*.bin" \) || true
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: |
+            workspace/**/*.elf
+            workspace/**/*.bin
