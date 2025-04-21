@@ -27,6 +27,16 @@ void lv_tick_task(void *pdata)
     }
 }
 
+uint32_t freertos_tick_get(void)
+{
+	return (uint32_t)xTaskGetTickCount();
+}
+
+void freertos_task_delay(uint32_t ms)
+{
+	vTaskDelay( (const TickType_t)ms );
+}
+
 void lv_nuvoton_task(void *pdata)
 {
     lv_init();
@@ -35,8 +45,8 @@ void lv_nuvoton_task(void *pdata)
     lv_log_register_print_cb(lv_nuvoton_log);
 #endif /* LV_USE_LOG */
 
-    lv_tick_set_cb(xTaskGetTickCount);    /*Expression evaluating to current system time in ms*/
-    lv_delay_set_cb(vTaskDelay);
+    lv_tick_set_cb(freertos_tick_get);    /*Expression evaluating to current system time in ms*/
+    lv_delay_set_cb(freertos_task_delay);
 
     extern void lv_port_disp_init(void);
     lv_port_disp_init();

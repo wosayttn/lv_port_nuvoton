@@ -1,12 +1,14 @@
-# .github/workflows/eclipse-arm-multi-build.yml
-name: Eclipse build
+name: Eclipse Multi-Platform Build
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout repo
@@ -14,60 +16,98 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install dependencies (Eclipse needs Java)
+      - name: Install dependencies (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget unzip default-jre gcc-arm-none-eabi make
+          sudo apt-get install -y wget unzip default-jre make
 
-      - name: Install ARM AArch64 GCC Toolchain
-        run: |
-          wget -q https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-elf.tar.xz
-          tar -xf arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-elf.tar.xz
-          echo "$PWD/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-elf/bin" >> $GITHUB_PATH
+          echo "🌍 Downloading arm-none-eabi-toolchain for Linux x64"
+          wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+          tar -jxf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+          echo "$PWD/gcc-arm-none-eabi-10.3-2021.10/bin" >> $GITHUB_PATH
+          ls -al $PWD
 
-      - name: Download Eclipse CDT
-        run: |
+          echo "🌍 Downloading aarch64-elf-toolchain for Linux x64"
+          wget -q https://developer.arm.com/-/media/Files/downloads/gnu-a/10.3-2021.07/binrel/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf.tar.xz
+          tar -xf gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf.tar.xz
+          echo "$PWD/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf/bin" >> $GITHUB_PATH
+          ls -al $PWD
+
+          echo "🌍 Downloading Eclipse for Linux"
           wget -q https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2025-06/M1/eclipse-embedcpp-2025-06-M1-linux-gtk-x86_64.tar.gz
           tar -xzf eclipse-embedcpp-2025-06-M1-linux-gtk-x86_64.tar.gz
           mv eclipse eclipse-cdt
-      
-      - name: Build all Eclipse projects
+
+      - name: Install dependencies (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: bash
         run: |
-          #build_failed=0
-          mkdir -p "$GITHUB_WORKSPACE/workspace"
+          choco install unzip jre8 -y
 
-          for dir in $(find ./board/numaker-hmi-m467 -type f -name .cproject -exec dirname {} \;); do
+          echo "🌍 Downloading arm-none-eabi-toolchain for Windows"
+          curl -LO https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-win32.zip
+          unzip -q gcc-arm-none-eabi-10.3-2021.10-win32.zip -d toolchain_arm
+          echo "${PWD}/toolchain_arm/gcc-arm-none-eabi-10.3-2021.10/bin" >> $GITHUB_PATH
+          ls -al toolchain_arm/gcc-arm-none-eabi-10.3-2021.10/bin
 
-            echo "Building project in $dir"
-            if ! ./eclipse-cdt/eclipse \
+          echo "🌍 Downloading aarch64-none-elf-toolchain for Windows"
+          curl -LO https://developer.arm.com/-/media/Files/downloads/gnu-a/10.3-2021.07/binrel/gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf.tar.xz
+          tar -xf gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf.tar.xz
+          echo "${PWD}/gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf/bin" >> $GITHUB_PATH
+          ls -al gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf/bin
+
+          echo "🌍 Downloading Eclipse for Windows"
+          curl -LO https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2025-06/M1/eclipse-embedcpp-2025-06-M1-win32-x86_64.zip
+          unzip -q eclipse-embedcpp-2025-06-M1-win32-x86_64.zip
+          mv eclipse eclipse-cdt
+          ls -al eclipse-cdt
+          echo $GITHUB_PATH
+
+      - name: Build all Eclipse projects
+        shell: bash
+        run: |
+
+          echo $GITHUB_PATH
+          echo $PATH
+
+          echo "✅ Version check"
+          arm-none-eabi-gcc --version
+          aarch64-none-elf-gcc --version
+
+          mkdir -p "$GITHUB_WORKSPACE/artifacts"
+
+          for dir in $(find ./board -type f -name .cproject -exec dirname {} \;); do
+
+            mkdir -p "$GITHUB_WORKSPACE/workspace"
+
+            echo "🔨 Building $dir on $RUNNER_OS"
+            timeout 5m ./eclipse-cdt/eclipse \
               -nosplash \
               -application org.eclipse.cdt.managedbuilder.core.headlessbuild \
               -data "$GITHUB_WORKSPACE/workspace" \
               -import "$GITHUB_WORKSPACE/$dir" \
-              -build all; then
+              -build all
 
-              echo "Failed to build $dir"
-              #build_failed=1
+            echo "🧹 Collecting .bin files"
+            bin_files=$(find "$dir" -type f -name "*.bin")
+            for bin_file in $bin_files; do
+              base_name=$(basename "$bin_file")
+              bin_file_relative_path=$(realpath --relative-to="$GITHUB_WORKSPACE" "$bin_file")
+              bin_file_dir=$(dirname "$bin_file_relative_path")
+              prefix=$(echo "${bin_file_dir}" | tr '/' '_')
+              new_name="${prefix}_${base_name}"
 
-            else
+              echo "📦 Copying $bin_file → artifacts/$new_name"
+              cp "$bin_file" "$GITHUB_WORKSPACE/artifacts/$new_name"
+            done
 
-              echo "succeed to build $dir"
-
-            fi
-
-            ls -al $GITHUB_WORKSPACE/workspace
-
+            rm -rf "$GITHUB_WORKSPACE/workspace"
           done
-
-          #exit $build_failed
-
-      - name: Show ELF output
-        run: find "$GITHUB_WORKSPACE/workspace" -type f \( -name "*.elf" -o -name "*.bin" \) || true
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: firmware
-          path: |
-            workspace/**/*.elf
-            workspace/**/*.bin
+          name: lv_port_nuvoton-${{ matrix.os }}
+          path: ${{ github.workspace }}/artifacts/*.bin

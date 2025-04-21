@@ -70,6 +70,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m031/Library/Device/Nuvoton/M031/Source/GCC/startup_M031Series.S</locationURI>
 		</link>
 		<link>
+			<name>Driver/_syscalls.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m031/Library/Device/Nuvoton/M031/Source/GCC/_syscalls.c</locationURI>
+		</link>
+		<link>
 			<name>Driver/adc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m031/Library/StdDriver/src/adc.c</locationURI>

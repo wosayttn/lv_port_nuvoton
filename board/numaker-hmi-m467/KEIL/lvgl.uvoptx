@@ -642,8 +642,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Source\system_M460.c</PathWithFileName>
-      <FilenameWithoutPath>system_M460.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Source\system_m460.c</PathWithFileName>
+      <FilenameWithoutPath>system_m460.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -654,8 +654,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Source\ARM\startup_M460.s</PathWithFileName>
-      <FilenameWithoutPath>startup_M460.s</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Source\ARM\startup_m460.s</PathWithFileName>
+      <FilenameWithoutPath>startup_m460.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

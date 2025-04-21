@@ -1,4 +1,4 @@
-name: VSCode build
+name: VSCode Multi-Platform Build
 
 on:
   workflow_dispatch:

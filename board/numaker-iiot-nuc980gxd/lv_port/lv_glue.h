@@ -9,7 +9,7 @@
 #define __LV_GLUE_H__
 
 #include <stdio.h>
-#include "NUC980.h"
+#include "nuc980.h"
 #include "lvgl.h"
 #include "sys.h"
 #include "adc.h"

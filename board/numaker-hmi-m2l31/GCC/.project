@@ -70,6 +70,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m2l31/Library/Device/Nuvoton/M2L31/Source/GCC/startup_M2L31.S</locationURI>
 		</link>
 		<link>
+			<name>Driver/_syscalls.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m2l31/Library/Device/Nuvoton/M2L31/Source/GCC/_syscalls.c</locationURI>
+		</link>
+		<link>
 			<name>Driver/eadc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m2l31/Library/StdDriver/src/eadc.c</locationURI>

@@ -6,6 +6,7 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
+#include <string.h>
 #include "lvgl.h"
 #include "lv_glue.h"
 
@@ -293,7 +294,7 @@ static void _draw_bots(int x, int y)
 #if (LV_COLOR_DEPTH == 16)  //RGB565
         volatile uint16_t *plvColorStart = (volatile uint16_t *)sLcdInfo.pvVramStartAddr;
 #elif (LV_COLOR_DEPTH == 32)  //ARGB888
-        volatile uint32_t *plvColorStart = (volatile uint16_t *)sLcdInfo.pvVramStartAddr;
+        volatile uint32_t *plvColorStart = (volatile uint32_t *)sLcdInfo.pvVramStartAddr;
 #endif
         for (i = 0; i < DEF_DOT_NUMBER * DEF_DOT_NUMBER; i++)
         {

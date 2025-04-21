@@ -67,7 +67,12 @@
 		<link>
 			<name>Driver/Startup_GCC.S</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m460/Library/Device/Nuvoton/M460/Source/GCC/startup_M460.S</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m460/Library/Device/Nuvoton/m460/Source/GCC/startup_m460.S</locationURI>
+		</link>
+		<link>
+			<name>Driver/_syscalls.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m460/Library/Device/Nuvoton/m460/Source/GCC/_syscalls.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/i2c.c</name>
@@ -110,9 +115,9 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m460/Library/StdDriver/src/sys.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/system_M460.c</name>
+			<name>Driver/system_m460.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m460/Library/Device/Nuvoton/M460/Source/system_M460.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m460/Library/Device/Nuvoton/m460/Source/system_m460.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/uart.c</name>

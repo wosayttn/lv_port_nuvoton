@@ -1429,7 +1429,7 @@
     <group>
         <name>CMSIS</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Source\IAR\startup_M460.s</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Source\IAR\startup_m460.s</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\bsp\m460\Library\Device\Nuvoton\m460\Source\system_m460.c</name>

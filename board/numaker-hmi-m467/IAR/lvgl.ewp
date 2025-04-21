@@ -353,7 +353,7 @@
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
-                    <state>$PROJ_DIR$/../../../bsp/m460/Library/Device/Nuvoton/M460/Include</state>
+                    <state>$PROJ_DIR$/../../../bsp/m460/Library/Device/Nuvoton/m460/Include</state>
                     <state>$PROJ_DIR$/../../../bsp/m460/Library/CMSIS/Include</state>
                     <state>$PROJ_DIR$/../../../bsp/m460/Library/StdDriver/inc</state>
                     <state>$PROJ_DIR$/../</state>

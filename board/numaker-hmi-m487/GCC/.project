@@ -70,6 +70,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m480/Library/Device/Nuvoton/M480/Source/GCC/startup_M480.S</locationURI>
 		</link>
 		<link>
+			<name>Driver/_syscalls.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m480/Library/Device/Nuvoton/M480/Source/GCC/_syscalls.c</locationURI>
+		</link>
+		<link>
 			<name>Driver/eadc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m480/Library/StdDriver/src/eadc.c</locationURI>
