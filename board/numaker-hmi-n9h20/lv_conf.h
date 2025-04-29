@@ -75,16 +75,20 @@
 #define LV_USE_PERF_MONITOR             1
 #define LV_USE_LOG                      0
 
-//#define LV_USE_LODEPNG                  1
-//#define LV_USE_TJPGD                    1
-//#define LV_USE_GIF                      1
-//#define LV_USE_BMP                      1
-//#define LV_USE_FS_FATFS                 1
-//#define LV_FS_FATFS_LETTER              '0'
+#if CONFIG_APP_DEMO_IMG == 1
+    //#define LV_USE_LODEPNG                  1
+    #define LV_USE_TJPGD                    1
+    //#define LV_USE_GIF                      1
+    //#define LV_USE_BMP                      1
+    #define LV_USE_FS_FATFS                 1
+    #define LV_FS_FATFS_LETTER              '0'
+    #define LV_USE_FS_MEMFS                 1
+    #define LV_FS_MEMFS_LETTER              '1'
+#endif
 
 #if LV_USE_LOG == 1
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER
