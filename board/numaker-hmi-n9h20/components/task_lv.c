@@ -40,6 +40,11 @@ void lv_nuvoton_task(void *pdata)
     lv_draw_bitblt_init();
 #endif
 
+#if LV_USE_HWJPGD && LV_USE_IMAGE
+    void lv_hwjpgd_init(void);
+    lv_hwjpgd_init();
+#endif
+
     lv_tick_set_cb(xTaskGetTickCount);    /*Expression evaluating to current system time in ms*/
     lv_delay_set_cb(vTaskDelay);
 

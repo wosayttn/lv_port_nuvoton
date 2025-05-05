@@ -1,7 +1,6 @@
 #include "lvgl.h"
 #include "avilib.h"
 
-
 static const uint32_t crc32_tab[] =
 {
     0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
@@ -77,7 +76,7 @@ static void demo_show_png_image(void)
 }
 #endif
 
-#if LV_USE_TJPGD && LV_USE_IMAGE
+#if LV_USE_HWJPGD && LV_USE_IMAGE
 /**
  * Show a JPEG image from a file
  */
@@ -87,28 +86,6 @@ static void demo_show_jpg_image(void)
     lv_image_set_src(img, "0:logo.jpg");
     lv_obj_center(img);
 }
-
-static void demo_show_jpg_image_buffer(void)
-{
-    extern const uint8_t incbin_jpgimg_start[];
-    extern const uint8_t incbin_jpgimg_end[];
-    static lv_img_dsc_t JpgImg =
-    {
-        .header.magic = LV_IMAGE_HEADER_MAGIC,
-        .header.cf = LV_COLOR_FORMAT_RAW,
-        .header.flags = 0,
-        .header.w = 105,
-        .header.h = 40,
-    };
-
-    JpgImg.data = incbin_jpgimg_start;
-    JpgImg.data_size = (uint32_t)(incbin_jpgimg_end - incbin_jpgimg_start);
-
-    lv_obj_t *img = lv_image_create(lv_screen_active());
-    lv_image_set_src(img, (const void *)&JpgImg);
-    lv_obj_center(img);
-}
-
 
 static int is_jfif(const uint8_t *jpeg_data, size_t len)
 {
@@ -126,7 +103,7 @@ static avi_t *avi = NULL;
 static void img_timer(lv_timer_t *t)
 {
     static lv_img_dsc_t JpgImg = {0};
-    static char framebuf[512 * 1024];
+    static char framebuf[1 * 1024 * 1024];
     static uint32_t idx = 0;
     lv_obj_t *img = (lv_obj_t *)lv_timer_get_user_data(t);
     uint32_t chunk = AVI_video_frames(avi);
@@ -169,7 +146,6 @@ static void img_timer(lv_timer_t *t)
  */
 static void demo_show_avi_mjpeg(void)
 {
-
     // AVI-MJPEG Player
     if ((avi = AVI_open_input_file("0:movie.avi", 1)) == NULL)
     {
@@ -183,13 +159,12 @@ static void demo_show_avi_mjpeg(void)
                   AVI_video_frames(avi),
                   AVI_video_width(avi),
                   AVI_video_height(avi),
-                  AVI_frame_rate(avi));
+                  (uint32_t)AVI_frame_rate(avi));
 
         lv_obj_t *img = lv_image_create(lv_screen_active());
         lv_timer_t *timer = lv_timer_create(img_timer, 1000 / (AVI_frame_rate(avi) + 1), img);
     }
 }
-
 #endif
 
 #if LV_USE_GIF && LV_USE_IMAGE
@@ -234,9 +209,8 @@ void ui_init(void)
     demo_show_bmp_image();
 #endif
 
-#if LV_USE_TJPGD && LV_USE_IMAGE
+#if LV_USE_HWJPGD && LV_USE_IMAGE
     //demo_show_jpg_image();
-    //demo_show_jpg_image_buffer();
     demo_show_avi_mjpeg();
 #endif
 

@@ -81,7 +81,7 @@
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>fromelf.exe --bin --output "$L@L.bin" "$L@L.axf"</UserProg1Name>
-            <UserProg2Name>fromelf --bin "$L@L.axf" --output "$P../Bin/@L.bin" </UserProg2Name>
+            <UserProg2Name>fromelf --bin "$L@L.axf" --output "$P../Bin/@L.bin"</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
@@ -377,9 +377,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE __FreeRTOS__ CONFIG_APP_DEMO_IMG=1</Define>
+              <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE __FreeRTOS__ CONFIG_APP_DEMO_IMG=1 LV_USE_HWJPGD=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h20\BSP\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H20;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\lvgl\examples;..\..\..\;..\sls_files;..\..\..\thirdparty\FatFs-r15\source;..\App</IncludePath>
+              <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h20\BSP\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H20;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\lvgl\examples;..\..\..\;..\sls_files;..\..\..\thirdparty\FatFs-r15\source;..\App;..\..\..\common\drv_decoder\jpeg</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2442,6 +2442,16 @@
               <FileName>ffunicode.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffunicode.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>drv_decoder</GroupName>
+          <Files>
+            <File>
+              <FileName>drv_hwjpgd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_decoder\jpeg\drv_hwjpgd.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -4883,6 +4893,16 @@
               <FileName>ffunicode.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffunicode.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>drv_decoder</GroupName>
+          <Files>
+            <File>
+              <FileName>drv_hwjpgd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_decoder\jpeg\drv_hwjpgd.c</FilePath>
             </File>
           </Files>
         </Group>
