@@ -73,14 +73,19 @@ int fatfs_ramdisk_init(void)
                 p1 += Finfo.fsize;
             }
 
-            sysprintf("%c%c%c%c%c %u/%02u/%02u %02u:%02u %9lu  %s\n",
+            sysprintf("%c%c%c%c%c %u/%02u/%02u %02u:%02u %16s %u Bytes\n",
                       (Finfo.fattrib & AM_DIR) ? 'D' : '-',
                       (Finfo.fattrib & AM_RDO) ? 'R' : '-',
                       (Finfo.fattrib & AM_HID) ? 'H' : '-',
                       (Finfo.fattrib & AM_SYS) ? 'S' : '-',
                       (Finfo.fattrib & AM_ARC) ? 'A' : '-',
-                      (Finfo.fdate >> 9) + 1980, (Finfo.fdate >> 5) & 15, Finfo.fdate & 31,
-                      (Finfo.ftime >> 11), (Finfo.ftime >> 5) & 63, (unsigned long)Finfo.fsize, Finfo.fname);
+                      (Finfo.fdate >> 9) + 1980,
+                      (Finfo.fdate >> 5) & 15,
+                      (Finfo.fdate & 31),
+                      (Finfo.ftime >> 11),
+                      (Finfo.ftime >> 5) & 63,
+                      Finfo.fname,
+                      (unsigned long)Finfo.fsize);
         }
 
         sysprintf("%4u File(s),%10u bytes total\n%4u Dir(s)", s1, p1, s2);

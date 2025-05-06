@@ -50,7 +50,7 @@ static lv_result_t decoder_get_area(lv_image_decoder_t *decoder, lv_image_decode
 static void decoder_close(lv_image_decoder_t *decoder, lv_image_decoder_dsc_t *dsc);
 static int is_jpg(const uint8_t *raw_data, size_t len);
 static int32_t JPEG_Parse(uint8_t *pu8BitStream, uint32_t BitStreamLen, uint32_t *pu32Width, uint32_t *pu32Height, uint32_t *pu32SrcFormat, bool bPrimary);
-static void *JPEG_AllocOutBuffer(uint32_t u32Width, uint32_t u32Height, uint32_t u32SrcFormat, uint32_t u32DstFormat);
+static void *JPEG_AllocOutBuffer(uint32_t *pu32Width, uint32_t *pu32Height, uint32_t *pu32SrcFormat, uint32_t u32DstFormat);
 
 /**********************
  *  STATIC VARIABLES
@@ -110,34 +110,34 @@ void lv_hwjpgd_deinit(void)
 /**********************
  *   STATIC FUNCTIONS
  **********************/
-static void *JPEG_AllocOutBuffer(uint32_t u32Width, uint32_t u32Height, uint32_t u32SrcFormat, uint32_t u32DstFormat)
+static void *JPEG_AllocOutBuffer(uint32_t *pu32Width, uint32_t *pu32Height, uint32_t *pu32SrcFormat, uint32_t u32DstFormat)
 {
     uint32_t u32FrameBuffer, u32BufferSize;
     void *ret = NULL;
 
     /* For Normal Decode buffer allocation */
-    switch (u32SrcFormat)
+    switch (*pu32SrcFormat)
     {
     case JPEG_DEC_YUV422:
     {
         /* Alignment for YUV422 raw data */
-        u32Width = NVT_ALIGN(u32Width, 16);
-        u32Height = NVT_ALIGN(u32Height, 8);
+        *pu32Width = NVT_ALIGN(*pu32Width, 16);
+        *pu32Height = NVT_ALIGN(*pu32Height, 8);
     }
     break;
 
     case JPEG_DEC_YUV444:
     {
         /* Alignment for YUV444 raw data */
-        u32Width = NVT_ALIGN(u32Width, 8);
-        u32Height = NVT_ALIGN(u32Height, 8);
+        *pu32Width = NVT_ALIGN(*pu32Width, 8);
+        *pu32Height = NVT_ALIGN(*pu32Height, 8);
     }
     break;
 
     default:
     {
-        u32Width = NVT_ALIGN(u32Width, 16);
-        u32Height = NVT_ALIGN(u32Height, 16);
+        *pu32Width = NVT_ALIGN(*pu32Width, 16);
+        *pu32Height = NVT_ALIGN(*pu32Height, 16);
     }
     break;
     }
@@ -147,25 +147,25 @@ static void *JPEG_AllocOutBuffer(uint32_t u32Width, uint32_t u32Height, uint32_t
     {
     case JPEG_DEC_PRIMARY_PACKET_RGB888:
     {
-        u32BufferSize = u32Width * u32Height * 4;
+        u32BufferSize = *pu32Width * *pu32Height * 4;
     }
     break;
 
     case JPEG_DEC_PRIMARY_PLANAR_YUV:
     {
-        if (u32SrcFormat == JPEG_DEC_YUV444)
-            u32BufferSize = u32Width * u32Height * 3;
-        else if (u32SrcFormat == JPEG_DEC_YUV422)
-            u32BufferSize = u32Width * u32Height * 2;
+        if (*pu32SrcFormat == JPEG_DEC_YUV444)
+            u32BufferSize = *pu32Width * *pu32Height * 3;
+        else if (*pu32SrcFormat == JPEG_DEC_YUV422)
+            u32BufferSize = *pu32Width * *pu32Height * 2;
         else
-            u32BufferSize = u32Width * u32Height * 1.5;
+            u32BufferSize = *pu32Width * *pu32Height * 1.5;
 
     }
     break;
 
     default:
     {
-        u32BufferSize = u32Width * u32Height * 2;
+        u32BufferSize = *pu32Width * *pu32Height * 2;
     }
     break;
     }
@@ -182,23 +182,23 @@ static void *JPEG_AllocOutBuffer(uint32_t u32Width, uint32_t u32Height, uint32_t
             goto _exit_buf_allocation;
         }
 
-        u32FrameBuffer = u32YBuffer = NVT_ALIGN((uint32_t)ret, 32) | 0x80000000;
+        u32FrameBuffer = u32YBuffer = NVT_ALIGN((uint32_t)ret, 32);
 
         /* For Normal Decode buffer allocation */
-        if (u32SrcFormat == JPEG_DEC_YUV422)
+        if (*pu32SrcFormat == JPEG_DEC_YUV422)
         {
-            u32UBuffer = u32YBuffer + u32Width * u32Height;
-            u32VBuffer = u32UBuffer + u32Width * u32Height / 2;
+            u32UBuffer = u32YBuffer + *pu32Width * *pu32Height;
+            u32VBuffer = u32UBuffer + *pu32Width * *pu32Height / 2;
         }
-        else if (u32SrcFormat == JPEG_DEC_YUV444)
+        else if (*pu32SrcFormat == JPEG_DEC_YUV444)
         {
-            u32UBuffer = u32YBuffer + u32Width * u32Height;
-            u32VBuffer = u32UBuffer + u32Width * u32Height;
+            u32UBuffer = u32YBuffer + *pu32Width * *pu32Height;
+            u32VBuffer = u32UBuffer + *pu32Width * *pu32Height;
         }
         else
         {
-            u32UBuffer = u32YBuffer + u32Width * u32Height;
-            u32VBuffer = u32UBuffer + u32Width * u32Height / 4;
+            u32UBuffer = u32YBuffer + *pu32Width * *pu32Height;
+            u32VBuffer = u32UBuffer + *pu32Width * *pu32Height / 4;
         }
 
         /* Set Decoded Image Address (Only Can be set before Decode Trigger for Planar;The address can set any time before existing Header Decode Complete Callback function) */
@@ -218,7 +218,7 @@ static void *JPEG_AllocOutBuffer(uint32_t u32Width, uint32_t u32Height, uint32_t
             goto _exit_buf_allocation;
         }
 
-        u32FrameBuffer = NVT_ALIGN((uint32_t)ret, 32) | 0x80000000;
+        u32FrameBuffer = NVT_ALIGN((uint32_t)ret, 32);
 
         /* Set Decoded Image Address (Can be set before Decode Trigger for Packet/Planar format)*/
         jpegIoctl(JPEG_IOCTL_SET_YADDR, u32FrameBuffer, 0);
@@ -635,15 +635,12 @@ static lv_result_t decoder_info(lv_image_decoder_t *decoder, lv_image_decoder_ds
                     goto _exit_info;
                 }
 
-                if (((u32Width % 8) == 0) && ((u32Height % 8) == 0)) /*H/W limitation.*/
-                {
-                    header->cf = LV_COLOR_FORMAT_RGB565;
-                    header->w = u32Width;
-                    header->h = u32Height;
-                    header->stride = u32Width * 2;
+                header->cf = LV_COLOR_FORMAT_RGB565;
+                header->w = u32Width;
+                header->h = u32Height;
+                header->stride = u32Width * 2;
 
-                    ret = LV_RESULT_OK;
-                }
+                ret = LV_RESULT_OK;
 
             } // if (size > 0)
         }
@@ -755,7 +752,7 @@ static lv_result_t decoder_open(lv_image_decoder_t *decoder, lv_image_decoder_ds
         }
 
         if ((JPEG_Parse((uint8_t *)ctx->m_pvSrcBufAddr, (uint32_t)ctx->m_u32SrcBufLen, &u32Width, &u32Height, &u32SrcFormat, true) < 0) ||
-                ((ctx->m_pvDstBufAddr = JPEG_AllocOutBuffer(u32Width, u32Height, u32SrcFormat, JPEG_DEC_PRIMARY_PACKET_RGB565)) == NULL))
+                ((ctx->m_pvDstBufAddr = JPEG_AllocOutBuffer(&u32Width, &u32Height, &u32SrcFormat, JPEG_DEC_PRIMARY_PACKET_RGB565)) == NULL))
         {
             lv_free(ctx);
             return LV_RESULT_INVALID;

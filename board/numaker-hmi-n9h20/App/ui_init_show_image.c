@@ -155,7 +155,7 @@ static void demo_show_avi_mjpeg(void)
     }
     else
     {
-        sysprintf("chunk: %d, width: %d, height: %d, fps:%d \n",
+        sysprintf("AVI chunks: %d, Width: %d, Height: %d, fps:%d\n",
                   AVI_video_frames(avi),
                   AVI_video_width(avi),
                   AVI_video_height(avi),
