@@ -9,7 +9,7 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
-#define LV_USE_OS   LV_OS_NONE
+#define LV_USE_OS   LV_OS_FREERTOS
 
 #if defined(__320x240__)
     #define LV_HOR_RES_MAX                  320
@@ -37,7 +37,7 @@
 #define LV_USE_PERF_MONITOR             1
 #define LV_USE_LOG                      0
 
-#define CONFIG_LV_MEM_SIZE              (64*1024U)
+#define CONFIG_LV_MEM_SIZE              (128*1024U)
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
