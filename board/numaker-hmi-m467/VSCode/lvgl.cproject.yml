@@ -5,10 +5,8 @@ project:
     - output:
         # bin, elf, hex, lib
         type: bin
-    - setup: Options for M467HJ_480x272_FSA506, M467HJ_480x272_SSD1963
-      for-context:
-        - +M467HJ_480x272_FSA506
-        - +M467HJ_480x272_SSD1963
+    - setup: Options for M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1
+      for-context: +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1
       processor:
         fpu: sp
       add-path:
@@ -43,6 +41,7 @@ project:
         - __480x272__
         - CPU_CORTEX_M4
         - LV_CONF_INCLUDE_SIMPLE
+        - USE_NUMAKER_TFT_LCD43_V_1_1
         - M467HJ
       define-asm:
         - M467HJ
@@ -65,8 +64,67 @@ project:
             - --specs=nano.specs
             - --specs=nosys.specs
             - -Wl,--gc-sections,-Map=$elf()$.map
-    - setup: Options for M467HJ_320x240_ILI9341
-      for-context: +M467HJ_320x240_ILI9341
+    - setup: Options for M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0
+      for-context: +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0
+      processor:
+        fpu: sp
+      add-path:
+        - ..
+        - ../../../bsp/m460/Library/CMSIS/Include
+        - ../../../bsp/m460/Library/Device/Nuvoton/m460/Include
+        - ../../../bsp/m460/Library/StdDriver/inc
+        - ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM4F
+        - ../../../thirdparty/FreeRTOS/include
+        - ../../../common
+        - ../../../common/drv_disp
+        - ../../../common/drv_indev
+        - ../lv_port
+        - ../../../lvgl/src
+        - ../../../lvgl/src/core
+        - ../../../lvgl/src/draw
+        - ../../../lvgl/src/draw/sw
+        - ../../../lvgl/src/font
+        - ../../../lvgl/src/misc
+        - ../../../lvgl/src/widgets
+        - ../../../lvgl/demos
+        - ../../../lvgl/demos/benchmark
+        - ../../../lvgl/demos/music
+        - ../../../lvgl/demos/stress
+        - ../../../lvgl/demos/widgets
+        - ../../../lvgl/demos/music/assets
+        - ../../../lvgl/demos/keypad_encoder
+        - ../../..
+        - ../sls_files
+      debug: "on"
+      define:
+        - __480x272__
+        - CPU_CORTEX_M4
+        - LV_CONF_INCLUDE_SIMPLE
+        - USE_NUMAKER_TFT_LCD43_V_1_0
+        - M467HJ
+      define-asm:
+        - M467HJ
+      misc:
+        - C:
+            - -std=gnu11
+          C-CPP:
+            - -mthumb
+            - -masm-syntax-unified
+            - -fmessage-length=0
+            - -fsigned-char
+            - -ffunction-sections
+            - -fdata-sections
+            - -g
+          Link:
+            - -mthumb
+            - -fmessage-length=0
+            - -fsigned-char
+            - -g
+            - --specs=nano.specs
+            - --specs=nosys.specs
+            - -Wl,--gc-sections,-Map=$elf()$.map
+    - setup: Options for M467HJ_USE_NUTFT
+      for-context: +M467HJ_USE_NUTFT
       processor:
         fpu: sp
       add-path:
@@ -101,7 +159,7 @@ project:
         - __320x240__
         - CPU_CORTEX_M4
         - LV_CONF_INCLUDE_SIMPLE
-        - USE_ILI9341_SPI
+        - USE_NUTFT
         - M467HJ
       define-asm:
         - M467HJ
@@ -139,8 +197,8 @@ project:
         - file: ../FreeRTOSConfig.h
     - group: libraries
       for-context:
-        - +M467HJ_480x272_FSA506
-        - +M467HJ_480x272_SSD1963
+        - +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1
+        - +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0
       files:
         - file: ../../../bsp/m460/Library/StdDriver/src/clk.c
         - file: ../../../bsp/m460/Library/StdDriver/src/ebi.c
@@ -350,18 +408,20 @@ project:
         - file: ../../../lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_l8.c
         - file: ../../../lvgl/src/misc/cache/lv_cache_lru_rb.c
         - file: ../../../lvgl/src/misc/cache/lv_image_header_cache.c
+    - group: NUMAKER_TFT_LCD43_V_1_1
+      for-context: +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1
+      files:
+        - file: ../../../common/drv_indev/touch_gt911.c
+        - file: ../../../common/drv_disp/nv3041a_ebi.c
+        - file: ../../../common/drv_disp/disp_nv3041a.c
     - group: lv_port
-      for-context: +M467HJ_480x272_FSA506
       files:
         - file: ../../../common/lv_demo.c
         - file: ../../../common/lv_port_disp.c
         - file: ../../../common/lv_port_indev.c
         - file: ../lv_port/lv_glue.c
         - file: ../lv_conf.h
-        - file: ../../../common/drv_disp/disp_fsa506.c
-        - file: ../../../common/drv_disp/fsa506_ebi.c
         - file: ../lv_port/lv_glue.h
-        - file: ../../../common/drv_indev/touch_st1663i.c
         - file: ../lv_port/drv_pdma.c
         - file: ../../../common/nu_misc.c
     - group: FreeRTOS
@@ -491,22 +551,14 @@ project:
         - file: ../../../lvgl/demos/widgets/assets/img_demo_widgets_avatar.c
         - file: ../../../lvgl/demos/widgets/assets/img_demo_widgets_needle.c
         - file: ../../../lvgl/demos/widgets/assets/img_lvgl_logo.c
-    - group: lv_port
-      for-context: +M467HJ_480x272_SSD1963
+    - group: NUMAKER_TFT_LCD43_V_1_0
+      for-context: +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0
       files:
-        - file: ../../../common/lv_demo.c
-        - file: ../../../common/lv_port_disp.c
-        - file: ../../../common/lv_port_indev.c
-        - file: ../lv_port/lv_glue.c
-        - file: ../lv_conf.h
-        - file: ../../../common/drv_disp/fsa506_ebi.c
-        - file: ../lv_port/lv_glue.h
         - file: ../../../common/drv_indev/touch_st1663i.c
-        - file: ../lv_port/drv_pdma.c
-        - file: ../../../common/nu_misc.c
-        - file: ../../../common/drv_disp/disp_ssd1963.c
+        - file: ../../../common/drv_disp/fsa506_ebi.c
+        - file: ../../../common/drv_disp/disp_fsa506.c
     - group: libraries
-      for-context: +M467HJ_320x240_ILI9341
+      for-context: +M467HJ_USE_NUTFT
       files:
         - file: ../../../bsp/m460/Library/StdDriver/src/clk.c
         - file: ../../../bsp/m460/Library/StdDriver/src/ebi.c
@@ -520,19 +572,11 @@ project:
         - file: ../../../bsp/m460/Library/StdDriver/src/i2c.c
         - file: ../../../bsp/m460/Library/StdDriver/src/spi.c
         - file: ../../../bsp/m460/Library/StdDriver/src/eadc.c
-    - group: lv_port
-      for-context: +M467HJ_320x240_ILI9341
+    - group: NUTFT
+      for-context: +M467HJ_USE_NUTFT
       files:
-        - file: ../../../common/lv_demo.c
-        - file: ../../../common/lv_port_disp.c
-        - file: ../../../common/lv_port_indev.c
-        - file: ../lv_port/lv_glue.c
-        - file: ../lv_conf.h
-        - file: ../lv_port/lv_glue.h
-        - file: ../lv_port/drv_pdma.c
-        - file: ../../../common/nu_misc.c
-        - file: ../../../common/drv_disp/disp_ili9341.c
-        - file: ../../../common/drv_disp/ili9341_spi.c
-        - file: ../lv_port/drv_spi.c
-        - file: ../../../common/drv_indev/touch_adc.c
         - file: ../../../common/drv_indev/touch_adc_calibration.c
+        - file: ../../../common/drv_indev/touch_adc.c
+        - file: ../lv_port/drv_spi.c
+        - file: ../../../common/drv_disp/ili9341_spi.c
+        - file: ../../../common/drv_disp/disp_ili9341.c

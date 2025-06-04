@@ -36,8 +36,8 @@ jobs:
           ls -al $PWD
 
           echo "🌍 Downloading Eclipse for Linux"
-          wget -q https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2025-06/M1/eclipse-embedcpp-2025-06-M1-linux-gtk-x86_64.tar.gz
-          tar -xzf eclipse-embedcpp-2025-06-M1-linux-gtk-x86_64.tar.gz
+          wget -q https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2025-06/M3/eclipse-embedcpp-2025-06-M3-linux-gtk-x86_64.tar.gz
+          tar -xzf eclipse-embedcpp-2025-06-M3-linux-gtk-x86_64.tar.gz
           mv eclipse eclipse-cdt
 
       - name: Install dependencies (Windows)
@@ -59,8 +59,8 @@ jobs:
           ls -al gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf/bin
 
           echo "🌍 Downloading Eclipse for Windows"
-          curl -LO https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2025-06/M1/eclipse-embedcpp-2025-06-M1-win32-x86_64.zip
-          unzip -q eclipse-embedcpp-2025-06-M1-win32-x86_64.zip
+          curl -LO https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2025-06/M3/eclipse-embedcpp-2025-06-M3-win32-x86_64.zip
+          unzip -q eclipse-embedcpp-2025-06-M3-win32-x86_64.zip
           mv eclipse eclipse-cdt
           ls -al eclipse-cdt
           echo $GITHUB_PATH

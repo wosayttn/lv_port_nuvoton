@@ -47,7 +47,7 @@ static void sys_init(void)
     /* Update System Core Clock */
     SystemCoreClockUpdate();
 
-#if defined(USE_ILI9341_SPI)
+#if defined(USE_NUTFT)
 
     /* SPI2 */
     CLK_EnableModuleClock(SPI2_MODULE);
