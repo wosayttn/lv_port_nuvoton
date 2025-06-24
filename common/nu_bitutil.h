@@ -12,21 +12,20 @@
 #ifndef __NU_BITUTIL_H__
 #define __NU_BITUTIL_H__
 
+#ifdef __has_include
+    #if __has_include("cmsis_compiler.h")
+        #include "cmsis_compiler.h"
+    #endif
+#endif
+
 #if defined(__ICCARM__)
     #ifdef __has_include
         #if __has_include("arm_math.h")
             #include "arm_math.h"
-        #elif __has_include("cmsis_compiler.h")
-            #include "cmsis_compiler.h"
         #endif
         #undef PI
     #endif
 #elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION < 6010050)       // ARM Compiler 6
-    #ifdef __has_include
-        #if __has_include("cmsis_compiler.h")
-            #include "cmsis_compiler.h"
-        #endif
-    #endif
 
     #if !defined(__CLZ)
         #define __CLZ     __clz
