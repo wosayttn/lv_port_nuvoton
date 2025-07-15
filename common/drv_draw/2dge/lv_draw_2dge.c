@@ -123,6 +123,7 @@ static inline bool _2dge_src_cf_supported(lv_color_format_t cf)
         is_cf_supported = true;
         break;
     default:
+        LV_LOG_INFO("Not-supported");
         break;
     }
 
@@ -136,12 +137,12 @@ static inline bool _2dge_dest_cf_supported(lv_color_format_t cf)
     switch (cf)
     {
     case LV_COLOR_FORMAT_RGB565:
-    case LV_COLOR_FORMAT_RGB888:
     case LV_COLOR_FORMAT_ARGB8888:
     case LV_COLOR_FORMAT_XRGB8888:
         is_cf_supported = true;
         break;
     default:
+        LV_LOG_INFO("Not-supported");
         break;
     }
 
@@ -172,7 +173,7 @@ static bool _2dge_buf_aligned(const void *buf, uint32_t stride)
         return false;
 
     /* Test for invalid stride (no stride alignment required) */
-    if (stride % 4)
+    if ((stride == 0) || (stride % 4))
         return false;
 
     return true;
@@ -238,10 +239,13 @@ static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
         lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
         const lv_image_dsc_t *img_dsc = draw_dsc->src;
 
-        int32_t src_stride = img_dsc->header.stride;
+        int32_t src_stride = (img_dsc->header.stride == 0) ? // Set?
+                             lv_draw_buf_width_to_stride(img_dsc->header.w, img_dsc->header.cf) :
+                             img_dsc->header.stride;
         int32_t dest_stride = u->target_layer->draw_buf->header.stride;
 
-        if (!_2dge_src_cf_supported(img_dsc->header.cf) ||
+        if (draw_dsc->tile ||
+                !_2dge_src_cf_supported(img_dsc->header.cf) ||
                 !_2dge_buf_aligned(img_dsc->data, img_dsc->header.stride) ||
                 (img_dsc->header.cf != draw_dsc_base->layer->color_format))
             goto _2dge_evaluate_not_ok;

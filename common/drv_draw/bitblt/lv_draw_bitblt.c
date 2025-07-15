@@ -125,6 +125,7 @@ static inline bool _bitblt_src_cf_supported(lv_color_format_t cf)
         is_cf_supported = true;
         break;
     default:
+        LV_LOG_INFO("Not-supported");
         break;
     }
 
@@ -143,6 +144,7 @@ static inline bool _bitblt_dest_cf_supported(lv_color_format_t cf)
         is_cf_supported = true;
         break;
     default:
+        LV_LOG_INFO("Not-supported");
         break;
     }
 
@@ -179,7 +181,7 @@ static bool _bitblt_buf_aligned(const void *buf, uint32_t stride)
         return false;
 
     /* Test for invalid stride (no stride alignment required) */
-    if (stride % 4)
+    if ((stride == 0) || (stride % 4))
         return false;
 
     return true;
@@ -289,7 +291,9 @@ static int32_t _bitblt_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
         lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
         const lv_image_dsc_t *img_dsc = draw_dsc->src;
 
-        int32_t src_stride = img_dsc->header.stride;
+        int32_t src_stride = (img_dsc->header.stride == 0) ? // Set?
+                             lv_draw_buf_width_to_stride(img_dsc->header.w, img_dsc->header.cf) :
+                             img_dsc->header.stride;
         int32_t dest_x = blend_area.x1;
         int32_t dest_y = blend_area.y1;
         int32_t dest_w = lv_area_get_width(&blend_area);
@@ -303,7 +307,8 @@ static int32_t _bitblt_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
                     img_dsc->data,
                     img_dsc->header.stride);
 
-        if (!_bitblt_src_cf_supported(img_dsc->header.cf) ||
+        if (draw_dsc->tile ||
+                !_bitblt_src_cf_supported(img_dsc->header.cf) ||
                 !_bitblt_buf_aligned(img_dsc->data, img_dsc->header.stride) ||
                 !_bitblt_buf_aligned(dest_buf + dest_stride * dest_h + dest_x * px_size, dest_stride))
             goto _bitblt_evaluate_not_ok;
