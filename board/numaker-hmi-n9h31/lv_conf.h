@@ -56,8 +56,8 @@
 #define LV_FONT_MONTSERRAT_46           1
 #define LV_FONT_MONTSERRAT_48           1
 
-#define CONFIG_LV_MEM_SIZE              (512*1024)
-#define CONFIG_LV_CACHE_DEF_SIZE        (512*1024)
+#define CONFIG_LV_MEM_SIZE              (4096*1024)
+#define CONFIG_LV_CACHE_DEF_SIZE        (2048*1024)
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
