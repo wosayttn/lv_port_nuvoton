@@ -1,7 +1,7 @@
 #include "lvgl.h"
 #include "avilib.h"
 
-#define USE_JPEG_WORKER  1
+#define USE_JPEG_WORKER    1
 
 #if USE_JPEG_WORKER
     #include "plat_jpeg.h"
@@ -70,25 +70,24 @@ static uint32_t crc32(uint8_t *ptr, uint32_t len)
     return crc ^ ~0U;
 }
 
-#if LV_USE_HWJPGD && LV_USE_IMAGE
-
 #if USE_JPEG_WORKER
-static lv_img_dsc_t RGB565Img = {0};
+
+static lv_img_dsc_t RGBImg = {0};
 
 static void update_rgbimg(lv_obj_t *img, S_JPEG_CTX *ctx)
 {
     /* Jpeg image is variable. */
-    RGB565Img.header.magic = LV_IMAGE_HEADER_MAGIC;
-    RGB565Img.header.cf = LV_COLOR_FORMAT_RGB565;
-    RGB565Img.header.flags = 0;
-    RGB565Img.header.w = ctx->m_u32Width;
-    RGB565Img.header.h = ctx->m_u32Height;
-    RGB565Img.header.stride = ctx->m_u32Width * 2;
-    RGB565Img.data_size = ctx->m_u32DstBufLen;
-    RGB565Img.data = (const char *)ctx->m_pvDstBufAddr;
+    RGBImg.header.magic = LV_IMAGE_HEADER_MAGIC;
+    RGBImg.header.flags = 0;
+    RGBImg.header.w = ctx->m_u32Width;
+    RGBImg.header.h = ctx->m_u32Height;
+    RGBImg.data_size = ctx->m_u32DstBufLen;
+    RGBImg.data = (const char *)ctx->m_pvDstBufAddr;
+    RGBImg.header.cf = ctx->m_u32DstFormat;
+    RGBImg.header.stride = ctx->m_u32DstBufLen / ctx->m_u32Height;
 
     lv_lock();
-    lv_image_set_src(img, (const void *)&RGB565Img);
+    lv_image_set_src(img, (const void *)&RGBImg);
     lv_unlock();
 }
 
@@ -117,7 +116,7 @@ static void mjpeg_worker(void *pdata)
                   AVI_video_height(avi),
                   (uint32_t)AVI_frame_rate(avi));
 
-        ctx.m_pvSrcBufAddr = nvt_malloc_align(DEF_BITSTREAM_BUFSIZE, 32);
+        ctx.m_pvSrcBufAddr = nvt_malloc_align(DEF_BITSTREAM_BUFSIZE, 64);
         if (ctx.m_pvSrcBufAddr == NULL)
         {
             sysprintf("Failed to allocate JPEG bitstream memory(%d).\n", DEF_BITSTREAM_BUFSIZE);
@@ -141,19 +140,30 @@ static void mjpeg_worker(void *pdata)
                     continue;
                 }
 
-                ctx.m_u32DstFormat = JPEG_DEC_PRIMARY_PACKET_RGB565;
-                if (plat_jpeg_parse(&ctx, true) < 0)
+                if (idx == 1)
                 {
-                    sysprintf("Failed to parse jpeg bitstream.\n");
-                    goto _quit_parse;
-                }
-
-                if (ctx.m_pvDstBufAddr == NULL)
-                {
-                    if (plat_jpeg_malloc(&ctx) == NULL)
+                    if (plat_jpeg_parse(&ctx, true) < 0)
                     {
                         sysprintf("Failed to parse jpeg bitstream.\n");
                         goto _quit_parse;
+                    }
+                    //sysprintf("[%s, %d] %d %d %p\n", __func__, __LINE__, ctx.m_u32Width, ctx.m_u32Height, ctx.m_pvSrcBufAddr);
+
+#if (LV_COLOR_DEPTH==16)
+                    ctx.m_u32DstFormat = LV_COLOR_FORMAT_RGB565;
+#elif (LV_COLOR_DEPTH==32)
+                    ctx.m_u32DstFormat = LV_COLOR_FORMAT_XRGB8888;
+#else
+#warning "NotSupport!!"
+#endif
+
+                    if (ctx.m_pvDstBufAddr == NULL)
+                    {
+                        if (plat_jpeg_malloc(&ctx) == NULL)
+                        {
+                            sysprintf("Failed to parse jpeg bitstream.\n");
+                            goto _quit_parse;
+                        }
                     }
                 }
 
@@ -164,6 +174,7 @@ static void mjpeg_worker(void *pdata)
                     //sysprintf("[%d] %d/%d\n", xTaskGetTickCount(), idx, AVI_video_frames(avi));
                     update_rgbimg(img, &ctx);
                 }
+
             }
             else
             {
@@ -171,7 +182,7 @@ static void mjpeg_worker(void *pdata)
                 AVI_set_video_position(avi, idx);
             }
 
-            vTaskDelay((const TickType_t)( (1000 / AVI_frame_rate(avi)) / portTICK_PERIOD_MS));
+            vTaskDelay((const TickType_t)((1000 / AVI_frame_rate(avi)) / portTICK_PERIOD_MS));
 
         }
         while (1);
@@ -192,7 +203,7 @@ _quit_malloc:
     if (ctx.m_pvSrcBufAddr)
         nvt_free_align(ctx.m_pvSrcBufAddr);
 
-    plat_jpeg_free(&ctx);
+    //plat_jpeg_free(&ctx);
 
     vTaskDelete(NULL);
 }
@@ -235,10 +246,9 @@ static void img_timer(lv_timer_t *t)
     {
         int key = 0;
         int framesize = AVI_read_frame(avi, &framebuf[0], &key);
-
         if (key && (framesize > 0))
         {
-            //sysprintf("[%d/%d]framesize: %d, key: %d crc32: 0x%08x\n", idx+1, chunk, framesize, key, crc32(framebuf, framesize));
+            //sysprintf("[%d/%d]framesize: %d, key: %d crc32: 0x%08x\n", idx + 1, AVI_video_frames(avi), framesize, key, crc32(framebuf, framesize));
 
             /* Jpeg image is variable. */
             JpgImg.header.magic = LV_IMAGE_HEADER_MAGIC;
@@ -274,19 +284,18 @@ static void demo_show_avi_mjpeg(void)
     lv_obj_center(img);
 
 #if USE_JPEG_WORKER
-    xTaskCreate(mjpeg_worker, "mjpeg", 4096, img, (configMAX_PRIORITIES - 2), NULL);
+    xTaskCreate(mjpeg_worker, "mjpeg", 16384, img, (configMAX_PRIORITIES - 2), NULL);
 #else
     lv_timer_t *timer = lv_timer_create(img_timer, 100, img);
 #endif
 }
-#endif
 
 void ui_init(void)
 {
     int fatfs_ramdisk_init(void);
     fatfs_ramdisk_init();
 
-#if LV_USE_HWJPGD && LV_USE_IMAGE
+#if (LV_USE_HWJPGD || LV_USE_TJPGD) && LV_USE_IMAGE
     demo_show_avi_mjpeg();
 #endif
 

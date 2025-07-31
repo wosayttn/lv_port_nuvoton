@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
 
     steps:
       - name: Checkout repo
@@ -36,9 +36,11 @@ jobs:
           ls -al $PWD
 
           echo "🌍 Downloading Eclipse for Linux"
-          wget -q https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2025-06/M3/eclipse-embedcpp-2025-06-M3-linux-gtk-x86_64.tar.gz
-          tar -xzf eclipse-embedcpp-2025-06-M3-linux-gtk-x86_64.tar.gz
-          mv eclipse eclipse-cdt
+          wget -q -O NuEclipse.tar.gz --no-check-certificate https://www.nuvoton.com/resource-download.jsp?tp_GUID=SW132023052507200264
+          tar -xzf NuEclipse.tar.gz
+          find . -name eclipse
+          mv NuEclipse_V1.02.029_Linux_Setup/eclipse ./eclipse-cdt
+          ls -al $PWD
 
       - name: Install dependencies (Windows)
         if: matrix.os == 'windows-latest'

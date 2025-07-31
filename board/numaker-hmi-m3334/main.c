@@ -13,7 +13,7 @@ static void sys_init(void)
     /* Unlock protected registers */
     SYS_UnlockReg();
 
-    //SYS_SetPowerLevel(SYS_PLCTL_PLSEL_PL0);
+    SYS_SetPowerLevel(SYS_PLCTL_PLSEL_PL0);
 
     /* Enable clock source */
     CLK_EnableXtalRC(CLK_PWRCTL_HIRCEN_Msk | /*CLK_PWRCTL_LXTEN_Msk |*/ CLK_PWRCTL_HXTEN_Msk);

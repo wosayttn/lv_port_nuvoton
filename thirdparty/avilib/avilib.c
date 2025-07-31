@@ -26,9 +26,8 @@
  */
 
 //SLM
+#include "lvgl.h"
 #include "avilib.h"
-//#include "syscall_fatfs.h"
-#include "lv_fs.h"
 
 #define INFO_LIST
 
@@ -48,7 +47,7 @@ static char id_str[MAX_INFO_STRLEN];
 
 static size_t avi_read(lv_fs_file_t *fd, char *buf, size_t len)
 {
-    size_t n = 0;
+    uint32_t n = 0;
     size_t r = 0;
 
     while (r < len)
@@ -66,7 +65,7 @@ static size_t avi_read(lv_fs_file_t *fd, char *buf, size_t len)
 
 static size_t avi_write(lv_fs_file_t *fd, char *buf, size_t len)
 {
-    size_t n = 0;
+    uint32_t n = 0;
     size_t r = 0;
 
     while (r < len)
@@ -225,7 +224,7 @@ avi_t *AVI_open_output_file(char *filename)
 
     unsigned char AVI_header[HEADERBYTES];
 
-    lv_fs_file_t *f = lv_malloc(sizeof(*f));
+    lv_fs_file_t *f = lv_malloc((size_t)sizeof(*f));
     if (f == NULL)
     {
         return 0;
@@ -239,7 +238,7 @@ avi_t *AVI_open_output_file(char *filename)
     }
 
     /* Allocate the avi_t struct and zero it */
-    AVI = (avi_t *) malloc(sizeof(avi_t));
+    AVI = (avi_t *) lv_malloc(sizeof(avi_t));
     if (AVI == 0)
     {
         AVI_errno = AVI_ERR_NO_MEM;
@@ -260,7 +259,7 @@ avi_t *AVI_open_output_file(char *filename)
         lv_fs_close(AVI->fdes);
         AVI_errno = AVI_ERR_WRITE;
         lv_free(f);
-        free(AVI);
+        lv_free(AVI);
         return 0;
     }
 
@@ -1086,20 +1085,20 @@ int AVI_close(avi_t *AVI)
     /* Even if there happened an error, we first clean up */
 
     lv_fs_close(AVI->fdes);
-    if (AVI->idx) free(AVI->idx);
-    if (AVI->video_index) free(AVI->video_index);
+    if (AVI->idx) lv_free(AVI->idx);
+    if (AVI->video_index) lv_free(AVI->video_index);
     //FIXME
-    //if(AVI->audio_index) free(AVI->audio_index);
+    //if(AVI->audio_index) lv_free(AVI->audio_index);
     if (AVI->bitmap_info_header)
-        free(AVI->bitmap_info_header);
+        lv_free(AVI->bitmap_info_header);
     for (i = 0; i < AVI->anum; i++)
     {
         if (AVI->wave_format_ex[i])
-            free(AVI->wave_format_ex[i]);
+            lv_free(AVI->wave_format_ex[i]);
         if (AVI->track[i].audio_chunks)
-            free(AVI->track[i].audio_index);
+            lv_free(AVI->track[i].audio_index);
     }
-    free(AVI);
+    lv_free(AVI);
 
     return ret;
 }
@@ -1118,26 +1117,25 @@ avi_t *AVI_open_input_file(const char *filename, int getIndex)
 
     lv_fs_res_t fs_res = LV_FS_RES_UNKNOWN;
 
-    lv_fs_file_t *f = lv_malloc(sizeof(*f));
+    lv_fs_file_t *f = lv_malloc((size_t)sizeof(lv_fs_file_t));
     if (f == NULL)
     {
-        return 0;
+        return NULL;
     }
 
     fs_res = lv_fs_open(f, filename, LV_FS_MODE_RD);
     if (fs_res != LV_FS_RES_OK)
     {
         sysprintf("Open file failed: %d\n", fs_res);
-        return 0;
+        return NULL;
     }
-
     /* Create avi_t structure */
-    AVI = (avi_t *) malloc(sizeof(avi_t));
+    AVI = (avi_t *) lv_malloc(sizeof(avi_t));
     if (AVI == NULL)
     {
         AVI_errno = AVI_ERR_NO_MEM;
         lv_free(f);
-        return 0;
+        return NULL;
     }
     memset((void *)AVI, 0, sizeof(avi_t));
 
@@ -1170,17 +1168,20 @@ int avi_parse_input_file(avi_t *AVI, int getIndex)
     char data[256];
 
     /* Read first 12 bytes and check that this is an AVI file */
-
     if (avi_read(AVI->fdes, data, 12) != 12) ERR_EXIT(AVI_ERR_READ)
+    {
 
         if (strncasecmp(data, "RIFF", 4) != 0 ||
                 strncasecmp(data + 8, "AVI ", 4) != 0) ERR_EXIT(AVI_ERR_NO_AVI)
+        {
 
             /* Go through the AVI file and extract the header list,
                the start position of the 'movi' list and an optionally
                present idx1 tag */
 
             hdrl_data = 0;
+        }
+    }
 
     while (1)
     {
@@ -1196,7 +1197,7 @@ int avi_parse_input_file(avi_t *AVI, int getIndex)
             if (strncasecmp(data, "hdrl", 4) == 0)
             {
                 hdrl_len = n;
-                hdrl_data = (unsigned char *) malloc(n);
+                hdrl_data = (unsigned char *) lv_malloc(n);
                 if (hdrl_data == 0) ERR_EXIT(AVI_ERR_NO_MEM);
 
                 // offset of header
@@ -1218,7 +1219,7 @@ int avi_parse_input_file(avi_t *AVI, int getIndex)
                break if this is not the case */
 
             AVI->n_idx = AVI->max_idx = n / 16;
-            AVI->idx = (unsigned  char((*)[16])) malloc(n);
+            AVI->idx = (unsigned  char((*)[16])) lv_malloc(n);
             if (AVI->idx == 0) ERR_EXIT(AVI_ERR_NO_MEM)
                 if (avi_read(AVI->fdes, (char *) AVI->idx, n) != n) ERR_EXIT(AVI_ERR_READ)
                 }
@@ -1302,7 +1303,7 @@ int avi_parse_input_file(avi_t *AVI, int getIndex)
                         BITMAPINFOHEADER_avilib bih;
 
                         memcpy(&bih, hdrl_data + i, sizeof(BITMAPINFOHEADER_avilib));
-                        AVI->bitmap_info_header = (BITMAPINFOHEADER_avilib *)malloc(bih.bi_size);
+                        AVI->bitmap_info_header = (BITMAPINFOHEADER_avilib *)lv_malloc(bih.bi_size);
                         if (AVI->bitmap_info_header != NULL)
                             memcpy(AVI->bitmap_info_header, hdrl_data + i, bih.bi_size);
 
@@ -1326,7 +1327,7 @@ int avi_parse_input_file(avi_t *AVI, int getIndex)
                             wfes = hdrl_len - i;
                         else
                             wfes = sizeof(WAVEFORMATEX_avilib);
-                        wfe = (WAVEFORMATEX_avilib *)malloc(sizeof(WAVEFORMATEX_avilib));
+                        wfe = (WAVEFORMATEX_avilib *)lv_malloc(sizeof(WAVEFORMATEX_avilib));
                         if (wfe != NULL)
                         {
                             memset(wfe, 0, sizeof(WAVEFORMATEX_avilib));
@@ -1372,7 +1373,7 @@ int avi_parse_input_file(avi_t *AVI, int getIndex)
                 i += n;
             }
 
-    free(hdrl_data);
+    lv_free(hdrl_data);
 
     if (!vids_strh_seen || !vids_strf_seen) ERR_EXIT(AVI_ERR_NO_VIDS)
 
@@ -1487,14 +1488,14 @@ int avi_parse_input_file(avi_t *AVI, int getIndex)
     for (j = 0; j < AVI->anum; ++j) AVI->track[j].audio_chunks = nai[j];
 
     if (AVI->video_frames == 0) ERR_EXIT(AVI_ERR_NO_VIDS);
-    AVI->video_index = (video_index_entry *) malloc(nvi * sizeof(video_index_entry));
+    AVI->video_index = (video_index_entry *) lv_malloc(nvi * sizeof(video_index_entry));
     if (AVI->video_index == 0) ERR_EXIT(AVI_ERR_NO_MEM);
 
     for (j = 0; j < AVI->anum; ++j)
     {
         if (AVI->track[j].audio_chunks)
         {
-            AVI->track[j].audio_index = (audio_index_entry *) malloc((nai[j] + 1) * sizeof(audio_index_entry));
+            AVI->track[j].audio_index = (audio_index_entry *) lv_malloc((nai[j] + 1) * sizeof(audio_index_entry));
             memset(AVI->track[j].audio_index, 0, (nai[j] + 1) * (sizeof(audio_index_entry)));
             if (AVI->track[j].audio_index == 0) ERR_EXIT(AVI_ERR_NO_MEM);
         }
@@ -1954,7 +1955,7 @@ char *(avi_errors[]) =
     /*  5 */ "avilib - Error writing index (file may still be useable)",
     /*  6 */ "avilib - Error closing AVI file",
     /*  7 */ "avilib - Operation (read/write) not permitted",
-    /*  8 */ "avilib - Out of memory (malloc failed)",
+    /*  8 */ "avilib - Out of memory (lv_malloc failed)",
     /*  9 */ "avilib - Not an AVI file",
     /* 10 */ "avilib - AVI file has no header list (corrupted?)",
     /* 11 */ "avilib - AVI file has no MOVI list (corrupted?)",

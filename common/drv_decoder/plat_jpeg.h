@@ -19,7 +19,17 @@ extern "C" {
 /*********************
  *      DEFINES
  *********************/
+#ifndef JPEG_DEC_YUV420
+#define JPEG_DEC_YUV420                 0
+#endif
 
+#ifndef JPEG_DEC_YUV422
+#define JPEG_DEC_YUV422                 1
+#endif
+
+#ifndef JPEG_DEC_YUV444
+#define JPEG_DEC_YUV444                 2
+#endif
 /**********************
  *      TYPEDEFS
  **********************/

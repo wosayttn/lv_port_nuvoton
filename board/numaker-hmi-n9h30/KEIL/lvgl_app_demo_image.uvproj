@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>N9H20K5_NAND_480x272_FreeRTOS</TargetName>
+      <TargetName>N9H30F6_800x480</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
@@ -46,14 +46,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\NAND_Data_FreeRTOS\</OutputDirectory>
-          <OutputName>lvgl_demo_nand_freertos</OutputName>
+          <OutputDirectory>.\Data\</OutputDirectory>
+          <OutputName>lvgl_demo</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>.\NAND_Data_FreeRTOS\</ListingPath>
+          <ListingPath>.\Data\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -87,7 +87,7 @@
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
-          <SelectedForBatchBuild>1</SelectedForBatchBuild>
+          <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
@@ -138,8 +138,8 @@
           </Simulator>
           <Target>
             <UseTarget>1</UseTarget>
-            <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>1</RunToMain>
+            <LoadApplicationAtStartup>0</LoadApplicationAtStartup>
+            <RunToMain>0</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
@@ -162,7 +162,7 @@
             <CpuDllArguments></CpuDllArguments>
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
-            <InitializationFile>..\..\..\bsp\n9h20\BSP\Script\N9H20K5\N9H20K5.ini</InitializationFile>
+            <InitializationFile>..\..\..\bsp\n9h30\Script\InitDDR2.ini</InitializationFile>
             <Driver>BIN\UL2ARM.DLL</Driver>
           </TargetDlls>
         </DebugOption>
@@ -377,9 +377,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE __FreeRTOS__ CONFIG_APP_DEMO_IMG=1</Define>
+              <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE __FreeRTOS__ CONFIG_APP_DEMO_IMG=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h20\BSP\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H20;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\lvgl\examples;..\..\..\;..\sls_files;..\..\..\thirdparty\FatFs-r15\source;..\..\..\thirdparty\avilib;..\App;..\..\..\common\drv_decoder</IncludePath>
+              <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h30\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H30;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\lvgl\examples;..\..\..\;..\sls_files;..\..\..\thirdparty\FatFs-r15\source;..\..\..\thirdparty\avilib;..\App;..\..\..\common\drv_decoder</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -395,9 +395,9 @@
             <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>N9H20K5 __FreeRTOS__</Define>
+              <Define>N9H30F6</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\bsp\n9h20\BSP\SampleCode\FreeRTOS\ARM9_N9H20</IncludePath>
+              <IncludePath></IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -410,10 +410,10 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0xF8002000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\n9h20\BSP\Script\N9H20K5\N9H20K5.sct</ScatterFile>
+            <ScatterFile>..\..\..\bsp\n9h30\Script\N9H30.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc>--entry 0</Misc>
+            <Misc>--entry 0x0</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -421,7 +421,7 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Src</GroupName>
+          <GroupName>src</GroupName>
           <Files>
             <File>
               <FileName>main.c</FileName>
@@ -480,146 +480,79 @@
               </FileOption>
             </File>
             <File>
-              <FileName>wb_init.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\wb_init.s</FilePath>
+              <FileName>task_lv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\task_lv.c</FilePath>
             </File>
             <File>
-              <FileName>standalone.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\standalone.c</FilePath>
+              <FileName>FreeRTOSConfig.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\FreeRTOSConfig.h</FilePath>
             </File>
             <File>
               <FileName>multithread.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\multithread.c</FilePath>
             </File>
-            <File>
-              <FileName>task_lv.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\components\task_lv.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>Lib</GroupName>
+          <GroupName>libraries</GroupName>
           <Files>
             <File>
-              <FileName>N9H20_SYS.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\IPLib\N9H20_SYS.lib</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>0</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds/>
-              </FileOption>
+              <FileName>standalone.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\standalone.c</FilePath>
             </File>
             <File>
-              <FileName>N9H20_VPOST_GIANTPLUS_GPM1006D.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\IPLib\N9H20_VPOST_GIANTPLUS_GPM1006D.lib</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>0</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds/>
-              </FileOption>
+              <FileName>sys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\sys.c</FilePath>
             </File>
             <File>
-              <FileName>N9H20_VPOST_FW050TFT_800x480.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\IPLib\N9H20_VPOST_FW050TFT_800x480.lib</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>0</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds/>
-              </FileOption>
+              <FileName>sys_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\sys_timer.c</FilePath>
             </File>
             <File>
-              <FileName>N9H20_VPOST_FW043TFT_480x272.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\IPLib\N9H20_VPOST_FW043TFT_480x272.lib</FilePath>
+              <FileName>sys_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\sys_uart.c</FilePath>
             </File>
             <File>
-              <FileName>N9H20_ADC.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\IPLib\N9H20_ADC.lib</FilePath>
+              <FileName>system_N9H30.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\system_N9H30.c</FilePath>
             </File>
             <File>
-              <FileName>N9H20_SIC.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\IPLib\N9H20_SIC.lib</FilePath>
+              <FileName>startup_N9H30.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\startup_N9H30.s</FilePath>
             </File>
             <File>
-              <FileName>N9H20_GNAND.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\GNANDLib\N9H20_GNAND.lib</FilePath>
+              <FileName>sys_N9H30.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\sys_N9H30.s</FilePath>
             </File>
             <File>
-              <FileName>N9H20_NVTFAT.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\NVTFATLib\N9H20_NVTFAT.lib</FilePath>
+              <FileName>2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\2d.c</FilePath>
             </File>
             <File>
-              <FileName>N9H20_BLT.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\IPLib\N9H20_BLT.lib</FilePath>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\adc.c</FilePath>
             </File>
             <File>
-              <FileName>N9H20_JPEG.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\IPLib\N9H20_JPEG.lib</FilePath>
+              <FileName>lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\lcd.c</FilePath>
             </File>
             <File>
-              <FileName>N9H20_EDMA.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\IPLib\N9H20_EDMA.lib</FilePath>
-            </File>
-            <File>
-              <FileName>N9H20_SYS_FreeRTOS.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\bsp\n9h20\BSP\Library\IPLib\N9H20_SYS_FreeRTOS.lib</FilePath>
+              <FileName>jpegcodec.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\n9h30\Driver\Source\jpegcodec.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -649,12 +582,12 @@
             <File>
               <FileName>port.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H20\port.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H30\port.c</FilePath>
             </File>
             <File>
               <FileName>portASM.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H20\portASM.s</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H30\portASM.s</FilePath>
             </File>
             <File>
               <FileName>heap_4.c</FileName>
@@ -670,6 +603,11 @@
               <FileName>lv_demo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\lv_demo.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_port_disp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
@@ -696,40 +634,35 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
             </File>
-            <File>
-              <FileName>lv_port_disp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>lv_draw</GroupName>
           <Files>
             <File>
-              <FileName>lv_draw_bitblt.c</FileName>
+              <FileName>lv_draw_2dge.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt.c</FilePath>
+              <FilePath>..\..\..\common\drv_draw\2dge\lv_draw_2dge.c</FilePath>
             </File>
             <File>
-              <FileName>lv_draw_bitblt_fill.c</FileName>
+              <FileName>lv_draw_2dge_fill.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_fill.c</FilePath>
+              <FilePath>..\..\..\common\drv_draw\2dge\lv_draw_2dge_fill.c</FilePath>
             </File>
             <File>
-              <FileName>drv_bitblt.c</FileName>
+              <FileName>lv_draw_2dge_image.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\common\drv_draw\bitblt\drv_bitblt.c</FilePath>
+              <FilePath>..\..\..\common\drv_draw\2dge\lv_draw_2dge_image.c</FilePath>
             </File>
             <File>
-              <FileName>lv_draw_bitblt_image.c</FileName>
+              <FileName>lv_draw_2dge_layer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_image.c</FilePath>
+              <FilePath>..\..\..\common\drv_draw\2dge\lv_draw_2dge_layer.c</FilePath>
             </File>
             <File>
-              <FileName>lv_draw_bitblt_layer.c</FileName>
+              <FileName>drv_2dge.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\common\drv_draw\bitblt\lv_draw_bitblt_layer.c</FilePath>
+              <FilePath>..\..\..\common\drv_draw\2dge\drv_2dge.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -750,7 +683,7 @@
               <StopOnExitCode>11</StopOnExitCode>
               <CustomArgument></CustomArgument>
               <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
+              <ComprImg>0</ComprImg>
             </CommonProperty>
             <GroupArmAds>
               <Cads>
@@ -2399,6 +2332,11 @@
           <GroupName>App</GroupName>
           <Files>
             <File>
+              <FileName>fat_image.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\App\fat_image.s</FilePath>
+            </File>
+            <File>
               <FileName>diskio_ramdisk.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\diskio_ramdisk.c</FilePath>
@@ -2473,11 +2411,6 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
-            </File>
-            <File>
-              <FileName>fat_image.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\App\fat_image.s</FilePath>
             </File>
           </Files>
         </Group>

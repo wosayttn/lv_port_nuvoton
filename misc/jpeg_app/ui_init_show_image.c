@@ -1,5 +1,4 @@
 #include "lvgl.h"
-#include "avilib.h"
 
 #if LV_USE_LODEPNG && LV_USE_IMAGE
 /**
@@ -13,7 +12,7 @@ static void demo_show_png_image(void)
 }
 #endif
 
-#if LV_USE_HWJPGD && LV_USE_IMAGE
+#if (LV_USE_HWJPGD || LV_USE_TJPGD) && LV_USE_IMAGE
 /**
  * Show a JPEG image from a file
  */
@@ -67,7 +66,7 @@ void ui_init(void)
     demo_show_bmp_image();
 #endif
 
-#if LV_USE_HWJPGD && LV_USE_IMAGE
+#if (LV_USE_HWJPGD || LV_USE_TJPGD) && LV_USE_IMAGE
     demo_show_jpg_image();
 #endif
 

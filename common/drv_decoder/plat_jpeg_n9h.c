@@ -9,6 +9,11 @@
 #include <lvgl.h>
 #include "plat_jpeg.h"
 
+#if defined(PLAT_NUVOTON_N9H3X) && (PLAT_NUVOTON_N9H3X==1)
+    #include "jpegcodec.h"
+    #include "jpeg.h"
+#endif
+
 /*********************
  *      DEFINES
  *********************/
@@ -81,26 +86,21 @@ void *plat_jpeg_malloc(S_JPEG_CTX *ctx)
     /* Raw Data Buffer for Decode Operation */
     switch (ctx->m_u32DstFormat)
     {
-    case JPEG_DEC_PRIMARY_PACKET_RGB888:
+    case LV_COLOR_FORMAT_XRGB8888:
     {
         u32BufferSize = ctx->m_u32Width * ctx->m_u32Height * 4;
     }
     break;
 
-    case JPEG_DEC_PRIMARY_PLANAR_YUV:
+    case LV_COLOR_FORMAT_RGB565:
     {
-        if (ctx->m_u32SrcFormat == JPEG_DEC_YUV444)
-            u32BufferSize = ctx->m_u32Width * ctx->m_u32Height * 3;
-        else if (ctx->m_u32SrcFormat == JPEG_DEC_YUV422)
-            u32BufferSize = ctx->m_u32Width * ctx->m_u32Height * 2;
-        else
-            u32BufferSize = ctx->m_u32Width * ctx->m_u32Height * 1.5;
+        u32BufferSize = ctx->m_u32Width * ctx->m_u32Height * 2;
     }
     break;
 
     default:
     {
-        u32BufferSize = ctx->m_u32Width * ctx->m_u32Height * 2;
+        goto _exit_buf_allocation;
     }
     break;
     }
@@ -467,43 +467,10 @@ int32_t plat_jpeg_decode(S_JPEG_CTX *ctx)
     if (JPEG_LOCK() != LV_RESULT_OK)
         goto _exit_decode;
 
-    if (ctx->m_u32DstFormat == JPEG_DEC_PRIMARY_PLANAR_YUV)
-    {
-        uint32_t u32YBuffer, u32UBuffer, u32VBuffer;
 
-        u32YBuffer = (uint32_t)ctx->m_pvDstBufAddr;
-
-        /* For Normal Decode buffer allocation */
-        if (ctx->m_u32SrcFormat == JPEG_DEC_YUV422)
-        {
-            u32UBuffer = u32YBuffer + ctx->m_u32Width * ctx->m_u32Height;
-            u32VBuffer = u32UBuffer + ctx->m_u32Width * ctx->m_u32Height / 2;
-        }
-        else if (ctx->m_u32SrcFormat == JPEG_DEC_YUV444)
-        {
-            u32UBuffer = u32YBuffer + ctx->m_u32Width * ctx->m_u32Height;
-            u32VBuffer = u32UBuffer + ctx->m_u32Width * ctx->m_u32Height;
-        }
-        else
-        {
-            u32UBuffer = u32YBuffer + ctx->m_u32Width * ctx->m_u32Height;
-            u32VBuffer = u32UBuffer + ctx->m_u32Width * ctx->m_u32Height / 4;
-        }
-
-        /* Set Decoded Image Address (Only Can be set before Decode Trigger for Planar;The address can set any time before existing Header Decode Complete Callback function) */
-        jpegIoctl(JPEG_IOCTL_SET_YADDR, u32YBuffer, 0);
-        jpegIoctl(JPEG_IOCTL_SET_UADDR, u32UBuffer, 0);
-        jpegIoctl(JPEG_IOCTL_SET_VADDR, u32VBuffer, 0);
-
-        //sysprintf("\tThe Y/U/V Buffer prepared for Planar format starts from 0x%08X,0x%08X,0x%08X, size:%d\n", u32YBuffer, u32UBuffer, u32VBuffer, ctx->m_u32DstBufLen);
-    }
-    else
-    {
-        /* Set Decoded Image Address (Can be set before Decode Trigger for Packet/Planar format)*/
-        jpegIoctl(JPEG_IOCTL_SET_YADDR, (uint32_t)ctx->m_pvDstBufAddr, 0);
-
-        //sysprintf("\tThe Packet Buffer prepared for packet format starts from 0x%08X, size:%d\n", ctx->m_pvDstBufAddr, ctx->m_u32DstBufLen);
-    }
+    /* Set Decoded Image Address (Can be set before Decode Trigger for Packet/Planar format)*/
+    jpegIoctl(JPEG_IOCTL_SET_YADDR, (uint32_t)ctx->m_pvDstBufAddr, 0);
+    //sysprintf("\tThe Packet Buffer prepared for packet format starts from 0x%08X, size:%d\n", ctx->m_pvDstBufAddr, ctx->m_u32DstBufLen);
 
     sysCleanDcache((UINT32)ctx->m_pvSrcBufAddr, ctx->m_u32SrcBufLen);
 
@@ -514,7 +481,21 @@ int32_t plat_jpeg_decode(S_JPEG_CTX *ctx)
     jpegIoctl(JPEG_IOCTL_SET_BITSTREAM_ADDR, (UINT32)ctx->m_pvSrcBufAddr, 0);
 
     /* Decode mode */
-    jpegIoctl(JPEG_IOCTL_SET_DECODE_MODE, (UINT32)ctx->m_u32DstFormat, 0);
+    switch (ctx->m_u32DstFormat)
+    {
+    case LV_COLOR_FORMAT_XRGB8888:
+    {
+        jpegIoctl(JPEG_IOCTL_SET_DECODE_MODE, JPEG_DEC_PRIMARY_PACKET_RGB888, 0);
+    }
+    break;
+    case LV_COLOR_FORMAT_RGB565:
+    {
+        jpegIoctl(JPEG_IOCTL_SET_DECODE_MODE, JPEG_DEC_PRIMARY_PACKET_RGB565, 0);
+    }
+    break;
+    default:
+        goto _exit_decode;
+    }
 
     /* Trigger JPEG decoder */
     jpegIoctl(JPEG_IOCTL_DECODE_TRIGGER, 0, 0);

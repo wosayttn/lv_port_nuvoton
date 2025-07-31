@@ -40,6 +40,11 @@ void lv_nuvoton_task(void *pdata)
     lv_draw_2dge_init();
 #endif
 
+#if LV_USE_HWJPGD && LV_USE_IMAGE
+    void lv_hwjpgd_init(void);
+    lv_hwjpgd_init();
+#endif
+
     lv_tick_set_cb(xTaskGetTickCount);    /*Expression evaluating to current system time in ms*/
     lv_delay_set_cb(vTaskDelay);
 
@@ -62,7 +67,7 @@ void lv_nuvoton_task(void *pdata)
 
 int task_lv_init(void)
 {
-    xTaskCreate(lv_tick_task, "lv_tick", configMINIMAL_STACK_SIZE, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
+    xTaskCreate(lv_tick_task, "lv_tick", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
     xTaskCreate(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
     return 0;
 }

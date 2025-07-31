@@ -86,7 +86,6 @@ int lcd_device_control(int cmd, void *argv)
 
     case evLCD_CTRL_RECT_UPDATE:
     {
-        printf("%s %d\n", __func__, __LINE__);
         disp_fillrect((uint16_t *)s_au8FrameBuf, (const lv_area_t *)argv);
     }
     break;

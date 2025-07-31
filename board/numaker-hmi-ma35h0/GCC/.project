@@ -25,6 +25,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>App</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>Driver</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -40,6 +45,21 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>drv_decoder</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>fatfs</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>lv_demo</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>lv_port</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -50,14 +70,34 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>lv_demo</name>
+			<name>sls_files</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>sls_files</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			<name>App/diskio_ramdisk.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/App/diskio_ramdisk.c</locationURI>
+		</link>
+		<link>
+			<name>App/fatfs_ramdisk.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/jpeg_app/fatfs_ramdisk.c</locationURI>
+		</link>
+		<link>
+			<name>App/ui_init_mjpeg_playback.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/jpeg_app/ui_init_mjpeg_playback.c</locationURI>
+		</link>
+		<link>
+			<name>App/ui_init_show_image.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/jpeg_app/ui_init_show_image.c</locationURI>
+		</link>
+		<link>
+			<name>App/avilib.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/avilib/avilib.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/GCC.ld</name>
@@ -200,34 +240,29 @@
 			<locationURI>PARENT-1-PROJECT_LOC/components/task_lv.c</locationURI>
 		</link>
 		<link>
-			<name>lv_port/lv_demo.c</name>
+			<name>drv_decoder/drv_hwjpgd.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/lv_demo.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_decoder/drv_hwjpgd.c</locationURI>
 		</link>
 		<link>
-			<name>lv_port/lv_glue.c</name>
+			<name>drv_decoder/plat_jpeg_ma35.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/lv_port/lv_glue.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_decoder/plat_jpeg_ma35.c</locationURI>
 		</link>
 		<link>
-			<name>lv_port/lv_port_disp.c</name>
+			<name>fatfs/ff.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/lv_port/lv_port_disp.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs-r15/source/ff.c</locationURI>
 		</link>
 		<link>
-			<name>lv_port/lv_port_indev.c</name>
+			<name>fatfs/ffsystem.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/lv_port_indev.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs-r15/source/ffsystem.c</locationURI>
 		</link>
 		<link>
-			<name>lv_port/nu_misc.c</name>
+			<name>fatfs/ffunicode.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/nu_misc.c</locationURI>
-		</link>
-		<link>
-			<name>lv_port/touch_adc_calibration.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_adc_calibration.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs-r15/source/ffunicode.c</locationURI>
 		</link>
 		<link>
 			<name>lv_demo/img_clothes.c</name>
@@ -360,9 +395,34 @@
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_28_compr_az.c.c</locationURI>
 		</link>
 		<link>
-			<name>lvgl/lv_cache_lru_rb.c</name>
+			<name>lv_port/lv_demo.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/misc/cache/lv_cache_lru_rb.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/lv_demo.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/lv_glue.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/lv_port/lv_glue.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/lv_port_disp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/lv_port/lv_port_disp.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/lv_port_indev.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/lv_port_indev.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/nu_misc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/nu_misc.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/touch_adc_calibration.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_adc_calibration.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/lv_anim.c</name>
@@ -438,6 +498,11 @@
 			<name>lvgl/lv_cache_entry.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/misc/cache/lv_cache_entry.c</locationURI>
+		</link>
+		<link>
+			<name>lvgl/lv_cache_lru_rb.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/misc/cache/lv_cache_lru_rb.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/lv_calendar.c</name>
@@ -555,9 +620,24 @@
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend.c</locationURI>
 		</link>
 		<link>
+			<name>lvgl/lv_draw_sw_blend_to_al88.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_al88.c</locationURI>
+		</link>
+		<link>
 			<name>lvgl/lv_draw_sw_blend_to_argb8888.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_argb8888.c</locationURI>
+		</link>
+		<link>
+			<name>lvgl/lv_draw_sw_blend_to_i1.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_i1.c</locationURI>
+		</link>
+		<link>
+			<name>lvgl/lv_draw_sw_blend_to_l8.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_l8.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/lv_draw_sw_blend_to_rgb565.c</name>
@@ -870,6 +950,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/libs/fsdrv/lv_fs_fatfs.c</locationURI>
 		</link>
 		<link>
+			<name>lvgl/lv_fs_memfs.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/libs/fsdrv/lv_fs_memfs.c</locationURI>
+		</link>
+		<link>
 			<name>lvgl/lv_grid.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/layouts/grid/lv_grid.c</locationURI>
@@ -893,6 +978,11 @@
 			<name>lvgl/lv_image_decoder.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/lv_image_decoder.c</locationURI>
+		</link>
+		<link>
+			<name>lvgl/lv_image_header_cache.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/misc/cache/lv_image_header_cache.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/lv_imagebutton.c</name>
@@ -1063,6 +1153,11 @@
 			<name>lvgl/lv_observer.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/others/observer/lv_observer.c</locationURI>
+		</link>
+		<link>
+			<name>lvgl/lv_os.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/osal/lv_os.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/lv_os_none.c</name>
@@ -1245,6 +1340,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/misc/lv_timer.c</locationURI>
 		</link>
 		<link>
+			<name>lvgl/lv_tjpgd.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/libs/tjpgd/lv_tjpgd.c</locationURI>
+		</link>
+		<link>
 			<name>lvgl/lv_tlsf.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/stdlib/builtin/lv_tlsf.c</locationURI>
@@ -1285,69 +1385,9 @@
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/osal/lv_windows.c</locationURI>
 		</link>
 		<link>
-			<name>lvgl/lv_draw_sw_blend.c</name>
+			<name>lvgl/tjpgd.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_draw_sw_blend_to_al88.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_al88.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_image_decoder.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/lv_image_decoder.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_draw_sw_blend_to_argb8888.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_argb8888.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_draw_sw_blend_to_i1.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_i1.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_draw_sw_blend_to_l8.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_l8.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_draw_sw_blend_to_rgb565.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_rgb565.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_draw_sw_blend_to_rgb888.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_rgb888.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_image_cache.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/misc/cache/lv_image_cache.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_image_header_cache.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/misc/cache/lv_image_header_cache.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_os.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/osal/lv_os.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_os_none.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/osal/lv_os_none.c</locationURI>
-		</link>
-		<link>
-			<name>lvgl/lv_freertos.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/osal/lv_freertos.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/libs/tjpgd/tjpgd.c</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

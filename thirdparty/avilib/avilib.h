@@ -25,42 +25,26 @@
  *
  */
 
-//Wayne #include <sys/types.h>
-//Wayne #include <sys/stat.h>
+#ifndef AVILIB_H
+#define AVILIB_H
+
 #include <stdio.h>
-//Wayne #include <fcntl.h>
-#include "lv_fs.h"
-
-//SLM
-#ifdef __CYGWIN__
-    #include <sys/types.h>
-#elif defined WIN32
-    #if defined __GNUWIN32__
-        #include <stdint.h>
-    #else
-        #define uint32_t unsigned __int32
-        #define uint8_t unsigned __int8
-        #define uint16_t unsigned __int16
-        #define uint64_t unsigned __int64
-    #endif
-#else
-    //Wayne #include <unistd.h>
-    #include <inttypes.h>
-#endif
-
-
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-
-#ifndef AVILIB_H
-#define AVILIB_H
+#include <inttypes.h>
 
 #define AVI_MAX_TRACKS 8
 
-typedef uint32_t off_t;
-typedef uint32_t ssize_t;
+#if !defined(__aarch64__)
+#ifndef off_t
+    typedef uint32_t off_t;
+#endif
+#ifndef ssize_t
+    typedef uint32_t ssize_t;
+#endif
+#endif
 
 typedef struct
 {
@@ -153,7 +137,7 @@ typedef struct
 
 typedef struct
 {
-    lv_fs_file_t *fdes;
+    void *fdes;
     //long   fdes;              /* File descriptor of AVI file */
     long   mode;              /* 0 for reading, 1 for writing */
 

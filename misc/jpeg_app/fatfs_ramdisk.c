@@ -51,7 +51,7 @@ int fatfs_ramdisk_init(void)
     else
     {
         FILINFO Finfo;
-        FATFS *fs;              /* Pointer to file system object */
+        FATFS *fs = NULL;            /* Pointer to file system object */
         uint32_t p1, s1, s2;
         p1 = s1 = s2 = 0;
 
@@ -89,9 +89,8 @@ int fatfs_ramdisk_init(void)
         }
 
         sysprintf("%4u File(s),%10u bytes total\n%4u Dir(s)", s1, p1, s2);
-
         /* Get number of free clusters */
-        if (f_getfree(logic_nbr, (DWORD *)&p1, &fs) == FR_OK)
+        if ((f_getfree(logic_nbr, (DWORD *)&p1, &fs) == FR_OK) && fs)
             sysprintf(", %10u bytes free\n", p1 * fs->csize * 4096);
     }
 
