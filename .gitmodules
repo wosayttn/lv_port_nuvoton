@@ -54,3 +54,6 @@
 [submodule "bsp/m5531"]
 	path = bsp/m5531
 	url = https://github.com/OpenNuvoton/M5531BSP
+[submodule "bsp/m3331"]
+	path = bsp/m3331
+	url = https://github.com/OpenNuvoton/m3331bsp

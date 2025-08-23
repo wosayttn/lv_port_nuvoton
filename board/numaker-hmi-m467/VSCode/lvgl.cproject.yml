@@ -5,8 +5,8 @@ project:
     - output:
         # bin, elf, hex, lib
         type: bin
-    - setup: Options for M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1
-      for-context: +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1
+    - setup: Options for USE_TFT_LCD43_V_1_1
+      for-context: +USE_TFT_LCD43_V_1_1
       processor:
         fpu: sp
       add-path:
@@ -41,7 +41,7 @@ project:
         - __480x272__
         - CPU_CORTEX_M4
         - LV_CONF_INCLUDE_SIMPLE
-        - USE_NUMAKER_TFT_LCD43_V_1_1
+        - USE_TFT_LCD43_V_1_1
         - M467HJ
       define-asm:
         - M467HJ
@@ -64,8 +64,8 @@ project:
             - --specs=nano.specs
             - --specs=nosys.specs
             - -Wl,--gc-sections,-Map=$elf()$.map
-    - setup: Options for M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0
-      for-context: +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0
+    - setup: Options for USE_TFT_LCD43_V_1_0
+      for-context: +USE_TFT_LCD43_V_1_0
       processor:
         fpu: sp
       add-path:
@@ -100,7 +100,7 @@ project:
         - __480x272__
         - CPU_CORTEX_M4
         - LV_CONF_INCLUDE_SIMPLE
-        - USE_NUMAKER_TFT_LCD43_V_1_0
+        - USE_TFT_LCD43_V_1_0
         - M467HJ
       define-asm:
         - M467HJ
@@ -123,8 +123,8 @@ project:
             - --specs=nano.specs
             - --specs=nosys.specs
             - -Wl,--gc-sections,-Map=$elf()$.map
-    - setup: Options for M467HJ_USE_NUTFT
-      for-context: +M467HJ_USE_NUTFT
+    - setup: Options for USE_NUTFT
+      for-context: +USE_NUTFT
       processor:
         fpu: sp
       add-path:
@@ -197,8 +197,8 @@ project:
         - file: ../FreeRTOSConfig.h
     - group: libraries
       for-context:
-        - +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1
-        - +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0
+        - +USE_TFT_LCD43_V_1_1
+        - +USE_TFT_LCD43_V_1_0
       files:
         - file: ../../../bsp/m460/Library/StdDriver/src/clk.c
         - file: ../../../bsp/m460/Library/StdDriver/src/ebi.c
@@ -409,7 +409,7 @@ project:
         - file: ../../../lvgl/src/misc/cache/lv_cache_lru_rb.c
         - file: ../../../lvgl/src/misc/cache/lv_image_header_cache.c
     - group: NUMAKER_TFT_LCD43_V_1_1
-      for-context: +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1
+      for-context: +USE_TFT_LCD43_V_1_1
       files:
         - file: ../../../common/drv_indev/touch_gt911.c
         - file: ../../../common/drv_disp/nv3041a_ebi.c
@@ -552,13 +552,13 @@ project:
         - file: ../../../lvgl/demos/widgets/assets/img_demo_widgets_needle.c
         - file: ../../../lvgl/demos/widgets/assets/img_lvgl_logo.c
     - group: NUMAKER_TFT_LCD43_V_1_0
-      for-context: +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0
+      for-context: +USE_TFT_LCD43_V_1_0
       files:
         - file: ../../../common/drv_indev/touch_st1663i.c
         - file: ../../../common/drv_disp/fsa506_ebi.c
         - file: ../../../common/drv_disp/disp_fsa506.c
     - group: libraries
-      for-context: +M467HJ_USE_NUTFT
+      for-context: +USE_NUTFT
       files:
         - file: ../../../bsp/m460/Library/StdDriver/src/clk.c
         - file: ../../../bsp/m460/Library/StdDriver/src/ebi.c
@@ -573,7 +573,7 @@ project:
         - file: ../../../bsp/m460/Library/StdDriver/src/spi.c
         - file: ../../../bsp/m460/Library/StdDriver/src/eadc.c
     - group: NUTFT
-      for-context: +M467HJ_USE_NUTFT
+      for-context: +USE_NUTFT
       files:
         - file: ../../../common/drv_indev/touch_adc_calibration.c
         - file: ../../../common/drv_indev/touch_adc.c
