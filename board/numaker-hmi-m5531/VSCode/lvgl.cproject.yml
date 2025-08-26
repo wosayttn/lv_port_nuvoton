@@ -5,8 +5,7 @@ project:
     - output:
         # bin, elf, hex, lib
         type: bin
-    - setup: Options for M5531_480x272
-      for-context: +M5531_480x272
+    - setup: Options for M5531_320x240
       processor:
         fpu: dp
         mve: fp
@@ -44,198 +43,10 @@ project:
         - ../sls_files
       debug: "on"
       define:
-        - __480x272__
+        - __320x240__
+        - USE_NUTFT
         - LV_CONF_INCLUDE_SIMPLE
         - NVT_DCACHE_ON
-        - M5531
-      define-asm:
-        - M5531
-      misc:
-        - C:
-            - -std=gnu11
-          C-CPP:
-            - -mthumb
-            - -masm-syntax-unified
-            - -fmessage-length=0
-            - -fsigned-char
-            - -ffunction-sections
-            - -fdata-sections
-          Link:
-            - -mthumb
-            - -fmessage-length=0
-            - -fsigned-char
-            - --specs=nano.specs
-            - --specs=nosys.specs
-            - -Wl,--gc-sections,-Map=$elf()$.map
-    - setup: Options for M5531_800x480
-      for-context: +M5531_800x480
-      processor:
-        fpu: dp
-        mve: fp
-        endian: little
-        trustzone: "off"
-      add-path:
-        - ..
-        - ../lv_port/spim_hyperram
-        - ../lv_port/gdma
-        - ../../../bsp/m5531/Library/CMSIS/DSP/Include
-        - ../../../bsp/m5531/Library/CMSIS/Core/Include
-        - ../../../bsp/m5531/Library/Device/Nuvoton/M5531/Include
-        - ../../../bsp/m5531/Library/StdDriver/inc
-        - ../lv_port
-        - ../../../common/drv_disp
-        - ../../../common/drv_indev
-        - ../../../common
-        - ../../../lvgl/src
-        - ../../../lvgl/src/core
-        - ../../../lvgl/src/draw
-        - ../../../lvgl/src/draw/sw
-        - ../../../lvgl/src/font
-        - ../../../lvgl/src/misc
-        - ../../../lvgl/src/widgets
-        - ../../../lvgl/demos
-        - ../../../lvgl/demos/benchmark
-        - ../../../lvgl/demos/music
-        - ../../../lvgl/demos/stress
-        - ../../../lvgl/demos/widgets
-        - ../../../lvgl/demos/music/assets
-        - ../../../lvgl/demos/keypad_encoder
-        - ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure
-        - ../../../thirdparty/FreeRTOS/include
-        - ../../..
-        - ../sls_files
-      debug: "on"
-      define:
-        - __800x480__
-        - LV_CONF_INCLUDE_SIMPLE
-        - NVT_DCACHE_ON
-        - M5531
-      define-asm:
-        - M5531
-      misc:
-        - C:
-            - -std=gnu11
-          C-CPP:
-            - -mthumb
-            - -masm-syntax-unified
-            - -fmessage-length=0
-            - -fsigned-char
-            - -ffunction-sections
-            - -fdata-sections
-          Link:
-            - -mthumb
-            - -fmessage-length=0
-            - -fsigned-char
-            - --specs=nano.specs
-            - --specs=nosys.specs
-            - -Wl,--gc-sections,-Map=$elf()$.map
-    - setup: Options for M5531_EBI_SYNC_480x272
-      for-context: +M5531_EBI_SYNC_480x272
-      processor:
-        fpu: dp
-        mve: fp
-        endian: little
-        trustzone: "off"
-      add-path:
-        - ..
-        - ../lv_port/spim_hyperram
-        - ../lv_port/gdma
-        - ../../../bsp/m5531/Library/CMSIS/DSP/Include
-        - ../../../bsp/m5531/Library/CMSIS/Core/Include
-        - ../../../bsp/m5531/Library/Device/Nuvoton/M5531/Include
-        - ../../../bsp/m5531/Library/StdDriver/inc
-        - ../lv_port
-        - ../../../common/drv_disp
-        - ../../../common/drv_indev
-        - ../../../common
-        - ../../../lvgl/src
-        - ../../../lvgl/src/core
-        - ../../../lvgl/src/draw
-        - ../../../lvgl/src/draw/sw
-        - ../../../lvgl/src/font
-        - ../../../lvgl/src/misc
-        - ../../../lvgl/src/widgets
-        - ../../../lvgl/demos
-        - ../../../lvgl/demos/benchmark
-        - ../../../lvgl/demos/music
-        - ../../../lvgl/demos/stress
-        - ../../../lvgl/demos/widgets
-        - ../../../lvgl/demos/music/assets
-        - ../../../lvgl/demos/keypad_encoder
-        - ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure
-        - ../../../thirdparty/FreeRTOS/include
-        - ../../..
-        - ../sls_files
-      debug: "on"
-      define:
-        - __480x272__
-        - LV_CONF_INCLUDE_SIMPLE
-        - NVT_DCACHE_ON
-        - CONFIG_DISP_USE_EBI_SYNC
-        - M5531
-      define-asm:
-        - M5531
-      misc:
-        - C:
-            - -std=gnu11
-          C-CPP:
-            - -mthumb
-            - -masm-syntax-unified
-            - -fmessage-length=0
-            - -fsigned-char
-            - -ffunction-sections
-            - -fdata-sections
-          Link:
-            - -mthumb
-            - -fmessage-length=0
-            - -fsigned-char
-            - --specs=nano.specs
-            - --specs=nosys.specs
-            - -Wl,--gc-sections,-Map=$elf()$.map
-    - setup: Options for M5531_EBI_SYNC_800x480
-      for-context: +M5531_EBI_SYNC_800x480
-      processor:
-        fpu: dp
-        mve: fp
-        endian: little
-        trustzone: "off"
-      add-path:
-        - ..
-        - ../lv_port/spim_hyperram
-        - ../lv_port/gdma
-        - ../../../bsp/m5531/Library/CMSIS/DSP/Include
-        - ../../../bsp/m5531/Library/CMSIS/Core/Include
-        - ../../../bsp/m5531/Library/Device/Nuvoton/M5531/Include
-        - ../../../bsp/m5531/Library/StdDriver/inc
-        - ../lv_port
-        - ../../../common/drv_disp
-        - ../../../common/drv_indev
-        - ../../../common
-        - ../../../lvgl/src
-        - ../../../lvgl/src/core
-        - ../../../lvgl/src/draw
-        - ../../../lvgl/src/draw/sw
-        - ../../../lvgl/src/font
-        - ../../../lvgl/src/misc
-        - ../../../lvgl/src/widgets
-        - ../../../lvgl/demos
-        - ../../../lvgl/demos/benchmark
-        - ../../../lvgl/demos/music
-        - ../../../lvgl/demos/stress
-        - ../../../lvgl/demos/widgets
-        - ../../../lvgl/demos/music/assets
-        - ../../../lvgl/demos/keypad_encoder
-        - ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure
-        - ../../../thirdparty/FreeRTOS/include
-        - ../../..
-        - ../sls_files
-      debug: "on"
-      define:
-        - __800x480__
-        - LV_CONF_INCLUDE_SIMPLE
-        - NVT_DCACHE_ON
-        - CONFIG_DISP_USE_EBI_SYNC
-        - USE_HYPERRAM_AS_FRAMEBUFFER
         - M5531
       define-asm:
         - M5531
@@ -269,12 +80,9 @@ project:
                 - -xc++
         - file: ../components/task_lv.c
         - file: ../FreeRTOSConfig.h
-        - file: ../mpu_config_M5531.h
     - group: libraries
-      for-context: +M5531_480x272
       files:
         - file: ../../../bsp/m5531/Library/StdDriver/src/clk.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/ebi.c
         - file: ../../../bsp/m5531/Library/StdDriver/src/gpio.c
         - file: ../../../bsp/m5531/Library/StdDriver/src/pdma.c
         - file: ../../../bsp/m5531/Library/StdDriver/src/retarget.c
@@ -282,12 +90,12 @@ project:
         - file: ../../../bsp/m5531/Library/StdDriver/src/uart.c
         - file: ../../../bsp/m5531/Library/StdDriver/src/i2c.c
         - file: ../../../bsp/m5531/Library/Device/Nuvoton/M5531/Source/startup_M5531.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/spim.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/spim_hyper.c
         - file: ../lv_port/gdma/dma350_ch_drv.c
         - file: ../lv_port/gdma/dma350_drv.c
         - file: ../lv_port/gdma/dma350_lib.c
         - file: ../../../bsp/m5531/Library/Device/Nuvoton/M5531/Source/system_M5531.c
+        - file: ../../../bsp/m5531/Library/StdDriver/src/spi.c
+        - file: ../../../bsp/m5531/Library/StdDriver/src/eadc.c
     - group: lvgl
       misc:
         - C-CPP:
@@ -486,15 +294,7 @@ project:
         - file: ../../../lvgl/src/draw/sw/blend/lv_draw_sw_blend_to_l8.c
         - file: ../../../lvgl/src/misc/cache/lv_cache_lru_rb.c
         - file: ../../../lvgl/src/misc/cache/lv_image_header_cache.c
-    - group: lv_draw
-      files:
-        - file: ../../../common/drv_draw/gdma/drv_gdma.c
-        - file: ../../../common/drv_draw/gdma/lv_draw_gdma.c
-        - file: ../../../common/drv_draw/gdma/lv_draw_gdma_fill.c
-        - file: ../../../common/drv_draw/gdma/lv_draw_gdma_image.c
-        - file: ../../../common/drv_draw/gdma/lv_draw_gdma_layer.c
     - group: lv_port
-      for-context: +M5531_480x272
       files:
         - file: ../../../common/lv_demo.c
         - file: ../../../common/lv_port_disp.c
@@ -504,9 +304,11 @@ project:
         - file: ../lv_port/lv_glue.h
         - file: ../lv_port/drv_pdma.c
         - file: ../../../common/nu_misc.c
-        - file: ../../../common/drv_indev/touch_st1663i.c
-        - file: ../../../common/drv_disp/disp_fsa506.c
-        - file: ../../../common/drv_disp/fsa506_ebi.c
+        - file: ../lv_port/drv_spi.c
+        - file: ../../../common/drv_disp/disp_ili9341.c
+        - file: ../../../common/drv_disp/ili9341_spi.c
+        - file: ../../../common/drv_indev/touch_adc.c
+        - file: ../../../common/drv_indev/touch_adc_calibration.c
     - group: FreeRTOS
       files:
         - file: ../../../thirdparty/FreeRTOS/list.c
@@ -516,6 +318,13 @@ project:
         - file: ../../../thirdparty/FreeRTOS/portable/MemMang/heap_4.c
         - file: ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure/port.c
         - file: ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM55_NTZ/non_secure/portasm.c
+    - group: lv_draw
+      files:
+        - file: ../../../common/drv_draw/gdma/drv_gdma.c
+        - file: ../../../common/drv_draw/gdma/lv_draw_gdma.c
+        - file: ../../../common/drv_draw/gdma/lv_draw_gdma_fill.c
+        - file: ../../../common/drv_draw/gdma/lv_draw_gdma_image.c
+        - file: ../../../common/drv_draw/gdma/lv_draw_gdma_layer.c
     - group: lv_demo
       files:
         - file: ../../../lvgl/demos/lv_demos.c
@@ -635,54 +444,3 @@ project:
         - file: ../../../lvgl/demos/widgets/assets/img_demo_widgets_avatar.c
         - file: ../../../lvgl/demos/widgets/assets/img_demo_widgets_needle.c
         - file: ../../../lvgl/demos/widgets/assets/img_lvgl_logo.c
-    - group: libraries
-      for-context:
-        - +M5531_800x480
-        - +M5531_EBI_SYNC_480x272
-        - +M5531_EBI_SYNC_800x480
-      files:
-        - file: ../../../bsp/m5531/Library/StdDriver/src/clk.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/ebi.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/gpio.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/pdma.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/retarget.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/sys.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/uart.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/i2c.c
-        - file: ../../../bsp/m5531/Library/Device/Nuvoton/M5531/Source/startup_M5531.c
-        - file: ../lv_port/spim_hyperram/hyperram_code.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/spim.c
-        - file: ../../../bsp/m5531/Library/StdDriver/src/spim_hyper.c
-        - file: ../lv_port/gdma/dma350_ch_drv.c
-        - file: ../lv_port/gdma/dma350_drv.c
-        - file: ../lv_port/gdma/dma350_lib.c
-        - file: ../../../bsp/m5531/Library/Device/Nuvoton/M5531/Source/system_M5531.c
-    - group: lv_port
-      for-context: +M5531_800x480
-      files:
-        - file: ../../../common/lv_demo.c
-        - file: ../../../common/lv_port_disp.c
-        - file: ../../../common/lv_port_indev.c
-        - file: ../lv_port/lv_glue.c
-        - file: ../lv_conf.h
-        - file: ../lv_port/lv_glue.h
-        - file: ../lv_port/drv_pdma.c
-        - file: ../../../common/nu_misc.c
-        - file: ../../../common/drv_disp/lt7381_ebi.c
-        - file: ../../../common/drv_disp/disp_lt7381.c
-        - file: ../../../common/drv_indev/touch_ft5316.c
-    - group: lv_port
-      for-context:
-        - +M5531_EBI_SYNC_480x272
-        - +M5531_EBI_SYNC_800x480
-      files:
-        - file: ../../../common/lv_demo.c
-        - file: ../../../common/lv_port_indev.c
-        - file: ../lv_port/lv_glue.c
-        - file: ../lv_conf.h
-        - file: ../lv_port/lv_glue.h
-        - file: ../lv_port/drv_pdma.c
-        - file: ../../../common/nu_misc.c
-        - file: ../../../common/drv_indev/touch_ft5316.c
-        - file: ../lv_port/lv_port_disp_sync.c
-        - file: ../../../common/drv_disp/disp_ebi_sync_gdma.c

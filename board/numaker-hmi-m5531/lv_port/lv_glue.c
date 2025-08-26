@@ -11,17 +11,15 @@
 #include "disp.h"
 #include "indev_touch.h"
 
-#if defined(CONFIG_DISP_USE_EBI_SYNC)
-    #define CONFIG_VRAM_BUFFER_NUM              2
-#else
-    #define CONFIG_VRAM_BUFFER_NUM              1
+#if defined(CONFIG_AD)
+    #include "touch_adc.h"
 #endif
-#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((CONFIG_VRAM_BUFFER_NUM * LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), DCACHE_LINE_SIZE)
+#define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), DCACHE_LINE_SIZE)
 
-#if defined(USE_HYPERRAM_AS_FRAMEBUFFER)
-    static uint8_t *s_au8FrameBuf = (uint8_t *)SPIM_DMM0_SADDR;
-#else
-    static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DCACHE_LINE_SIZE)));
+static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DCACHE_LINE_SIZE)));
+
+#if defined(USE_NUTFT) && defined(__320x240__)
+S_CALIBRATION_MATRIX g_sCalMat = { -105, 6354, -3362552, 5086, -24, -2489744, 65536 };
 #endif
 
 void sysDelay(uint32_t ms)
@@ -29,85 +27,37 @@ void sysDelay(uint32_t ms)
     vTaskDelay(ms / portTICK_PERIOD_MS);
 }
 
-#if defined(CONFIG_DISP_USE_EBI_SYNC)
-
-void disp_set_vrambufaddr(void *pvBufAddr);
-
-#if (CONFIG_LV_DISP_FULL_REFRESH==1)
-static volatile uint32_t s_vu32Displayblank = 0;
-
-#if (LV_USE_OS==LV_OS_FREERTOS)
-    static xQueueHandle s_VSyncQ = NULL;
-    static uint8_t dummy = 0x87;
-#endif
-
-static void disp_blank_handler(void *p)
-{
-    s_vu32Displayblank++;
-
-#if (LV_USE_OS==LV_OS_FREERTOS)
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-
-    xQueueSendFromISR(s_VSyncQ, &dummy, &xHigherPriorityTaskWoken);
-
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-#endif
-}
-#endif
-#endif
-
 int lcd_device_initialize(void)
 {
-#if defined(CONFIG_DISP_USE_EBI_SYNC)
-
-    /* Open EBI  */
-    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_FASTEST, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
-
-    /* Optimization timing. */
-    EBI_SetBusTiming(CONFIG_DISP_EBI, 0, EBI_MCLKDIV_4);
-
-    /* Set VRAM buffer address. */
-    disp_set_vrambufaddr((void *)s_au8FrameBuf);
-
-
-#if (CONFIG_LV_DISP_FULL_REFRESH==1)
-
-#if (LV_USE_OS==LV_OS_FREERTOS)
-    /* Create a queue of length 1 */
-    s_VSyncQ = xQueueGenericCreate(1, sizeof(uint8_t), 0);
-    LV_ASSERT(s_VSyncQ != NULL);
-#endif
-
-    /* Set blank callback. */
-    void disp_set_blankcb(void *pvpfnBlank);
-    disp_set_blankcb(disp_blank_handler);
-#endif
-
-#else
-
     GPIO_T *PORT;
 
     /* Set GPIO Output mode for display pins. */
+#if defined(CONFIG_DISP_PIN_RESET)
     PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_RESET) * PORT_OFFSET));
     GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_RESET)), GPIO_MODE_OUTPUT);
+#endif
 
+#if defined(CONFIG_DISP_PIN_BACKLIGHT)
     PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT) * PORT_OFFSET));
     GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
-
-
-#if defined(__800x480__ )
-    /* Open EBI  */
-    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
-
-    /* Optimization timing. */
-    EBI_SetBusTiming(CONFIG_DISP_EBI, EBI_TCTL_RAHDOFF_Msk | EBI_TCTL_WAHDOFF_Msk | (4 << EBI_TCTL_TACC_Pos), EBI_MCLKDIV_2);
-#else
-    /* Open EBI  */
-    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_SLOW, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
 #endif
 
+#if defined(CONFIG_DISP_PIN_DC)
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_DC) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_DC)), GPIO_MODE_OUTPUT);
 #endif
 
+    /* Open SPI */
+    SPI_Open(CONFIG_DISP_SPI, SPI_MASTER, SPI_MODE_0, 8, CONFIG_DISP_SPI_CLOCK);
+
+    /* Set sequence to MSB first */
+    SPI_SET_MSB_FIRST(CONFIG_DISP_SPI);
+
+    /* Set CS pin to HIGH */
+    SPI_SET_SS_HIGH(CONFIG_DISP_SPI);
+
+    /* Set sequence to MSB first */
+    SPI_SET_MSB_FIRST(CONFIG_DISP_SPI);
 
     return disp_init();
 }
@@ -132,51 +82,13 @@ int lcd_device_control(int cmd, void *argv)
         psLCDInfo->u32ResWidth = LV_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = LV_VER_RES_MAX;
         psLCDInfo->u32BytePerPixel = (LV_COLOR_DEPTH / 8);
-#if defined(CONFIG_DISP_USE_EBI_SYNC)
-        psLCDInfo->evLCDType = evLCD_TYPE_SYNC;
-#else
         psLCDInfo->evLCDType = evLCD_TYPE_MPU;
-#endif
     }
     break;
-
-#if defined(CONFIG_DISP_USE_EBI_SYNC)
-    case evLCD_CTRL_PAN_DISPLAY:
-    {
-        LV_ASSERT(argv != NULL);
-        disp_set_vrambufaddr(argv);
-    }
-    break;
-
-#if (CONFIG_LV_DISP_FULL_REFRESH==1)
-    case evLCD_CTRL_WAIT_VSYNC:
-    {
-        volatile uint32_t next = s_vu32Displayblank + 1;
-        {
-#if (LV_USE_OS==LV_OS_FREERTOS)
-            /* First make sure the queue is empty, by trying to remove an element with 0 timeout. */
-            xQueueReceive(s_VSyncQ, &dummy, 0);
-
-            /* Wait for next VSYNC to occur. */
-            xQueueReceive(s_VSyncQ, &dummy, portMAX_DELAY);
-#else
-            //Wait next blank coming;
-            while (s_vu32Displayblank <  next);
-#endif
-        }
-    }
-    break;
-#endif
-
-#endif
 
     case evLCD_CTRL_RECT_UPDATE:
     {
-#if defined(CONFIG_DISP_USE_EBI_SYNC)
-        SCB_CleanDCache_by_Addr(s_au8FrameBuf, CONFIG_VRAM_TOTAL_ALLOCATED_SIZE);
-#else
         disp_fillrect((uint16_t *)s_au8FrameBuf, (const lv_area_t *)argv);
-#endif
     }
     break;
 
@@ -196,104 +108,117 @@ int lcd_device_finalize(void)
     return 0;
 }
 
-#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
-
-static IRQn_Type au32GPIRQ[] =
+#if defined(CONFIG_AD)
+uint32_t nu_adc_sampling(uint32_t channel)
 {
-    GPA_IRQn,
-    GPB_IRQn,
-    GPC_IRQn,
-    GPD_IRQn,
-    GPE_IRQn,
-    GPF_IRQn,
-    GPG_IRQn,
-    GPH_IRQn,
-    GPI_IRQn,
-    GPJ_IRQn,
-};
+    EADC_ConfigSampleModule(CONFIG_AD, 0, EADC_SOFTWARE_TRIGGER, channel);
 
-static volatile lv_indev_data_t s_sInDevData = {0};
-static volatile uint32_t s_u32LastIRQ = 0;
+    EADC_CLR_INT_FLAG(CONFIG_AD, EADC_STATUS2_ADIF0_Msk);
 
-// GPF ISR
-void GPF_IRQHandler(void)
-{
-    GPIO_T *PORT = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET));
+    EADC_ENABLE_INT(CONFIG_AD, BIT0);
 
-    /* To check if PF.6 interrupt occurred */
-    if (GPIO_GET_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ))))
-    {
-        GPIO_CLR_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)));
-        s_u32LastIRQ = xTaskGetTickCount();
-    }
-    else
-    {
-        /* Un-expected interrupt. Just clear all PD interrupts */
-        volatile uint32_t u32temp = PORT->INTSRC;
-        PORT->INTSRC = u32temp;
-    }
+    EADC_ENABLE_SAMPLE_MODULE_INT(CONFIG_AD, 0, BIT0);
+
+    EADC_START_CONV(CONFIG_AD, BIT0);
+
+    while (EADC_GET_INT_FLAG(CONFIG_AD, BIT0) == 0);
+
+    return EADC_GET_CONV_DATA(CONFIG_AD, 0) & 0x0FFF;
 }
 #endif
 
 int touchpad_device_initialize(void)
 {
-#if defined(CONFIG_INDEV_TOUCH_I2C)
-    GPIO_T *PORT;
-
-    /* Set GPIO OUTPUT mode for indev touch pins. */
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)), GPIO_MODE_OUTPUT);
-
-#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
-    /* Set GPIO INTPUT mode for indev touch pins. */
-    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET));
-    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), GPIO_MODE_INPUT);
-    GPIO_SetPullCtl(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), GPIO_PUSEL_PULL_UP);
-    GPIO_EnableInt(PORT, NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ), GPIO_INT_FALLING);
-    NVIC_EnableIRQ(au32GPIRQ[NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ)]);
-#endif
-
-    return indev_touch_init();
-
-#else
-
     return 0;
-
-#endif
-
 }
 
 int touchpad_device_open(void)
 {
+
+#if defined(CONFIG_AD)
+    EADC_Open(CONFIG_AD, EADC_CTL_DIFFEN_SINGLE_END);
+    extern int ad_touch_calibrate(void);
+    //ad_touch_calibrate();
+#endif
+
     return 0;
 }
 
 int touchpad_device_read(lv_indev_data_t *psInDevData)
 {
-#if defined(CONFIG_INDEV_TOUCH_I2C)
 
-#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
-    static uint32_t u32LastIRQ = 0;
+#if defined(CONFIG_AD)
 
-    if (u32LastIRQ != s_u32LastIRQ)
+#define CONFIG_TRIGGER_PERIOD     16
+
+    static lv_indev_data_t sLastInDevData = {0};
+    static uint32_t u32NextTriggerTime = 0;
+
+    uint32_t adc_x, adc_y;
+
+    LV_ASSERT(psInDevData);
+
+    psInDevData->state   = sLastInDevData.state;
+    psInDevData->point.x = sLastInDevData.point.x;
+    psInDevData->point.y = sLastInDevData.point.y;
+
+    if (xTaskGetTickCount() < u32NextTriggerTime)
     {
-        indev_touch_get_data((lv_indev_data_t *)&s_sInDevData);
-        u32LastIRQ = s_u32LastIRQ ;
+        goto exit_touchpad_device_read;
     }
 
-    psInDevData->point.x = s_sInDevData.point.x;
-    psInDevData->point.y = s_sInDevData.point.y;
-    psInDevData->state = s_sInDevData.state;
-#else
-    indev_touch_get_data(psInDevData);
-#endif
+    /* Get X, Y ADC converting data */
+    adc_x  = indev_touch_get_x();
+    adc_y  = indev_touch_get_y();
+    u32NextTriggerTime = xTaskGetTickCount() + CONFIG_TRIGGER_PERIOD;
+
+    if ((adc_x < 4000) && (adc_y < 4000))
+    {
+        psInDevData->state = LV_INDEV_STATE_PRESSED;
+    }
+    else
+    {
+        psInDevData->state = LV_INDEV_STATE_RELEASED;
+    }
+
+    if (psInDevData->state == LV_INDEV_STATE_PRESSED)
+    {
+        extern int ad_touch_map(int32_t *sumx, int32_t *sumy);
+        if (ad_touch_map((int32_t *)&adc_x, (int32_t *)&adc_y) == 0)
+        {
+
+            psInDevData->point.x = ((int16_t)adc_x < 0) ? 0 :
+                                   ((int16_t)adc_x >= LV_HOR_RES_MAX) ? (LV_HOR_RES_MAX - 1) :
+                                   adc_x;
+
+            psInDevData->point.y = ((int16_t)adc_y < 0) ? 0 :
+                                   ((int16_t)adc_y >= LV_VER_RES_MAX) ? (LV_VER_RES_MAX - 1) :
+                                   adc_y;
+
+            LV_LOG_INFO("[%d, %d]", psInDevData->point.x, psInDevData->point.y);
+        }
+        else
+        {
+            psInDevData->point.x = (int16_t)adc_x;
+
+            psInDevData->point.y = (int16_t)adc_y;
+        }
+
+        sLastInDevData.point.x  = psInDevData->point.x;
+        sLastInDevData.point.y  = psInDevData->point.y;
+    }
+
+    sLastInDevData.state = psInDevData->state;
+
+    LV_LOG_INFO("%s (%d, %d)", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
+
+exit_touchpad_device_read:
 
     return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
 
 #else
 
     return LV_INDEV_STATE_RELEASED;
-
 #endif
 }
 
@@ -304,6 +229,11 @@ int touchpad_device_control(int cmd, void *argv)
 
 void touchpad_device_close(void)
 {
+
+#if defined(CONFIG_AD)
+    EADC_Close(CONFIG_AD);
+#endif
+
 }
 
 int touchpad_device_finalize(void)

@@ -27,60 +27,36 @@
 #endif
 
 #define GPIO_PIN_DATA              GPIO_PIN_DATA_S
-#define CONFIG_DISP_EBI            EBI_BANK0
+    //For NUTFT
+    #define CONFIG_INDEV_TOUCH_ADC      1
+    #define CONFIG_DISP_ILI9341         1
+    /* ILI9341 SPI */
+    #define CONFIG_DISP_SPI              SPI2
+    #define CONFIG_DISP_SPI_CLOCK        48000000
+    #define CONFIG_DISP_USE_PDMA         1
+    #if defined(CONFIG_DISP_USE_PDMA)
+        #define CONFIG_PDMA_SPI_TX       PDMA_SPI2_TX
+        #define CONFIG_PDMA_SPI_RX       PDMA_SPI2_RX
+        #define CONFIG_SPI_USE_PDMA
+    #endif
 
-#if defined(CONFIG_DISP_USE_EBI_SYNC)
+    #define CONFIG_DISP_PIN_DC           NU_GET_PININDEX(evGB, 2)
+    #define CONFIG_DISP_PIN_RESET        NU_GET_PININDEX(evGB, 3)
+    #define CONFIG_DISP_PIN_BACKLIGHT    NU_GET_PININDEX(evGB, 5)
+    #define DISP_SET_RS                  GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_DC),        NU_GET_PIN(CONFIG_DISP_PIN_DC)) = 1
+    #define DISP_CLR_RS                  GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_DC),        NU_GET_PIN(CONFIG_DISP_PIN_DC)) = 0
+    #define DISP_SET_RST                 GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_RESET),     NU_GET_PIN(CONFIG_DISP_PIN_RESET)) = 1
+    #define DISP_CLR_RST                 GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_RESET),     NU_GET_PIN(CONFIG_DISP_PIN_RESET)) = 0
+    #define DISP_SET_BACKLIGHT           GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT), NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)) = 1
+    #define DISP_CLR_BACKLIGHT           GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT), NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)) = 0
 
-    #define CONFIG_DISP_VPW_ACTIVE_LOW        1   /*!< Enable VPW active low */
-    #define CONFIG_DISP_HPW_ACTIVE_LOW        1   /*!< Enable HPW active low */
-    #define CONFIG_DISP_DE_ACTIVE_LOW         0   /*!< Disable DE active low */
-
-    #define CONFIG_DISP_VSYNC_BITIDX          1   /*!< SET_EBI_ADR0_PH7 */
-    #define CONFIG_DISP_HSYNC_BITIDX          2   /*!< SET_EBI_ADR1_PH6 */
-    #define CONFIG_DISP_DE_BITIDX             8   /*!< SET_EBI_ADR7_PH0 */
-
-#if defined(__800x480__)
-    #define CONFIG_TIMING_HACT          800   /*!< XRES */
-    #define CONFIG_TIMING_VACT          480   /*!< YRES */
-    #define CONFIG_TIMING_HBP            88   /*!< HBP (Horizontal Back Porch) */
-    #define CONFIG_TIMING_HFP           255   /*!< HFP (Horizontal Front Porch) */
-    #define CONFIG_TIMING_HPW           255   /*!< HPW (HSYNC plus width) */
-    #define CONFIG_TIMING_VBP            32   /*!< VBP (Vertical Back Porch) */
-    #define CONFIG_TIMING_VFP            13   /*!< VFP (Vertical Front Porch) */
-    #define CONFIG_TIMING_VPW             3   /*!< VPW (VSYNC width) */
-#elif defined(__480x272__)
-    #define CONFIG_TIMING_HACT          480   /*!< XRES */
-    #define CONFIG_TIMING_VACT          272   /*!< YRES */
-    #define CONFIG_TIMING_HBP            30   /*!< HBP (Horizontal Back Porch) */
-    #define CONFIG_TIMING_HFP             5   /*!< HFP (Horizontal Front Porch) */
-    #define CONFIG_TIMING_HPW            41   /*!< HPW (HSYNC plus width) */
-    #define CONFIG_TIMING_VBP             2   /*!< VBP (Vertical Back Porch) */
-    #define CONFIG_TIMING_VFP            27   /*!< VFP (Vertical Front Porch) */
-    #define CONFIG_TIMING_VPW            10   /*!< VPW (VSYNC width) */
-#endif
-
-#else
-
-    /* FSA506/LT7381 EBI */
-    #define CONFIG_DISP_USE_PDMA
-    #define CONFIG_DISP_EBI_ADDR       (EBI_BANK0_BASE_ADDR+(CONFIG_DISP_EBI*EBI_MAX_SIZE))
-    #define CONFIG_DISP_CMD_ADDR       (CONFIG_DISP_EBI_ADDR+0x0)
-    #define CONFIG_DISP_DAT_ADDR       (CONFIG_DISP_EBI_ADDR+0x2)
-    #define CONFIG_DISP_PIN_BACKLIGHT  NU_GET_PININDEX(evGG, 5)
-    #define CONFIG_DISP_PIN_RESET      NU_GET_PININDEX(evGH, 6)
-    #define DISP_SET_RST               GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_RESET),     NU_GET_PIN(CONFIG_DISP_PIN_RESET)) = 1
-    #define DISP_CLR_RST               GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_RESET),     NU_GET_PIN(CONFIG_DISP_PIN_RESET)) = 0
-    #define DISP_SET_BACKLIGHT         GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT), NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)) = 1
-    #define DISP_CLR_BACKLIGHT         GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT), NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)) = 0
-
-#endif
-
-/* ST1663I/FT5316/FT5446 I2C */
-#define CONFIG_INDEV_TOUCH_I2C        I2C1
-#define CONFIG_INDEV_TOUCH_PIN_IRQ    NU_GET_PININDEX(evGF, 6)
-#define CONFIG_INDEV_TOUCH_PIN_RESET  NU_GET_PININDEX(evGD, 10)
-#define INDEV_TOUCH_SET_RST           GPIO_PIN_DATA(NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET), NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)) = 0
-#define INDEV_TOUCH_CLR_RST           GPIO_PIN_DATA(NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET), NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)) = 1
+    /* SW ADC PINs */
+    #define CONFIG_AD                    EADC0
+    #define CONFIG_NG_MFP                1
+    #define CONFIG_AD_PIN_XL             NU_GET_PININDEX(evGB, 7)
+    #define CONFIG_AD_PIN_YU             NU_GET_PININDEX(evGB, 6)
+    #define CONFIG_AD_PIN_XR             NU_GET_PININDEX(evGB, 9)
+    #define CONFIG_AD_PIN_YD             NU_GET_PININDEX(evGB, 8)
 
 int lcd_device_initialize(void);
 int lcd_device_finalize(void);

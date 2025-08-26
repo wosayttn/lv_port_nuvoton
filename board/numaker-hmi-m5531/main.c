@@ -104,48 +104,22 @@ static void sys_init(void)
     CLK_EnableModuleClock(GPIOI_MODULE);
     CLK_EnableModuleClock(GPIOJ_MODULE);
 
-    /* Enable EBI clock */
-    CLK_EnableModuleClock(EBI0_MODULE);
-    SET_EBI_AD0_PA5();
-    SET_EBI_AD1_PA4();
-    SET_EBI_AD2_PC2();
-    SET_EBI_AD3_PC3();
-    SET_EBI_AD4_PC4();
-    SET_EBI_AD5_PC5();
-    SET_EBI_AD6_PD8();
-    SET_EBI_AD7_PD9();
-    SET_EBI_AD8_PE14();
-    SET_EBI_AD9_PE15();
-    SET_EBI_AD10_PE1();
-    SET_EBI_AD11_PE0();
-    SET_EBI_AD12_PH8();
-    SET_EBI_AD13_PH9();
-    SET_EBI_AD14_PH10();
-    SET_EBI_AD15_PH11();
-    SET_EBI_nWR_PJ9();
-    SET_EBI_nRD_PJ8();
-    SET_EBI_nCS0_PD14();
-    SET_EBI_ADR0_PH7();
-#if defined(CONFIG_DISP_USE_EBI_SYNC)
-    SET_EBI_ADR1_PH6();
-    SET_EBI_ADR7_PH0();
-    GPIO_SetSlewCtl(PH, (BIT0 | BIT6 | BIT7 | BIT8 | BIT9 | BIT10 | BIT11), GPIO_SLEWCTL_HIGH);
-#else
-    GPIO_SetSlewCtl(PH, (BIT7 | BIT8 | BIT9 | BIT10 | BIT11), GPIO_SLEWCTL_HIGH);
-#endif
+    /* SPI2 */
+    CLK_EnableModuleClock(SPI2_MODULE);
 
-    GPIO_SetSlewCtl(PA, (BIT4 | BIT5), GPIO_SLEWCTL_HIGH);
-    GPIO_SetSlewCtl(PC, (BIT2 | BIT3 | BIT4 | BIT5), GPIO_SLEWCTL_HIGH);
-    GPIO_SetSlewCtl(PD, (BIT8 | BIT9), GPIO_SLEWCTL_HIGH);
-    GPIO_SetSlewCtl(PE, (BIT14 | BIT15), GPIO_SLEWCTL_HIGH);
-    GPIO_SetSlewCtl(PE, (BIT0 | BIT1), GPIO_SLEWCTL_HIGH);
-    GPIO_SetSlewCtl(PJ, (BIT8 | BIT9), GPIO_SLEWCTL_HIGH);
-    GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_HIGH);
+    SYS->GPA_MFP2 &= ~(SYS_GPA_MFP2_PA11MFP_Msk | SYS_GPA_MFP2_PA10MFP_Msk | SYS_GPA_MFP2_PA9MFP_Msk | SYS_GPA_MFP2_PA8MFP_Msk);
+    SYS->GPA_MFP2 |= (SYS_GPA_MFP2_PA11MFP_SPI2_SS | SYS_GPA_MFP2_PA10MFP_SPI2_CLK | SYS_GPA_MFP2_PA9MFP_SPI2_MISO | SYS_GPA_MFP2_PA8MFP_SPI2_MOSI);
 
-    /* Enable I2C1 clock */
-    CLK_EnableModuleClock(I2C1_MODULE);
-    SET_I2C1_SDA_PB10();
-    SET_I2C1_SCL_PB11();
+    /* EADC Analog Pin */
+    CLK_EnableModuleClock(EADC0_MODULE);
+
+    SYS->GPB_MFP1 &= ~(SYS_GPB_MFP1_PB7MFP_Msk | SYS_GPB_MFP1_PB6MFP_Msk);
+    SYS->GPB_MFP1 |= (SYS_GPB_MFP1_PB7MFP_EADC0_CH7 | SYS_GPB_MFP1_PB6MFP_EADC0_CH6);
+    SYS->GPB_MFP2 &= ~(SYS_GPB_MFP2_PB9MFP_Msk | SYS_GPB_MFP2_PB8MFP_Msk);
+    SYS->GPB_MFP2 |= (SYS_GPB_MFP2_PB9MFP_EADC0_CH9 | SYS_GPB_MFP2_PB8MFP_EADC0_CH8);
+
+    /* Disable digital path on these EADC pins */
+    GPIO_DISABLE_DIGITAL_PATH(PB, BIT6 | BIT7 | BIT8 | BIT9);
 
     /* Enable PDMA clock */
     CLK_EnableModuleClock(PDMA0_MODULE);
@@ -160,53 +134,6 @@ static void sys_init(void)
     SetDebugUartMFP();
 
     InitDebugUart();
-
-#if defined(USE_HYPERRAM_AS_FRAMEBUFFER)
-    /* Enable SPIM module clock */
-    CLK_EnableModuleClock(SPIM0_MODULE);
-
-    /* Enable SPIM module clock */
-    CLK_EnableModuleClock(OTFC0_MODULE);
-
-    /* Init SPIM multi-function pins */
-    SET_SPIM0_CLKN_PH12();
-    SET_SPIM0_CLK_PH13();
-    SET_SPIM0_D2_PJ5();
-    SET_SPIM0_D3_PJ6();
-    SET_SPIM0_D4_PH14();
-    SET_SPIM0_D5_PH15();
-    SET_SPIM0_D6_PG13();
-    SET_SPIM0_D7_PG14();
-    SET_SPIM0_MISO_PJ4();
-    SET_SPIM0_MOSI_PJ3();
-    SET_SPIM0_RESETN_PJ2();
-    SET_SPIM0_RWDS_PG15();
-    SET_SPIM0_SS_PJ7();
-
-    PG->SMTEN |= (GPIO_SMTEN_SMTEN13_Msk |
-                  GPIO_SMTEN_SMTEN14_Msk |
-                  GPIO_SMTEN_SMTEN15_Msk);
-    PH->SMTEN |= (GPIO_SMTEN_SMTEN12_Msk |
-                  GPIO_SMTEN_SMTEN13_Msk |
-                  GPIO_SMTEN_SMTEN14_Msk |
-                  GPIO_SMTEN_SMTEN15_Msk);
-    PJ->SMTEN |= (GPIO_SMTEN_SMTEN2_Msk |
-                  GPIO_SMTEN_SMTEN3_Msk |
-                  GPIO_SMTEN_SMTEN4_Msk |
-                  GPIO_SMTEN_SMTEN5_Msk |
-                  GPIO_SMTEN_SMTEN6_Msk |
-                  GPIO_SMTEN_SMTEN7_Msk);
-
-    /* Set SPIM I/O pins as FAST1 slew rate. */
-    GPIO_SetSlewCtl(PG, (BIT13|BIT14|BIT15), GPIO_SLEWCTL_FAST0);
-    GPIO_SetSlewCtl(PH, (BIT12|BIT13|BIT14|BIT15), GPIO_SLEWCTL_FAST0);
-    GPIO_SetSlewCtl(PJ, (BIT2|BIT3|BIT4|BIT5|BIT6|BIT7), GPIO_SLEWCTL_FAST0);
-
-    extern void HyperRAM_Init(SPIM_T * spim);
-    HyperRAM_Init(SPIM0);
-
-    SPIM_HYPER_EnterDirectMapMode(SPIM0);
-#endif
 
     DNA350DevInit();
 }

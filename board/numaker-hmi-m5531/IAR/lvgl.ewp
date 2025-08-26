@@ -231,7 +231,8 @@
                     <state>ARM_MATH_CM55</state>
                     <state>M5531=1</state>
                     <state>LV_CONF_INCLUDE_SIMPLE</state>
-                    <state>__800x480__</state>
+                    <state>__320x240__</state>
+                    <state>USE_NUTFT </state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -1172,19 +1173,19 @@
             <name>$PROJ_DIR$\..\lv_port\gdma\dma350_lib.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m5531\Library\StdDriver\src\ebi.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m5531\Library\StdDriver\src\eadc.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\bsp\m5531\Library\StdDriver\src\gpio.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m5531\Library\StdDriver\src\i2c.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\bsp\m5531\Library\StdDriver\src\pdma.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\bsp\m5531\Library\StdDriver\src\retarget.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\bsp\m5531\Library\StdDriver\src\spi.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\bsp\m5531\Library\StdDriver\src\sys.c</name>
@@ -1571,7 +1572,7 @@
     <group>
         <name>lv_port</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_disp\disp_lt7381.c</name>
+            <name>$PROJ_DIR$\..\..\..\common\drv_disp\disp_ili9341.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\lv_port\drv_pdma.c</name>
@@ -1580,7 +1581,10 @@
             <name>$PROJ_DIR$\..\lv_port\drv_pdma.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_disp\lt7381_ebi.c</name>
+            <name>$PROJ_DIR$\..\lv_port\drv_spi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_disp\ili9341_spi.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\common\lv_demo.c</name>
@@ -1601,7 +1605,10 @@
             <name>$PROJ_DIR$\..\..\..\common\nu_misc.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_ft5316.c</name>
+            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_adc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_adc_calibration.c</name>
         </file>
     </group>
     <group>

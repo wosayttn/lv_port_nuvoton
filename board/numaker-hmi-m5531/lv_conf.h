@@ -13,16 +13,10 @@
 
 #define LV_USE_DRAW_GDMA                1
 #define LV_USE_NATIVE_HELIUM_ASM        1
-//#define CONFIG_LV_DISP_FULL_REFRESH     1
 
-#if defined(__480x272__)
-    #define LV_HOR_RES_MAX              480
-    #define LV_VER_RES_MAX              272
-#endif
-
-#if defined(__800x480__)
-    #define LV_HOR_RES_MAX              800
-    #define LV_VER_RES_MAX              480
+#if defined(__320x240__)
+    #define LV_HOR_RES_MAX              320
+    #define LV_VER_RES_MAX              240
 #endif
 
 #define LV_COLOR_DEPTH                  16
