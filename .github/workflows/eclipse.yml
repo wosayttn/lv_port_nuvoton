@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout repo
@@ -16,6 +16,17 @@ jobs:
         with:
           submodules: recursive
 
+      # ---------- Cache toolchains & Eclipse ----------
+      - name: Cache ARM Toolchains & Eclipse
+        uses: actions/cache@v4
+        with:
+          path: |
+            gcc-arm-none-eabi-10.3-2021.10
+            gcc-arm-10.3-2021.07-*
+            eclipse-cdt
+          key: ${{ runner.os }}-toolchains-eclipse-v1
+
+      # ---------- Linux ----------
       - name: Install dependencies (Linux)
         if: matrix.os == 'ubuntu-latest'
         shell: bash
@@ -23,57 +34,59 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y wget unzip default-jre make
 
-          echo "🌍 Downloading arm-none-eabi-toolchain for Linux x64"
-          wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-          tar -jxf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+          if [ ! -d gcc-arm-none-eabi-10.3-2021.10 ]; then
+            echo "🌍 Downloading arm-none-eabi-toolchain for Linux x64"
+            wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+            tar -jxf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+          fi
           echo "$PWD/gcc-arm-none-eabi-10.3-2021.10/bin" >> $GITHUB_PATH
-          ls -al $PWD
 
-          echo "🌍 Downloading aarch64-elf-toolchain for Linux x64"
-          wget -q https://developer.arm.com/-/media/Files/downloads/gnu-a/10.3-2021.07/binrel/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf.tar.xz
-          tar -xf gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf.tar.xz
+          if [ ! -d gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf ]; then
+            echo "🌍 Downloading aarch64-elf-toolchain for Linux x64"
+            wget -q https://developer.arm.com/-/media/Files/downloads/gnu-a/10.3-2021.07/binrel/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf.tar.xz
+            tar -xf gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf.tar.xz
+          fi
           echo "$PWD/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf/bin" >> $GITHUB_PATH
-          ls -al $PWD
 
-          echo "🌍 Downloading Eclipse for Linux"
-          wget -q -O NuEclipse.tar.gz --no-check-certificate https://www.nuvoton.com/resource-download.jsp?tp_GUID=SW132023052507200264
-          tar -xzf NuEclipse.tar.gz
-          find . -name eclipse
-          mv NuEclipse_V1.02.029_Linux_Setup/eclipse ./eclipse-cdt
-          ls -al $PWD
+          if [ ! -d eclipse-cdt ]; then
+            echo "🌍 Downloading Eclipse for Linux"
+            wget -q -O NuEclipse.tar.gz --no-check-certificate https://www.nuvoton.com/resource-download.jsp?tp_GUID=SW132023052507200264
+            tar -xzf NuEclipse.tar.gz
+            mv NuEclipse_V1.02.029_Linux_Setup/eclipse ./eclipse-cdt
+          fi
 
+      # ---------- Windows ----------
       - name: Install dependencies (Windows)
         if: matrix.os == 'windows-latest'
         shell: bash
         run: |
           choco install unzip jre8 -y
 
-          echo "🌍 Downloading arm-none-eabi-toolchain for Windows"
-          curl -LO https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-win32.zip
-          unzip -q gcc-arm-none-eabi-10.3-2021.10-win32.zip -d toolchain_arm
+          if [ ! -d toolchain_arm ]; then
+            echo "🌍 Downloading arm-none-eabi-toolchain for Windows"
+            curl -LO https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-win32.zip
+            unzip -q gcc-arm-none-eabi-10.3-2021.10-win32.zip -d toolchain_arm
+          fi
           echo "${PWD}/toolchain_arm/gcc-arm-none-eabi-10.3-2021.10/bin" >> $GITHUB_PATH
-          ls -al toolchain_arm/gcc-arm-none-eabi-10.3-2021.10/bin
 
-          echo "🌍 Downloading aarch64-none-elf-toolchain for Windows"
-          curl -LO https://developer.arm.com/-/media/Files/downloads/gnu-a/10.3-2021.07/binrel/gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf.tar.xz
-          tar -xf gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf.tar.xz
+          if [ ! -d gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf ]; then
+            echo "🌍 Downloading aarch64-none-elf-toolchain for Windows"
+            curl -LO https://developer.arm.com/-/media/Files/downloads/gnu-a/10.3-2021.07/binrel/gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf.tar.xz
+            tar -xf gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf.tar.xz
+          fi
           echo "${PWD}/gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf/bin" >> $GITHUB_PATH
-          ls -al gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf/bin
 
-          echo "🌍 Downloading Eclipse for Windows"
-          curl -LO https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2025-06/M3/eclipse-embedcpp-2025-06-M3-win32-x86_64.zip
-          unzip -q eclipse-embedcpp-2025-06-M3-win32-x86_64.zip
-          mv eclipse eclipse-cdt
-          ls -al eclipse-cdt
-          echo $GITHUB_PATH
+          if [ ! -d eclipse-cdt ]; then
+            echo "🌍 Downloading Eclipse for Windows"
+            curl -LO https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2025-06/M3/eclipse-embedcpp-2025-06-M3-win32-x86_64.zip
+            unzip -q eclipse-embedcpp-2025-06-M3-win32-x86_64.zip
+            mv eclipse eclipse-cdt
+          fi
 
+      # ---------- Build ----------
       - name: Build all Eclipse projects
         shell: bash
         run: |
-
-          echo $GITHUB_PATH
-          echo $PATH
-
           echo "✅ Version check"
           arm-none-eabi-gcc --version
           aarch64-none-elf-gcc --version
@@ -81,7 +94,6 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE/artifacts"
 
           for dir in $(find ./board -type f -name .cproject -exec dirname {} \;); do
-
             mkdir -p "$GITHUB_WORKSPACE/workspace"
 
             echo "🔨 Building $dir on $RUNNER_OS"
