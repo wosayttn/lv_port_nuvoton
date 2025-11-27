@@ -47,7 +47,7 @@
 #define configCPU_CLOCK_HZ             (( unsigned long ) 300000000)
 #define configTICK_RATE_HZ              ( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES            ( 8 )
-#define configMINIMAL_STACK_SIZE        ( ( unsigned short ) 2048 )
+#define configMINIMAL_STACK_SIZE        ( ( unsigned short ) 8192)
 #define configTOTAL_HEAP_SIZE           ( ( size_t ) ( 4 * 1024 * 1024 ) )
 #define configMAX_TASK_NAME_LEN         ( 16 )
 #define configUSE_TRACE_FACILITY        1
@@ -55,10 +55,17 @@
 #define configIDLE_SHOULD_YIELD         1
 
 #define configUSE_MUTEXES               1
+#define configUSE_APPLICATION_TASK_TAG                  1
 #define configCHECK_FOR_STACK_OVERFLOW  0
 #define configUSE_RECURSIVE_MUTEXES     1
 #define configQUEUE_REGISTRY_SIZE       10
 #define configUSE_COUNTING_SEMAPHORES   1
+
+/* Hooks */
+void lv_freertos_task_switch_in(const char * name);
+void lv_freertos_task_switch_out(void);
+#define traceTASK_SWITCHED_IN()                         //lv_freertos_task_switch_in(pxCurrentTCB->pcTaskName)
+#define traceTASK_SWITCHED_OUT()                       /// lv_freertos_task_switch_out()
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES           0

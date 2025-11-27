@@ -12,7 +12,7 @@
 #define LV_NUVOTON_INCLUDE     "MA35D1.h"
 #include LV_NUVOTON_INCLUDE
 
-#define LV_USE_OS   LV_OS_NONE
+#define LV_USE_OS   LV_OS_FREERTOS
 
 #if defined(__1024x600__)
     #define LV_HOR_RES_MAX              1024
@@ -24,6 +24,7 @@
     #define LV_COLOR_DEPTH              32
 #endif
 
+#define LV_DEF_REFR_PERIOD              16
 #define CONFIG_LV_DISP_FULL_REFRESH     0
 
 #define lv_snprintf                     snprintf
@@ -49,11 +50,13 @@
 #define LV_FONT_MONTSERRAT_46           1
 #define LV_FONT_MONTSERRAT_48           1
 
-#define CONFIG_LV_MEM_SIZE              (512*1024)
-#define CONFIG_LV_CACHE_DEF_SIZE        (512*1024)
+#define CONFIG_LV_MEM_SIZE              (8*1024*1024)
+#define CONFIG_LV_CACHE_DEF_SIZE        (8*1024*1024)
+#define CONFIG_LV_DRAW_BUF_ALIGN	    64
 
 /* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
+//#define LV_USE_DEMO_BENCHMARK           1
 //#define LV_USE_DEMO_MUSIC             1
 #if LV_USE_DEMO_MUSIC
     #define LV_DEMO_MUSIC_AUTO_PLAY     1

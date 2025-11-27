@@ -24,7 +24,7 @@
     #define LV_COLOR_DEPTH              32
 #endif
 
-#define CONFIG_LV_DEF_REFR_PERIOD       25
+#define LV_DEF_REFR_PERIOD              16
 #define CONFIG_LV_DISP_FULL_REFRESH     0
 
 #define lv_snprintf                     snprintf

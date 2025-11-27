@@ -13,11 +13,11 @@ import xml.etree.ElementTree as ET # phone home :p
 import mmap
 
 PROJ_FOLDER_NAME='..\\..\\board'
-PATH_UV4="C:\\Keil_v540\\UV4\\Uv4.exe"
+PATH_UV4="C:\\Keil_v5\\UV4\\Uv4.exe"
 
 def blacklist_check(BUILDLOG):
     Blacklist = ['warning:', 'Warning: ', 'error: ', 'Error: ']
-    Whitelist = ['[-Wlicense-management]', 'Q9931W:', 'Your license ']
+    Whitelist = ['[-Wlicense-management]', 'Q9931W:', 'Your license ', ' does not support the selected User Based Licensing technology']
 
     # Find any error/warning
     fp = open(BUILDLOG, "r")

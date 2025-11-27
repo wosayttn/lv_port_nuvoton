@@ -41,10 +41,16 @@ extern uint32_t SystemCoreClock;
 #define configCHECK_FOR_STACK_OVERFLOW  0
 #define configUSE_RECURSIVE_MUTEXES     1
 #define configUSE_MALLOC_FAILED_HOOK    0
-#define configUSE_APPLICATION_TASK_TAG  0
+#define configUSE_APPLICATION_TASK_TAG  1
 #define configUSE_COUNTING_SEMAPHORES   1
 #define configGENERATE_RUN_TIME_STATS   0
 #define configUSE_QUEUE_SETS            1
+
+/* Hooks */
+void lv_freertos_task_switch_in(const char * name);
+void lv_freertos_task_switch_out(void);
+#define traceTASK_SWITCHED_IN()                         lv_freertos_task_switch_in(pxCurrentTCB->pcTaskName)
+#define traceTASK_SWITCHED_OUT()                        lv_freertos_task_switch_out()
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES       0

@@ -64,6 +64,12 @@
 #define configUSE_CO_ROUTINES           0
 #define configMAX_CO_ROUTINE_PRIORITIES ( 2 )
 
+/* Hooks */
+void lv_freertos_task_switch_in(const char * name);
+void lv_freertos_task_switch_out(void);
+#define traceTASK_SWITCHED_IN()                         lv_freertos_task_switch_in(pxCurrentTCB->pcTaskName)
+#define traceTASK_SWITCHED_OUT()                        lv_freertos_task_switch_out()
+
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
 

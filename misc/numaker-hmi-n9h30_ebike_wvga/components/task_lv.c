@@ -55,7 +55,7 @@ void lv_nuvoton_task(void *pdata)
     while (1)
     {
         lv_task_handler();
-        vTaskDelay((const TickType_t) 1 / portTICK_PERIOD_MS);
+        vTaskDelay(pdMS_TO_TICKS(1));
     }
 }
 
