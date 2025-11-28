@@ -12,7 +12,7 @@
 #define LV_NUVOTON_INCLUDE     "nuc980.h"
 #include LV_NUVOTON_INCLUDE
 
-#define LV_USE_OS   LV_OS_FREERTOS
+#define LV_USE_OS   LV_OS_NONE
 #define LV_HOR_RES_MAX                  320
 #define LV_VER_RES_MAX                  240
 #define LV_COLOR_DEPTH                  16

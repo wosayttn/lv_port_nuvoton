@@ -66,7 +66,8 @@ project:
             - -fsigned-char
             - --specs=nano.specs
             - --specs=nosys.specs
-            - -Wl,--gc-sections,-Map=$elf()$.map
+            - -Wl,--gc-sections,-Map="$elf()$.map"
+            - -Wl,--no-warn-rwx-segments
     - setup: Options for M55M1_800x480
       for-context: +M55M1_800x480
       processor:
@@ -128,7 +129,8 @@ project:
             - -fsigned-char
             - --specs=nano.specs
             - --specs=nosys.specs
-            - -Wl,--gc-sections,-Map=$elf()$.map
+            - -Wl,--gc-sections,-Map="$elf()$.map"
+            - -Wl,--no-warn-rwx-segments
     - setup: Options for M55M1_EBI_SYNC_480x272
       for-context: +M55M1_EBI_SYNC_480x272
       processor:
@@ -191,7 +193,8 @@ project:
             - -fsigned-char
             - --specs=nano.specs
             - --specs=nosys.specs
-            - -Wl,--gc-sections,-Map=$elf()$.map
+            - -Wl,--gc-sections,-Map="$elf()$.map"
+            - -Wl,--no-warn-rwx-segments
     - setup: Options for M55M1_EBI_SYNC_800x480
       for-context: +M55M1_EBI_SYNC_800x480
       processor:
@@ -255,7 +258,8 @@ project:
             - -fsigned-char
             - --specs=nano.specs
             - --specs=nosys.specs
-            - -Wl,--gc-sections,-Map=$elf()$.map
+            - -Wl,--gc-sections,-Map="$elf()$.map"
+            - -Wl,--no-warn-rwx-segments
   linker:
     - script: M55M1.ld
   groups:

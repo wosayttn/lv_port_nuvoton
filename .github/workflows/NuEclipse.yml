@@ -1,0 +1,66 @@
+name: NuEclipse
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/wosayttn/numicro-cicd:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build all Eclipse projects
+        shell: bash
+        run: |
+          REPO_ROOT="$GITHUB_WORKSPACE"
+          export PATH="/opt/eclipse-cdt/:/opt/gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf/bin:/opt/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/bin:$PATH"
+          echo $PATH
+
+          echo "✅ Version check"
+          arm-none-eabi-gcc --version
+          aarch64-none-elf-gcc --version
+
+          mkdir -p "$GITHUB_WORKSPACE/artifacts"
+
+          for dir in $(find ./board -type f -name .cproject -exec dirname {} \;); do
+
+            mkdir -p "$GITHUB_WORKSPACE/workspace"
+
+            echo "🔨 Building $dir on $RUNNER_OS"
+            timeout 5m eclipse \
+              -nosplash \
+              -application org.eclipse.cdt.managedbuilder.core.headlessbuild \
+              -data "$GITHUB_WORKSPACE/workspace" \
+              -import "$GITHUB_WORKSPACE/$dir" \
+              -build all
+
+            echo "🧹 Collecting .bin files"
+            bin_files=$(find "$dir" -type f -name "*.bin")
+            for bin_file in $bin_files; do
+              base_name=$(basename "$bin_file")
+              bin_file_relative_path=$(realpath --relative-to="$GITHUB_WORKSPACE" "$bin_file")
+              bin_file_dir=$(dirname "$bin_file_relative_path")
+              prefix=$(echo "${bin_file_dir}" | tr '/' '_')
+              new_name="${prefix}_${base_name}"
+
+              echo "📦 Copying $bin_file → artifacts/$new_name"
+              cp "$bin_file" "$GITHUB_WORKSPACE/artifacts/$new_name"
+            done
+
+            rm -rf "$GITHUB_WORKSPACE/workspace"
+          done
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lv_port_nuvoton-nueclipse
+          path: ${{ github.workspace }}/artifacts/*.bin

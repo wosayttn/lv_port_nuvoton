@@ -18,7 +18,7 @@
 //#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
 //#define CONFIG_LV_DRAW_BUF_ALIGN               32
 
-#define LV_USE_OS   LV_OS_FREERTOS
+#define LV_USE_OS   LV_OS_NONE
 
 #if defined(__800x480__)
     #define LV_HOR_RES_MAX              800

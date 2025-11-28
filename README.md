@@ -1,8 +1,7 @@
 # **lv_port_nuvoton**
 
-![Eclipse Build](https://github.com/wosayttn/lv_port_nuvoton/actions/workflows/eclipse.yml/badge.svg)
-![VSCode Build](https://github.com/wosayttn/lv_port_nuvoton/actions/workflows/vscode.yml/badge.svg)
-
+![Eclipse Build](https://github.com/wosayttn/lv_port_nuvoton/actions/workflows/NuEclipse.yml/badge.svg)
+![VSCode Build](https://github.com/wosayttn/lv_port_nuvoton/actions/workflows/VSCode.yml/badge.svg)
 
 This repository contains the LVGLv9 demo port for the NuMaker development board from Nuvoton.
 

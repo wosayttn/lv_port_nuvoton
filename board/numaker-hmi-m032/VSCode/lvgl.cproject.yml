@@ -65,7 +65,8 @@ project:
             - -fsigned-char
             - -g
             - --specs=nano.specs
-            - -Wl,--gc-sections,-Map=$elf()$.map
+            - -Wl,--gc-sections,-Map="$elf()$.map"
+            - -Wl,--no-warn-rwx-segments
   linker:
     - script: M031.ld
   groups:

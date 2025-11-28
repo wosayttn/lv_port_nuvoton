@@ -60,7 +60,8 @@ project:
             - -g
             - --specs=nano.specs
             - --specs=nosys.specs
-            - -Wl,--gc-sections,-Map=$elf()$.map
+            - -Wl,--gc-sections,-Map="$elf()$.map"
+            - -Wl,--no-warn-rwx-segments
   linker:
     - script: M2L31.ld
   groups:
