@@ -21,6 +21,7 @@
 
 /* Prevent C code being included by the IAR assembler. */
 #ifndef __IASMARM__
+    #include "NuMicro.h"
     #include <stdint.h>
     extern uint32_t SystemCoreClock;
 #endif
@@ -45,7 +46,7 @@
 /* Stack and heap */
 #define configMINIMAL_STACK_SIZE                        (uint16_t)128
 #define configMINIMAL_SECURE_STACK_SIZE                 1024
-#define configTOTAL_HEAP_SIZE                           (size_t)(16 * 1024)
+#define configTOTAL_HEAP_SIZE                           (size_t)(32 * 1024)
 #define configMAX_TASK_NAME_LEN                         12
 /* OS features */
 #define configUSE_MUTEXES                               1
@@ -58,11 +59,17 @@
 #define configUSE_QUEUE_SETS                            0
 #define configUSE_TASK_NOTIFICATIONS                    1
 #define configUSE_TRACE_FACILITY                        1
+
 /* Hooks */
-void lv_freertos_task_switch_in(const char * name);
-void lv_freertos_task_switch_out(void);
-#define traceTASK_SWITCHED_IN()                         lv_freertos_task_switch_in(pxCurrentTCB->pcTaskName)
-#define traceTASK_SWITCHED_OUT()                        lv_freertos_task_switch_out()
+#define traceTASK_SWITCHED_IN()                         { \
+                                                            void lv_freertos_task_switch_in(const char * name); \
+                                                            lv_freertos_task_switch_in(pxCurrentTCB->pcTaskName); \
+                                                        }
+
+#define traceTASK_SWITCHED_OUT()                        { \
+                                                            void lv_freertos_task_switch_out(void); \
+                                                            lv_freertos_task_switch_out(); \
+                                                        }
 
 #define configUSE_IDLE_HOOK                             0
 #define configUSE_TICK_HOOK                             0

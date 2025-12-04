@@ -16,14 +16,7 @@
 
 #if LV_USE_DRAW_2DGE
 
-#include "blend/lv_draw_sw_blend.h"
-#include "lv_draw_sw_gradient.h"
-#include "../../misc/lv_math.h"
-#include "../../misc/lv_text_ap.h"
-#include "../../core/lv_refr.h"
-#include "../../misc/lv_assert.h"
-#include "../../stdlib/lv_string.h"
-#include "../lv_draw_mask.h"
+#include "../../misc/lv_area_private.h"
 
 /*********************
  *      DEFINES
@@ -48,24 +41,31 @@
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
-void lv_draw_2dge_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *dsc,
-                       const lv_area_t *coords)
+
+void lv_draw_2dge_fill(lv_draw_task_t *t)
 {
-    lv_layer_t *layer = draw_unit->target_layer;
+    lv_draw_fill_dsc_t *dsc = t->draw_dsc;
+
+    if (dsc->opa <= (lv_opa_t)LV_OPA_MIN)
+        return;
+
+    lv_draw_2dge_unit_t *u = (lv_draw_2dge_unit_t *)t->draw_unit;
+    lv_layer_t *layer = t->target_layer;
     lv_draw_buf_t *draw_buf = layer->draw_buf;
+    lv_area_t *coords = &t->area;
 
     lv_area_t rel_coords;
     lv_area_copy(&rel_coords, coords);
-
     lv_area_move(&rel_coords, -layer->buf_area.x1, -layer->buf_area.y1);
 
     lv_area_t rel_clip_area;
-    lv_area_copy(&rel_clip_area, draw_unit->clip_area);
+    lv_area_copy(&rel_clip_area, &t->clip_area);
     lv_area_move(&rel_clip_area, -layer->buf_area.x1, -layer->buf_area.y1);
 
     lv_area_t blend_area;
     if (!lv_area_intersect(&blend_area, &rel_coords, &rel_clip_area))
         return; /*Fully clipped, nothing to do*/
+
 
     {
         uint8_t *dest_buf = draw_buf->data;

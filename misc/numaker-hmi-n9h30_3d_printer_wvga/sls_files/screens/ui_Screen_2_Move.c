@@ -5,178 +5,198 @@
 
 #include "../ui.h"
 
-lv_obj_t * ui_Screen_2_Move;
-lv_obj_t * ui_Background1;
-lv_obj_t * ui_Panel_Header1;
-lv_obj_t * ui_Label_Header1;
-lv_obj_t * ui_IMG_Wifi1;
-lv_obj_t * ui_IMG_PC1;
-lv_obj_t * ui_IMG_USB1;
-lv_obj_t * ui_BTN_Menu_Print_S2;
-lv_obj_t * ui_BTN_Menu_Move_S2;
-lv_obj_t * ui_BTN_Menu_Setting_S2;
-lv_obj_t * ui_S1_Content_Panel1;
-lv_obj_t * ui_Display_Pos_XY;
-lv_obj_t * ui_DP1;
-lv_obj_t * ui_Label_X_Position;
-lv_obj_t * ui_Label_X_Position_Number;
-lv_obj_t * ui_Panel2;
-lv_obj_t * ui_DP2;
-lv_obj_t * ui_Label_Y_Position;
-lv_obj_t * ui_Label_Time_3;
-lv_obj_t * ui_Display_Pos_y;
-lv_obj_t * ui_DP3;
-lv_obj_t * ui_Label_Z_Position;
-lv_obj_t * ui_Label_Z_Position_Number;
-lv_obj_t * ui_BTN_Move_Z;
-lv_obj_t * ui_GLOW_1;
-lv_obj_t * ui_GLOW_2;
-lv_obj_t * ui_BTN_Image_Top;
-lv_obj_t * ui_Label_Z_Position_2;
-lv_obj_t * ui_Arrow_Z_up;
-lv_obj_t * ui_Arrow_Z_Down;
-lv_obj_t * ui_BTN_Move_XY;
-lv_obj_t * ui_GLOW_3;
-lv_obj_t * ui_GLOW_4;
-lv_obj_t * ui_GLOW_5;
-lv_obj_t * ui_GLOW_6;
-lv_obj_t * ui_BTN_Move_XY_Top;
-lv_obj_t * ui_Label_XY_Position;
-lv_obj_t * ui_Arrow_Up_2;
-lv_obj_t * ui_Arrow_Down_2;
-lv_obj_t * ui_Arrow_Left_2;
-lv_obj_t * ui_Arrow_Right_2;
-lv_obj_t * ui_Roller_Number;
-lv_obj_t * ui_Image8;
-lv_obj_t * ui_Roller1;
-lv_obj_t * ui_Label_Steps;
-lv_obj_t * ui_BTN_Reset;
-lv_obj_t * ui_Label_Reset;
-lv_obj_t * ui_BTN_Heat;
-lv_obj_t * ui_Label_Reset1;
+lv_obj_t *ui_Screen_2_Move;
+lv_obj_t *ui_Background1;
+lv_obj_t *ui_Panel_Header1;
+lv_obj_t *ui_Label_Header1;
+lv_obj_t *ui_IMG_Wifi1;
+lv_obj_t *ui_IMG_PC1;
+lv_obj_t *ui_IMG_USB1;
+lv_obj_t *ui_BTN_Menu_Print_S2;
+lv_obj_t *ui_BTN_Menu_Move_S2;
+lv_obj_t *ui_BTN_Menu_Setting_S2;
+lv_obj_t *ui_S1_Content_Panel1;
+lv_obj_t *ui_Display_Pos_XY;
+lv_obj_t *ui_DP1;
+lv_obj_t *ui_Label_X_Position;
+lv_obj_t *ui_Label_X_Position_Number;
+lv_obj_t *ui_Panel2;
+lv_obj_t *ui_DP2;
+lv_obj_t *ui_Label_Y_Position;
+lv_obj_t *ui_Label_Time_3;
+lv_obj_t *ui_Display_Pos_y;
+lv_obj_t *ui_DP3;
+lv_obj_t *ui_Label_Z_Position;
+lv_obj_t *ui_Label_Z_Position_Number;
+lv_obj_t *ui_BTN_Move_Z;
+lv_obj_t *ui_GLOW_1;
+lv_obj_t *ui_GLOW_2;
+lv_obj_t *ui_BTN_Image_Top;
+lv_obj_t *ui_Label_Z_Position_2;
+lv_obj_t *ui_Arrow_Z_up;
+lv_obj_t *ui_Arrow_Z_Down;
+lv_obj_t *ui_BTN_Move_XY;
+lv_obj_t *ui_GLOW_3;
+lv_obj_t *ui_GLOW_4;
+lv_obj_t *ui_GLOW_5;
+lv_obj_t *ui_GLOW_6;
+lv_obj_t *ui_BTN_Move_XY_Top;
+lv_obj_t *ui_Label_XY_Position;
+lv_obj_t *ui_Arrow_Up_2;
+lv_obj_t *ui_Arrow_Down_2;
+lv_obj_t *ui_Arrow_Left_2;
+lv_obj_t *ui_Arrow_Right_2;
+lv_obj_t *ui_Roller_Number;
+lv_obj_t *ui_Image8;
+lv_obj_t *ui_Roller1;
+lv_obj_t *ui_Label_Steps;
+lv_obj_t *ui_BTN_Reset;
+lv_obj_t *ui_Label_Reset;
+lv_obj_t *ui_BTN_Heat;
+lv_obj_t *ui_Label_Reset1;
 
 // event funtions
-void ui_event_BTN_Menu_Print_S2(lv_event_t * e)
+void ui_event_BTN_Menu_Print_S2(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED)
+    {
         _ui_screen_change(&ui_Screen_1_Print, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, &ui_Screen_1_Print_screen_init);
     }
 }
 
-void ui_event_BTN_Menu_Setting_S2(lv_event_t * e)
+void ui_event_BTN_Menu_Setting_S2(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED)
+    {
         _ui_screen_change(&ui_Screen_3_Setting, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, &ui_Screen_3_Setting_screen_init);
     }
 }
 
-void ui_event_GLOW_1(lv_event_t * e)
+void ui_event_GLOW_1(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_PRESSED) {
+    if (event_code == LV_EVENT_PRESSED)
+    {
         OpaOn_Animation(ui_GLOW_1, 0);
         _ui_state_modify(ui_Arrow_Z_up, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
     }
-    if(event_code == LV_EVENT_RELEASED) {
+    if (event_code == LV_EVENT_RELEASED)
+    {
         OpaOff_Animation(ui_GLOW_1, 0);
         _ui_state_modify(ui_Arrow_Z_up, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
-    if(event_code == LV_EVENT_PRESS_LOST) {
+    if (event_code == LV_EVENT_PRESS_LOST)
+    {
         OpaOff_Animation(ui_GLOW_1, 0);
         _ui_state_modify(ui_Arrow_Z_up, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
 }
 
-void ui_event_GLOW_2(lv_event_t * e)
+void ui_event_GLOW_2(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_PRESSED) {
+    if (event_code == LV_EVENT_PRESSED)
+    {
         OpaOn_Animation(ui_GLOW_2, 0);
         _ui_state_modify(ui_Arrow_Z_Down, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
     }
-    if(event_code == LV_EVENT_RELEASED) {
+    if (event_code == LV_EVENT_RELEASED)
+    {
         OpaOff_Animation(ui_GLOW_2, 0);
         _ui_state_modify(ui_Arrow_Z_Down, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
-    if(event_code == LV_EVENT_PRESS_LOST) {
+    if (event_code == LV_EVENT_PRESS_LOST)
+    {
         OpaOff_Animation(ui_GLOW_2, 0);
         _ui_state_modify(ui_Arrow_Z_Down, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
 }
 
-void ui_event_GLOW_3(lv_event_t * e)
+void ui_event_GLOW_3(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_PRESSED) {
+    if (event_code == LV_EVENT_PRESSED)
+    {
         OpaOn_Animation(ui_GLOW_3, 0);
         _ui_state_modify(ui_Arrow_Right_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
     }
-    if(event_code == LV_EVENT_RELEASED) {
+    if (event_code == LV_EVENT_RELEASED)
+    {
         OpaOff_Animation(ui_GLOW_3, 0);
         _ui_state_modify(ui_Arrow_Right_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
-    if(event_code == LV_EVENT_PRESS_LOST) {
+    if (event_code == LV_EVENT_PRESS_LOST)
+    {
         OpaOff_Animation(ui_GLOW_3, 0);
         _ui_state_modify(ui_Arrow_Right_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
 }
 
-void ui_event_GLOW_4(lv_event_t * e)
+void ui_event_GLOW_4(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_PRESSED) {
+    if (event_code == LV_EVENT_PRESSED)
+    {
         OpaOn_Animation(ui_GLOW_4, 0);
         _ui_state_modify(ui_Arrow_Up_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
     }
-    if(event_code == LV_EVENT_RELEASED) {
+    if (event_code == LV_EVENT_RELEASED)
+    {
         OpaOff_Animation(ui_GLOW_4, 0);
         _ui_state_modify(ui_Arrow_Up_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
-    if(event_code == LV_EVENT_PRESS_LOST) {
+    if (event_code == LV_EVENT_PRESS_LOST)
+    {
         OpaOff_Animation(ui_GLOW_4, 0);
         _ui_state_modify(ui_Arrow_Up_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
 }
 
-void ui_event_GLOW_5(lv_event_t * e)
+void ui_event_GLOW_5(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_PRESSED) {
+    if (event_code == LV_EVENT_PRESSED)
+    {
         OpaOn_Animation(ui_GLOW_5, 0);
         _ui_state_modify(ui_Arrow_Down_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
     }
-    if(event_code == LV_EVENT_RELEASED) {
+    if (event_code == LV_EVENT_RELEASED)
+    {
         OpaOff_Animation(ui_GLOW_5, 0);
         _ui_state_modify(ui_Arrow_Down_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
-    if(event_code == LV_EVENT_PRESS_LOST) {
+    if (event_code == LV_EVENT_PRESS_LOST)
+    {
         OpaOff_Animation(ui_GLOW_5, 0);
         _ui_state_modify(ui_Arrow_Down_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
 }
 
-void ui_event_GLOW_6(lv_event_t * e)
+void ui_event_GLOW_6(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_PRESSED) {
+    if (event_code == LV_EVENT_PRESSED)
+    {
         OpaOn_Animation(ui_GLOW_6, 0);
         _ui_state_modify(ui_Arrow_Left_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
     }
-    if(event_code == LV_EVENT_RELEASED) {
+    if (event_code == LV_EVENT_RELEASED)
+    {
         OpaOff_Animation(ui_GLOW_6, 0);
         _ui_state_modify(ui_Arrow_Left_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
-    if(event_code == LV_EVENT_PRESS_LOST) {
+    if (event_code == LV_EVENT_PRESS_LOST)
+    {
         OpaOff_Animation(ui_GLOW_6, 0);
         _ui_state_modify(ui_Arrow_Left_2, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
@@ -805,7 +825,7 @@ void ui_Screen_2_Move_screen_init(void)
 
 void ui_Screen_2_Move_screen_destroy(void)
 {
-    if(ui_Screen_2_Move) lv_obj_del(ui_Screen_2_Move);
+    if (ui_Screen_2_Move) lv_obj_del(ui_Screen_2_Move);
 
     // NULL screen variables
     ui_Screen_2_Move = NULL;

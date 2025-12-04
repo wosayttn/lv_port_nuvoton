@@ -20,10 +20,10 @@
 #define GPIOA_BASE                      PA_BASE
 #define PORT_OFFSET                     0x40
 
-/* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
-#define CONFIG_DISP_LINE_BUFFER_NUMBER   16
+/* Define off-screen line buffer number,  Range: 10~LV_VER_RES_MAX */
+#define CONFIG_DISP_LINE_BUFFER_NUMBER   10
 
-#if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
+#if (CONFIG_DISP_LINE_BUFFER_NUMBER < 10) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
     #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
 #endif
 
@@ -32,7 +32,7 @@
 #define CONFIG_DISP_SPI             USPI0
 #define CONFIG_DISP_SPI_CLOCK       24000000
 #define CONFIG_DISP_SPI_SS_PIN      NU_GET_PININDEX(evGA, 8)
-#define CONFIG_DISP_USE_PDMA        1
+//#define CONFIG_DISP_USE_PDMA        1
 
 #if defined(CONFIG_DISP_USE_PDMA)
     #define CONFIG_PDMA_SPI_TX         PDMA_USCI0_TX

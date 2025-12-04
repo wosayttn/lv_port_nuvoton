@@ -7,15 +7,15 @@
 #include "ui_helpers.h"
 
 ///////////////////// VARIABLES ////////////////////
-lv_anim_t * OpaOn_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * OpaOff_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * ScreenIn_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * MenuIn_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * MenuOut_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * ScreenOut_Animation(lv_obj_t * TargetObject, int delay);
+lv_anim_t *OpaOn_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *OpaOff_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *ScreenIn_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *MenuIn_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *MenuOut_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *ScreenOut_Animation(lv_obj_t *TargetObject, int delay);
 
 // EVENTS
-lv_obj_t * ui____initial_actions0;
+lv_obj_t *ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
 
@@ -25,10 +25,10 @@ lv_obj_t * ui____initial_actions0;
 #endif
 
 ///////////////////// ANIMATIONS ////////////////////
-lv_anim_t * OpaOn_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *OpaOn_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -49,10 +49,10 @@ lv_anim_t * OpaOn_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * OpaOff_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *OpaOff_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -73,10 +73,10 @@ lv_anim_t * OpaOff_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * ScreenIn_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *ScreenIn_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -97,10 +97,10 @@ lv_anim_t * ScreenIn_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * MenuIn_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *MenuIn_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -121,10 +121,10 @@ lv_anim_t * MenuIn_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * MenuOut_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *MenuOut_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -145,10 +145,10 @@ lv_anim_t * MenuOut_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * ScreenOut_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *ScreenOut_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -176,9 +176,9 @@ lv_anim_t * ScreenOut_Animation(lv_obj_t * TargetObject, int delay)
 
 void ui_init(void)
 {
-    lv_disp_t * dispp = lv_display_get_default();
-    lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
-                                               false, LV_FONT_DEFAULT);
+    lv_disp_t *dispp = lv_display_get_default();
+    lv_theme_t *theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
+                        false, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
     ui_Screen_1_Print_screen_init();
     ui_Screen_2_Move_screen_init();

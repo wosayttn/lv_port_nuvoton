@@ -16,10 +16,7 @@
 #include "lv_draw_2dge.h"
 
 #if LV_USE_DRAW_2DGE
-
-#if LV_USE_PARALLEL_DRAW_DEBUG
-    #include "../../core/lv_global.h"
-#endif
+#include "../lv_draw_buf_private.h"
 
 /*********************
  *      DEFINES
@@ -56,7 +53,7 @@ static int32_t _2dge_delete(lv_draw_unit_t *draw_unit);
     static void _2dge_render_thread_cb(void *ptr);
 #endif
 
-static void _2dge_execute_drawing(lv_draw_2dge_unit_t *u);
+static void _2dge_execute_drawing(lv_draw_task_t *t);
 
 static void _2dge_invalidate_cache(const lv_draw_buf_t *draw_buf, const lv_area_t *area);
 
@@ -67,10 +64,6 @@ static void _2dge_invalidate_cache(const lv_draw_buf_t *draw_buf, const lv_area_
 /**********************
  *  STATIC VARIABLES
  **********************/
-
-#if LV_USE_PARALLEL_DRAW_DEBUG
-    #define _draw_info LV_GLOBAL_DEFAULT()->draw_info
-#endif
 
 /**********************
  *      MACROS
@@ -94,8 +87,10 @@ void lv_draw_2dge_init(void)
 #if LV_USE_OS
     void ge2dInterruptInit(void);
     ge2dInterruptInit();
-
-    lv_thread_init(&draw_2dge_unit->thread, LV_THREAD_PRIO_HIGH, _2dge_render_thread_cb, 2 * 1024, draw_2dge_unit);
+    lv_draw_sw_thread_dsc_t *thread_dsc = &draw_2dge_unit->thread_dsc;
+    thread_dsc->idx = 0;
+    thread_dsc->draw_unit = (void *) draw_2dge_unit;
+    lv_thread_init(&thread_dsc->thread, "2dge_draw", LV_DRAW_THREAD_PRIO, _2dge_render_thread_cb, LV_DRAW_THREAD_STACK_SIZE, thread_dsc);
 #endif
 }
 
@@ -123,7 +118,6 @@ static inline bool _2dge_src_cf_supported(lv_color_format_t cf)
         is_cf_supported = true;
         break;
     default:
-        LV_LOG_INFO("Not-supported");
         break;
     }
 
@@ -142,7 +136,6 @@ static inline bool _2dge_dest_cf_supported(lv_color_format_t cf)
         is_cf_supported = true;
         break;
     default:
-        LV_LOG_INFO("Not-supported");
         break;
     }
 
@@ -154,8 +147,7 @@ static bool _2dge_draw_img_supported(const lv_draw_image_dsc_t *draw_dsc)
     const lv_image_dsc_t *img_dsc = draw_dsc->src;
 
     bool has_recolor = (draw_dsc->recolor_opa > LV_OPA_MIN);
-    bool has_transform = (draw_dsc->rotation != 0 || draw_dsc->scale_x != LV_SCALE_NONE ||
-                          draw_dsc->scale_y != LV_SCALE_NONE);
+    bool has_transform = (draw_dsc->rotation != 0 || draw_dsc->scale_x != LV_SCALE_NONE || draw_dsc->scale_y != LV_SCALE_NONE);
     bool has_opa = (draw_dsc->opa < (lv_opa_t)LV_OPA_MAX);
     bool src_has_alpha = (img_dsc->header.cf == LV_COLOR_FORMAT_ARGB8888);
 
@@ -242,7 +234,6 @@ static int32_t _2dge_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
         int32_t src_stride = (img_dsc->header.stride == 0) ? // Set?
                              lv_draw_buf_width_to_stride(img_dsc->header.w, img_dsc->header.cf) :
                              img_dsc->header.stride;
-        int32_t dest_stride = u->target_layer->draw_buf->header.stride;
 
         if (draw_dsc->tile ||
                 !_2dge_src_cf_supported(img_dsc->header.cf) ||
@@ -279,32 +270,41 @@ static int32_t _2dge_dispatch(lv_draw_unit_t *draw_unit, lv_layer_t *layer)
     lv_draw_2dge_unit_t *draw_2dge_unit = (lv_draw_2dge_unit_t *) draw_unit;
 
     /* Return immediately if it's busy with draw task. */
+#if LV_USE_OS
+    lv_draw_sw_thread_dsc_t *thread_dsc = &draw_2dge_unit->thread_dsc;
+
+    /* Return immediately if it's busy with draw task. */
+    if (thread_dsc->task_act)
+        return 0;
+#else
+    /* Return immediately if it's busy with draw task. */
     if (draw_2dge_unit->task_act)
         return 0;
+#endif
 
     /* Try to get an ready to draw. */
     lv_draw_task_t *t = lv_draw_get_next_available_task(layer, NULL, DRAW_UNIT_ID_2DGE);
 
     if (t == NULL || t->preferred_draw_unit_id != DRAW_UNIT_ID_2DGE)
-        return -1;
+        return LV_DRAW_UNIT_IDLE;
 
     void *buf = lv_draw_layer_alloc_buf(layer);
     if (buf == NULL)
-        return -1;
+        return LV_DRAW_UNIT_IDLE;
 
     t->state = LV_DRAW_TASK_STATE_IN_PROGRESS;
-    draw_2dge_unit->base_unit.target_layer = layer;
-    draw_2dge_unit->base_unit.clip_area = &t->clip_area;
-    draw_2dge_unit->task_act = t;
+    t->draw_unit = draw_unit;
 
 #if LV_USE_OS
-    /* Let the render thread work. */
-    if (draw_2dge_unit->inited)
-        lv_thread_sync_signal(&draw_2dge_unit->sync);
-#else
-    _2dge_execute_drawing(draw_2dge_unit);
+    thread_dsc->task_act = t;
 
-    draw_2dge_unit->task_act->state = LV_DRAW_TASK_STATE_READY;
+    /* Let the render thread work. */
+    if (thread_dsc->inited)
+        lv_thread_sync_signal(&thread_dsc->sync);
+#else
+    _2dge_execute_drawing(t);
+
+    draw_2dge_unit->task_act->state = LV_DRAW_TASK_STATE_FINISHED;
     draw_2dge_unit->task_act = NULL;
 
     /* The draw unit is free now. Request a new dispatching as it can get a new task. */
@@ -318,142 +318,85 @@ static int32_t _2dge_delete(lv_draw_unit_t *draw_unit)
 {
 #if LV_USE_OS
     lv_draw_2dge_unit_t *draw_2dge_unit = (lv_draw_2dge_unit_t *) draw_unit;
-
+    lv_draw_sw_thread_dsc_t *thread_dsc = &draw_2dge_unit->thread_dsc;
     LV_LOG_INFO("Cancel 2DGE draw thread.");
-    draw_2dge_unit->exit_status = true;
+    thread_dsc->exit_status = true;
 
-    if (draw_2dge_unit->inited)
-        lv_thread_sync_signal(&draw_2dge_unit->sync);
+    if (thread_dsc->inited)
+        lv_thread_sync_signal(&thread_dsc->sync);
 
-    lv_result_t res = lv_thread_delete(&draw_2dge_unit->thread);
-
-    return res;
+    return lv_thread_delete(&thread_dsc->thread);
 #else
+
     LV_UNUSED(draw_unit);
 
     return 0;
 #endif
 }
 
-static void _2dge_execute_drawing(lv_draw_2dge_unit_t *u)
+static void _2dge_execute_drawing(lv_draw_task_t *t)
 {
-    lv_draw_task_t *task = u->task_act;
-    lv_draw_unit_t *draw_unit = (lv_draw_unit_t *)u;
-    lv_layer_t *layer = draw_unit->target_layer;
+    lv_layer_t *layer = t->target_layer;
     lv_draw_buf_t *draw_buf = layer->draw_buf;
 
-    lv_area_t draw_area;
-    if (!lv_area_intersect(&draw_area, &task->area, draw_unit->clip_area))
-        return; /*Fully clipped, nothing to do*/
-
-    /* Make area relative to the buffer */
-    lv_area_move(&draw_area, -layer->buf_area.x1, -layer->buf_area.y1);
-
     /* Invalidate only the drawing area */
-    lv_draw_buf_invalidate_cache(draw_buf, &draw_area);
+    lv_draw_buf_invalidate_cache(draw_buf, NULL);
 
-    switch (task->type)
+    switch (t->type)
     {
     case LV_DRAW_TASK_TYPE_FILL:
-        lv_draw_2dge_fill(draw_unit, task->draw_dsc, &task->area);
+        lv_draw_2dge_fill(t);
         break;
     case LV_DRAW_TASK_TYPE_LAYER:
-        lv_draw_2dge_layer((lv_draw_unit_t *)u, task->draw_dsc, &task->area);
+        lv_draw_2dge_layer(t);
         break;
     case LV_DRAW_TASK_TYPE_IMAGE:
-        lv_draw_2dge_image((lv_draw_unit_t *)u, task->draw_dsc, &task->area);
+        lv_draw_2dge_image(t);
         break;
     default:
         break;
     }
-
-#if LV_USE_PARALLEL_DRAW_DEBUG
-    /*Layers manage it for themselves*/
-    if (task->type != LV_DRAW_TASK_TYPE_LAYER)
-    {
-        lv_area_t draw_area;
-        if (!lv_area_intersect(&draw_area, &task->area, u->base_unit.clip_area))
-            return;
-
-        int32_t idx = 0;
-        lv_draw_unit_t *draw_unit_tmp = _draw_info.unit_head;
-        while (draw_unit_tmp != (lv_draw_unit_t *)u)
-        {
-            draw_unit_tmp = draw_unit_tmp->next;
-            idx++;
-        }
-        lv_draw_rect_dsc_t rect_dsc;
-        lv_draw_rect_dsc_init(&rect_dsc);
-        rect_dsc.bg_color = lv_palette_main(idx % _LV_PALETTE_LAST);
-        rect_dsc.border_color = rect_dsc.bg_color;
-        rect_dsc.bg_opa = LV_OPA_10;
-        rect_dsc.border_opa = LV_OPA_80;
-        rect_dsc.border_width = 1;
-        lv_draw_sw_fill((lv_draw_unit_t *)u, &rect_dsc, &draw_area);
-
-        lv_point_t txt_size;
-        lv_text_get_size(&txt_size, "W", LV_FONT_DEFAULT, 0, 0, 100, LV_TEXT_FLAG_NONE);
-
-        lv_area_t txt_area;
-        txt_area.x1 = draw_area.x1;
-        txt_area.y1 = draw_area.y1;
-        txt_area.x2 = draw_area.x1 + txt_size.x - 1;
-        txt_area.y2 = draw_area.y1 + txt_size.y - 1;
-
-        lv_draw_rect_dsc_init(&rect_dsc);
-        rect_dsc.bg_color = lv_color_white();
-        lv_draw_sw_fill((lv_draw_unit_t *)u, &rect_dsc, &txt_area);
-
-        char buf[8];
-        lv_snprintf(buf, sizeof(buf), "%d", idx);
-        lv_draw_label_dsc_t label_dsc;
-        lv_draw_label_dsc_init(&label_dsc);
-        label_dsc.color = lv_color_black();
-        label_dsc.text = buf;
-        lv_draw_sw_label((lv_draw_unit_t *)u, &label_dsc, &txt_area);
-    }
-#endif
 }
 
 #if LV_USE_OS
 static void _2dge_render_thread_cb(void *ptr)
 {
-    lv_draw_2dge_unit_t *u = ptr;
-
-    lv_thread_sync_init(&u->sync);
-    u->inited = true;
+    lv_draw_sw_thread_dsc_t *thread_dsc = ptr;
+    lv_thread_sync_init(&thread_dsc->sync);
+    thread_dsc->inited = true;
 
     while (1)
     {
         /* Wait for sync if there is no task set. */
-        while (u->task_act == NULL)
+        while (thread_dsc->task_act == NULL)
         {
-            if (u->exit_status)
+            if (thread_dsc->exit_status)
                 break;
 
-            lv_thread_sync_wait(&u->sync);
+            lv_thread_sync_wait(&thread_dsc->sync);
         }
 
-        if (u->exit_status)
+        if (thread_dsc->exit_status)
         {
             LV_LOG_INFO("Ready to exit 2DGE draw thread.");
             break;
         }
 
-        _2dge_execute_drawing(u);
+        _2dge_execute_drawing(thread_dsc->task_act);
 
         /* Signal the ready state to dispatcher. */
-        u->task_act->state = LV_DRAW_TASK_STATE_READY;
+        thread_dsc->task_act->state = LV_DRAW_TASK_STATE_FINISHED;
 
         /* Cleanup. */
-        u->task_act = NULL;
+        thread_dsc->task_act = NULL;
 
         /* The draw unit is free now. Request a new dispatching as it can get a new task. */
         lv_draw_dispatch_request();
     }
 
-    u->inited = false;
-    lv_thread_sync_delete(&u->sync);
+    thread_dsc->inited = false;
+    lv_thread_sync_delete(&thread_dsc->sync);
+
     LV_LOG_INFO("Exit 2DGE draw thread.");
 }
 #endif

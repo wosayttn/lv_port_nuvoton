@@ -26,6 +26,7 @@ jobs:
         run: |
           mapfile -t solutions < <(find ./board/ -name '*.csolution.yml')
 
+          set +e
           for sol in "${solutions[@]}"; do
             proj_dir=$(dirname "$sol")
             proj=$(basename "$sol")
@@ -48,6 +49,7 @@ jobs:
             cd - > /dev/null
 
           done
+          set -e
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

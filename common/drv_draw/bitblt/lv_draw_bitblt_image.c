@@ -50,6 +50,8 @@ static bool _do_bitblt_draw_img_supported(const lv_draw_image_dsc_t *draw_dsc)
     bool has_opa = (draw_dsc->opa < (lv_opa_t)LV_OPA_MAX);
     bool src_has_alpha = (img_dsc->header.cf == LV_COLOR_FORMAT_ARGB8888);
 
+    LV_LOG_USER("draw_dsc->recolor_opa: %d", draw_dsc->recolor_opa);
+    LV_LOG_USER("draw_dsc->opa: %d", draw_dsc->opa);
     LV_LOG_USER("draw_dsc->rotation: %d", draw_dsc->rotation);
     LV_LOG_USER("src_has_alpha: %d", src_has_alpha);
     LV_LOG_USER("scale_x: %d, scale_y: %d", draw_dsc->scale_x, draw_dsc->scale_y);
@@ -61,26 +63,29 @@ static bool _do_bitblt_draw_img_supported(const lv_draw_image_dsc_t *draw_dsc)
     return true;
 }
 
-void lv_draw_bitblt_image(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *dsc,
-                          const lv_area_t *coords)
+void lv_draw_bitblt_image(lv_draw_task_t *t)
 {
+    lv_draw_image_dsc_t *dsc = t->draw_dsc;
+
     if (dsc->opa <= (lv_opa_t)LV_OPA_MIN)
         return;
 
-    lv_layer_t *layer = draw_unit->target_layer;
+    lv_draw_bitblt_unit_t *u = (lv_draw_bitblt_unit_t *)t->draw_unit;
+    lv_layer_t *layer = t->target_layer;
     lv_draw_buf_t *draw_buf = layer->draw_buf;
     const lv_image_dsc_t *img_dsc = dsc->src;
+    lv_area_t *coords = &t->area;
 
     lv_area_t rel_coords;
     lv_area_copy(&rel_coords, coords);
     lv_area_move(&rel_coords, -layer->buf_area.x1, -layer->buf_area.y1);
 
-    lv_area_t rel_clip_area;
-    lv_area_copy(&rel_clip_area, draw_unit->clip_area);
-    lv_area_move(&rel_clip_area, -layer->buf_area.x1, -layer->buf_area.y1);
+    lv_area_t clip_area;
+    lv_area_copy(&clip_area, &t->clip_area);
+    lv_area_move(&clip_area, -layer->buf_area.x1, -layer->buf_area.y1);
 
     lv_area_t blend_area;
-    if (!lv_area_intersect(&blend_area, &rel_coords, &rel_clip_area))
+    if (!lv_area_intersect(&blend_area, &rel_coords, &clip_area))
         return; /*Fully clipped, nothing to do*/
 
     lv_area_t src_area;
@@ -108,7 +113,8 @@ void lv_draw_bitblt_image(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *
     uint8_t dest_cf = draw_buf->header.cf;
     uint8_t *dest_buf = draw_buf->data + (dest_y * dest_stride + dest_x * dest_px_size);
 
-    _do_bitblt_draw_img_supported(dsc);
+    if (_do_bitblt_draw_img_supported(dsc))
+        LV_LOG_USER("CANNOT supported");
 
     LV_LOG_USER("src@%08x, stride: %d, x: %d, y: %d, w: %d, h: %d, cf: %d, px_size: %d", src_buf, src_stride, src_x, src_y, src_w, src_h, src_cf, src_px_size);
     LV_LOG_USER("dest@%08x, stride: %d, x: %d, y: %d, w: %d, h: %d, cf: %d, px_size: %d", dest_buf, dest_stride, dest_x, dest_y, dest_w, dest_h, dest_cf, dest_px_size);
@@ -193,7 +199,8 @@ void lv_draw_bitblt_image(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *
         {
             bltSetTransformFlag(eDRVBLT_HASCOLORTRANSFORM);
         }
-        bltSetFillStyle((E_DRVBLT_FILL_STYLE)(eDRVBLT_NONE_FILL | eDRVBLT_NOTSMOOTH));  // No smoothing.
+        //bltSetFillStyle((E_DRVBLT_FILL_STYLE)(eDRVBLT_NONE_FILL | eDRVBLT_NOTSMOOTH));  // No smoothing.
+        bltSetFillStyle((E_DRVBLT_FILL_STYLE)(eDRVBLT_NOTSMOOTH));  // No smoothing.
 
         {
             /* Set source image. */
@@ -226,6 +233,7 @@ void lv_draw_bitblt_image(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *
 
         void bitbltWaitForCompletion(void);
         bitbltWaitForCompletion();
+
     }
 }
 

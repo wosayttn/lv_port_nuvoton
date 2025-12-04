@@ -50,7 +50,7 @@ static struct dma350_ch_dev_t GDMA_CH1_DEV_S =
 struct dma350_ch_dev_t *const GDMA_CH_DEV_S[] =
 {
     &GDMA_CH0_DEV_S,
-    &GDMA_CH1_DEV_S	
+    &GDMA_CH1_DEV_S
 };
 
 static void DNA350DevInit(void)
@@ -75,7 +75,7 @@ static void DNA350DevInit(void)
     NVIC_EnableIRQ(GDMACH0_IRQn);
 
     /* Enable NVIC for GDMA CH1 */
-    NVIC_EnableIRQ(GDMACH1_IRQn);    
+    NVIC_EnableIRQ(GDMACH1_IRQn);
 }
 
 static void sys_init(void)
@@ -198,9 +198,9 @@ static void sys_init(void)
                   GPIO_SMTEN_SMTEN7_Msk);
 
     /* Set SPIM I/O pins as FAST1 slew rate. */
-    GPIO_SetSlewCtl(PG, (BIT13|BIT14|BIT15), GPIO_SLEWCTL_FAST0);
-    GPIO_SetSlewCtl(PH, (BIT12|BIT13|BIT14|BIT15), GPIO_SLEWCTL_FAST0);
-    GPIO_SetSlewCtl(PJ, (BIT2|BIT3|BIT4|BIT5|BIT6|BIT7), GPIO_SLEWCTL_FAST0);
+    GPIO_SetSlewCtl(PG, (BIT13 | BIT14 | BIT15), GPIO_SLEWCTL_FAST0);
+    GPIO_SetSlewCtl(PH, (BIT12 | BIT13 | BIT14 | BIT15), GPIO_SLEWCTL_FAST0);
+    GPIO_SetSlewCtl(PJ, (BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7), GPIO_SLEWCTL_FAST0);
 
     extern void HyperRAM_Init(SPIM_T * spim);
     HyperRAM_Init(SPIM0);

@@ -59,7 +59,6 @@ def get_memory_info():
     sys.stdout.flush()
 
 if __name__ == "__main__":
-    LIST_MAIL_ATTACHMENT = []
     si = subprocess.STARTUPINFO()
     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
     err = 0
@@ -95,15 +94,13 @@ if __name__ == "__main__":
                 if found > 0:
                     err += 1
                     f.write("[" + str(prj_count) + "] "+ dirPath +  " has error or warning.\n")
-                    LIST_MAIL_ATTACHMENT.append(str(os.path.abspath(BUILDLOG)))
                     print("[" + str(prj_count) + "] "+ dirPath +  " has error or warning.", flush=True)
                 else:
                     #f.write("[" + str(prj_count) + "] "+ os.path.abspath(file) +  " pass...\n")
-                    print("[" + str(prj_count) + "] "+ os.path.abspath(file) +  " pass...", flush=True)
+                    print("[" + str(prj_count) + "] "+ dirPath +  " pass...", flush=True)
             except Exception as e:
                 f.write("[" + str(prj_count) + "] "+ dirPath +  " has error or warning.\n")
                 #print("[" + str(prj_count) + "] "+ dirPath +  " has error or warning.", flush=True)
-                LIST_MAIL_ATTACHMENT.append((os.path.abspath(BUILDLOG)))
                 err += 1
             except OSError:
                 #print("Build" + file +  "has Ooops...\n")

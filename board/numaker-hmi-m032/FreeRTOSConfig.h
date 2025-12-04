@@ -16,22 +16,22 @@
 
 /* Ensure stdint is only used by the compiler, and not the assembler. */
 #if defined (__ICCARM__) || defined(__GNUC__)
-#include <stdint.h>
-extern uint32_t SystemCoreClock;
+    #include <stdint.h>
+    extern uint32_t SystemCoreClock;
 #endif
 
 #ifdef __ARMCC_VERSION
-#include "NuMicro.h"
+    #include "NuMicro.h"
 #endif
 
 #define configUSE_PREEMPTION            1
 #define configUSE_IDLE_HOOK             0
-#define configUSE_TICK_HOOK             0
+#define configUSE_TICK_HOOK             1
 #define configCPU_CLOCK_HZ              ( SystemCoreClock )
 #define configTICK_RATE_HZ              ( ( portTickType ) 1000 )
 #define configMAX_PRIORITIES            ( 8 )
 #define configMINIMAL_STACK_SIZE        ( ( unsigned short ) 128 )
-#define configTOTAL_HEAP_SIZE           ( ( size_t ) ( 16 * 1024 ) )
+#define configTOTAL_HEAP_SIZE           ( ( size_t ) ( 40 * 1024 ) )
 #define configMAX_TASK_NAME_LEN         ( 10 )
 #define configUSE_TRACE_FACILITY        1
 #define configUSE_16_BIT_TICKS          0
@@ -46,11 +46,17 @@ extern uint32_t SystemCoreClock;
 #define configGENERATE_RUN_TIME_STATS   0
 #define configUSE_QUEUE_SETS            1
 
+
 /* Hooks */
-void lv_freertos_task_switch_in(const char * name);
-void lv_freertos_task_switch_out(void);
-#define traceTASK_SWITCHED_IN()                         lv_freertos_task_switch_in(pxCurrentTCB->pcTaskName)
-#define traceTASK_SWITCHED_OUT()                        lv_freertos_task_switch_out()
+#define traceTASK_SWITCHED_IN()                         { \
+                                                            void lv_freertos_task_switch_in(const char * name); \
+                                                            lv_freertos_task_switch_in(pxCurrentTCB->pcTaskName); \
+                                                        }
+
+#define traceTASK_SWITCHED_OUT()                        { \
+                                                            void lv_freertos_task_switch_out(void); \
+                                                            lv_freertos_task_switch_out(); \
+                                                        }
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES       0
@@ -74,10 +80,10 @@ to exclude the API function. */
 
 /* Cortex-M specific definitions. */
 #ifdef __NVIC_PRIO_BITS
-/* __BVIC_PRIO_BITS will be specified when CMSIS is being used. */
-#define configPRIO_BITS             __NVIC_PRIO_BITS        /* Assembly code compile error. Because applied U Suffix to __NVIC_PRIO_BITS(M480.h).*/
+    /* __BVIC_PRIO_BITS will be specified when CMSIS is being used. */
+    #define configPRIO_BITS             __NVIC_PRIO_BITS        /* Assembly code compile error. Because applied U Suffix to __NVIC_PRIO_BITS(M480.h).*/
 #else
-#define configPRIO_BITS             4        /* 15 priority levels */
+    #define configPRIO_BITS             4        /* 15 priority levels */
 #endif
 
 /* The lowest interrupt priority that can be used in a call to a "set priority"

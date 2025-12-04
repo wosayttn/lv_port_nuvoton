@@ -1,11 +1,15 @@
 #include "lvgl.h"
 #include "avilib.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 #define USE_JPEG_WORKER    1
 
 #if USE_JPEG_WORKER
     #include "plat_jpeg.h"
 #endif
+
+#define CONFIG_MJPEGD_TASK_PRIORITY      (configMAX_PRIORITIES-2)
 
 static const uint32_t crc32_tab[] =
 {
@@ -94,7 +98,7 @@ static void update_rgbimg(lv_obj_t *img, S_JPEG_CTX *ctx)
 static void mjpeg_worker(void *pdata)
 {
 #define   DEF_BITSTREAM_BUFSIZE     (768*1024)
-#define   DEF_AVI_FILENAME          "0:movie.avi"
+#define   DEF_AVI_FILENAME          "A:movie.avi"
 
     avi_t *avi;
     S_JPEG_CTX ctx = {0};
@@ -182,7 +186,7 @@ static void mjpeg_worker(void *pdata)
                 AVI_set_video_position(avi, idx);
             }
 
-            vTaskDelay((const TickType_t)((1000 / AVI_frame_rate(avi)) / portTICK_PERIOD_MS));
+            vTaskDelay(pdMS_TO_TICKS((1000 / AVI_frame_rate(avi))));
 
         }
         while (1);
@@ -284,7 +288,7 @@ static void demo_show_avi_mjpeg(void)
     lv_obj_center(img);
 
 #if USE_JPEG_WORKER
-    xTaskCreate(mjpeg_worker, "mjpeg", 16384, img, (configMAX_PRIORITIES - 2), NULL);
+    xTaskCreate(mjpeg_worker, "mjpeg", 16384, img, CONFIG_MJPEGD_TASK_PRIORITY, NULL);
 #else
     lv_timer_t *timer = lv_timer_create(img_timer, 100, img);
 #endif

@@ -17,7 +17,7 @@ extern "C" {
 #define UI_COMP_DROPDOWN_LABEL_DROPDOWN 1
 #define UI_COMP_DROPDOWN_DROPDOWN2 2
 #define _UI_COMP_DROPDOWN_NUM 3
-lv_obj_t * ui_Dropdown_create(lv_obj_t * comp_parent);
+lv_obj_t *ui_Dropdown_create(lv_obj_t *comp_parent);
 
 #ifdef __cplusplus
 } /*extern "C"*/

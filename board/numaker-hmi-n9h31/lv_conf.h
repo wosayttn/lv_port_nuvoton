@@ -13,12 +13,11 @@
 #include LV_NUVOTON_INCLUDE
 
 #define LV_USE_DRAW_2DGE                1
-#define LV_USE_PARALLEL_DRAW_DEBUG      0
 #define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     32
 #define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
 #define CONFIG_LV_DRAW_BUF_ALIGN               32
 
-#define LV_USE_OS   LV_OS_NONE
+#define LV_USE_OS                       LV_OS_FREERTOS
 
 #if defined(__800x480__)
     #define LV_HOR_RES_MAX              800
@@ -59,17 +58,25 @@
 #define CONFIG_LV_MEM_SIZE              (4096*1024)
 #define CONFIG_LV_CACHE_DEF_SIZE        (2048*1024)
 
-/* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
 //#define LV_USE_DEMO_BENCHMARK           1
-//#define LV_USE_DEMO_MUSIC             1
-#if LV_USE_DEMO_MUSIC
-    #define LV_DEMO_MUSIC_AUTO_PLAY     1
-#endif
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1
 #define LV_USE_LOG                      0
+
+#if CONFIG_APP_DEMO_IMG == 1
+    //#define LV_USE_LODEPNG                1
+    //#define LV_USE_GIF                    1
+    //#define LV_USE_BMP                    1
+    //#define LV_USE_TJPGD                  1
+    #define LV_USE_HWJPGD                   1
+
+    #define LV_USE_FS_FATFS                 1
+    #define LV_FS_FATFS_LETTER              'A'
+    #define LV_USE_FS_MEMFS                 1
+    #define LV_FS_MEMFS_LETTER              'Z'
+#endif
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE

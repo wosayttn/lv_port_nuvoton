@@ -8,7 +8,7 @@
 
 #include "lv_glue.h"
 
-#define CONFIG_LV_TASK_STACKSIZE     2048
+#define CONFIG_LV_TASK_STACKSIZE     4096
 #define CONFIG_LV_TASK_PRIORITY      (configMAX_PRIORITIES-1)
 
 #if LV_USE_LOG
@@ -18,13 +18,9 @@ static void lv_nuvoton_log(lv_log_level_t level, const char *buf)
 }
 #endif /* LV_USE_LOG */
 
-void lv_tick_task(void *pdata)
+void vApplicationTickHook(void)
 {
-    while (1)
-    {
-        lv_tick_inc(1);
-        vTaskDelay(pdMS_TO_TICKS(1));
-    }
+    lv_tick_inc(1);
 }
 
 void lv_nuvoton_task(void *pdata)
@@ -54,10 +50,8 @@ void lv_nuvoton_task(void *pdata)
     }
 }
 
-
 int task_lv_init(void)
 {
-    xTaskCreate(lv_tick_task, "lv_tick", configMINIMAL_STACK_SIZE, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
     xTaskCreate(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
     return 0;
 }

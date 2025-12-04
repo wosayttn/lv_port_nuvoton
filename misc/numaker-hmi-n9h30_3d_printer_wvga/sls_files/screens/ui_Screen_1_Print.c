@@ -5,83 +5,87 @@
 
 #include "../ui.h"
 
-lv_obj_t * ui_Screen_1_Print;
-lv_obj_t * ui_Background;
-lv_obj_t * ui_Panel_Header;
-lv_obj_t * ui_Label_Header;
-lv_obj_t * ui_IMG_Wifi;
-lv_obj_t * ui_IMG_PC;
-lv_obj_t * ui_IMG_USB;
-lv_obj_t * ui_BTN_Menu_Print_S1;
-lv_obj_t * ui_BTN_Menu_Move_S1;
-lv_obj_t * ui_BTN_Menu_Setting_S1;
-lv_obj_t * ui_S1_Content_Panel;
-lv_obj_t * ui_Slider_Print_View;
-lv_obj_t * ui_Number_Print;
-lv_obj_t * ui_Display_Time_S1;
-lv_obj_t * ui_DT1;
-lv_obj_t * ui_Label_Printing_Time_1;
-lv_obj_t * ui_IMG_Tine_1;
-lv_obj_t * ui_Label_Time_1;
-lv_obj_t * ui_Panel3;
-lv_obj_t * ui_DT2;
-lv_obj_t * ui_Label_Printing_Time_2;
-lv_obj_t * ui_IMG_Tine_2;
-lv_obj_t * ui_Label_Time_2;
-lv_obj_t * ui_Display_Heat_S1;
-lv_obj_t * ui_DT3;
-lv_obj_t * ui_Label_Printing_Head_Temp;
-lv_obj_t * ui_IMG_Head;
-lv_obj_t * ui_Label_Head_Temp;
-lv_obj_t * ui_Label_Printing_Head_Temp_2;
-lv_obj_t * ui_Panel1;
-lv_obj_t * ui_DT3_copy;
-lv_obj_t * ui_Label_Printing_Bed_Temp;
-lv_obj_t * ui_IMG_Head1;
-lv_obj_t * ui_Label_Bed_Temp;
-lv_obj_t * ui_Label_Printing_Bed_Temp1;
-lv_obj_t * ui_Panel_Buttons_S1;
-lv_obj_t * ui_BTN_Pause;
-lv_obj_t * ui_BTN_Pause_Top;
-lv_obj_t * ui_Image_Pause;
-lv_obj_t * ui_BTN_Cancel;
-lv_obj_t * ui_BTN_Cancel_Top;
-lv_obj_t * ui_Image_Cancel;
+lv_obj_t *ui_Screen_1_Print;
+lv_obj_t *ui_Background;
+lv_obj_t *ui_Panel_Header;
+lv_obj_t *ui_Label_Header;
+lv_obj_t *ui_IMG_Wifi;
+lv_obj_t *ui_IMG_PC;
+lv_obj_t *ui_IMG_USB;
+lv_obj_t *ui_BTN_Menu_Print_S1;
+lv_obj_t *ui_BTN_Menu_Move_S1;
+lv_obj_t *ui_BTN_Menu_Setting_S1;
+lv_obj_t *ui_S1_Content_Panel;
+lv_obj_t *ui_Slider_Print_View;
+lv_obj_t *ui_Number_Print;
+lv_obj_t *ui_Display_Time_S1;
+lv_obj_t *ui_DT1;
+lv_obj_t *ui_Label_Printing_Time_1;
+lv_obj_t *ui_IMG_Tine_1;
+lv_obj_t *ui_Label_Time_1;
+lv_obj_t *ui_Panel3;
+lv_obj_t *ui_DT2;
+lv_obj_t *ui_Label_Printing_Time_2;
+lv_obj_t *ui_IMG_Tine_2;
+lv_obj_t *ui_Label_Time_2;
+lv_obj_t *ui_Display_Heat_S1;
+lv_obj_t *ui_DT3;
+lv_obj_t *ui_Label_Printing_Head_Temp;
+lv_obj_t *ui_IMG_Head;
+lv_obj_t *ui_Label_Head_Temp;
+lv_obj_t *ui_Label_Printing_Head_Temp_2;
+lv_obj_t *ui_Panel1;
+lv_obj_t *ui_DT3_copy;
+lv_obj_t *ui_Label_Printing_Bed_Temp;
+lv_obj_t *ui_IMG_Head1;
+lv_obj_t *ui_Label_Bed_Temp;
+lv_obj_t *ui_Label_Printing_Bed_Temp1;
+lv_obj_t *ui_Panel_Buttons_S1;
+lv_obj_t *ui_BTN_Pause;
+lv_obj_t *ui_BTN_Pause_Top;
+lv_obj_t *ui_Image_Pause;
+lv_obj_t *ui_BTN_Cancel;
+lv_obj_t *ui_BTN_Cancel_Top;
+lv_obj_t *ui_Image_Cancel;
 
 // event funtions
-void ui_event_BTN_Menu_Move_S1(lv_event_t * e)
+void ui_event_BTN_Menu_Move_S1(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED)
+    {
         _ui_screen_change(&ui_Screen_2_Move, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, &ui_Screen_2_Move_screen_init);
     }
 }
 
-void ui_event_BTN_Menu_Setting_S1(lv_event_t * e)
+void ui_event_BTN_Menu_Setting_S1(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED)
+    {
         _ui_screen_change(&ui_Screen_3_Setting, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, &ui_Screen_3_Setting_screen_init);
     }
 }
 
-void ui_event_Slider_Print_View(lv_event_t * e)
+void ui_event_Slider_Print_View(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
+    lv_obj_t *target = lv_event_get_target(e);
 
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
+    if (event_code == LV_EVENT_VALUE_CHANGED)
+    {
         _ui_slider_set_text_value(ui_Number_Print, target, "", "%");
     }
 }
 
-void ui_event_BTN_Cancel_Top(lv_event_t * e)
+void ui_event_BTN_Cancel_Top(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED)
+    {
         _ui_state_modify(ui_BTN_Pause_Top, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
 }
@@ -194,8 +198,8 @@ void ui_Screen_1_Print_screen_init(void)
 
     ui_Slider_Print_View = lv_slider_create(ui_S1_Content_Panel);
     lv_slider_set_value(ui_Slider_Print_View, 70, LV_ANIM_OFF);
-    if(lv_slider_get_mode(ui_Slider_Print_View) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(ui_Slider_Print_View, 0,
-                                                                                                      LV_ANIM_OFF);
+    if (lv_slider_get_mode(ui_Slider_Print_View) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(ui_Slider_Print_View, 0,
+                LV_ANIM_OFF);
     lv_obj_set_width(ui_Slider_Print_View, 332);
     lv_obj_set_height(ui_Slider_Print_View, 396);
     lv_obj_set_x(ui_Slider_Print_View, 0);
@@ -219,8 +223,8 @@ void ui_Screen_1_Print_screen_init(void)
     lv_obj_set_style_bg_opa(ui_Slider_Print_View, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
 
     //Compensating for LVGL9.1 draw crash with bar/slider max value when top-padding is nonzero and right-padding is 0
-    if(lv_obj_get_style_pad_top(ui_Slider_Print_View, LV_PART_MAIN) > 0) lv_obj_set_style_pad_right(ui_Slider_Print_View,
-                                                                                                        lv_obj_get_style_pad_right(ui_Slider_Print_View, LV_PART_MAIN) + 1, LV_PART_MAIN);
+    if (lv_obj_get_style_pad_top(ui_Slider_Print_View, LV_PART_MAIN) > 0) lv_obj_set_style_pad_right(ui_Slider_Print_View,
+                lv_obj_get_style_pad_right(ui_Slider_Print_View, LV_PART_MAIN) + 1, LV_PART_MAIN);
     ui_Number_Print = lv_label_create(ui_Slider_Print_View);
     lv_obj_set_width(ui_Number_Print, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Number_Print, LV_SIZE_CONTENT);    /// 1
@@ -599,7 +603,7 @@ void ui_Screen_1_Print_screen_init(void)
 
 void ui_Screen_1_Print_screen_destroy(void)
 {
-    if(ui_Screen_1_Print) lv_obj_del(ui_Screen_1_Print);
+    if (ui_Screen_1_Print) lv_obj_del(ui_Screen_1_Print);
 
     // NULL screen variables
     ui_Screen_1_Print = NULL;

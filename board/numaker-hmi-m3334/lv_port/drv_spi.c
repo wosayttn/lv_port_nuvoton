@@ -1,6 +1,6 @@
 /**************************************************************************//**
- * @file     drv_pdma.c
- * @brief    PDMA high level driver for M3331 series
+ * @file     drv_spi.c
+ * @brief    SPI high level driver
  *
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
@@ -189,7 +189,15 @@ static void nu_pdma_spi_rx_cb_event(void *pvUserData, uint32_t u32EventFilter)
 
     LV_ASSERT(psNuSPI);
 
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    xSemaphoreGiveFromISR(psNuSPI->m_psSemBus, &xHigherPriorityTaskWoken);
+
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#else
     psNuSPI->m_psSemBus = 1;
+#endif
 }
 
 static void nu_pdma_spi_tx_cb_trigger(void *pvUserData, uint32_t u32UserData)
@@ -262,7 +270,9 @@ static int nu_pdma_spi_rx_config(struct nu_spi *psNuSPI, uint8_t *pu8Buf, int32_
         goto exit_nu_pdma_spi_rx_config;
     }
 
+#if (LV_USE_OS!=LV_OS_FREERTOS)
     psNuSPI->m_psSemBus = 0;
+#endif
 
     result = nu_pdma_transfer(spi_pdma_rx_chid,
                               bytes_per_word * 8,
@@ -342,9 +352,13 @@ static int nu_spi_transmit_pdma(struct nu_spi *psNuSPI, const void *tx, void *rx
     LV_ASSERT(result == 0);
 
     /* Wait RX-PDMA transfer done */
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    xSemaphoreTake(psNuSPI->m_psSemBus, portMAX_DELAY);
+#else
     while (psNuSPI->m_psSemBus == 0)
     {
     }
+#endif
 
     return length;
 }
@@ -360,6 +374,12 @@ int nu_spi_transfer(struct nu_spi *psNuSPI, const void *tx, void *rx, int length
 
     if ((psNuSPI->pdma_perp_rx > 0) && (psNuSPI->pdma_chanid_rx < 0))
         psNuSPI->pdma_chanid_rx = nu_pdma_channel_allocate(psNuSPI->pdma_perp_rx);
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    if (psNuSPI->m_psSemBus == NULL)
+        psNuSPI->m_psSemBus = xSemaphoreCreateBinary();
+#endif
+
 #endif
 
     dw = SPI_GET_DATA_WIDTH(psNuSPI->base) / 8;

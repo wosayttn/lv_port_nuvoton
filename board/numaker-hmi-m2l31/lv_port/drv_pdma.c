@@ -591,9 +591,10 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
 
     if (next)
     {
+        PDMA_T *pdma = NU_PDMA_GET_BASE(i32ChannID);
         /* Link to Next and modify to scatter-gather DMA mode. */
         dma_desc->CTL = (dma_desc->CTL & ~PDMA_DSCT_CTL_OPMODE_Msk) | PDMA_OP_SCATTER;
-        dma_desc->NEXT = (uint32_t)next - (PDMA->SCATBA);
+        dma_desc->NEXT = (uint32_t)next - (pdma->SCATBA);
     }
 
     /* Be silent */

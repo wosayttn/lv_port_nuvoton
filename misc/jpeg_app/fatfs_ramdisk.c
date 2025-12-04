@@ -11,7 +11,7 @@
 #include "diskio.h"
 
 static FATFS FatFs[FF_VOLUMES];       /* File system object for logical drive */
-static char logic_nbr[3] = {'0', ':', 0};
+static char logic_nbr[] = "RAM:";
 
 static void put_rc(FRESULT rc)
 {
@@ -37,11 +37,13 @@ int fatfs_ramdisk_init(void)
     FRESULT res;
 
     /* Mount a logical drive */
+    sysprintf("[%s %d]\n", __func__, __LINE__);
     if ((res = f_mount(&FatFs[0], logic_nbr, 1)) != 0)
     {
         put_rc(res);
         goto _Exit;
     }
+    sysprintf("[%s %d]\n", __func__, __LINE__);
 
     /* List directory information */
     if ((res = f_opendir(&dir, logic_nbr)) != 0)

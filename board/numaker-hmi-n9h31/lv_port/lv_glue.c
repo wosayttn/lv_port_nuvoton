@@ -8,6 +8,8 @@
 
 #include "lvgl.h"
 #include "lv_glue.h"
+#include "indev_touch.h"
+#include "plat_touch.h"
 
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * LV_VER_RES_MAX * (LV_COLOR_DEPTH/8) * CONFIG_LCD_FB_NUM), DEF_CACHE_LINE_SIZE)
 
@@ -18,10 +20,12 @@ extern S_CALIBRATION_MATRIX g_sCalMat;
 
 #define USE_DISP_PANEL      5
 
+#if defined(CONFIG_INDEV_TOUCH_ADC)
 #if (USE_DISP_PANEL==5)
 S_CALIBRATION_MATRIX g_sCalMat = { 13742, -81, -1906400, -103, -8624, 33161548, 65536  };
 #elif (USE_DISP_PANEL==7)
 S_CALIBRATION_MATRIX g_sCalMat = { 13321, -53, -1069280, 96, 8461, -1863312, 65536 };
+#endif
 #endif
 
 #endif
@@ -61,7 +65,7 @@ static void lcd_vpost_handler(void)
 #endif
 
 
-void dump_lcd_timings(void)
+static void dump_lcd_timings(void)
 {
     int id;
 
@@ -174,7 +178,7 @@ int lcd_device_initialize(void)
 #if (LV_USE_OS==LV_OS_FREERTOS)
     s_xGDMASem = xSemaphoreCreateBinary();
     LV_ASSERT(s_xGDMASem != NULL);
-	
+
     sysInstallISR(HIGH_LEVEL_SENSITIVE | IRQ_LEVEL_1, GDMA0_IRQn, (PVOID)gdma0ISR);
     sysSetLocalInterrupt(ENABLE_IRQ);
     sysEnableInterrupt(GDMA0_IRQn);
@@ -353,11 +357,81 @@ int lcd_device_finalize(void)
     return 0;
 }
 
+
+#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
+
+static volatile lv_indev_data_t s_sInDevData = {0};
+static volatile uint32_t s_u32LastIRQ = 0;
+
+//  ISR
+static INT32 Touch_ISR(UINT32 status, UINT32 userData)
+{
+    uint32_t PORT = (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET);
+    uint32_t PIN_MASK = NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ));
+
+    /* To check if PC.5 interrupt occurred */
+    if (status & PIN_MASK)
+    {
+        /* In ISR Callback. */
+        s_u32LastIRQ = xTaskGetTickCountFromISR();
+    }
+
+    GPIO_ClrISRBit(PORT, status);
+}
+#endif
+
 int touchpad_device_initialize(void)
 {
+#if defined(CONFIG_INDEV_TOUCH_I2C)
+    uint32_t PORT;
+
+    /* Set GPIO OUTPUT mode for indev touch pins. */
+    PORT    =  NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET) * PORT_OFFSET;
+    LV_LOG_INFO("PORT: %08x, %d", PORT, NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET));
+
+    GPIO_OpenBit(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)), DIR_OUTPUT, NO_PULL_UP);
+    LV_LOG_INFO("PORT: %08x, %d", PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)));
+
+#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
+    /* Set GPIO INTPUT mode for indev touch pins. */
+    PORT    =  NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET;
+    LV_LOG_INFO("PORT: %08x, %d", PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)));
+
+#if defined(CONFIG_INDEV_TOUCH_GT911)
+
+    GPIO_OpenBit(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), DIR_OUTPUT, NO_PULL_UP);
+    INDEV_TOUCH_CLR_IRQ; // IRQ - Pull low
+    INDEV_TOUCH_SET_RST; // Reset - Pull low
+    sysDelay(1);
+    INDEV_TOUCH_SET_IRQ; // IRQ - Pull high
+    sysDelay(1);
+    INDEV_TOUCH_CLR_RST; // Reset - Pull high
+    sysDelay(10);
+    INDEV_TOUCH_CLR_IRQ; // IRQ - Pull low
+    sysDelay(60);
+    GPIO_CloseBit(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)));
+
+    GPIO_OpenBit(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), DIR_INPUT, NO_PULL_UP);
+    GPIO_EnableTriggerType(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), RISING);
+    GPIO_EnableInt(PORT, (GPIO_CALLBACK)Touch_ISR, 0);
+
+#else
+    GPIO_OpenBit(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), DIR_INPUT, NO_PULL_UP);
+    GPIO_EnableTriggerType(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), FALLING);
+    GPIO_EnableInt(PORT, (GPIO_CALLBACK)Touch_ISR, 0);
+#endif
+
+#endif
+
+    return indev_touch_init();
+
+#else
+
     return 0;
+#endif
 }
 
+#if defined(CONFIG_INDEV_TOUCH_ADC)
 static volatile bool s_bPenDown = false;
 int32_t PenDownCallback(UINT32 status, UINT32 userData)
 {
@@ -368,9 +442,14 @@ int32_t PenDownCallback(UINT32 status, UINT32 userData)
 
     return 0;
 }
+#endif
 
 int touchpad_device_open(void)
 {
+#if defined(CONFIG_INDEV_TOUCH_I2C)
+
+#elif defined(CONFIG_INDEV_TOUCH_ADC)
+
     adcOpen();
 
     /* ADC Sample Counter - Set the counter value to extend the ADC start signal period to get more sampling time for precise conversion. */
@@ -386,11 +465,36 @@ int touchpad_device_open(void)
     extern int ad_touch_calibrate(void);
     //ad_touch_calibrate();
 
+#endif
+
     return 0;
 }
 
 int touchpad_device_read(lv_indev_data_t *psInDevData)
 {
+
+#if defined(CONFIG_INDEV_TOUCH_I2C)
+
+#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
+
+    static uint32_t u32LastIRQ = 0;
+
+    if (u32LastIRQ != s_u32LastIRQ)
+    {
+        indev_touch_get_data((lv_indev_data_t *)&s_sInDevData);
+        u32LastIRQ = s_u32LastIRQ ;
+    }
+
+    psInDevData->point.x = s_sInDevData.point.x;
+    psInDevData->point.y = s_sInDevData.point.y;
+    psInDevData->state = s_sInDevData.state;
+#else
+    // polling
+    indev_touch_get_data(psInDevData);
+#endif
+
+#elif defined(CONFIG_INDEV_TOUCH_ADC)
+
 #define ADC_TOUCH_Z0_ACTIVE 20
     static lv_indev_data_t sLastInDevData = {0};
 
@@ -449,8 +553,7 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
         psInDevData->point.x = sLastInDevData.point.x;
         psInDevData->point.y = sLastInDevData.point.y;
     }
-
-    LV_LOG_INFO("%s (%d, %d)", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
+#endif
 
     return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
 }
@@ -462,10 +565,89 @@ int touchpad_device_control(int cmd, void *argv)
 
 void touchpad_device_close(void)
 {
+#if defined(CONFIG_INDEV_TOUCH_I2C)
+
+#elif defined(CONFIG_INDEV_TOUCH_ADC)
     adcClose();
+#endif
 }
 
 int touchpad_device_finalize(void)
 {
     return 0;
+}
+
+int32_t touch_plat_i2c_init(S_TOUCH_IF_I2C *psIfCtx)
+{
+    int32_t ret;
+
+    i2cInit((int32_t)psIfCtx->m_pvI2C);
+
+    ret = i2cOpen((PVOID)psIfCtx->m_pvI2C);
+    if (ret < 0)
+    {
+        LV_LOG_ERROR("Failed to initial I2C device.");
+        return -1;
+    }
+
+    ret = i2cIoctl((int32_t)psIfCtx->m_pvI2C, I2C_IOC_SET_SPEED, 400, 0);
+
+    return 0;
+}
+
+int32_t touch_plat_i2c_read(S_TOUCH_IF_I2C *psIfCtx)
+{
+    int32_t ret = -1;
+
+    if (psIfCtx != NULL)
+    {
+        i2cIoctl((int32_t)psIfCtx->m_pvI2C, I2C_IOC_SET_DEV_ADDRESS, psIfCtx->m_u8DevAddr, 0);
+
+        switch (psIfCtx->m_u32RegLen)
+        {
+        case 1:
+            i2cIoctl((int32_t)psIfCtx->m_pvI2C, I2C_IOC_SET_SUB_ADDRESS, (uint32_t)(*(uint8_t *)psIfCtx->m_pu8Reg), psIfCtx->m_u32RegLen);
+            break;
+        case 2:
+            i2cIoctl((int32_t)psIfCtx->m_pvI2C, I2C_IOC_SET_SUB_ADDRESS, (uint32_t)(*(uint16_t *)psIfCtx->m_pu8Reg), psIfCtx->m_u32RegLen);
+            break;
+        }
+
+        ret = (i2cRead((int32_t)psIfCtx->m_pvI2C,
+                       psIfCtx->m_pu8Data,
+                       psIfCtx->m_u32DataLen) == (int32_t)psIfCtx->m_u32DataLen) ? 0 : -1;
+    }
+
+    return ret;
+}
+
+int32_t touch_plat_i2c_write(S_TOUCH_IF_I2C *psIfCtx)
+{
+    int32_t ret = -1;
+
+    if (psIfCtx != NULL)
+    {
+        i2cIoctl((int32_t)psIfCtx->m_pvI2C, I2C_IOC_SET_DEV_ADDRESS, psIfCtx->m_u8DevAddr, 0);
+
+        switch (psIfCtx->m_u32RegLen)
+        {
+        case 1:
+            i2cIoctl((int32_t)psIfCtx->m_pvI2C, I2C_IOC_SET_SUB_ADDRESS, (uint32_t)(*(uint8_t *)psIfCtx->m_pu8Reg), psIfCtx->m_u32RegLen);
+            break;
+        case 2:
+            i2cIoctl((int32_t)psIfCtx->m_pvI2C, I2C_IOC_SET_SUB_ADDRESS, (uint32_t)(*(uint16_t *)psIfCtx->m_pu8Reg), psIfCtx->m_u32RegLen);
+            break;
+        }
+
+        ret = (i2cWrite((int32_t)psIfCtx->m_pvI2C,
+                        psIfCtx->m_pu8Data,
+                        psIfCtx->m_u32DataLen) == (int32_t)psIfCtx->m_u32DataLen) ? 0 : -1;
+    }
+
+    return ret;
+}
+
+void touch_plat_i2c_fini(S_TOUCH_IF_I2C *psIfCtx)
+{
+    i2cClose((int32_t)psIfCtx->m_pvI2C);
 }

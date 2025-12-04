@@ -10,17 +10,21 @@
 #include "lv_glue.h"
 #include "disp.h"
 #include "indev_touch.h"
-#include "touch_adc.h"
 
+#if defined(CONFIG_AD)
+    #include "touch_adc.h"
+#endif
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), 4)
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(4)));
 
+#if defined(__320x240__)
 S_CALIBRATION_MATRIX g_sCalMat = { -105, 6354, -3362552, 5086, -24, -2489744, 65536 };
+#endif
 
 void sysDelay(uint32_t ms)
 {
-    vTaskDelay(ms / portTICK_PERIOD_MS);
+    vTaskDelay(pdMS_TO_TICKS(ms));
 }
 
 int lcd_device_initialize(void)
@@ -55,9 +59,7 @@ int lcd_device_initialize(void)
     /* Set sequence to MSB first */
     SPI_SET_MSB_FIRST(CONFIG_DISP_SPI);
 
-    disp_init();
-
-    return 0;
+    return disp_init();
 }
 
 int lcd_device_open(void)
@@ -106,6 +108,7 @@ int lcd_device_finalize(void)
     return 0;
 }
 
+#if defined(CONFIG_AD)
 uint32_t nu_adc_sampling(uint32_t channel)
 {
     EADC_ConfigSampleModule(CONFIG_AD, 0, EADC_SOFTWARE_TRIGGER, channel);
@@ -122,24 +125,30 @@ uint32_t nu_adc_sampling(uint32_t channel)
 
     return EADC_GET_CONV_DATA(CONFIG_AD, 0) & 0x0FFF;
 }
+#endif
 
 int touchpad_device_initialize(void)
 {
     return 0;
-
 }
 
 int touchpad_device_open(void)
 {
+
+#if defined(CONFIG_AD)
     EADC_Open(CONFIG_AD, EADC_CTL_DIFFEN_SINGLE_END);
     extern int ad_touch_calibrate(void);
     //ad_touch_calibrate();
+#endif
 
     return 0;
 }
 
 int touchpad_device_read(lv_indev_data_t *psInDevData)
 {
+
+#if defined(CONFIG_AD)
+
 #define CONFIG_TRIGGER_PERIOD     16
 
     static lv_indev_data_t sLastInDevData = {0};
@@ -163,7 +172,7 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
     adc_y  = indev_touch_get_y();
     u32NextTriggerTime = xTaskGetTickCount() + CONFIG_TRIGGER_PERIOD;
 
-    if ((adc_x < 4000) && (adc_y < 4000))
+    if ((adc_x < 3900) && (adc_y < 3900)) //~5%
     {
         psInDevData->state = LV_INDEV_STATE_PRESSED;
     }
@@ -206,6 +215,11 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
 exit_touchpad_device_read:
 
     return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
+
+#else
+
+    return LV_INDEV_STATE_RELEASED;
+#endif
 }
 
 int touchpad_device_control(int cmd, void *argv)
@@ -215,7 +229,11 @@ int touchpad_device_control(int cmd, void *argv)
 
 void touchpad_device_close(void)
 {
+
+#if defined(CONFIG_AD)
     EADC_Close(CONFIG_AD);
+#endif
+
 }
 
 int touchpad_device_finalize(void)

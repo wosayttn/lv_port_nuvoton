@@ -13,13 +13,33 @@
 #include "lcd.h"
 #include "adc.h"
 #include "gpio.h"
+#include "i2c.h"
 #include "nu_misc.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
 
-#define CONFIG_LCD_FB_NUM            3
+#define CONFIG_LCD_FB_NUM                3
 #define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX)
+#define PORT_OFFSET                 0x40
+
+#if defined(USE_NUMAKER_HMI_N9H31_V1_1)
+    //For V1.1 board
+    #define CONFIG_INDEV_TOUCH_GT911    1
+
+    /* GT911 I2C */
+    #define CONFIG_INDEV_TOUCH_I2C       0  //I2CNUM_0
+    #define CONFIG_INDEV_TOUCH_PIN_IRQ   NU_GET_PININDEX(evGI, 1)
+    #define CONFIG_INDEV_TOUCH_PIN_RESET NU_GET_PININDEX(evGI, 11)
+    #define INDEV_TOUCH_SET_RST          GPIO_ClrBit((NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET)*PORT_OFFSET), NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)))
+    #define INDEV_TOUCH_CLR_RST          GPIO_SetBit((NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET)*PORT_OFFSET), NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)))
+    #define INDEV_TOUCH_SET_IRQ          GPIO_SetBit((NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ)*PORT_OFFSET), NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)))
+    #define INDEV_TOUCH_CLR_IRQ          GPIO_ClrBit((NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ)*PORT_OFFSET), NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)))
+#else
+    //For V1.0 board
+    #define CONFIG_INDEV_TOUCH_ADC      1
+#endif
+
 
 typedef struct
 {

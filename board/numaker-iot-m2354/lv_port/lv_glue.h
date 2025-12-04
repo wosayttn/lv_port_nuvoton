@@ -17,7 +17,14 @@
 #include "task.h"
 #include "semphr.h"
 
-#define PORT_OFFSET                 0x40
+#if !defined(PORT_OFFSET)
+    #define PORT_OFFSET         0x40
+#endif
+
+/* Alias */
+#if !defined(GPIO_PIN_DATA)
+    #define GPIO_PIN_DATA       GPIO_PIN_DATA_S
+#endif
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
 #define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX/2)
@@ -26,8 +33,6 @@
     #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
 #endif
 
-/* Alias */
-#define GPIO_PIN_DATA                GPIO_PIN_DATA_S
 
 /* ILI9341 SPI */
 #define CONFIG_DISP_SPI              USPI0

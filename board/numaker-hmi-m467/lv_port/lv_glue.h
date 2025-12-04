@@ -17,7 +17,9 @@
 #include "task.h"
 #include "semphr.h"
 
-#define PORT_OFFSET   0x40
+#if !defined(PORT_OFFSET)
+    #define PORT_OFFSET         0x40
+#endif
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
 #define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX)
@@ -34,6 +36,7 @@
     //For NUMAKER_TFT_LCD43_V1.1 board
     #define CONFIG_INDEV_TOUCH_GT911    1
     #define CONFIG_DISP_NV3041A         1
+    #define CONFIG_XY_REVERSED          1
 #else
     //For NUMAKER_TFT_LCD43_V1.0 board
     #define CONFIG_INDEV_TOUCH_ST1663I  1

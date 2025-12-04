@@ -7,7 +7,7 @@
  *****************************************************************************/
 #include "drv_uspi.h"
 #define USPI_GET_DATA_WIDTH(uspi)  ((((uspi)->LINECTL & USPI_LINECTL_DWIDTH_Msk) >> USPI_LINECTL_DWIDTH_Pos)==0?16:(((uspi)->LINECTL & USPI_LINECTL_DWIDTH_Msk) >> USPI_LINECTL_DWIDTH_Pos))
-static int nu_uspi_read(USPI_T *uspi, uint8_t *rx, int dw)
+__STATIC_INLINE int nu_uspi_read(USPI_T *uspi, uint8_t *rx, int dw)
 {
     // Read RX data
     if (!USPI_GET_RX_EMPTY_FLAG(uspi))
@@ -32,7 +32,7 @@ static int nu_uspi_read(USPI_T *uspi, uint8_t *rx, int dw)
     return dw;
 }
 
-static int nu_uspi_write(USPI_T *uspi, const uint8_t *tx, int dw)
+__STATIC_INLINE int nu_uspi_write(USPI_T *uspi, const uint8_t *tx, int dw)
 {
     // Wait SPI TX send data
     while (USPI_GET_TX_FULL_FLAG(uspi));
@@ -54,7 +54,7 @@ static int nu_uspi_write(USPI_T *uspi, const uint8_t *tx, int dw)
     return dw;
 }
 
-void nu_uspi_drain_rxfifo(USPI_T *uspi)
+__STATIC_INLINE void nu_uspi_drain_rxfifo(USPI_T *uspi)
 {
     while (USPI_IS_BUSY(uspi));
 
@@ -140,7 +140,15 @@ static void nu_pdma_uspi_rx_cb_event(void *pvUserData, uint32_t u32EventFilter)
 
     LV_ASSERT(psNuUSPI);
 
-    psNuUSPI->m_psSemBus = 1;
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    xSemaphoreGiveFromISR(psNuUSPI->m_psSemBus, &xHigherPriorityTaskWoken);
+
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#else
+    psNuSPI->m_psSemBus = 1;
+#endif
 }
 
 static void nu_pdma_uspi_tx_cb_trigger(void *pvUserData, uint32_t u32UserData)
@@ -213,7 +221,9 @@ static int nu_pdma_uspi_rx_config(struct nu_uspi *psNuUSPI, uint8_t *pu8Buf, int
         goto exit_nu_pdma_uspi_rx_config;
     }
 
+#if (LV_USE_OS!=LV_OS_FREERTOS)
     psNuUSPI->m_psSemBus = 0;
+#endif
 
     result = nu_pdma_transfer(spi_pdma_rx_chid,
                               bytes_per_word * 8,
@@ -293,9 +303,13 @@ static int nu_uspi_transmit_pdma(struct nu_uspi *psNuUSPI, const void *tx, void 
     LV_ASSERT(result == 0);
 
     /* Wait RX-PDMA transfer done */
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    xSemaphoreTake(psNuUSPI->m_psSemBus, portMAX_DELAY);
+#else
     while (psNuUSPI->m_psSemBus == 0)
     {
     }
+#endif
 
     return length;
 }
@@ -311,6 +325,11 @@ int nu_uspi_transfer(struct nu_uspi *psNuUSPI, const void *tx, void *rx, int len
 
     if ((psNuUSPI->pdma_perp_rx > 0) && (psNuUSPI->pdma_chanid_rx < 0))
         psNuUSPI->pdma_chanid_rx = nu_pdma_channel_allocate(psNuUSPI->pdma_perp_rx);
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    if (psNuUSPI->m_psSemBus == NULL)
+        psNuUSPI->m_psSemBus = xSemaphoreCreateBinary();
+#endif
+
 #endif
 
     dw = USPI_GET_DATA_WIDTH(psNuUSPI->base) / 8;

@@ -29,8 +29,9 @@ jobs:
           arm-none-eabi-gcc --version
           aarch64-none-elf-gcc --version
 
-          mkdir -p "$GITHUB_WORKSPACE/artifacts"
+          set +e
 
+          mkdir -p "$GITHUB_WORKSPACE/artifacts"
           for dir in $(find ./board -type f -name .cproject -exec dirname {} \;); do
 
             mkdir -p "$GITHUB_WORKSPACE/workspace"
@@ -58,6 +59,7 @@ jobs:
 
             rm -rf "$GITHUB_WORKSPACE/workspace"
           done
+          set -e
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

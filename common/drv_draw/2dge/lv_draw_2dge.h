@@ -16,16 +16,8 @@ extern "C" {
 #include "../lv_draw.h"
 
 #if LV_USE_DRAW_2DGE
-#include "lv_draw_rect.h"
-#include "../lv_draw_private.h"
-#include "../lv_draw_buf_private.h"
-#include "../../misc/lv_area_private.h"
-#include "../../misc/lv_area.h"
-#include "../../misc/lv_color.h"
-#include "../../display/lv_display.h"
-#include "../../osal/lv_os.h"
+#include "../sw/lv_draw_sw_private.h"
 
-#include "../../draw/lv_draw_vector.h"
 
 #include "sys.h"
 #include "2d.h"
@@ -41,12 +33,10 @@ extern "C" {
 typedef struct
 {
     lv_draw_unit_t base_unit;
-    lv_draw_task_t *task_act;
 #if LV_USE_OS
-    lv_thread_sync_t sync;
-    lv_thread_t thread;
-    volatile bool inited;
-    volatile bool exit_status;
+    lv_draw_sw_thread_dsc_t thread_dsc;
+#else
+    lv_draw_task_t *task_act;
 #endif
     uint32_t idx;
 } lv_draw_2dge_unit_t;
@@ -67,28 +57,22 @@ void lv_draw_2dge_init(void);
 void lv_draw_2dge_deinit(void);
 
 /**
- * Fill an area using 2dge render. Handle gradient and radius.
- * @param draw_unit     pointer to a draw unit
- * @param dsc           the draw descriptor
- * @param coords        the coordinates of the rectangle
+ * Fill an area using SW render. Handle gradient and radius.
+ * @param t             pointer to a task unit
  */
-void lv_draw_2dge_fill(lv_draw_unit_t *draw_unit, const lv_draw_fill_dsc_t *dsc, const lv_area_t *coords);
+void lv_draw_2dge_fill(lv_draw_task_t *t);
 
 /**
- * Draw an image with 2dge render. It handles image decoding, tiling, transformations, and recoloring.
- * @param draw_unit     pointer to a draw unit
- * @param dsc           the draw descriptor
- * @param coords        the coordinates of the image
+ * Draw an image with bitblt render. It handles image decoding, tiling, transformations, and recoloring.
+ * @param t             pointer to a task unit
  */
-void lv_draw_2dge_image(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *dsc, const lv_area_t *coords);
+void lv_draw_2dge_image(lv_draw_task_t *t);
 
 /**
- * Blend a layer with 2dge render
- * @param draw_unit     pointer to a draw unit
- * @param dsc           the draw descriptor
- * @param coords        the coordinates of the rectangle
+ * Blend a layer with bitblt render
+ * @param t             pointer to a task unit
  */
-void lv_draw_2dge_layer(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *dsc, const lv_area_t *coords);
+void lv_draw_2dge_layer(lv_draw_task_t *t);
 
 /***********************
  * GLOBAL VARIABLES

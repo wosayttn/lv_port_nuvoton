@@ -29,12 +29,12 @@ void lv_tick_task(void *pdata)
 
 uint32_t freertos_tick_get(void)
 {
-	return (uint32_t)xTaskGetTickCount();
+    return (uint32_t)xTaskGetTickCount();
 }
 
 void freertos_task_delay(uint32_t ms)
 {
-	vTaskDelay( (const TickType_t)ms );
+    vTaskDelay((const TickType_t)ms);
 }
 
 void lv_nuvoton_task(void *pdata)

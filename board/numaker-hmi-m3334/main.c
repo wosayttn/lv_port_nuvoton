@@ -22,7 +22,7 @@ static void sys_init(void)
     CLK_WaitClockReady(CLK_STATUS_HIRCSTB_Msk | /*CLK_STATUS_LXTSTB_Msk |*/ CLK_STATUS_HXTSTB_Msk);
 
     /* Set core clock to __HSI */
-    CLK_SetCoreClock(__HSI);
+    CLK_SetCoreClock(180000000);
 
     /* Set PCLK-related clock */
     CLK->PCLKDIV = (CLK_PCLKDIV_PCLK0DIV2 | CLK_PCLKDIV_PCLK1DIV2);
@@ -47,14 +47,35 @@ static void sys_init(void)
     /* Update System Core Clock */
     SystemCoreClockUpdate();
 
+    /* EADC Analog Pin */
+    CLK_EnableModuleClock(EADC0_MODULE);
+    CLK_SetModuleClock(EADC0_MODULE, CLK_CLKSEL0_EADC0SEL_PLL_DIV2, CLK_CLKDIV0_EADC0(8));
+
+#if defined(NUFUN) && (NUFUN==1)
+
+    /* SPI1 */
+    CLK_EnableModuleClock(SPI1_MODULE);
+
+    SYS->GPE_MFP0 &= ~(SYS_GPE_MFP0_PE1MFP_Msk | SYS_GPE_MFP0_PE0MFP_Msk);
+    SYS->GPE_MFP0 |= (SYS_GPE_MFP0_PE1MFP_SPI1_MISO | SYS_GPE_MFP0_PE0MFP_SPI1_MOSI);
+    SYS->GPH_MFP2 &= ~(SYS_GPH_MFP2_PH9MFP_Msk | SYS_GPH_MFP2_PH8MFP_Msk);
+    SYS->GPH_MFP2 |= (SYS_GPH_MFP2_PH9MFP_SPI1_SS | SYS_GPH_MFP2_PH8MFP_SPI1_CLK);
+
+    SYS->GPB_MFP0 &= ~(SYS_GPB_MFP0_PB2MFP_Msk | SYS_GPB_MFP0_PB3MFP_Msk);
+    SYS->GPB_MFP0 |= (SYS_GPB_MFP0_PB2MFP_EADC0_CH2 | SYS_GPB_MFP0_PB3MFP_EADC0_CH3);
+    SYS->GPB_MFP1 &= ~(SYS_GPB_MFP1_PB4MFP_Msk | SYS_GPB_MFP1_PB5MFP_Msk);
+    SYS->GPB_MFP1 |= (SYS_GPB_MFP1_PB4MFP_EADC0_CH4 | SYS_GPB_MFP1_PB5MFP_EADC0_CH5);
+
+    /* Disable digital path on these EADC pins */
+    GPIO_DISABLE_DIGITAL_PATH(PB, BIT2 | BIT3 | BIT4 | BIT5);
+
+#else
+
     /* SPI2 */
     CLK_EnableModuleClock(SPI2_MODULE);
 
     SYS->GPA_MFP2 &= ~(SYS_GPA_MFP2_PA11MFP_Msk | SYS_GPA_MFP2_PA10MFP_Msk | SYS_GPA_MFP2_PA9MFP_Msk | SYS_GPA_MFP2_PA8MFP_Msk);
     SYS->GPA_MFP2 |= (SYS_GPA_MFP2_PA11MFP_SPI2_SS | SYS_GPA_MFP2_PA10MFP_SPI2_CLK | SYS_GPA_MFP2_PA9MFP_SPI2_MISO | SYS_GPA_MFP2_PA8MFP_SPI2_MOSI);
-
-    /* EADC Analog Pin */
-    CLK_EnableModuleClock(EADC0_MODULE);
 
     /* EADC Analog Pin: UNO_A0, UNO_A1, UNO_A2, UNO_A3 */
     SYS->GPB_MFP1 &= ~(SYS_GPB_MFP3_PB14MFP_Msk | SYS_GPB_MFP3_PB15MFP_Msk);
@@ -64,6 +85,11 @@ static void sys_init(void)
 
     /* Disable digital path on these EADC pins */
     GPIO_DISABLE_DIGITAL_PATH(PB, BIT8 | BIT9 | BIT14 | BIT15);
+
+#endif
+
+    /* Vref connect to internal */
+    SYS_SetVRef(SYS_VREFCTL_VREF_PIN);
 
     /* Set GPB multi-function pins for UART0 RXD and TXD */
     SYS->GPB_MFP3 &= ~(SYS_GPB_MFP3_PB13MFP_Msk | SYS_GPB_MFP3_PB12MFP_Msk);

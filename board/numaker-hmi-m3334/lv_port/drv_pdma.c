@@ -58,7 +58,11 @@ struct nu_pdma_memfun_actor
 {
     int         m_i32ChannID;
     uint32_t    m_u32Result;
-    volatile uint32_t    m_psSemMemFun;
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    SemaphoreHandle_t m_psSemMemFun;
+#else
+    volatile uint32_t m_psSemMemFun;
+#endif
 } ;
 typedef struct nu_pdma_memfun_actor *nu_pdma_memfun_actor_t;
 
@@ -171,6 +175,10 @@ static void nu_pdma_init(void)
         PDMA_Open(psPDMA, PDMA_CH_Msk);
         PDMA_Close(psPDMA);
 
+#if (LV_USE_OS==LV_OS_FREERTOS)
+        NVIC_SetPriority(nu_pdma_arr[i].eIRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
+#endif
+
         /* Enable PDMA interrupt */
         NVIC_EnableIRQ(nu_pdma_arr[i].eIRQn);
 
@@ -223,7 +231,7 @@ void nu_pdma_channel_terminate(int i32ChannID)
     if (nu_pdma_check_is_nonallocated(i32ChannID))
         goto exit_pdma_channel_terminate;
 
-    //printf("[%s] %d\n", __func__, i32ChannID);
+    LV_LOG_INFO("%d", i32ChannID);
 
     /* Reset specified channel. */
     nu_pdma_channel_reset(i32ChannID);
@@ -545,7 +553,6 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
                        uint32_t u32AddrDst, int32_t i32TransferCnt, nu_pdma_desc_t next, uint32_t u32BeSilent)
 {
     nu_pdma_periph_ctl_t *psPeriphCtl = NULL;
-    PDMA_T *PDMA = NULL;
 
     uint32_t u32SrcCtl = 0;
     uint32_t u32DstCtl = 0;
@@ -563,7 +570,6 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
     else if (i32TransferCnt > NU_PDMA_MAX_TXCNT)
         goto exit_nu_pdma_desc_setup;
 
-    PDMA = NU_PDMA_GET_BASE(i32ChannID);
 
     psPeriphCtl = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_spPeripCtl;
 
@@ -592,6 +598,7 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
 
     if (next)
     {
+        PDMA_T *PDMA = NU_PDMA_GET_BASE(i32ChannID);
         /* Link to Next and modify to scatter-gather DMA mode. */
         dma_desc->CTL = (dma_desc->CTL & ~PDMA_DSCT_CTL_OPMODE_Msk) | PDMA_OP_SCATTER;
         dma_desc->NEXT = (uint32_t)next - (PDMA->SCATBA);
@@ -666,7 +673,7 @@ int nu_pdma_sgtbls_allocate(nu_pdma_desc_t *ppsSgtbls, int num)
         /* Get token. */
         if ((idx = nu_pdma_sgtbls_token_allocate()) < 0)
         {
-            printf("No available sgtbl.\n");
+            LV_LOG_ERROR("No available sgtbl.\n");
             goto fail_nu_pdma_sgtbls_allocate;
         }
 
@@ -679,8 +686,6 @@ fail_nu_pdma_sgtbls_allocate:
 
     /* Release allocated tables. */
     nu_pdma_sgtbls_free(ppsSgtbls, i);
-
-    //rt_hw_interrupt_enable(level);
 
     return -1;
 }
@@ -696,8 +701,8 @@ static int nu_pdma_sgtbls_valid(nu_pdma_desc_t head)
         node_addr = (uint32_t)node;
         if ((node_addr < PDMA0->SCATBA) || (node_addr - PDMA0->SCATBA) >= NU_PDMA_SG_LIMITED_DISTANCE)
         {
-            printf("The distance is over %lu between 0x%08x and 0x%08x. \n", NU_PDMA_SG_LIMITED_DISTANCE, PDMA0->SCATBA, (uint32_t)node);
-            printf("Please use nu_pdma_sgtbl_allocate to allocate valid sg-table.\n");
+            LV_LOG_ERROR("The distance is over %lu between 0x%08x and 0x%08x.", NU_PDMA_SG_LIMITED_DISTANCE, PDMA0->SCATBA, (uint32_t)node);
+            LV_LOG_ERROR("Please use nu_pdma_sgtbl_allocate to allocate valid sg-table.");
             return -1;
         }
 
@@ -721,6 +726,7 @@ static void _nu_pdma_transfer(int i32ChannID, uint32_t u32Peripheral, nu_pdma_de
     nu_pdma_timeout_set(i32ChannID, u32IdleTimeout_us);
 
     /* Set scatter-gather mode and head */
+    /* Take care the head structure, you should make sure cache-coherence. */
     PDMA_SetTransferMode(PDMA,
                          NU_PDMA_GET_MOD_CHIDX(i32ChannID),
                          u32Peripheral,
@@ -984,7 +990,12 @@ static void nu_pdma_memfun_actor_init(void)
         memset(&nu_pdma_memfun_actor_arr[i], 0, sizeof(struct nu_pdma_memfun_actor));
         if (-(1) != (nu_pdma_memfun_actor_arr[i].m_i32ChannID = nu_pdma_channel_allocate(PDMA_MEM)))
         {
+#if (LV_USE_OS==LV_OS_FREERTOS)
+            nu_pdma_memfun_actor_arr[i].m_psSemMemFun = xSemaphoreCreateBinary();
+            LV_ASSERT(nu_pdma_memfun_actor_arr[i].m_psSemMemFun != NULL);
+#else
             nu_pdma_memfun_actor_arr[i].m_psSemMemFun = 0;
+#endif
         }
         else
             break;
@@ -1001,7 +1012,14 @@ static void nu_pdma_memfun_cb(void *pvUserData, uint32_t u32Events)
     nu_pdma_memfun_actor_t psMemFunActor = (nu_pdma_memfun_actor_t)pvUserData;
     psMemFunActor->m_u32Result = u32Events;
 
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    xSemaphoreGiveFromISR(psMemFunActor->m_psSemMemFun, &xHigherPriorityTaskWoken);
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#else
     psMemFunActor->m_psSemMemFun = 1;
+#endif
 }
 
 static int nu_pdma_memfun_employ(void)
@@ -1066,8 +1084,12 @@ static int nu_pdma_memfun(void *dest, void *src, uint32_t u32DataWidth, unsigned
                      0);
 
     /* Wait it done. */
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    while (xSemaphoreTake(psMemFunActor->m_psSemMemFun, portMAX_DELAY) != pdTRUE);
+#else
     while (psMemFunActor->m_psSemMemFun == 0);
     psMemFunActor->m_psSemMemFun = 0;
+#endif
 
     /* Give result if get NU_PDMA_EVENT_TRANSFER_DONE.*/
     if (psMemFunActor->m_u32Result & NU_PDMA_EVENT_TRANSFER_DONE)

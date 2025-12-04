@@ -11,9 +11,17 @@
 
 #define LV_USE_OS   LV_OS_FREERTOS
 
-#define LV_USE_DRAW_GDMA                1
-#define LV_USE_NATIVE_HELIUM_ASM        1
+#define LV_USE_DRAW_GDMA                  1
+#if !defined(__ICCARM__)
+    #define LV_USE_NATIVE_HELIUM_ASM          1
+    #define LV_USE_DRAW_SW_ASM                LV_DRAW_SW_ASM_HELIUM
+#endif
 //#define CONFIG_LV_DISP_FULL_REFRESH     1
+
+#if defined(__320x240__)
+    #define LV_HOR_RES_MAX              320
+    #define LV_VER_RES_MAX              240
+#endif
 
 #if defined(__480x272__)
     #define LV_HOR_RES_MAX              480
@@ -31,13 +39,8 @@
 #define LV_FONT_MONTSERRAT_16           1
 #define LV_FONT_MONTSERRAT_24           1
 
-/* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
 //#define LV_USE_DEMO_BENCHMARK           1
-//#define LV_USE_DEMO_MUSIC             1
-#if LV_USE_DEMO_MUSIC
-    #define LV_DEMO_MUSIC_AUTO_PLAY     1
-#endif
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1
