@@ -171,6 +171,8 @@ static void nu_pdma_init(void)
         PDMA_Open(psPDMA, PDMA_CH_Msk);
         PDMA_Close(psPDMA);
 
+        NVIC_SetPriority(nu_pdma_arr[i].eIRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
+
         /* Enable PDMA interrupt */
         NVIC_EnableIRQ(nu_pdma_arr[i].eIRQn);
 

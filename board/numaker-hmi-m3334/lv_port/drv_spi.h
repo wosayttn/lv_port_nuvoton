@@ -5,10 +5,17 @@
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
-#include "lv_glue.h"
 
 #ifndef __DRV_SPI_H__
 #define __DRV_SPI_H__
+
+#include "lv_glue.h"
+
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    #include "FreeRTOS.h"
+    #include "task.h"
+    #include "semphr.h"
+#endif
 
 #if defined(CONFIG_SPI_USE_PDMA)
     #include "drv_pdma.h"
@@ -25,7 +32,12 @@ struct nu_spi
     int8_t  pdma_chanid_tx;
     int16_t pdma_perp_rx;
     int8_t  pdma_chanid_rx;
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    SemaphoreHandle_t m_psSemBus;
+#else
     volatile uint32_t m_psSemBus;
+#endif
+
 #endif
 };
 typedef struct nu_spi *nu_spi_t;

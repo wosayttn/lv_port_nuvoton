@@ -13,7 +13,7 @@
 #define NU_MFP_POS(PIN)   ((PIN % 4) * 8)
 #define NU_MFP_MSK(PIN)   (0x1ful << NU_MFP_POS(PIN))
 
-void nu_pin_func(uint32_t pin, int data)
+static void nu_pin_func(uint32_t pin, int data)
 {
     uint32_t GPx_MFPx_org;
     uint32_t pin_index      = NU_GET_PIN(pin);
