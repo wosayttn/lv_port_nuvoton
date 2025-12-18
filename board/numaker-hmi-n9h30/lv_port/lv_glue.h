@@ -18,7 +18,7 @@
 #include "task.h"
 #include "semphr.h"
 
-#define CONFIG_LCD_FB_NUM            3
+#define CONFIG_LCD_FB_NUM                3
 #define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX)
 
 typedef struct

@@ -10,6 +10,7 @@
 #include "lv_glue.h"
 #include "disp.h"
 #include "indev_touch.h"
+#include "plat_touch.h"
 
 #if defined(CONFIG_DISP_USE_EBI_SYNC)
     #define CONFIG_VRAM_BUFFER_NUM              2
@@ -310,3 +311,80 @@ int touchpad_device_finalize(void)
 {
     return 0;
 }
+
+int32_t touch_plat_i2c_init(S_TOUCH_IF_I2C *psIfCtx)
+{
+    I2C_Open((I2C_T *)psIfCtx->m_pvI2C, 400000);
+
+    return 0;
+}
+
+int32_t touch_plat_i2c_read(S_TOUCH_IF_I2C *psIfCtx)
+{
+    int32_t ret = -1;
+
+    if (psIfCtx != NULL)
+    {
+        switch (psIfCtx->m_u32RegLen)
+        {
+        case 1:
+            ret = (I2C_ReadMultiBytesOneReg((I2C_T *)psIfCtx->m_pvI2C,
+                                            psIfCtx->m_u8DevAddr,
+                                            *((uint8_t *)psIfCtx->m_pu8Reg),
+                                            psIfCtx->m_pu8Data,
+                                            psIfCtx->m_u32DataLen) == psIfCtx->m_u32DataLen) ? 0 : -1;
+            break;
+
+        case 2:
+            ret = (I2C_ReadMultiBytesTwoRegs((I2C_T *)psIfCtx->m_pvI2C,
+                                             psIfCtx->m_u8DevAddr,
+                                             *((uint16_t *)psIfCtx->m_pu8Reg),
+                                             psIfCtx->m_pu8Data,
+                                             psIfCtx->m_u32DataLen) == psIfCtx->m_u32DataLen) ? 0 : -1;
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    return ret;
+}
+
+int32_t touch_plat_i2c_write(S_TOUCH_IF_I2C *psIfCtx)
+{
+    int32_t ret = -1;
+
+    if (psIfCtx != NULL)
+    {
+        switch (psIfCtx->m_u32RegLen)
+        {
+        case 1:
+            ret = (I2C_WriteMultiBytesOneReg((I2C_T *)psIfCtx->m_pvI2C,
+                                             psIfCtx->m_u8DevAddr,
+                                             *((uint8_t *)psIfCtx->m_pu8Reg),
+                                             psIfCtx->m_pu8Data,
+                                             psIfCtx->m_u32DataLen) == psIfCtx->m_u32DataLen) ? 0 : -1;
+            break;
+
+        case 2:
+            ret = (I2C_WriteMultiBytesTwoRegs((I2C_T *)psIfCtx->m_pvI2C,
+                                              psIfCtx->m_u8DevAddr,
+                                              *((uint16_t *)psIfCtx->m_pu8Reg),
+                                              psIfCtx->m_pu8Data,
+                                              psIfCtx->m_u32DataLen) == psIfCtx->m_u32DataLen) ? 0 : -1;
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    return ret;
+}
+
+void touch_plat_i2c_fini(S_TOUCH_IF_I2C *psIfCtx)
+{
+    I2C_Close((I2C_T *)psIfCtx->m_pvI2C);
+}
+

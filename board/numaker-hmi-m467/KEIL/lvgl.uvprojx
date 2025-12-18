@@ -1855,6 +1855,11 @@
           <GroupName>lv_port</GroupName>
           <Files>
             <File>
+              <FileName>plat_touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\plat_touch.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_demo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\lv_demo.c</FilePath>
@@ -4375,6 +4380,11 @@
           <GroupName>lv_port</GroupName>
           <Files>
             <File>
+              <FileName>plat_touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\plat_touch.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_demo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\lv_demo.c</FilePath>
@@ -6792,6 +6802,11 @@
         <Group>
           <GroupName>lv_port</GroupName>
           <Files>
+            <File>
+              <FileName>plat_touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\plat_touch.c</FilePath>
+            </File>
             <File>
               <FileName>lv_demo.c</FileName>
               <FileType>1</FileType>

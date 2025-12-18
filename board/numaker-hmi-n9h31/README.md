@@ -8,13 +8,16 @@
 ## **KEIL project**
 
 User can select listed **Target Name** to build target execution using uVision MDK4.
+
 | Target | Description |
 |-|-|
-| N9H31K5_800x480 | Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling) |
+| N9H31K5_800x480_V1_0 | Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling) |
+| N9H31K5_800x480_V1_1 | Use 800x480 LCD panel with captive touch screen(GT.911) |
 
 ## **GCC project**
 
 To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
+
 | Target | Description |
 |-|-|
 | N9H31K5_800x480 | Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling) |

@@ -53,12 +53,17 @@ static void sys_init(void)
     /* Close WDT first, to avoid WDT timer is enabled IBR timeout reset. */
     outpw(REG_WDT_CTL, 0);
 
+    sysInitializeUART();
+
+    /* Configure multi function pins to I2C0 */
+    outpw(REG_SYS_GPG_MFPL, (inpw(REG_SYS_GPG_MFPL) & ~0xff) | 0x88);
+
     /* LCD_PWM */
     outpw(REG_SYS_GPH_MFPL, (inpw(REG_SYS_GPH_MFPL) & ~0xF00) | 0x0);
     GPIO_OpenBit(GPIOH, BIT2, DIR_OUTPUT, NO_PULL_UP);
     GPIO_ClrBit(GPIOH, BIT2);
 
-    sysInitializeUART();
+    sysStartTimer(TIMER0, 1000, PERIODIC_MODE);
     sysSetLocalInterrupt(ENABLE_IRQ);   // Enable CPSR I bit
 }
 

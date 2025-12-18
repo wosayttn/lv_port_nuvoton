@@ -62,10 +62,17 @@
 #define configUSE_COUNTING_SEMAPHORES   1
 
 /* Hooks */
-void lv_freertos_task_switch_in(const char * name);
+
 void lv_freertos_task_switch_out(void);
-#define traceTASK_SWITCHED_IN()                         //lv_freertos_task_switch_in(pxCurrentTCB->pcTaskName)
-#define traceTASK_SWITCHED_OUT()                       /// lv_freertos_task_switch_out()
+#define traceTASK_SWITCHED_IN()  { \
+                                     void lv_freertos_task_switch_in(const char * name); \
+                                     /*lv_freertos_task_switch_in(pxCurrentTCB->pcTaskName);*/ \
+                                 }
+
+#define traceTASK_SWITCHED_OUT() { \
+                                     void lv_freertos_task_switch_out(void); \
+                                     /*lv_freertos_task_switch_out();*/ \
+                                 }
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES           0

@@ -54,6 +54,7 @@ static void sys_init(void)
     outpw(REG_WDT_CTL, 0);
 
     sysInitializeUART();
+    sysStartTimer(TIMER0, 1000, PERIODIC_MODE);
     sysSetLocalInterrupt(ENABLE_IRQ);   // Enable CPSR I bit
 }
 

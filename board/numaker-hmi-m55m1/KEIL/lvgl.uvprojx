@@ -2011,6 +2011,11 @@
                 </FileArmAds>
               </FileOption>
             </File>
+            <File>
+              <FileName>plat_touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\plat_touch.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -4631,6 +4636,11 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
+            </File>
+            <File>
+              <FileName>plat_touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\plat_touch.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -7304,6 +7314,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_disp\disp_ebi_sync_gdma.c</FilePath>
             </File>
+            <File>
+              <FileName>plat_touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\plat_touch.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -9975,6 +9990,11 @@
               <FileName>disp_ebi_sync_gdma.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_disp\disp_ebi_sync_gdma.c</FilePath>
+            </File>
+            <File>
+              <FileName>plat_touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_indev\plat_touch.c</FilePath>
             </File>
           </Files>
         </Group>

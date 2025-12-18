@@ -54,7 +54,7 @@ static void lcd_vpost_handler(void)
 #endif
 
 
-void dump_lcd_timings(void)
+static void dump_lcd_timings(void)
 {
     int id;
 
@@ -167,7 +167,7 @@ int lcd_device_initialize(void)
 #if (LV_USE_OS==LV_OS_FREERTOS)
     s_xGDMASem = xSemaphoreCreateBinary();
     LV_ASSERT(s_xGDMASem != NULL);
-	
+
     sysInstallISR(HIGH_LEVEL_SENSITIVE | IRQ_LEVEL_1, GDMA0_IRQn, (PVOID)gdma0ISR);
     sysSetLocalInterrupt(ENABLE_IRQ);
     sysEnableInterrupt(GDMA0_IRQn);
@@ -392,7 +392,7 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
         psInDevData->point.y = sLastInDevData.point.y;
     }
 
-    LV_LOG_INFO("%s (%d, %d)", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
+    //LV_LOG_INFO("%s (%d, %d)", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
 
     return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
 }

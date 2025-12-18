@@ -8,6 +8,7 @@
 
 #include <string.h>
 #include "indev_touch.h"
+#include "plat_touch.h"
 
 #define FT5316_REGITER_LEN   1
 #define FT5316_MAX_TOUCH     5
@@ -130,14 +131,39 @@ static uint8_t pre_touch = 0;
 
 static S_FT_REGMAP sFtRegMap;
 
-static int ft5316_write_reg(I2C_T *i2c, uint8_t reg, uint8_t value)
+static S_TOUCH_IF_I2C s_ft5316_i2c_if =
 {
-    return -I2C_WriteByteOneReg(i2c, FT5316_ADDRESS, reg, value);
+    .m_pvI2C      = CONFIG_INDEV_TOUCH_I2C,
+    .m_pu8Reg     = NULL,
+    .m_u32RegLen  = 1,
+    .m_pu8Data    = NULL,
+    .m_u32DataLen = 0,
+    .m_pvPrivate  = NULL,
+    .m_u8DevAddr  = FT5316_ADDRESS,
+};
+
+static int ft5316_write_reg(uint8_t reg, uint8_t data[], uint32_t len)
+{
+    S_TOUCH_IF_I2C *psIfCtx = &s_ft5316_i2c_if;
+
+    psIfCtx->m_pu8Reg = &reg;
+    psIfCtx->m_u32RegLen = sizeof(uint8_t);
+    psIfCtx->m_pu8Data = data;
+    psIfCtx->m_u32DataLen = len;
+
+    return touch_plat_i2c_write(psIfCtx);
 }
 
-static int ft5316_read_reg(I2C_T *i2c, uint8_t reg, uint8_t *data, uint32_t len)
+static int ft5316_read_reg(uint8_t reg, uint8_t data[], uint32_t len)
 {
-    return (I2C_ReadMultiBytesOneReg(i2c, FT5316_ADDRESS, reg, data, len) == len) ? 0 : -1;
+    S_TOUCH_IF_I2C *psIfCtx = &s_ft5316_i2c_if;
+
+    psIfCtx->m_pu8Reg = &reg;
+    psIfCtx->m_u32RegLen = sizeof(uint8_t);
+    psIfCtx->m_pu8Data = data;
+    psIfCtx->m_u32DataLen = len;
+
+    return touch_plat_i2c_read(psIfCtx);
 }
 
 static void ft5316_touch_up(lv_indev_data_t *buf, int16_t id)
@@ -173,7 +199,7 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
 
     memset(&sFtRegMap, 0, sizeof(S_FT_REGMAP));
 
-    error = ft5316_read_reg(CONFIG_INDEV_TOUCH_I2C, 0, (uint8_t *)&sFtRegMap, sizeof(sFtRegMap));
+    error = ft5316_read_reg(0, (uint8_t *)&sFtRegMap, sizeof(sFtRegMap));
     if (error)
     {
         LV_LOG_ERROR("Get touch data failed, err:");
@@ -260,6 +286,8 @@ exit_indev_touch_get_data:
 
 int indev_touch_init(void)
 {
+    uint8_t data = 0;
+
     memset(&pre_x[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
     memset(&pre_y[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
     memset(&pre_w[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
@@ -272,9 +300,9 @@ int indev_touch_init(void)
     INDEV_TOUCH_CLR_RST;
     sysDelay(200);
 
-    I2C_Open(CONFIG_INDEV_TOUCH_I2C, 400000);
+    touch_plat_i2c_init(&s_ft5316_i2c_if);
 
-    ft5316_write_reg(CONFIG_INDEV_TOUCH_I2C, 0x0, 0);
+    ft5316_write_reg(0x0, &data, 1);
 
     return 0;
 }

@@ -30,6 +30,7 @@
     //For NUTFT
     #define CONFIG_INDEV_TOUCH_ADC      1
     #define CONFIG_DISP_ILI9341         1
+    #define CONFIG_XY_REVERSED          1
 #elif defined(USE_NUMAKER_TFT_LCD43_V_1_1)
     //For NUMAKER_TFT_LCD43_V1.1 board
     #define CONFIG_INDEV_TOUCH_GT911    1

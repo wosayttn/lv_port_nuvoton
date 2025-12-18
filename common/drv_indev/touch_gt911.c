@@ -8,6 +8,7 @@
 
 #include <string.h>
 #include "indev_touch.h"
+#include "plat_touch.h"
 
 #define GT911_REGITER_LEN     2
 #define GT911_MAX_TOUCH       10
@@ -15,7 +16,7 @@
 #define GT911_ADDRESS2        0x14
 
 #define CONFIG_MAX_TOUCH                     10
-#define CONFIG_XY_REVERSED                   1
+//#define CONFIG_XY_REVERSED                   1
 
 #define GT911_COMMAND_REG                    0x8040
 
@@ -129,7 +130,16 @@ static int16_t s_tp_dowm[CONFIG_MAX_TOUCH];
 static int16_t pre_id[CONFIG_MAX_TOUCH];
 static uint8_t pre_touch = 0;
 
-static uint8_t s_u8gt911_id = GT911_ADDRESS2;
+static S_TOUCH_IF_I2C s_gt911_i2c_if =
+{
+    .m_pvI2C      = CONFIG_INDEV_TOUCH_I2C,
+    .m_pu8Reg     = NULL,
+    .m_u32RegLen  = GT911_REGITER_LEN,
+    .m_pu8Data    = NULL,
+    .m_u32DataLen = 0,
+    .m_pvPrivate  = NULL,
+    .m_u8DevAddr  = GT911_ADDRESS2,
+};
 
 static uint8_t gt911_calculate_checksum(uint8_t *config, uint16_t len)
 {
@@ -143,22 +153,31 @@ static uint8_t gt911_calculate_checksum(uint8_t *config, uint16_t len)
     return (~(sum & 0xFF)) + 1;
 }
 
-static int gt911_write_reg(I2C_T *i2c, uint16_t reg, uint8_t value)
+static int gt911_write_reg(uint16_t reg, uint8_t data[], uint32_t len)
 {
-    return (I2C_WriteMultiBytesTwoRegs(i2c, s_u8gt911_id, reg, &value, 1) == 1) ? 0 : -1;
+    S_TOUCH_IF_I2C *psIfCtx = &s_gt911_i2c_if;
+
+    psIfCtx->m_pu8Reg = (uint8_t *)&reg;
+    psIfCtx->m_u32RegLen = sizeof(uint16_t);
+    psIfCtx->m_pu8Data = data;
+    psIfCtx->m_u32DataLen = len;
+
+    return touch_plat_i2c_write(psIfCtx);
 }
 
-static int gt911_write_multibyte(I2C_T *i2c, uint16_t reg, uint8_t data[], uint32_t len)
+static int gt911_read_reg(uint16_t reg, uint8_t data[], uint32_t len)
 {
-    return (I2C_WriteMultiBytesTwoRegs(i2c, s_u8gt911_id, reg, data, len) == len) ? 0 : -1;
+    S_TOUCH_IF_I2C *psIfCtx = &s_gt911_i2c_if;
+
+    psIfCtx->m_pu8Reg = (uint8_t *)&reg;
+    psIfCtx->m_u32RegLen = sizeof(uint16_t);
+    psIfCtx->m_pu8Data = data;
+    psIfCtx->m_u32DataLen = len;
+
+    return touch_plat_i2c_read(psIfCtx);
 }
 
-static int gt911_read_reg(I2C_T *i2c, uint16_t reg, uint8_t data[], uint32_t len)
-{
-    return (I2C_ReadMultiBytesTwoRegs(i2c, s_u8gt911_id, reg, data, len) == len) ? 0 : -1;
-}
-
-static int gt911_get_product_id(I2C_T *i2c)
+static int gt911_get_product_id(void)
 {
     typedef struct
     {
@@ -171,40 +190,42 @@ static int gt911_get_product_id(I2C_T *i2c)
 
     S_GT911_PRODUCT_ID sPID = {0};
 
-    if (gt911_read_reg(i2c, GT911_PRODUCT_ID, (uint8_t *)&sPID, sizeof(sPID)) != 0)
+    if (gt911_read_reg(GT911_PRODUCT_ID, (uint8_t *)&sPID, sizeof(sPID)) != 0)
     {
-        printf("read id failed\n");
+        LV_LOG_ERROR("read id failed");
         return -1;
     }
 
-    printf("Product ID: GT%c%c%c%c\n", sPID.u8PID1, sPID.u8PID2, sPID.u8PID3, sPID.u8PID4);
-    printf("Firmware Version: %04X\n", sPID.u16FWVersion);
+    LV_LOG_INFO("Product ID: GT%c%c%c%c", sPID.u8PID1, sPID.u8PID2, sPID.u8PID3, sPID.u8PID4);
+    LV_LOG_INFO("Firmware Version: %04X", sPID.u16FWVersion);
 
     return 0;
 }
 
-static int gt911_get_info(I2C_T *i2c)
+static int gt911_get_info(void)
 {
     uint8_t out_info[7];
 
-    if (gt911_read_reg(i2c, GT911_CONFIG_START, out_info, sizeof(out_info)) != 0)
+    if (gt911_read_reg(GT911_CONFIG_START, out_info, sizeof(out_info)) != 0)
     {
-        printf("read info failed\n");
+        LV_LOG_ERROR("read info failed");
         return -1;
     }
 
-    printf("X range: %d\n", (out_info[2] << 8) | out_info[1]);
-    printf("Y range: %d\n", (out_info[4] << 8) | out_info[3]);
-    printf("Point number: %d\n", out_info[5] & 0x0f);
+    LV_LOG_INFO("X range: %d", (out_info[2] << 8) | out_info[1]);
+    LV_LOG_INFO("Y range: %d", (out_info[4] << 8) | out_info[3]);
+    LV_LOG_INFO("Point number: %d", out_info[5] & 0x0f);
 
     return 0;
 }
 
-static int gt911_soft_reset(I2C_T *i2c)
+static int gt911_soft_reset(void)
 {
-    if (gt911_write_reg(i2c, GT911_COMMAND_REG, 0x2) != 0)
+    uint8_t u8Data = 0x02;
+
+    if (gt911_write_reg(GT911_COMMAND_REG, &u8Data, sizeof(u8Data)) != 0)
     {
-        printf("soft reset failed\n");
+        LV_LOG_ERROR("soft reset failed");
         return -1;
     }
 
@@ -252,7 +273,7 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
     uint8_t read_buf[8 * GT911_MAX_TOUCH] = {0};
 
     /* point status register */
-    error = gt911_read_reg(CONFIG_INDEV_TOUCH_I2C, GT911_READ_STATUS, &point_status, 1);
+    error = gt911_read_reg(GT911_READ_STATUS, &point_status, 1);
     if (error)
     {
         goto exit_indev_touch_get_data;
@@ -269,7 +290,7 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
 
     if (touch_num > 0)
     {
-        error = gt911_read_reg(CONFIG_INDEV_TOUCH_I2C, GT911_POINT1_REG, &read_buf[0], 8 * touch_num);
+        error = gt911_read_reg(GT911_POINT1_REG, &read_buf[0], 8 * touch_num);
         if (error)
         {
             goto exit_indev_touch_get_data;
@@ -322,9 +343,12 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
 
 exit_indev_touch_get_data:
 
-    gt911_write_reg(CONFIG_INDEV_TOUCH_I2C, GT911_READ_STATUS, 0x00);
+    {
+        uint8_t u8Data = 0x00;
+        gt911_write_reg(GT911_READ_STATUS, &u8Data, sizeof(u8Data));
+    }
 
-    // printf("%s (%d, %d)\n", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
+    // LV_LOG_TRACE("%s (%d, %d)\n", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
 
     return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
 }
@@ -332,20 +356,29 @@ exit_indev_touch_get_data:
 static void gt911_dump_config(void)
 {
     // Update configuration to GT911
-    gt911_read_reg(CONFIG_INDEV_TOUCH_I2C, GT911_CONFIG_START, GT911_CFG_TBL, sizeof(GT911_CFG_TBL));
+    gt911_read_reg(GT911_CONFIG_START, GT911_CFG_TBL, sizeof(GT911_CFG_TBL));
 
-    printf("\n========================================================\n");
-    for (int i = 0; i < sizeof(GT911_CFG_TBL); i++)
+    LV_LOG_INFO("========================================================");
+    for (int i = 0; i < sizeof(GT911_CFG_TBL); i += 8)
     {
-        printf("0x%02X, ", GT911_CFG_TBL[i]);
-        if (i % 10 == 9) printf("\n");
+        LV_LOG_INFO("0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X",
+                    GT911_CFG_TBL[i + 0],
+                    GT911_CFG_TBL[i + 1],
+                    GT911_CFG_TBL[i + 2],
+                    GT911_CFG_TBL[i + 3],
+                    GT911_CFG_TBL[i + 4],
+                    GT911_CFG_TBL[i + 5],
+                    GT911_CFG_TBL[i + 6],
+                    GT911_CFG_TBL[i + 7]);
     }
-    printf("\n========================================================\n");
+    LV_LOG_INFO("========================================================");
 }
 
 int indev_touch_init(void)
 {
     int ret;
+
+    touch_plat_i2c_init(&s_gt911_i2c_if);
 
     memset(&pre_x[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
     memset(&pre_y[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
@@ -353,22 +386,20 @@ int indev_touch_init(void)
     memset(&s_tp_dowm[0], 0,  CONFIG_MAX_TOUCH * sizeof(int16_t));
     memset(&pre_id[0], 0xff,  CONFIG_MAX_TOUCH * sizeof(int16_t));
 
-    I2C_Open(CONFIG_INDEV_TOUCH_I2C, 400000);
-
-    ret = gt911_soft_reset(CONFIG_INDEV_TOUCH_I2C);
+    ret = gt911_soft_reset();
     if (ret)
     {
-        s_u8gt911_id = GT911_ADDRESS1;
-        ret = gt911_soft_reset(CONFIG_INDEV_TOUCH_I2C);
+        s_gt911_i2c_if.m_u8DevAddr = GT911_ADDRESS1;
+        ret = gt911_soft_reset();
         if (ret)
         {
-            I2C_Close(CONFIG_INDEV_TOUCH_I2C);
+            touch_plat_i2c_fini(&s_gt911_i2c_if);
             return -1;
         }
     }
 
-    gt911_get_product_id(CONFIG_INDEV_TOUCH_I2C);
-    gt911_get_info(CONFIG_INDEV_TOUCH_I2C);
+    gt911_get_product_id();
+    gt911_get_info();
 
     // Update configuration to GT911
     gt911_dump_config();
@@ -390,10 +421,13 @@ int indev_touch_init(void)
     GT911_CFG_TBL[GT911_CONFIG_CHECKSUM - GT911_CONFIG_START - 1 ] = gt911_calculate_checksum(GT911_CFG_TBL, GT911_CONFIG_STOP - GT911_CONFIG_START);
 
     // Update configuration to GT911
-    gt911_write_multibyte(CONFIG_INDEV_TOUCH_I2C, GT911_CONFIG_START, GT911_CFG_TBL, sizeof(GT911_CFG_TBL));
+    gt911_write_reg(GT911_CONFIG_START, GT911_CFG_TBL, sizeof(GT911_CFG_TBL));
 
     // Set refresh flag to 1, to make GT911 read the new configuration.
-    gt911_write_reg(CONFIG_INDEV_TOUCH_I2C, GT911_CONFIG_REFRESH_FLAG, 1);
+    {
+        uint8_t u8Data = 1;
+        gt911_write_reg(GT911_CONFIG_REFRESH_FLAG, &u8Data, sizeof(u8Data));
+    }
 
     gt911_dump_config();
 
