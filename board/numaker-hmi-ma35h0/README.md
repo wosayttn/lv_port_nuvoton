@@ -10,6 +10,8 @@ To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 | Target | Description |
 |-|-|
 | MA35H0_1024x600 | Use 1024x600 LCD panel with resistive touch screen(H/W ADC Sampling) |
+| MA35H0_1024x600_GT911_CTP | Use 1024x600 LCD panel with captive touch screen(1024x600 GT911) |
+| MA35H0_1024x600_JPGDemo | Use 1024x600 LCD panel with resistive touch screen(H/W ADC Sampling) |
 
 ## **Compiling options**
 

@@ -21,7 +21,7 @@
 
 #define CONFIG_LCD_FB_NUM                3
 #define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX)
-#define PORT_OFFSET                 0x40
+#define PORT_OFFSET                      0x40
 
 #if defined(USE_NUMAKER_HMI_N9H31_V1_1)
     //For V1.1 board

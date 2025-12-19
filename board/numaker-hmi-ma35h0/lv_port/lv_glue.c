@@ -8,17 +8,16 @@
 
 #include "lvgl.h"
 #include "lv_glue.h"
+#include "indev_touch.h"
+#include "plat_touch.h"
 
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((LV_HOR_RES_MAX * LV_VER_RES_MAX * (LV_COLOR_DEPTH/8) * CONFIG_LCD_FB_NUM), 128)
 
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(128)));
 
-#if defined(__1024x600__)
-S_CALIBRATION_MATRIX g_sCalMat = { -17558, 1, 69298832, -10, 11142, -2549195, 65536 };
-#endif
-
 /* LCD attributes 1024x600 */
 #if defined(__1024x600__)
+
 const static DISP_LCD_INFO LcdPanelInfo =
 {
     /* Panel Resolution */
@@ -172,6 +171,11 @@ int lcd_device_finalize(void)
 
     return 0;
 }
+
+
+#if defined(CONFIG_INDEV_TOUCH_ADC)
+
+S_CALIBRATION_MATRIX g_sCalMat = { -17558, 1, 69298832, -10, 11142, -2549195, 65536 };
 
 #define Z_TH    20
 #define CONFIG_TRIGGER_PERIOD   20    //in ms
@@ -421,3 +425,219 @@ int touchpad_device_finalize(void)
 
     return 0;
 }
+
+#elif defined(CONFIG_INDEV_TOUCH_I2C)
+
+#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
+static IRQn_Type au32GPIRQ[] =
+{
+    GPA_IRQn,
+    GPB_IRQn,
+    GPC_IRQn,
+    GPD_IRQn,
+    GPE_IRQn,
+    GPF_IRQn,
+    GPG_IRQn,
+    GPH_IRQn,
+    GPI_IRQn,
+    GPJ_IRQn,
+    GPK_IRQn,
+    GPL_IRQn,
+    GPM_IRQn,
+    GPN_IRQn,
+};
+
+static volatile lv_indev_data_t s_sInDevData = {0};
+static volatile uint32_t s_u32LastIRQ = 0;
+
+// GT911 ISR
+static void GT911_ISR(void)
+{
+    GPIO_T *PORT = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET));
+
+    /* To check if interrupt occurred */
+    if (GPIO_GET_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ))))
+    {
+        GPIO_CLR_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)));
+        s_u32LastIRQ = xTaskGetTickCount();
+    }
+    else
+    {
+        /* Un-expected interrupt. Just clear all PD interrupts */
+        volatile uint32_t u32temp = PORT->INTSRC;
+        PORT->INTSRC = u32temp;
+    }
+}
+#endif
+
+int touchpad_device_initialize(void)
+{
+    GPIO_T *PORT;
+
+    /* Set GPIO OUTPUT mode for indev touch pins. */
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)), GPIO_MODE_OUTPUT);
+
+#if defined(CONFIG_INDEV_TOUCH_GT911)
+    /* Set GPIO INTPUT mode for indev touch pins. */
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET));
+
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), GPIO_MODE_OUTPUT);
+    INDEV_TOUCH_CLR_IRQ; // IRQ - Pull low
+    INDEV_TOUCH_SET_RST; // Reset - Pull low
+    sysDelay(1);
+    INDEV_TOUCH_SET_IRQ; // IRQ - Pull high
+    sysDelay(1);
+    INDEV_TOUCH_CLR_RST; // Reset - Pull high
+    sysDelay(10);
+    INDEV_TOUCH_CLR_IRQ; // IRQ - Pull low
+    sysDelay(60);
+
+#endif
+
+#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
+
+    PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET));
+    GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), GPIO_MODE_INPUT);
+
+#if defined(CONFIG_INDEV_TOUCH_GT911)
+    GPIO_SetPullCtl(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), GPIO_PUSEL_PULL_DOWN);
+    GPIO_EnableInt(PORT, NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ), GPIO_INT_RISING);
+#else
+    GPIO_SetPullCtl(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), GPIO_PUSEL_PULL_UP);
+    GPIO_EnableInt(PORT, NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ), GPIO_INT_FALLING);
+#endif
+
+    sysprintf("%08x\n", CONFIG_INDEV_TOUCH_PIN_IRQ);
+    sysprintf("PORT > %08x\n", PORT);
+    sysprintf("PIN > %08x\n", NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ));
+    sysprintf("(IRQn_ID_t)au32GPIRQ[NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ)]: %08x\n", (IRQn_ID_t)au32GPIRQ[NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ)]);
+
+    IRQ_SetHandler((IRQn_ID_t)au32GPIRQ[NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ)], GT911_ISR);
+    IRQ_Enable((IRQn_ID_t)au32GPIRQ[NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ)]);
+
+#endif
+
+    return indev_touch_init();
+}
+
+int touchpad_device_finalize(void)
+{
+
+}
+
+int touchpad_device_open(void)
+{
+
+}
+
+int touchpad_device_read(lv_indev_data_t *psInDevData)
+{
+#if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
+    static uint32_t u32LastIRQ = 0;
+
+    if (u32LastIRQ != s_u32LastIRQ)
+    {
+        indev_touch_get_data((lv_indev_data_t *)&s_sInDevData);
+        u32LastIRQ = s_u32LastIRQ ;
+    }
+
+    psInDevData->point.x = s_sInDevData.point.x;
+    psInDevData->point.y = s_sInDevData.point.y;
+    psInDevData->state = s_sInDevData.state;
+
+#else
+    indev_touch_get_data(psInDevData);
+#endif
+
+    return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
+}
+
+int touchpad_device_control(int cmd, void *argv)
+{
+    return 0;
+}
+
+void touchpad_device_close(void)
+{
+}
+
+int32_t touch_plat_i2c_init(S_TOUCH_IF_I2C *psIfCtx)
+{
+    I2C_Open((I2C_T *)psIfCtx->m_pvI2C, 400000);
+
+    LV_LOG_INFO("I2C clock %d Hz", I2C_GetBusClockFreq((I2C_T *)psIfCtx->m_pvI2C));
+
+    return 0;
+}
+
+int32_t touch_plat_i2c_read(S_TOUCH_IF_I2C *psIfCtx)
+{
+    int32_t ret = -1;
+
+    if (psIfCtx != NULL)
+    {
+        switch (psIfCtx->m_u32RegLen)
+        {
+        case 1:
+            ret = (I2C_ReadMultiBytesOneReg((I2C_T *)psIfCtx->m_pvI2C,
+                                            psIfCtx->m_u8DevAddr,
+                                            *((uint8_t *)psIfCtx->m_pu8Reg),
+                                            psIfCtx->m_pu8Data,
+                                            psIfCtx->m_u32DataLen) == psIfCtx->m_u32DataLen) ? 0 : -1;
+            break;
+
+        case 2:
+            ret = (I2C_ReadMultiBytesTwoRegs((I2C_T *)psIfCtx->m_pvI2C,
+                                             psIfCtx->m_u8DevAddr,
+                                             *((uint16_t *)psIfCtx->m_pu8Reg),
+                                             psIfCtx->m_pu8Data,
+                                             psIfCtx->m_u32DataLen) == psIfCtx->m_u32DataLen) ? 0 : -1;
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    return ret;
+}
+
+int32_t touch_plat_i2c_write(S_TOUCH_IF_I2C *psIfCtx)
+{
+    int32_t ret = -1;
+
+    if (psIfCtx != NULL)
+    {
+        switch (psIfCtx->m_u32RegLen)
+        {
+        case 1:
+            ret = (I2C_WriteMultiBytesOneReg((I2C_T *)psIfCtx->m_pvI2C,
+                                             psIfCtx->m_u8DevAddr,
+                                             *((uint8_t *)psIfCtx->m_pu8Reg),
+                                             psIfCtx->m_pu8Data,
+                                             psIfCtx->m_u32DataLen) == psIfCtx->m_u32DataLen) ? 0 : -1;
+            break;
+
+        case 2:
+            ret = (I2C_WriteMultiBytesTwoRegs((I2C_T *)psIfCtx->m_pvI2C,
+                                              psIfCtx->m_u8DevAddr,
+                                              *((uint16_t *)psIfCtx->m_pu8Reg),
+                                              psIfCtx->m_pu8Data,
+                                              psIfCtx->m_u32DataLen) == psIfCtx->m_u32DataLen) ? 0 : -1;
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    return ret;
+}
+
+void touch_plat_i2c_fini(S_TOUCH_IF_I2C *psIfCtx)
+{
+    I2C_Close((I2C_T *)psIfCtx->m_pvI2C);
+}
+
+#endif

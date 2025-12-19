@@ -34,9 +34,12 @@ static void sys_init(void)
     /* enable VC8000 clock */
     CLK_EnableModuleClock(VDEC_MODULE);
 
+    /* Enable IP clock */
     CLK_EnableModuleClock(GPA_MODULE);
     CLK_EnableModuleClock(GPM_MODULE);
     CLK_EnableModuleClock(GPF_MODULE);
+    CLK_EnableModuleClock(GPK_MODULE);
+    CLK_EnableModuleClock(I2C5_MODULE);
 
     /* Set multi-function pins for LCD Display Controller */
     SYS->GPG_MFPH = SYS->GPG_MFPH & ~(SYS_GPG_MFPH_PG8MFP_Msk | SYS_GPG_MFPH_PG9MFP_Msk | SYS_GPG_MFPH_PG10MFP_Msk) |
@@ -59,6 +62,10 @@ static void sys_init(void)
 
     /* Assign the highest AXI port priority to Display */
     DISPLIB_DDR_AXIPort_Priority();
+
+    /* Set multi-function pins for I2C5 */
+    SYS->GPM_MFPL &= ~(SYS_GPM_MFPL_PM4MFP_Msk | SYS_GPM_MFPL_PM5MFP_Msk);
+    SYS->GPM_MFPL |= (SYS_GPM_MFPL_PM5MFP_I2C5_SCL | SYS_GPM_MFPL_PM4MFP_I2C5_SDA);
 
     /* Set GPE multi-function pins for UART0 RXD and TXD */
     SYS->GPE_MFPH &= ~(SYS_GPE_MFPH_PE14MFP_Msk | SYS_GPE_MFPH_PE15MFP_Msk);

@@ -135,6 +135,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35h0/Library/StdDriver/src/gpio.c</locationURI>
 		</link>
 		<link>
+			<name>Driver/i2c.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/i2c.c</locationURI>
+		</link>
+		<link>
 			<name>Driver/irq_ctrl_gic.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/ma35h0/Library/Arch/Core_A/Source/irq_ctrl_gic.c</locationURI>
@@ -423,6 +428,16 @@
 			<name>lv_port/touch_adc_calibration.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_adc_calibration.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/plat_touch.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/plat_touch.c</locationURI>
+		</link>
+		<link>
+			<name>lv_port/touch_gt911.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_gt911.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/lv_anim.c</name>
