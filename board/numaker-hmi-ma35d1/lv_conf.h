@@ -14,6 +14,8 @@
 
 #define LV_USE_OS   LV_OS_FREERTOS
 
+#define LV_USE_DRAW_SW_ASM              LV_DRAW_SW_ASM_NEON
+
 #if defined(__1024x600__)
     #define LV_HOR_RES_MAX              1024
     #define LV_VER_RES_MAX              600
@@ -52,15 +54,10 @@
 
 #define CONFIG_LV_MEM_SIZE              (8*1024*1024)
 #define CONFIG_LV_CACHE_DEF_SIZE        (8*1024*1024)
-#define CONFIG_LV_DRAW_BUF_ALIGN	    64
+#define CONFIG_LV_DRAW_BUF_ALIGN        64
 
-/* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
 //#define LV_USE_DEMO_BENCHMARK           1
-//#define LV_USE_DEMO_MUSIC             1
-#if LV_USE_DEMO_MUSIC
-    #define LV_DEMO_MUSIC_AUTO_PLAY     1
-#endif
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1

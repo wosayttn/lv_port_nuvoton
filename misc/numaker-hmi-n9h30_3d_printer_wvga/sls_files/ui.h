@@ -24,16 +24,16 @@ extern "C" {
 
 ///////////////////// VARIABLES ////////////////////
 
-extern lv_anim_t * OpaOn_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * OpaOff_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * ScreenIn_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * MenuIn_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * MenuOut_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * ScreenOut_Animation(lv_obj_t * TargetObject, int delay);
+extern lv_anim_t *OpaOn_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *OpaOff_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *ScreenIn_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *MenuIn_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *MenuOut_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *ScreenOut_Animation(lv_obj_t *TargetObject, int delay);
 
 // EVENTS
 
-extern lv_obj_t * ui____initial_actions0;
+extern lv_obj_t *ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
 LV_IMG_DECLARE(ui_img_3d_printer_bg_png);    // assets/3d_printer_bg.png

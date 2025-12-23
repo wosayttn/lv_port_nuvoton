@@ -17,7 +17,9 @@
 #include "task.h"
 #include "semphr.h"
 
-#define PORT_OFFSET   0x40
+#if !defined(PORT_OFFSET)
+    #define PORT_OFFSET         0x40
+#endif
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
 #define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX)

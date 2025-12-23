@@ -475,12 +475,12 @@ int disp_init(void)
     disp_delay_ms(100);
     lt7381_hw_reset();
     disp_delay_ms(100);
-	
+
     lt7381_wait_ready();
 
-    /* Software reset */	
+    /* Software reset */
     lt7381_sw_reset();
-	
+
     lt7381_initial_pll();
 
     lt7381_initial_sdram();
@@ -501,14 +501,14 @@ void disp_fillrect(uint16_t *pixels, const lv_area_t *area)
     int32_t w = lv_area_get_width(area);
     int32_t h = lv_area_get_height(area);
 
-    LV_LOG_INFO("%08x WxH=%dx%d (%d, %d) (%d, %d)",
-                pixels,
-                lv_area_get_width(area),
-                lv_area_get_height(area),
-                area->x1,
-                area->y1,
-                area->x2,
-                area->y2);
+    LV_LOG_TRACE("%08x WxH=%dx%d (%d, %d) (%d, %d)",
+                 pixels,
+                 lv_area_get_width(area),
+                 lv_area_get_height(area),
+                 area->x1,
+                 area->y1,
+                 area->x2,
+                 area->y2);
 
     disp_set_column(area->x1, area->x2);
     disp_set_page(area->y1, area->y2);

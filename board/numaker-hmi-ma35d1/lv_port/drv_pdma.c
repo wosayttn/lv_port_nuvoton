@@ -716,22 +716,22 @@ static void _nu_pdma_transfer(int i32ChannID, uint32_t u32Peripheral, nu_pdma_de
             /* Flush Src buffer into memory. */
             if ((u32SrcCtl == PDMA_SAR_INC)) // for M2P, M2M
             {
-            	void const * addr = (void const * )((uint64_t)next->SA);
-            	dcache_clean_invalidate_by_mva(addr, u32FlushLen);
+                void const *addr = (void const *)((uint64_t)next->SA);
+                dcache_clean_invalidate_by_mva(addr, u32FlushLen);
             }
 
             /* Flush Dst buffer into memory. */
             if ((u32DstCtl == PDMA_DAR_INC)) // for P2M, M2M
             {
-            	void const * addr = (void const * )((uint64_t)next->DA);
-            	dcache_clean_invalidate_by_mva(addr, u32FlushLen);
+                void const *addr = (void const *)((uint64_t)next->DA);
+                dcache_clean_invalidate_by_mva(addr, u32FlushLen);
             }
 
             /* Flush descriptor into memory */
             if (!(ptr_to_u32(next) & BIT31))
             {
-            	void const * addr = (void const * )((uint64_t)next);
-            	dcache_clean_invalidate_by_mva(addr, sizeof(DSCT_T));
+                void const *addr = (void const *)((uint64_t)next);
+                dcache_clean_invalidate_by_mva(addr, sizeof(DSCT_T));
             }
 
             if (bNonCacheAlignedWarning)
@@ -1112,7 +1112,7 @@ int nu_pdma_memfun(void *dest, void *src, uint32_t u32DataWidth, unsigned int u3
     nu_pdma_transfer(psMemFunActor->m_i32ChannID,
                      u32DataWidth,
                      ptr_to_u32(src),
-					 ptr_to_u32(dest),
+                     ptr_to_u32(dest),
                      u32TransferCnt,
                      0);
 

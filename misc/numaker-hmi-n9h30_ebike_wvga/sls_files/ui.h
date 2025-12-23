@@ -25,21 +25,21 @@ extern "C" {
 
 ///////////////////// VARIABLES ////////////////////
 
-extern lv_anim_t * Particle1_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * Particle2_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * Particle3_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * Fash_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * Wave1_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * Wave2_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * Off_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * On_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * Map_Animation(lv_obj_t * TargetObject, int delay);
-extern lv_anim_t * Knob_Animation(lv_obj_t * TargetObject, int delay);
+extern lv_anim_t *Particle1_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *Particle2_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *Particle3_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *Fash_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *Wave1_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *Wave2_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *Off_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *On_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *Map_Animation(lv_obj_t *TargetObject, int delay);
+extern lv_anim_t *Knob_Animation(lv_obj_t *TargetObject, int delay);
 
 // EVENTS
 
-void ui_event____initial_actions0(lv_event_t * e);
-extern lv_obj_t * ui____initial_actions0;
+void ui_event____initial_actions0(lv_event_t *e);
+extern lv_obj_t *ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
 LV_IMG_DECLARE(ui_img_ebike_bg_png);    // assets/ebike_bg.png

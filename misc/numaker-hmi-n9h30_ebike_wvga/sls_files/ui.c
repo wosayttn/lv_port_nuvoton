@@ -7,20 +7,20 @@
 #include "ui_helpers.h"
 
 ///////////////////// VARIABLES ////////////////////
-lv_anim_t * Particle1_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * Particle2_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * Particle3_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * Fash_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * Wave1_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * Wave2_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * Off_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * On_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * Map_Animation(lv_obj_t * TargetObject, int delay);
-lv_anim_t * Knob_Animation(lv_obj_t * TargetObject, int delay);
+lv_anim_t *Particle1_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *Particle2_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *Particle3_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *Fash_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *Wave1_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *Wave2_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *Off_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *On_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *Map_Animation(lv_obj_t *TargetObject, int delay);
+lv_anim_t *Knob_Animation(lv_obj_t *TargetObject, int delay);
 
 // EVENTS
-void ui_event____initial_actions0(lv_event_t * e);
-lv_obj_t * ui____initial_actions0;
+void ui_event____initial_actions0(lv_event_t *e);
+lv_obj_t *ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
 
@@ -30,10 +30,10 @@ lv_obj_t * ui____initial_actions0;
 #endif
 
 ///////////////////// ANIMATIONS ////////////////////
-lv_anim_t * Particle1_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *Particle1_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -54,10 +54,10 @@ lv_anim_t * Particle1_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * Particle2_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *Particle2_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -79,10 +79,10 @@ lv_anim_t * Particle2_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * Particle3_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *Particle3_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -104,10 +104,10 @@ lv_anim_t * Particle3_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * Fash_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *Fash_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -128,10 +128,10 @@ lv_anim_t * Fash_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * Wave1_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *Wave1_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -152,10 +152,10 @@ lv_anim_t * Wave1_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * Wave2_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *Wave2_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -176,10 +176,10 @@ lv_anim_t * Wave2_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * Off_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *Off_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -200,10 +200,10 @@ lv_anim_t * Off_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * On_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *On_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -221,7 +221,7 @@ lv_anim_t * On_Animation(lv_obj_t * TargetObject, int delay)
     lv_anim_set_repeat_delay(&PropertyAnimation_0, 0);
     lv_anim_set_early_apply(&PropertyAnimation_0, true);
     out_anim = lv_anim_start(&PropertyAnimation_0);
-    ui_anim_user_data_t * PropertyAnimation_1_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    ui_anim_user_data_t *PropertyAnimation_1_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_1_user_data->target = TargetObject;
     PropertyAnimation_1_user_data->val = -1;
     lv_anim_t PropertyAnimation_1;
@@ -243,10 +243,10 @@ lv_anim_t * On_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * Map_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *Map_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -267,10 +267,10 @@ lv_anim_t * Map_Animation(lv_obj_t * TargetObject, int delay)
 
     return out_anim;
 }
-lv_anim_t * Knob_Animation(lv_obj_t * TargetObject, int delay)
+lv_anim_t *Knob_Animation(lv_obj_t *TargetObject, int delay)
 {
-    lv_anim_t * out_anim;
-    ui_anim_user_data_t * PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    lv_anim_t *out_anim;
+    ui_anim_user_data_t *PropertyAnimation_0_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_0_user_data->target = TargetObject;
     PropertyAnimation_0_user_data->val = -1;
     lv_anim_t PropertyAnimation_0;
@@ -288,7 +288,7 @@ lv_anim_t * Knob_Animation(lv_obj_t * TargetObject, int delay)
     lv_anim_set_repeat_delay(&PropertyAnimation_0, 1000);
     lv_anim_set_early_apply(&PropertyAnimation_0, false);
     out_anim = lv_anim_start(&PropertyAnimation_0);
-    ui_anim_user_data_t * PropertyAnimation_1_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
+    ui_anim_user_data_t *PropertyAnimation_1_user_data = lv_malloc(sizeof(ui_anim_user_data_t));
     PropertyAnimation_1_user_data->target = TargetObject;
     PropertyAnimation_1_user_data->val = -1;
     lv_anim_t PropertyAnimation_1;
@@ -311,11 +311,12 @@ lv_anim_t * Knob_Animation(lv_obj_t * TargetObject, int delay)
 }
 
 ///////////////////// FUNCTIONS ////////////////////
-void ui_event____initial_actions0(lv_event_t * e)
+void ui_event____initial_actions0(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_SCREEN_LOAD_START) {
+    if (event_code == LV_EVENT_SCREEN_LOAD_START)
+    {
         Wave1_Animation(ui_Wave1, 0);
         Wave2_Animation(ui_Wave2, 0);
         Particle3_Animation(ui_Image_Particle3, 0);
@@ -332,8 +333,8 @@ void ui_init(void)
 {
     LV_EVENT_GET_COMP_CHILD = lv_event_register_id();
 
-    lv_disp_t * dispp = lv_display_get_default();
-    lv_theme_t * theme = lv_theme_simple_init(dispp);
+    lv_disp_t *dispp = lv_display_get_default();
+    lv_theme_t *theme = lv_theme_simple_init(dispp);
     lv_disp_set_theme(dispp, theme);
     ui_Home_screen_init();
     ui_Settings_screen_init();

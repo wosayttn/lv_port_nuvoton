@@ -5,6 +5,6 @@ solution:
   target-types:
     - type: M487JI_320x240
       device: M487JIDAE
-      optimize: speed
+      optimize: size
   projects:
     - project: lvgl.cproject.yml

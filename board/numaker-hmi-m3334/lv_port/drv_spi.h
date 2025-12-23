@@ -1,6 +1,6 @@
 /**************************************************************************//**
  * @file     drv_pdma.c
- * @brief    PDMA high level driver for M3331 series
+ * @brief    PDMA high level driver
  *
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.

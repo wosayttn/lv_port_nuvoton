@@ -5,6 +5,6 @@ solution:
   target-types:
     - type: M3334KI_320x240_ILI9341
       device: M3334KIGAE
-      optimize: speed
+      optimize: size
   projects:
     - project: lvgl.cproject.yml

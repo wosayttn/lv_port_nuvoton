@@ -27,7 +27,7 @@
 
 void sysDelay(uint32_t ms)
 {
-    vTaskDelay(ms / portTICK_PERIOD_MS);
+    vTaskDelay(pdMS_TO_TICKS(ms));
 }
 
 #if defined(CONFIG_DISP_USE_EBI_SYNC)
@@ -294,7 +294,6 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
 #else
 
     return LV_INDEV_STATE_RELEASED;
-
 #endif
 }
 

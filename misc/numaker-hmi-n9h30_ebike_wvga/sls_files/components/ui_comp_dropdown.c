@@ -7,10 +7,10 @@
 
 // COMPONENT Dropdown
 
-lv_obj_t * ui_Dropdown_create(lv_obj_t * comp_parent)
+lv_obj_t *ui_Dropdown_create(lv_obj_t *comp_parent)
 {
 
-    lv_obj_t * cui_Dropdown;
+    lv_obj_t *cui_Dropdown;
     cui_Dropdown = lv_obj_create(comp_parent);
     lv_obj_set_width(cui_Dropdown, 150);
     lv_obj_set_height(cui_Dropdown, 64);
@@ -29,7 +29,7 @@ lv_obj_t * ui_Dropdown_create(lv_obj_t * comp_parent)
     lv_obj_set_style_pad_top(cui_Dropdown, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(cui_Dropdown, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_t * cui_Label_dropdown;
+    lv_obj_t *cui_Label_dropdown;
     cui_Label_dropdown = lv_label_create(cui_Dropdown);
     lv_obj_set_width(cui_Label_dropdown, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(cui_Label_dropdown, LV_SIZE_CONTENT);    /// 1
@@ -38,7 +38,7 @@ lv_obj_t * ui_Dropdown_create(lv_obj_t * comp_parent)
     lv_obj_set_style_text_opa(cui_Label_dropdown, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(cui_Label_dropdown, &ui_font_Big, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_t * cui_Dropdown2;
+    lv_obj_t *cui_Dropdown2;
     cui_Dropdown2 = lv_dropdown_create(cui_Dropdown);
     lv_dropdown_set_options(cui_Dropdown2, "Echo\nCity\nMontain\nRace");
     lv_obj_set_height(cui_Dropdown2, 30);
@@ -90,7 +90,7 @@ lv_obj_t * ui_Dropdown_create(lv_obj_t * comp_parent)
                               LV_PART_SELECTED | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(lv_dropdown_get_list(cui_Dropdown2), 255,  LV_PART_SELECTED | LV_STATE_CHECKED);
 
-    lv_obj_t ** children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_DROPDOWN_NUM);
+    lv_obj_t **children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_DROPDOWN_NUM);
     children[UI_COMP_DROPDOWN_DROPDOWN] = cui_Dropdown;
     children[UI_COMP_DROPDOWN_LABEL_DROPDOWN] = cui_Label_dropdown;
     children[UI_COMP_DROPDOWN_DROPDOWN2] = cui_Dropdown2;

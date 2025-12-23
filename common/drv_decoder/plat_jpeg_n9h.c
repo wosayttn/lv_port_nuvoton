@@ -7,6 +7,7 @@
  *      INCLUDES
  *********************/
 #include <lvgl.h>
+#include "../osal/lv_os_private.h"
 #include "plat_jpeg.h"
 
 #if defined(PLAT_NUVOTON_N9H3X) && (PLAT_NUVOTON_N9H3X==1)

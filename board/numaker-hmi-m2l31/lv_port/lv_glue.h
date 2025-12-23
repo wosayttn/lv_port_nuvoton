@@ -17,7 +17,9 @@
 #include "task.h"
 #include "semphr.h"
 
-#define PORT_OFFSET                 0x40
+#if !defined(PORT_OFFSET)
+    #define PORT_OFFSET         0x40
+#endif
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
 #define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX/4)
@@ -25,6 +27,7 @@
 #if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
     #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
 #endif
+
 
 /* ILI9341 SPI */
 #define CONFIG_DISP_SPI              SPI0

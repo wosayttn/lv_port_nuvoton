@@ -18,7 +18,7 @@
 //#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
 //#define CONFIG_LV_DRAW_BUF_ALIGN               32
 
-#define LV_USE_OS   LV_OS_NONE
+#define LV_USE_OS                       LV_OS_FREERTOS
 
 #if defined(__800x480__)
     #define LV_HOR_RES_MAX              800
@@ -60,16 +60,11 @@
 #define LV_FONT_MONTSERRAT_46           1
 #define LV_FONT_MONTSERRAT_48           1
 
-#define CONFIG_LV_MEM_SIZE              (512*1024)
-#define CONFIG_LV_CACHE_DEF_SIZE        (512*1024)
+#define CONFIG_LV_MEM_SIZE              (4096*1024)
+#define CONFIG_LV_CACHE_DEF_SIZE        (2048*1024)
 
-/* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
 //#define LV_USE_DEMO_BENCHMARK           1
-//#define LV_USE_DEMO_MUSIC             1
-#if LV_USE_DEMO_MUSIC
-    #define LV_DEMO_MUSIC_AUTO_PLAY     1
-#endif
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1

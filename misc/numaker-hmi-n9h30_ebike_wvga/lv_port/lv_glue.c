@@ -167,7 +167,7 @@ int lcd_device_initialize(void)
 #if (LV_USE_OS==LV_OS_FREERTOS)
     s_xGDMASem = xSemaphoreCreateBinary();
     LV_ASSERT(s_xGDMASem != NULL);
-	
+
     sysInstallISR(HIGH_LEVEL_SENSITIVE | IRQ_LEVEL_1, GDMA0_IRQn, (PVOID)gdma0ISR);
     sysSetLocalInterrupt(ENABLE_IRQ);
     sysEnableInterrupt(GDMA0_IRQn);

@@ -40,26 +40,29 @@
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
-void lv_draw_2dge_image(lv_draw_unit_t *draw_unit, const lv_draw_image_dsc_t *dsc,
-                        const lv_area_t *coords)
+void lv_draw_2dge_image(lv_draw_task_t *t)
 {
+    lv_draw_image_dsc_t *dsc = t->draw_dsc;
+
     if (dsc->opa <= (lv_opa_t)LV_OPA_MIN)
         return;
 
-    lv_layer_t *layer = draw_unit->target_layer;
+    lv_draw_2dge_unit_t *u = (lv_draw_2dge_unit_t *)t->draw_unit;
+    lv_layer_t *layer = t->target_layer;
     lv_draw_buf_t *draw_buf = layer->draw_buf;
     const lv_image_dsc_t *img_dsc = dsc->src;
+    lv_area_t *coords = &t->area;
 
     lv_area_t rel_coords;
     lv_area_copy(&rel_coords, coords);
     lv_area_move(&rel_coords, -layer->buf_area.x1, -layer->buf_area.y1);
 
-    lv_area_t rel_clip_area;
-    lv_area_copy(&rel_clip_area, draw_unit->clip_area);
-    lv_area_move(&rel_clip_area, -layer->buf_area.x1, -layer->buf_area.y1);
+    lv_area_t clip_area;
+    lv_area_copy(&clip_area, &t->clip_area);
+    lv_area_move(&clip_area, -layer->buf_area.x1, -layer->buf_area.y1);
 
     lv_area_t blend_area;
-    if (!lv_area_intersect(&blend_area, &rel_coords, &rel_clip_area))
+    if (!lv_area_intersect(&blend_area, &rel_coords, &clip_area))
         return; /*Fully clipped, nothing to do*/
 
     const uint8_t *src_buf = img_dsc->data;

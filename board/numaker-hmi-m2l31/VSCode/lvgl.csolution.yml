@@ -5,6 +5,6 @@ solution:
   target-types:
     - type: M2L31KI_320x240
       device: M2L31KIDAE
-      optimize: speed
+      optimize: size
   projects:
     - project: lvgl.cproject.yml

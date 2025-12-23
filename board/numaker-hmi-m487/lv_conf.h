@@ -18,12 +18,8 @@
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_16           1
 
-/* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
-//#define LV_USE_DEMO_MUSIC             1
-#if LV_USE_DEMO_MUSIC
-    #define LV_DEMO_MUSIC_AUTO_PLAY     1
-#endif
+//#define LV_USE_DEMO_BENCHMARK           1
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1

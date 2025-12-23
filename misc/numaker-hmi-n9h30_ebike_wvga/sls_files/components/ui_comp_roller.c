@@ -7,10 +7,10 @@
 
 // COMPONENT Roller
 
-lv_obj_t * ui_Roller_create(lv_obj_t * comp_parent)
+lv_obj_t *ui_Roller_create(lv_obj_t *comp_parent)
 {
 
-    lv_obj_t * cui_Roller;
+    lv_obj_t *cui_Roller;
     cui_Roller = lv_obj_create(comp_parent);
     lv_obj_set_width(cui_Roller, 150);
     lv_obj_set_height(cui_Roller, 103);
@@ -27,7 +27,7 @@ lv_obj_t * ui_Roller_create(lv_obj_t * comp_parent)
     lv_obj_set_style_pad_top(cui_Roller, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(cui_Roller, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_t * cui_Label_Roller;
+    lv_obj_t *cui_Label_Roller;
     cui_Label_Roller = lv_label_create(cui_Roller);
     lv_obj_set_width(cui_Label_Roller, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(cui_Label_Roller, LV_SIZE_CONTENT);    /// 1
@@ -36,7 +36,7 @@ lv_obj_t * ui_Roller_create(lv_obj_t * comp_parent)
     lv_obj_set_style_text_opa(cui_Label_Roller, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(cui_Label_Roller, &ui_font_Big, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_t * cui_Roller2;
+    lv_obj_t *cui_Roller2;
     cui_Roller2 = lv_roller_create(cui_Roller);
     lv_roller_set_options(cui_Roller2, "Eco\nCity\nMontain\nRace", LV_ROLLER_MODE_NORMAL);
     lv_obj_set_height(cui_Roller2, 68);
@@ -62,7 +62,7 @@ lv_obj_t * ui_Roller_create(lv_obj_t * comp_parent)
     lv_obj_set_style_bg_color(cui_Roller2, lv_color_hex(0xD56920), LV_PART_SELECTED | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(cui_Roller2, 255, LV_PART_SELECTED | LV_STATE_DEFAULT);
 
-    lv_obj_t ** children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_ROLLER_NUM);
+    lv_obj_t **children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_ROLLER_NUM);
     children[UI_COMP_ROLLER_ROLLER] = cui_Roller;
     children[UI_COMP_ROLLER_LABEL_ROLLER] = cui_Label_Roller;
     children[UI_COMP_ROLLER_ROLLER2] = cui_Roller2;

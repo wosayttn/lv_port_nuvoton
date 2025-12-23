@@ -62,17 +62,15 @@
 #define configUSE_COUNTING_SEMAPHORES   1
 
 /* Hooks */
+#define traceTASK_SWITCHED_IN()         { \
+                                            void lv_freertos_task_switch_in_arm9(const char * name); \
+                                            lv_freertos_task_switch_in_arm9(pxCurrentTCB->pcTaskName); \
+                                        }
 
-void lv_freertos_task_switch_out(void);
-#define traceTASK_SWITCHED_IN()  { \
-                                     void lv_freertos_task_switch_in(const char * name); \
-                                     /*lv_freertos_task_switch_in(pxCurrentTCB->pcTaskName);*/ \
-                                 }
-
-#define traceTASK_SWITCHED_OUT() { \
-                                     void lv_freertos_task_switch_out(void); \
-                                     /*lv_freertos_task_switch_out();*/ \
-                                 }
+#define traceTASK_SWITCHED_OUT()        { \
+                                            void lv_freertos_task_switch_out_arm9(void); \
+                                            lv_freertos_task_switch_out_arm9(); \
+                                        }
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES           0
@@ -91,5 +89,4 @@ to exclude the API function. */
 #define INCLUDE_xTaskGetCurrentTaskHandle       1
 #define INCLUDE_pcTaskGetTaskName               1
 #define INCLUDE_xTaskGetSchedulerState          1
-
 #endif /* FREERTOS_CONFIG_H */

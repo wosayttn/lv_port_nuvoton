@@ -47,7 +47,7 @@
 [submodule "lvgl"]
 	path = lvgl
 	url = https://github.com/lvgl/lvgl
-	branch = release/v9.2
+	branch = release/v9.4
 [submodule "bsp/m2l31"]
 	path = bsp/m2l31
 	url = https://github.com/OpenNuvoton/M2L31BSP

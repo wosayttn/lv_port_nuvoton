@@ -26,7 +26,7 @@ S_CALIBRATION_MATRIX g_sCalMat = { -105, 6354, -3362552, 5086, -24, -2489744, 65
 
 void sysDelay(uint32_t ms)
 {
-    vTaskDelay(ms / portTICK_PERIOD_MS);
+    vTaskDelay(pdMS_TO_TICKS(ms));
 }
 
 int lcd_device_initialize(void)
@@ -76,9 +76,7 @@ int lcd_device_initialize(void)
 
 #endif
 
-    disp_init();
-
-    return 0;
+    return disp_init();
 }
 
 int lcd_device_open(void)
@@ -230,7 +228,6 @@ int touchpad_device_initialize(void)
 #endif
 
     return 0;
-
 }
 
 int touchpad_device_open(void)
@@ -292,7 +289,7 @@ int touchpad_device_read(lv_indev_data_t *psInDevData)
     adc_y  = indev_touch_get_y();
     u32NextTriggerTime = xTaskGetTickCount() + CONFIG_TRIGGER_PERIOD;
 
-    if ((adc_x < 4000) && (adc_y < 4000))
+    if ((adc_x < 3900) && (adc_y < 3900)) //~5%
     {
         psInDevData->state = LV_INDEV_STATE_PRESSED;
     }
@@ -339,7 +336,6 @@ exit_touchpad_device_read:
 #else
 
     return LV_INDEV_STATE_RELEASED;
-
 #endif
 }
 

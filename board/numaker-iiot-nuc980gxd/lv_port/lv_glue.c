@@ -22,7 +22,7 @@ S_CALIBRATION_MATRIX g_sCalMat = { 43, -5839, 21672848, 4193, -11, -747882, 6553
 
 void sysDelay(uint32_t ms)
 {
-    vTaskDelay(ms / portTICK_PERIOD_MS);
+    vTaskDelay(pdMS_TO_TICKS(ms));
 }
 
 void nu_dump_clocks(void)

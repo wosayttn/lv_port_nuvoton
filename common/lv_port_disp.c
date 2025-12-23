@@ -27,7 +27,7 @@ void lv_port_disp_init(void)
     LV_ASSERT(lcd_device_open() == 0);
     LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
 
-    LV_LOG_INFO("Use one screen-size shadow buffer: 0x%08x", sLcdInfo.pvVramStartAddr);
+    LV_LOG_INFO("Use one screen-size shadow buffer: 0x%08x", (uint32_t)sLcdInfo.pvVramStartAddr);
 
     disp = lv_display_create(sLcdInfo.u32ResWidth, sLcdInfo.u32ResHeight);
     LV_ASSERT(disp != NULL);

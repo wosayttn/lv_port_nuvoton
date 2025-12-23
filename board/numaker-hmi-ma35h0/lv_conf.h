@@ -12,7 +12,12 @@
 #define LV_NUVOTON_INCLUDE     "MA35H0.h"
 #include LV_NUVOTON_INCLUDE
 
-#define LV_USE_OS   LV_OS_FREERTOS
+
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     64
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(64)))
+#define CONFIG_LV_DRAW_BUF_ALIGN               64
+
+#define LV_USE_OS                       LV_OS_FREERTOS
 
 #if defined(__1024x600__)
     #define LV_HOR_RES_MAX              1024
@@ -52,30 +57,26 @@
 
 #define CONFIG_LV_MEM_SIZE              (8*1024*1024)
 #define CONFIG_LV_CACHE_DEF_SIZE        (8*1024*1024)
-#define CONFIG_LV_DRAW_BUF_ALIGN	    64
+#define CONFIG_LV_DRAW_BUF_ALIGN        64
 
-/* Please comment LV_USE_DEMO_MUSIC declaration before un-comment below */
 #define LV_USE_DEMO_WIDGETS             1
 //#define LV_USE_DEMO_BENCHMARK           1
-//#define LV_USE_DEMO_MUSIC             1
-#if LV_USE_DEMO_MUSIC
-    #define LV_DEMO_MUSIC_AUTO_PLAY     1
-#endif
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1
 #define LV_USE_LOG                      0
 
 #if CONFIG_APP_DEMO_IMG == 1
-    //#define LV_USE_LODEPNG                  1
-    //#define LV_USE_TJPGD                    1
-    #define LV_USE_HWJPGD                     1
-    //#define LV_USE_GIF                      1
-    //#define LV_USE_BMP                      1
+    //#define LV_USE_LODEPNG                1
+    //#define LV_USE_GIF                    1
+    //#define LV_USE_BMP                    1
+    //#define LV_USE_TJPGD                  1
+    #define LV_USE_HWJPGD                   1
+
     #define LV_USE_FS_FATFS                 1
-    #define LV_FS_FATFS_LETTER              '0'
+    #define LV_FS_FATFS_LETTER              'A'
     #define LV_USE_FS_MEMFS                 1
-    #define LV_FS_MEMFS_LETTER              '1'
+    #define LV_FS_MEMFS_LETTER              'Z'
 #endif
 
 #if LV_USE_LOG == 1

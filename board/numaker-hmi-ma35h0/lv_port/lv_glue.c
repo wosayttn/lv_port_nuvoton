@@ -49,7 +49,7 @@ const static DISP_LCD_INFO LcdPanelInfo =
 
 void sysDelay(uint32_t ms)
 {
-    vTaskDelay(ms / portTICK_PERIOD_MS);
+    vTaskDelay(pdMS_TO_TICKS(ms));
 }
 #if (CONFIG_LV_DISP_FULL_REFRESH==1)
 

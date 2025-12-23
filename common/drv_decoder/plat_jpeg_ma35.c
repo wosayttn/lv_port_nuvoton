@@ -7,6 +7,7 @@
  *      INCLUDES
  *********************/
 #include <lvgl.h>
+#include "../osal/lv_os_private.h"
 #include "plat_jpeg.h"
 #include "vc8000_lib.h"
 

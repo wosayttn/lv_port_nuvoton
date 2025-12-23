@@ -5,84 +5,90 @@
 
 #include "../ui.h"
 
-lv_obj_t * ui_Settings;
-lv_obj_t * ui_Group_Header5;
-lv_obj_t * ui_Head_Group5;
-lv_obj_t * ui_Label_Time6;
-lv_obj_t * ui_LabeL_PM5;
-lv_obj_t * ui_Label_Temp5;
-lv_obj_t * ui_Label_Celsius5;
-lv_obj_t * ui_Label_Battery5;
-lv_obj_t * ui_Settings_Content;
-lv_obj_t * ui_Roller;
-lv_obj_t * ui_Roller1;
-lv_obj_t * ui_Brightness_Group;
-lv_obj_t * ui_Brightness_Label;
-lv_obj_t * ui_Slider2;
-lv_obj_t * ui_Brightness_Percent;
-lv_obj_t * ui_Volum_On;
-lv_obj_t * ui_Volume_Off;
-lv_obj_t * ui_Menu1;
-lv_obj_t * ui_BTN_Settings1;
-lv_obj_t * ui_Chart_Group;
-lv_obj_t * ui_Chart_Label;
-lv_obj_t * ui_Panel1;
-lv_obj_t * ui_chart_scrollbar;
-lv_obj_t * ui_Chart2;
-lv_obj_t * ui_Chart2_Xaxis;
-lv_obj_t * ui_Chart2_Yaxis1;
-lv_obj_t * ui_Chart2_Yaxis2;
-lv_obj_t * ui_Panel2;
-lv_obj_t * ui_Group_Max_Speed1;
-lv_obj_t * ui_Label_Max_Speed1;
-lv_obj_t * ui_Label_Max_Speed_Number1;
-lv_obj_t * ui_Label_kmh4;
-lv_obj_t * ui_Group_AVG_Speed1;
-lv_obj_t * ui_Label_AVG_Speed1;
-lv_obj_t * ui_Label_AVG_Speed_Number1;
-lv_obj_t * ui_Label_kmh5;
-lv_obj_t * ui_Label_Number6;
+lv_obj_t *ui_Settings;
+lv_obj_t *ui_Group_Header5;
+lv_obj_t *ui_Head_Group5;
+lv_obj_t *ui_Label_Time6;
+lv_obj_t *ui_LabeL_PM5;
+lv_obj_t *ui_Label_Temp5;
+lv_obj_t *ui_Label_Celsius5;
+lv_obj_t *ui_Label_Battery5;
+lv_obj_t *ui_Settings_Content;
+lv_obj_t *ui_Roller;
+lv_obj_t *ui_Roller1;
+lv_obj_t *ui_Brightness_Group;
+lv_obj_t *ui_Brightness_Label;
+lv_obj_t *ui_Slider2;
+lv_obj_t *ui_Brightness_Percent;
+lv_obj_t *ui_Volum_On;
+lv_obj_t *ui_Volume_Off;
+lv_obj_t *ui_Menu1;
+lv_obj_t *ui_BTN_Settings1;
+lv_obj_t *ui_Chart_Group;
+lv_obj_t *ui_Chart_Label;
+lv_obj_t *ui_Panel1;
+lv_obj_t *ui_chart_scrollbar;
+lv_obj_t *ui_Chart2;
+lv_obj_t *ui_Chart2_Xaxis;
+lv_obj_t *ui_Chart2_Yaxis1;
+lv_obj_t *ui_Chart2_Yaxis2;
+lv_obj_t *ui_Panel2;
+lv_obj_t *ui_Group_Max_Speed1;
+lv_obj_t *ui_Label_Max_Speed1;
+lv_obj_t *ui_Label_Max_Speed_Number1;
+lv_obj_t *ui_Label_kmh4;
+lv_obj_t *ui_Group_AVG_Speed1;
+lv_obj_t *ui_Label_AVG_Speed1;
+lv_obj_t *ui_Label_AVG_Speed_Number1;
+lv_obj_t *ui_Label_kmh5;
+lv_obj_t *ui_Label_Number6;
 
 // event funtions
-void ui_event_Slider2(lv_event_t * e)
+void ui_event_Slider2(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
+    lv_obj_t *target = lv_event_get_target(e);
 
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
+    if (event_code == LV_EVENT_VALUE_CHANGED)
+    {
         _ui_slider_set_text_value(ui_Brightness_Percent, target, "", "%");
     }
 }
 
-void ui_event_Volum_On(lv_event_t * e)
+void ui_event_Volum_On(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED)
+    {
         _ui_label_set_property(ui_Brightness_Percent, _UI_LABEL_PROPERTY_TEXT, "100%");
     }
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED)
+    {
         _ui_slider_set_property(ui_Slider2, _UI_SLIDER_PROPERTY_VALUE_WITH_ANIM, 100);
     }
 }
 
-void ui_event_Volume_Off(lv_event_t * e)
+void ui_event_Volume_Off(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED)
+    {
         _ui_label_set_property(ui_Brightness_Percent, _UI_LABEL_PROPERTY_TEXT, "0%");
     }
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED)
+    {
         _ui_slider_set_property(ui_Slider2, _UI_SLIDER_PROPERTY_VALUE_WITH_ANIM, 0);
     }
 }
 
-void ui_event_BTN_Settings1(lv_event_t * e)
+void ui_event_BTN_Settings1(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_CLICKED) {
+    if (event_code == LV_EVENT_CLICKED)
+    {
         _ui_screen_change(&ui_Home, LV_SCR_LOAD_ANIM_FADE_ON, 100, 0, &ui_Home_screen_init);
     }
 }
@@ -259,7 +265,7 @@ void ui_Settings_screen_init(void)
 
     ui_Slider2 = lv_slider_create(ui_Brightness_Group);
     lv_slider_set_value(ui_Slider2, 50, LV_ANIM_OFF);
-    if(lv_slider_get_mode(ui_Slider2) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(ui_Slider2, 0, LV_ANIM_OFF);
+    if (lv_slider_get_mode(ui_Slider2) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(ui_Slider2, 0, LV_ANIM_OFF);
     lv_obj_set_height(ui_Slider2, 17);
     lv_obj_set_width(ui_Slider2, lv_pct(90));
     lv_obj_set_x(ui_Slider2, 0);
@@ -286,8 +292,8 @@ void ui_Settings_screen_init(void)
     lv_obj_set_style_pad_bottom(ui_Slider2, 4, LV_PART_KNOB | LV_STATE_DEFAULT);
 
     //Compensating for LVGL9.1 draw crash with bar/slider max value when top-padding is nonzero and right-padding is 0
-    if(lv_obj_get_style_pad_top(ui_Slider2, LV_PART_MAIN) > 0) lv_obj_set_style_pad_right(ui_Slider2,
-                                                                                              lv_obj_get_style_pad_right(ui_Slider2, LV_PART_MAIN) + 1, LV_PART_MAIN);
+    if (lv_obj_get_style_pad_top(ui_Slider2, LV_PART_MAIN) > 0) lv_obj_set_style_pad_right(ui_Slider2,
+                lv_obj_get_style_pad_right(ui_Slider2, LV_PART_MAIN) + 1, LV_PART_MAIN);
     ui_Brightness_Percent = lv_label_create(ui_Brightness_Group);
     lv_obj_set_width(ui_Brightness_Percent, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Brightness_Percent, LV_SIZE_CONTENT);    /// 1
@@ -408,7 +414,7 @@ void ui_Settings_screen_init(void)
     lv_obj_set_size(ui_Chart2_Xaxis, lv_pct(100), 50);
     lv_obj_set_align(ui_Chart2_Xaxis, LV_ALIGN_BOTTOM_MID);
     lv_obj_set_y(ui_Chart2_Xaxis, 50 + lv_obj_get_style_pad_bottom(ui_Chart2,
-                                                                   LV_PART_MAIN) + lv_obj_get_style_border_width(ui_Chart2, LV_PART_MAIN));
+                 LV_PART_MAIN) + lv_obj_get_style_border_width(ui_Chart2, LV_PART_MAIN));
     lv_obj_set_style_line_width(ui_Chart2_Xaxis, 0, LV_PART_MAIN);
     lv_obj_set_style_line_width(ui_Chart2_Xaxis, 1, LV_PART_ITEMS);   //LVGL-9.1 ticks are thicker by default
     lv_obj_set_style_line_width(ui_Chart2_Xaxis, 1, LV_PART_INDICATOR);
@@ -423,7 +429,7 @@ void ui_Settings_screen_init(void)
     lv_obj_set_size(ui_Chart2_Yaxis1, 50, lv_pct(100));
     lv_obj_set_align(ui_Chart2_Yaxis1, LV_ALIGN_LEFT_MID);
     lv_obj_set_x(ui_Chart2_Yaxis1, -50 - lv_obj_get_style_pad_left(ui_Chart2,
-                                                                   LV_PART_MAIN) - lv_obj_get_style_border_width(ui_Chart2, LV_PART_MAIN) + 2);
+                 LV_PART_MAIN) - lv_obj_get_style_border_width(ui_Chart2, LV_PART_MAIN) + 2);
     lv_obj_set_style_line_width(ui_Chart2_Yaxis1, 0, LV_PART_MAIN);
     lv_obj_set_style_line_width(ui_Chart2_Yaxis1, 1, LV_PART_ITEMS);
     lv_obj_set_style_line_width(ui_Chart2_Yaxis1, 1, LV_PART_INDICATOR);
@@ -438,7 +444,7 @@ void ui_Settings_screen_init(void)
     lv_obj_set_size(ui_Chart2_Yaxis2, 25, lv_pct(100));
     lv_obj_set_align(ui_Chart2_Yaxis2, LV_ALIGN_RIGHT_MID);
     lv_obj_set_x(ui_Chart2_Yaxis2, 25 + lv_obj_get_style_pad_right(ui_Chart2,
-                                                                   LV_PART_MAIN) + lv_obj_get_style_border_width(ui_Chart2, LV_PART_MAIN) + 1);
+                 LV_PART_MAIN) + lv_obj_get_style_border_width(ui_Chart2, LV_PART_MAIN) + 1);
     lv_obj_set_style_line_width(ui_Chart2_Yaxis2, 0, LV_PART_MAIN);
     lv_obj_set_style_line_width(ui_Chart2_Yaxis2, 1, LV_PART_ITEMS);
     lv_obj_set_style_line_width(ui_Chart2_Yaxis2, 1, LV_PART_INDICATOR);
@@ -447,8 +453,8 @@ void ui_Settings_screen_init(void)
     lv_scale_set_total_tick_count(ui_Chart2_Yaxis2, (0 > 0 ? 0 - 1 : 0) * 2 + 1);
     lv_scale_set_major_tick_every(ui_Chart2_Yaxis2, 2 >= 1 ? 2 : 1);
     lv_scale_set_label_show(ui_Chart2_Yaxis2, false);
-    lv_chart_series_t * ui_Chart2_series_1 = lv_chart_add_series(ui_Chart2, lv_color_hex(0x3392FF),
-                                                                 LV_CHART_AXIS_PRIMARY_Y);
+    lv_chart_series_t *ui_Chart2_series_1 = lv_chart_add_series(ui_Chart2, lv_color_hex(0x3392FF),
+                                            LV_CHART_AXIS_PRIMARY_Y);
     static lv_coord_t ui_Chart2_series_1_array[] = { 10, 12, 18, 31, 25, 36, 40, 55, 40, 32, 12, 25, 55, 45, 43, 10, 22, 23, 25, 26, 27, 25, 21, 20, 26, 28, 32, 35, 34, 36, 31, 44, 50, 30, 34, 32, 38, 25, 25, 26, 25, 24, 21, 23, 27, 12, 13, 15, 10, 2 };
     lv_chart_set_ext_y_array(ui_Chart2, ui_Chart2_series_1, ui_Chart2_series_1_array);
     lv_obj_set_style_bg_color(ui_Chart2, lv_color_hex(0xFFFFFF), LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
@@ -588,7 +594,7 @@ void ui_Settings_screen_init(void)
 
 void ui_Settings_screen_destroy(void)
 {
-    if(ui_Settings) lv_obj_del(ui_Settings);
+    if (ui_Settings) lv_obj_del(ui_Settings);
 
     // NULL screen variables
     ui_Settings = NULL;

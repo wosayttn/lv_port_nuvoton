@@ -63,7 +63,6 @@ DSTATUS disk_initialize(
 {
     static DSTATUS stat = STA_NOINIT;
 
-    //sysprintf("[%s] %d 0x%08x 0x%08x\n", __func__, ptr_to_u32(&incbin_fatimg_end) - ptr_to_u32(&incbin_fatimg_start), nc_ptr(&incbin_fatimg_start), nc_ptr(&incbin_fatimg_end));
     if (stat != RES_OK)
     {
         stat = RES_OK;

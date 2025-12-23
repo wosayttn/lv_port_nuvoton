@@ -8,8 +8,36 @@
 
 #include "lv_glue.h"
 
+#if LV_USE_OS == LV_OS_FREERTOS
+
+#include "../core/lv_global.h"
+
+#define globals LV_GLOBAL_DEFAULT()
+
 #define CONFIG_LV_TASK_STACKSIZE     8192
 #define CONFIG_LV_TASK_PRIORITY      (configMAX_PRIORITIES-1)
+
+/* Calculate CPU Usage */
+void lv_freertos_task_switch_in_arm9(const char *name)
+{
+    if (lv_strcmp(name, "IDLE"))
+        globals->freertos_idle_task_running = false;
+    else
+        globals->freertos_idle_task_running = true;
+
+    globals->freertos_task_switch_timestamp = xTaskGetTickCountFromISR();
+}
+
+void lv_freertos_task_switch_out_arm9(void)
+{
+    uint32_t elaps = xTaskGetTickCountFromISR() - globals->freertos_task_switch_timestamp;
+
+    if (globals->freertos_idle_task_running)
+        globals->freertos_idle_time_sum += elaps;
+    else
+        globals->freertos_non_idle_time_sum += elaps;
+}
+#endif
 
 #if LV_USE_LOG
 static void lv_nuvoton_log(lv_log_level_t level, const char *buf)
@@ -40,6 +68,11 @@ void lv_nuvoton_task(void *pdata)
     lv_draw_2dge_init();
 #endif
 
+#if LV_USE_HWJPGD && LV_USE_IMAGE
+    void lv_hwjpgd_init(void);
+    lv_hwjpgd_init();
+#endif
+
     lv_tick_set_cb(xTaskGetTickCount);    /*Expression evaluating to current system time in ms*/
     lv_delay_set_cb(vTaskDelay);
 
@@ -62,7 +95,7 @@ void lv_nuvoton_task(void *pdata)
 
 int task_lv_init(void)
 {
-    xTaskCreate(lv_tick_task, "lv_tick", configMINIMAL_STACK_SIZE, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
+    xTaskCreate(lv_tick_task, "lv_tick", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
     xTaskCreate(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
     return 0;
 }

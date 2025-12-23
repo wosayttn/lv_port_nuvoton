@@ -11,7 +11,7 @@ void *nvt_malloc_align(uint32_t size, uint32_t align)
 
     align_size = NVT_ALIGN(size, sizeof(void *)) + align;
 
-    if ((ptr=pvPortMalloc(align_size)) != NULL)
+    if ((ptr = pvPortMalloc(align_size)) != NULL)
     {
         void *align_ptr;
 
