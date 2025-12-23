@@ -3,6 +3,8 @@
 ![Eclipse Build](https://github.com/wosayttn/lv_port_nuvoton/actions/workflows/NuEclipse.yml/badge.svg)
 ![VSCode Build](https://github.com/wosayttn/lv_port_nuvoton/actions/workflows/VSCode.yml/badge.svg)
 
+Currently, the LVGL version is synchronized with **release/v9.4**.
+
 This repository contains the LVGLv9 demo port for the NuMaker development board from Nuvoton.
 
 ## Clone Repositories
@@ -34,12 +36,6 @@ git clone --recurse-submodules https://github.com/OpenNuvoton/lv_port_nuvoton
 | **NuMaker-HMI-N9H31** | [numaker-hmi-n9h31](./board/numaker-hmi-n9h31) |
 | **NuMaker-IIoT-NUC980G1D** | [numaker-iiot-nuc980gxd](./board/numaker-iiot-nuc980gxd) |
 | **NuMaker-IIoT-NUC980G2D** | [numaker-iiot-nuc980gxd](./board/numaker-iiot-nuc980gxd) |
-
-### **Cortex-M0 Processor**
-
-| **NuMaker Board Name** | **LVGL Demo Project Folder** |
-| ------------------------- | ------------------------- |
-| **NuMaker-HMI-M032** | [numaker-hmi-m032](./board/numaker-hmi-m032) |
 
 ### **Cortex-M23 Processor**
 
