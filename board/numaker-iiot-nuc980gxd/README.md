@@ -32,8 +32,8 @@ To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 - The porting given LV_USE_DEMO_WIDGETS to 1 by default, LVGL Widgets will executed at startup.
 
   ```c
-#define LV_USE_DEMO_WIDGETS             1
-//#define LV_USE_DEMO_BENCHMARK           1
+  #define LV_USE_DEMO_WIDGETS             1
+  //#define LV_USE_DEMO_BENCHMARK           1
   ```
 
 - The partial update approach is applied in this port.

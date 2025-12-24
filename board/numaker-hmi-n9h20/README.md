@@ -25,7 +25,7 @@ To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 - The porting given CONFIG_LV_DISP_FULL_REFRESH to 0 by default, partial update approach is applied.
 
   ```c
-   #define CONFIG_LV_DISP_FULL_REFRESH      0
+  #define CONFIG_LV_DISP_FULL_REFRESH      0
   ```
 
 ## **Purchase**

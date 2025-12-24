@@ -8,6 +8,7 @@
 ## **KEIL project**
 
 User can select listed **Target Name** to build target execution using uVision MDK4.
+
 | Target | Description |
 |-|-|
 | N9H30F6_800x480 | Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling) |
@@ -15,6 +16,7 @@ User can select listed **Target Name** to build target execution using uVision M
 ## **GCC project**
 
 To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
+
 | Target | Description |
 |-|-|
 | N9H30F6_800x480 | Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling) |
@@ -23,9 +25,9 @@ To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 
 - The porting given CONFIG_LV_DISP_FULL_REFRESH to 0 by default, partial update approach is applied.
 
-```c
+  ```c
   #define CONFIG_LV_DISP_FULL_REFRESH      0
-```
+  ```
 
 ## **Purchase**
 
