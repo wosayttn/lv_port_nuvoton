@@ -1,0 +1,174 @@
+#! armclang -E --target=arm-arm-none-eabi -mcpu=cortex-m33 -xc
+; command above MUST be in first line (no comment above!)
+
+; Note: If any modification is needed, suggeset to copy this file to local project folder.
+; Note: Add '-mcmse' to first line if your software model is "Secure Mode".
+;       #! armclang -E --target=arm-arm-none-eabi -mcpu=cortex-m55 -xc -mcmse
+
+#if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+    #if __has_include("partition_M3351.h")
+        #include "partition_M3351.h"                  /* User defined setup for Secure/Non-Secure Zones */
+    #else
+        #include "partition_M3351_template.h"         /* Default setup for Secure/Non-Secure Zones */
+    #endif
+#endif
+
+/*
+;-------- <<< Use Configuration Wizard in Context Menu >>> -------------------
+*/
+
+/*--------------------- Embedded Flash Configuration -------------------------
+; <h> Flash Configuration
+;   <o0> Flash Base Address     <0x0-0xFFFFFFFF:8>
+;   <o1> Flash Size (in Bytes)  <0x0-0xFFFFFFFF:8>
+; </h>
+ *----------------------------------------------------------------------------*/
+#define FLASH_START         0x00000000
+#define FLASH_SIZE          0x00100000
+
+/*--------------------- Embedded SRAM Configuration --------------------------
+; <h> SRAM Configuration
+;   <q>  Enable SRAM2
+;   <i>  Or overridden by adding --pd="-DENABLE_SRAM2=1" in Options -> Linker -> Misc controls
+;   <i>  Must set CONFIG0[29] to 0 to disable SRAM ECC function to access SRAM2 as normal SRAM
+;   <o1> SRAM Base Address      <0x0-0xFFFFFFFF:8>
+;   <o2> SRAM Size (in Bytes)   <0x0-0xFFFFFFFF:8>
+; </h>
+ *----------------------------------------------------------------------------*/
+#ifndef ENABLE_SRAM2
+    #define ENABLE_SRAM2    0
+#endif
+
+#define SRAM_START          0x20000000
+#define SRAM_SIZE           ( 0x00020000 + (ENABLE_SRAM2 * 0x8000) )
+
+/* Validate ENABLE_SRAM2 value - must be 0 or 1 */
+#if (ENABLE_SRAM2 != 0) && (ENABLE_SRAM2 != 1)
+    #error "ENABLE_SRAM2 must be 0 or 1"
+#endif
+
+/*--------------------- Stack / Heap Configuration ---------------------------
+; <h> Stack / Heap Configuration
+;   <o0> Stack Size (in Bytes)  <0x0-0xFFFFFFFF:8>
+;   <i> Or overridden by adding --pd="-DSTACK_SIZE=0x800" in Options -> Linker -> Misc controls
+;   <o1> Heap Size (in Bytes)   <0x0-0xFFFFFFFF:8>
+;   <i> Or overridden by adding --pd="-DHEAP_SIZE=0x800" in Options -> Linker -> Misc controls
+; </h>
+ *----------------------------------------------------------------------------*/
+#ifndef STACK_SIZE
+	#define STACK_SIZE      0x00000400
+#endif
+
+#ifndef HEAP_SIZE
+	#define HEAP_SIZE       0x00000400
+#endif
+
+/*--------------------- CMSE Veneer Configuration ---------------------------
+; <h> CMSE Veneer Configuration
+;   <o0>  CMSE Veneer Size (in Bytes) <0x0-0xFFFFFFFF:32>
+; </h>
+ *----------------------------------------------------------------------------*/
+#define __CMSEVENEER_SIZE   0x200
+
+/*
+;-------- <<< End of Use Configuration Section >>> -------------------
+*/
+
+#define LDROM_START         0x0F100000
+#define LDROM_SIZE          0x00004000
+#define FMC_DF0_START       0x0F200000
+#define FMC_DF0_SIZE        0x00004000
+#define DFMC_DF1_START      0x0F210000
+#define DFMC_DF1_SIZE       0x00010000
+
+/*----------------------------------------------------------------------------
+  User Stack & Heap boundary definition
+ *----------------------------------------------------------------------------*/
+#define __STACK_TOP    ( SRAM_START + SRAM_SIZE - __STACKSEAL_SIZE )    /* starts at end of RAM - 8 byte stack seal */
+#define __HEAP_BASE    ( AlignExpr(+0, 8))                              /* starts after RW_RAM section, 8 byte aligned */
+
+/* ----------------------------------------------------------------------------
+  Stack seal size definition
+ *----------------------------------------------------------------------------*/
+#if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+#define __STACKSEAL_SIZE   ( 8 )
+#else
+#define __STACKSEAL_SIZE   ( 0 )
+#endif
+
+/*----------------------------------------------------------------------------
+  Region base & size definition
+ *----------------------------------------------------------------------------*/
+#if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+#define TZ_NSC_START        ( FLASH_START + FLASH_SIZE - __CMSEVENEER_SIZE )
+#define TZ_NSC_SIZE         ( __CMSEVENEER_SIZE )
+#else
+#define TZ_NSC_SIZE         ( 0 )
+#endif
+
+#define __RO_BASE           ( FLASH_START )
+#define __RO_SIZE           ( FLASH_SIZE - TZ_NSC_SIZE )
+
+#define __RW_BASE           ( SRAM_START )
+#define __RW_SIZE           ( SRAM_SIZE - STACK_SIZE - HEAP_SIZE )
+
+/*----------------------------------------------------------------------------
+  Scatter Region definition
+ *----------------------------------------------------------------------------*/
+LR_ROM __RO_BASE __RO_SIZE  {                       ; load region size_region
+    ER_ROM __RO_BASE __RO_SIZE  {                   ; load address = execution address
+        *.o (RESET, +First)
+        *(InRoot$$Sections)
+        ; Make sure reset_handler ends up in root segment
+        startup_M3351.o
+        .ANY (+RO)
+    }
+
+#if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+    NSC_ROM AlignExpr(+0, 32) TZ_NSC_SIZE
+    {
+        .ANY (Veneer$$CMSE)
+    }
+#endif
+
+    RW_RAM __RW_BASE __RW_SIZE              ; RW data
+    {
+        .ANY (+RW +ZI)
+    }
+
+#if HEAP_SIZE > 0
+    ARM_LIB_HEAP  __HEAP_BASE EMPTY  HEAP_SIZE {}		; Reserve empty region for heap
+#endif
+
+    ARM_LIB_STACK __STACK_TOP EMPTY - STACK_SIZE {}     ; Reserve empty region for stack
+
+#if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+STACKSEAL +0 EMPTY __STACKSEAL_SIZE {
+        ; Reserve empty region for stack seal immediately after stack
+    }
+#endif
+}
+
+LR_LDROM LDROM_START LDROM_SIZE
+{
+    ER_LDROM +0
+    {
+        .ANY (.ldrom)
+    }
+}
+
+LR_FMC_DF0 FMC_DF0_START FMC_DF0_SIZE
+{
+    ER_FMC_DF0 +0
+    {
+        .ANY (.dataflash0)
+    }
+}
+
+LR_DFMC_DF1 DFMC_DF1_START DFMC_DF1_SIZE
+{
+    ER_DFMC_DF1 +0
+    {
+        .ANY (.dataflash1)
+    }
+}

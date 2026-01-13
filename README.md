@@ -50,6 +50,7 @@ git clone --recurse-submodules https://github.com/OpenNuvoton/lv_port_nuvoton
 | **NuMaker Board Name** | **LVGL Demo Project Folder** |
 | ------------------------- | ------------------------- |
 | **NuMaker-HMI-M3334** | [numaker-hmi-m3334](./board/numaker-hmi-m3334) |
+| **NuMaker-HMI-M3351** | [numaker-hmi-m3351](./board/numaker-hmi-m3351) |
 
 ### **Cortex-M4F Processor**
 

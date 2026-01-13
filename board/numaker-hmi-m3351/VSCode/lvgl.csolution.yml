@@ -1,0 +1,10 @@
+solution:
+  created-by: uv2csolution@1.3.0
+  created-for: CMSIS-Toolbox@2.2.0
+  compiler: GCC@>=10.3.1
+  target-types:
+    - type: M3351KJ_320x240_ILI9341
+      device: Nuvoton::M3351KJCAE
+      optimize: size
+  projects:
+    - project: lvgl.cproject.yml

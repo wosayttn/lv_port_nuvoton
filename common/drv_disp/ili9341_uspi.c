@@ -12,7 +12,11 @@
 static struct nu_uspi s_NuUSPI =
 {
     .base           = CONFIG_DISP_SPI,
+#if defined(CONFIG_DISP_SPI_SS_PIN)
     .ss_pin         = CONFIG_DISP_SPI_SS_PIN,
+#else
+    .ss_pin         = -1,
+#endif
 #if defined(CONFIG_DISP_USE_PDMA)
     .pdma_perp_tx   = CONFIG_PDMA_SPI_TX,
     .pdma_chanid_tx = -1,
