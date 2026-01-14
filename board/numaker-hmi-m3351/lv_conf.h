@@ -69,7 +69,7 @@
     #define LV_LABEL_TEXT_SELECTION          0
     #define LV_LABEL_LONG_TXT_HINT           0
     #define LV_LABEL_WAIT_CHAR_COUNT         0
-    #define LV_USE_LED                       0
+    #define LV_USE_LED                       1
     #define LV_USE_LINE                      1
     #define LV_USE_LIST                      0
     #define LV_USE_MENU                      0

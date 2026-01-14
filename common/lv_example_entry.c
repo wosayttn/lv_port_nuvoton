@@ -9,10 +9,32 @@
 #include "lvgl.h"
 
 static lv_obj_t *needle_line;
+static lv_obj_t *led;
+static lv_obj_t *scr;
 
 static void set_needle_line_value(void *obj, int32_t v)
 {
     lv_scale_set_line_needle_value((lv_obj_t *)obj, needle_line, 60, v);
+}
+
+/* touch event callback */
+static void screen_touch_event_cb(lv_event_t * e)
+{
+    lv_indev_t * indev = lv_indev_get_act();
+    if (!indev) return;
+
+    lv_point_t p;
+    lv_indev_get_point(indev, &p);
+	
+    lv_area_t cont_coords;
+    lv_obj_get_coords(scr, &cont_coords);
+
+    int32_t x = p.x - cont_coords.x1;
+    int32_t y = p.y - cont_coords.y1;
+    x -= lv_obj_get_width(led) / 2;
+    y -= lv_obj_get_height(led) / 2;
+	
+    lv_obj_set_pos(led, x, y);
 }
 
 void ui_init(void)
@@ -53,4 +75,16 @@ void ui_init(void)
     lv_anim_set_reverse_duration(&anim_scale_line, 1000);
     lv_anim_set_values(&anim_scale_line, 10, 40);
     lv_anim_start(&anim_scale_line);
+
+    // -----------------------------------------------------------------
+		
+    scr = lv_screen_active();
+
+    led = lv_led_create(scr);
+    lv_obj_set_size(led, 30, 30);
+    lv_led_set_brightness(led, 150);
+    lv_led_set_color(led, lv_palette_main(LV_PALETTE_BLUE));
+
+    lv_obj_add_flag(scr, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_add_event_cb(scr, screen_touch_event_cb, LV_EVENT_PRESSED, NULL);
 }

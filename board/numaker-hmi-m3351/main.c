@@ -16,16 +16,17 @@ static void sys_init(void)
     /*------------------------------------------------------------------------*/
     /* Init System Clock                                                      */
     /*------------------------------------------------------------------------*/
-    /* Enable HXT clock */
-    CLK_EnableXtalRC(CLK_PWRCTL_HXTEN_Msk);
+//    /* Enable HXT clock */
+//    CLK_EnableXtalRC(CLK_PWRCTL_HXTEN_Msk);
 
-    /* Wait for HXT clock ready */
-    CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk);
+//    /* Wait for HXT clock ready */
+//    CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk);
 
-    /* Set PCLK0 to HCLK/2 */
-    CLK_SET_PCLK0DIV(CLK_PCLKDIV_APB0DIV_DIV2);
-    /* Set PCLK1 to HCLK/2 */
-    CLK_SET_PCLK1DIV(CLK_PCLKDIV_APB1DIV_DIV2);
+//    /* Set core clock */
+//    CLK_SetCoreClock(__HSI);
+
+//    /* Update System Core Clock */
+//    SystemCoreClockUpdate();
 
     /* Enable all GPIO clock */
     CLK->AHBCLK0 |= CLK_AHBCLK0_GPACKEN_Msk | CLK_AHBCLK0_GPBCKEN_Msk | CLK_AHBCLK0_GPCCKEN_Msk | CLK_AHBCLK0_GPDCKEN_Msk |
@@ -33,16 +34,10 @@ static void sys_init(void)
 
     /* Set XT1_OUT(PF.2) and XT1_IN(PF.3) to input mode */
     PF->MODE &= ~(GPIO_MODE_MODE2_Msk | GPIO_MODE_MODE3_Msk);
-
-    /* Set core clock */
-    CLK_SetCoreClock(__HSI);
-
-    /* Update System Core Clock */
-    SystemCoreClockUpdate();
-
+	
     /* EADC Analog Pin */
     CLK_EnableModuleClock(EADC0_MODULE);
-    CLK_SetModuleClock(EADC0_MODULE, CLK_CLKSEL0_EADC0SEL_PLL, CLK_CLKDIV0_EADC0(8));
+    CLK_SetModuleClock(EADC0_MODULE, CLK_CLKSEL0_EADC0SEL_PLL, CLK_CLKDIV0_EADC0(12));
 
     /* USCI0, NU5 */
     CLK_EnableModuleClock(USCI0_MODULE);
@@ -61,7 +56,7 @@ static void sys_init(void)
     GPIO_DISABLE_DIGITAL_PATH(PB, BIT4 | BIT5 | BIT6 | BIT7);
 
     /* Vref connect to internal */
-    SYS_SetVRef(SYS_VREFCTL_VREF_3_0V);
+    SYS_SetVRef(SYS_VREFCTL_VREF_PIN);
 
     /* Enable PDMA0 module clock */
     CLK_EnableModuleClock(PDMA0_MODULE);
@@ -71,11 +66,8 @@ static void sys_init(void)
 
     /* Enable UART module clock */
     SetDebugUartCLK();
-
-    /*------------------------------------------------------------------------*/
-    /* Init I/O Multi-function                                                */
-    /*------------------------------------------------------------------------*/
     SetDebugUartMFP();
+    InitDebugUart();
 }
 
 int main(void)
