@@ -60,3 +60,6 @@
 [submodule "bsp/m3351"]
 	path = bsp/m3351
 	url = https://github.com/OpenNuvoton/M3351BSP
+[submodule "thirdparty/arm2d"]
+	path = thirdparty/arm2d
+	url = https://github.com/ARM-software/Arm-2D
