@@ -232,7 +232,7 @@ avi_t *AVI_open_output_file(char *filename)
     fs_res = lv_fs_open(f, filename, LV_FS_MODE_WR);
     if (fs_res != LV_FS_RES_OK)
     {
-        sysprintf("Open file failed: %d\n", fs_res);
+        LV_LOG_ERROR("Open file failed: %d", fs_res);
         lv_free(f);
         return 0;
     }
@@ -309,7 +309,7 @@ void AVI_set_audio(avi_t *AVI, int channels, long rate, int bits, int format, lo
 
     if (AVI->anum > AVI_MAX_TRACKS)
     {
-        sysprintf("error - only %d audio tracks supported\n", AVI_MAX_TRACKS);
+        LV_LOG_ERROR("error - only %d audio tracks supported", AVI_MAX_TRACKS);
         exit(1);
     }
 
@@ -545,7 +545,7 @@ int avi_update_header(avi_t *AVI)
 
     if (njunk <= 0)
     {
-        sysprintf("AVI_close_output_file: # of header bytes too small\n");
+        LV_LOG_ERROR("AVI_close_output_file: # of header bytes too small");
         exit(1);
     }
 
@@ -1126,7 +1126,7 @@ avi_t *AVI_open_input_file(const char *filename, int getIndex)
     fs_res = lv_fs_open(f, filename, LV_FS_MODE_RD);
     if (fs_res != LV_FS_RES_OK)
     {
-        sysprintf("Open file failed: %d\n", fs_res);
+        LV_LOG_ERROR("Open file failed: %d", fs_res);
         return NULL;
     }
     /* Create avi_t structure */
@@ -1278,7 +1278,7 @@ int avi_parse_input_file(avi_t *AVI, int getIndex)
 
                         if (AVI->anum > AVI_MAX_TRACKS)
                         {
-                            sysprintf("error - only %d audio tracks supported\n", AVI_MAX_TRACKS);
+                            LV_LOG_ERROR("error - only %d audio tracks supported", AVI_MAX_TRACKS);
                             return (-1);
                         }
 
@@ -1973,7 +1973,7 @@ void AVI_print_error(char *str)
 
     aerrno = (AVI_errno >= 0 && AVI_errno < num_avi_errors) ? AVI_errno : num_avi_errors - 1;
 
-    sysprintf("%s: %s\n", str, avi_errors[aerrno]);
+    LV_LOG_INFO("%s: %s", str, avi_errors[aerrno]);
 
     /* for the following errors, perror should report a more detailed reason: */
 

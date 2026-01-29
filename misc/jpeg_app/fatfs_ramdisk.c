@@ -11,7 +11,7 @@
 #include "diskio.h"
 
 static FATFS FatFs[FF_VOLUMES];       /* File system object for logical drive */
-static char logic_nbr[] = "RAM:";
+static char logic_nbr[] = "A:";
 
 static void put_rc(FRESULT rc)
 {
@@ -28,7 +28,7 @@ static void put_rc(FRESULT rc)
         while (*p++) ;
     }
 
-    sysprintf(_T("rc=%u FR_%s\n"), (UINT)rc, p);
+    LV_LOG_INFO(_T("rc=%u FR_%s"), (UINT)rc, p);
 }
 
 int fatfs_ramdisk_init(void)
@@ -37,13 +37,11 @@ int fatfs_ramdisk_init(void)
     FRESULT res;
 
     /* Mount a logical drive */
-    sysprintf("[%s %d]\n", __func__, __LINE__);
     if ((res = f_mount(&FatFs[0], logic_nbr, 1)) != 0)
     {
         put_rc(res);
         goto _Exit;
     }
-    sysprintf("[%s %d]\n", __func__, __LINE__);
 
     /* List directory information */
     if ((res = f_opendir(&dir, logic_nbr)) != 0)
@@ -75,7 +73,7 @@ int fatfs_ramdisk_init(void)
                 p1 += Finfo.fsize;
             }
 
-            sysprintf("%c%c%c%c%c %u/%02u/%02u %02u:%02u %16s %u Bytes\n",
+            LV_LOG_INFO("%c%c%c%c%c %u/%02u/%02u %02u:%02u %16s %u Bytes",
                       (Finfo.fattrib & AM_DIR) ? 'D' : '-',
                       (Finfo.fattrib & AM_RDO) ? 'R' : '-',
                       (Finfo.fattrib & AM_HID) ? 'H' : '-',
@@ -90,10 +88,12 @@ int fatfs_ramdisk_init(void)
                       (unsigned long)Finfo.fsize);
         }
 
-        sysprintf("%4u File(s),%10u bytes total\n%4u Dir(s)", s1, p1, s2);
+        LV_LOG_INFO("%4u File(s),%10u bytes total\n%4u Dir(s)", s1, p1, s2);
         /* Get number of free clusters */
         if ((f_getfree(logic_nbr, (DWORD *)&p1, &fs) == FR_OK) && fs)
-            sysprintf(", %10u bytes free\n", p1 * fs->csize * 4096);
+        {
+            printf(", %10u bytes free\n", p1 * fs->csize * 4096);
+        }
     }
 
 _Exit:

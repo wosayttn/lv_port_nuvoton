@@ -221,21 +221,12 @@ static void sys_init(void)
 
     DNA350DevInit();
 
-    /* Load SPIM section into HyperRAM from SD Card. */
-    if (SDReader_LoadFile(
-#if defined(SLS_CAFFEE_MACHINE)
-                "0:CAFFEE_MACHINE_SPIM",
-#elif defined(SLS_EBIKE)
-                "0:EBIKE_SPIM",
-#elif defined(SLS_3D_PRINTER)
-                "0:3D_PRINTER_SPIM",
-#else
-                "0:UNKNOWN",
-#endif
-                (void *)SPIM_HYPER_DMM0_SADDR) <= 0)
+    if (SDH_Open_Disk(SDH0, CardDetect_From_GPIO) != SDH_OK)
     {
+        printf("Failed to OpenDisk\n");
         while (1);
     }
+
 }
 
 int main(void)
