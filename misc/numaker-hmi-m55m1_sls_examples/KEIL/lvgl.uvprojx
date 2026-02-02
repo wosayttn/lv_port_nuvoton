@@ -545,6 +545,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\sdh.c</FilePath>
             </File>
+            <File>
+              <FileName>norflash_code.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lv_port\spim_norflash\norflash_code.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmdcode.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lv_port\spim_norflash\cmdcode.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -3955,6 +3965,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\sdh.c</FilePath>
             </File>
+            <File>
+              <FileName>norflash_code.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lv_port\spim_norflash\norflash_code.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmdcode.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lv_port\spim_norflash\cmdcode.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -7364,6 +7384,16 @@
               <FileName>sdh.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\bsp\m55m1\Library\StdDriver\src\sdh.c</FilePath>
+            </File>
+            <File>
+              <FileName>norflash_code.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lv_port\spim_norflash\norflash_code.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmdcode.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lv_port\spim_norflash\cmdcode.c</FilePath>
             </File>
           </Files>
         </Group>

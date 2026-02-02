@@ -36,7 +36,7 @@
   * @param      u32AcctWR Initial Write Access Time 1 ~ 0x1F, Default Set 0x04
   * @return     None.
   */
-void SPIM_Hyper_DefaultConfig(SPIM_T *spim, uint32_t u32CSM, uint32_t u32AcctRD, uint32_t u32AcctWR)
+static void SPIM_Hyper_DefaultConfig(SPIM_T *spim, uint32_t u32CSM, uint32_t u32AcctRD, uint32_t u32AcctWR)
 {
     uint32_t u32CoreFreq = (CLK_GetSCLKFreq() / 1000000);
     float fFreq = (float)((float)1000 / (float)u32CoreFreq);
@@ -79,7 +79,7 @@ void SPIM_Hyper_DefaultConfig(SPIM_T *spim, uint32_t u32CSM, uint32_t u32AcctRD,
  *
  * @note     This function is used to erase HyperRAM block
  */
-void HyperRAM_Erase(SPIM_T *spim, uint32_t u32StartAddr, uint32_t u32EraseSize)
+void SPIM_HyperRAM_Erase(SPIM_T *spim, uint32_t u32StartAddr, uint32_t u32EraseSize)
 {
     uint32_t u32i;
 
@@ -122,7 +122,7 @@ void HyperRAM_Erase(SPIM_T *spim, uint32_t u32StartAddr, uint32_t u32EraseSize)
  * @param au8Src Array of values to be checked.
  * @param size Size of the array.
  */
-uint8_t isConsecutive(uint8_t au8Src[], uint32_t size)
+static uint8_t isConsecutive(uint8_t au8Src[], uint32_t size)
 {
     uint8_t u8Find = 0, u8StartIdx = 0, u8MaxRang = 0;
     uint32_t u32i = 0, u32j = 1;
@@ -262,7 +262,7 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
     SPIM_HYPER_SetDLLDelayNum(spim, u8RdDelay);
 }
 
-void HyperRAM_Init(SPIM_T *spim)
+void SPIM_HyperRAM_Init(SPIM_T *spim)
 {
     /* Enable SPIM Hyper Bus Mode */
     SPIM_HYPER_Init(spim, SPIM_HYPERRAM_MODE, SPIM_HYPER_DIV);
@@ -278,6 +278,8 @@ void HyperRAM_Init(SPIM_T *spim)
 
     /* Trim DLL component delay stop number */
     HyperRAM_TrimDLLDelayNumber(spim);
+
+    SPIM_HYPER_EnterDirectMapMode(SPIM0);
 }
 
 /*** (C) COPYRIGHT 2023 Nuvoton Technology Corp. ***/
