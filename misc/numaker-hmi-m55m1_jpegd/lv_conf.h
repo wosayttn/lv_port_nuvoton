@@ -62,7 +62,7 @@
 #define LV_USE_FS_MEMFS                 1
 #define LV_FS_MEMFS_LETTER              'Z'
 
-#define CONFIG_LV_MEM_SIZE              (512*1024U)
+#define CONFIG_LV_MEM_SIZE              (768*1024U)
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE

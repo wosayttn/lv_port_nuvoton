@@ -19,11 +19,11 @@
 #endif
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((CONFIG_VRAM_BUFFER_NUM * LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), DCACHE_LINE_SIZE)
 
-#if defined(USE_HYPERRAM_AS_FRAMEBUFFER)
+//#if defined(USE_HYPERRAM_AS_FRAMEBUFFER)
     static uint8_t *s_au8FrameBuf = (uint8_t *)SPIM_DMM0_SADDR;
-#else
-    static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DCACHE_LINE_SIZE)));
-#endif
+//#else
+//    static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DCACHE_LINE_SIZE)));
+//#endif
 
 void sysDelay(uint32_t ms)
 {

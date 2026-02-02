@@ -333,7 +333,7 @@
             <v6LangP>4</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
-            <v6Lto>0</v6Lto>
+            <v6Lto>1</v6Lto>
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
@@ -459,11 +459,6 @@
               <FileName>ui_init_mjpeg_playback.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\ui_init_mjpeg_playback.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_init_slideshow.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_init_slideshow.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -515,6 +510,11 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
+            </File>
+            <File>
+              <FileName>ui_init_slideshow.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ui_init_slideshow.c</FilePath>
             </File>
           </Files>
         </Group>

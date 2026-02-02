@@ -59,6 +59,45 @@ void lv_nuvoton_task(void *pdata)
     }
 }
 
+#if (configSUPPORT_STATIC_ALLOCATION==1)
+
+__attribute__((section("DTCM.Init"), aligned(8))) static StaticTask_t idle_tcb;
+__attribute__((section("DTCM.Init"), aligned(8))) static StackType_t idle_stack[256];
+void vApplicationGetIdleTaskMemory(
+    StaticTask_t **ppxIdleTaskTCBBuffer,
+    StackType_t **ppxIdleTaskStackBuffer,
+    uint32_t *pulIdleTaskStackSize)
+{
+    *ppxIdleTaskTCBBuffer = &idle_tcb;
+    *ppxIdleTaskStackBuffer = idle_stack;
+    *pulIdleTaskStackSize = 256;
+}
+
+
+__attribute__((section("DTCM.Init"), aligned(8))) static StaticTask_t timer_tcb;
+__attribute__((section("DTCM.Init"), aligned(8))) static StackType_t timer_stack[256];
+void vApplicationGetTimerTaskMemory(
+    StaticTask_t **ppxTimerTaskTCBBuffer,
+    StackType_t **ppxTimerTaskStackBuffer,
+    uint32_t *pulTimerTaskStackSize)
+{
+    *ppxTimerTaskTCBBuffer = &timer_tcb;
+    *ppxTimerTaskStackBuffer = timer_stack;
+    *pulTimerTaskStackSize = 256;
+}
+
+__attribute__((section("DTCM.Init"), aligned(8))) static StaticTask_t lvgl_tcb;
+__attribute__((section("DTCM.Init"), aligned(8))) static StackType_t lvgl_stack[CONFIG_LV_TASK_STACKSIZE];
+
+int task_lv_init(void)
+{	
+  	printf("stack addr = %p\n", lvgl_stack);
+    xTaskCreate(lv_tick_task, "lv_tick", configMINIMAL_STACK_SIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
+    xTaskCreateStatic(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, lvgl_stack, &lvgl_tcb);
+    return 0;
+}
+
+#else
 
 int task_lv_init(void)
 {	
@@ -66,3 +105,5 @@ int task_lv_init(void)
     xTaskCreate(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
     return 0;
 }
+
+#endif

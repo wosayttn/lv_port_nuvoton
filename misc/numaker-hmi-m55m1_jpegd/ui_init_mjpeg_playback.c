@@ -51,6 +51,7 @@ static void img_timer(lv_timer_t *t)
             JpgImg.data_size = framesize;
 
             /* Jpeg image decoding and rendering. */
+            //LV_LOG_INFO("[%d] set jpeg.", idx);
             lv_image_set_src(img, (const void *)&JpgImg);
             lv_obj_center(img);
 
@@ -69,5 +70,5 @@ void ui_init(void)
     lv_obj_t *img = lv_image_create(lv_screen_active());
     lv_obj_center(img);
 
-    lv_timer_t *timer = lv_timer_create(img_timer, 100, img);
+    lv_timer_t *timer = lv_timer_create(img_timer, 80, img);
 }

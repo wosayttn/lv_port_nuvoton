@@ -1,9 +1,9 @@
 #include "lvgl.h"
 #include <string.h>
 
-#define MAX_JPG_FILES   64
-#define SLIDE_INTERVAL  1000   // ms
-static char jpg_list[MAX_JPG_FILES][128];
+#define MAX_JPG_FILES   32
+#define SLIDE_INTERVAL  5000   // ms
+static char jpg_list[MAX_JPG_FILES][64];
 static uint32_t jpg_count = 0;
 static uint32_t jpg_index = 0;
 
