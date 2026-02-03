@@ -22,8 +22,6 @@
 #endif
 //#define CONFIG_LV_DISP_FULL_REFRESH     1
 
-//#define LV_ATTRIBUTE_MEM_ALIGN          __attribute__((section(".spim_data"), aligned(4), used))
-
 #if defined(__320x240__)
     #define LV_HOR_RES_MAX              320
     #define LV_VER_RES_MAX              240
@@ -53,7 +51,7 @@
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_LOG                      1
+#define LV_USE_LOG                      0
 
 #define LV_USE_TJPGD                    1
 
