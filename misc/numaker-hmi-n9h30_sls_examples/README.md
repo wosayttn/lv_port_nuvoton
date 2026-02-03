@@ -1,25 +1,18 @@
-# **NuMaker-HMI-N9H30**
+# **NuMaker-HMI-N9H30-SLS-Examples**
 
 | Major Folder | Description |
 |-|-|
-| GCC | GCC project file |
 | KEIL | MDK4 project file |
 
 ## **KEIL project**
 
 User can select listed **Target Name** to build target execution using uVision MDK4.
+Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling)
 
 | Target | Description |
 |-|-|
-| N9H30F6_800x480 | Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling) |
-
-## **GCC project**
-
-To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
-
-| Target | Description |
-|-|-|
-| N9H30F6_800x480 | Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling) |
+| N9H30_3D_Printer      | SLS 3D Printer Example |
+| N9H30_EBike           | SLS E-Bike Example |
 
 ## **Compiling options**
 
