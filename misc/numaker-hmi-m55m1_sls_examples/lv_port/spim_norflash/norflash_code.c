@@ -288,16 +288,37 @@ void SPIM_NorFlash_Init(SPIM_T *spim)
     printf("SPIM get JEDEC ID=0x%02X, 0x%02X, 0x%02X\n", idBuf[0], idBuf[1], idBuf[2]);
 
     printf("SPI NOR Flash Capacity is %dMB.\n", (jedec_capacity_bytes(idBuf[2]) >> 20));
-    printf("Configure Quad read...\r\n");
 
-    SPIM_DMADMM_InitPhase(SPIM_PORT, &gsWb12hWrCMD, SPIM_CTL0_OPMODE_PAGEWRITE);
-    SPIM_DMADMM_InitPhase(SPIM_PORT, &gsWbEChRdCMD, SPIM_CTL0_OPMODE_DIRECTMAP);
+    //printf("Simulated 16MB\n");
+    //idBuf[2] = 0x18; // simulate 16MB
 
-    /* Trim RX clock delay cycle. Adjust the sampling clock of received data to latch the correct data. */
-    SPIM_TrimRxClkDlyNum(SPIM_PORT, &gsWb12hWrCMD, &gsWbEChRdCMD);
+    if (jedec_capacity_bytes(idBuf[2]) > (16 * 1024 * 1024)) //32MB
+    {
 
-    /* Enter DMM Mode */
-    SPIM_EnterDirectMapMode(SPIM_PORT, (gsWbEChRdCMD.u32AddrWidth == PHASE_WIDTH_32) ? SPIM_OP_ENABLE : SPIM_OP_DISABLE, gsWbEChRdCMD.u32CMDCode, 1);
+        printf("Configure 4B-Addressing Quad read...\r\n");
+
+        SPIM_DMADMM_InitPhase(SPIM_PORT, &gsWb12hWrCMD, SPIM_CTL0_OPMODE_PAGEWRITE);
+        SPIM_DMADMM_InitPhase(SPIM_PORT, &gsWbEChRdCMD, SPIM_CTL0_OPMODE_DIRECTMAP);
+
+        /* Trim RX clock delay cycle. Adjust the sampling clock of received data to latch the correct data. */
+        SPIM_TrimRxClkDlyNum(SPIM_PORT, &gsWb12hWrCMD, &gsWbEChRdCMD);
+
+        /* Enter DMM Mode */
+        SPIM_EnterDirectMapMode(SPIM_PORT, (gsWbEChRdCMD.u32AddrWidth == PHASE_WIDTH_32) ? SPIM_OP_ENABLE : SPIM_OP_DISABLE, gsWbEChRdCMD.u32CMDCode, 1);
+    }
+    else  //<=16MB
+    {
+        printf("Configure 3B-Addressing Quad read...\r\n");
+
+        SPIM_DMADMM_InitPhase(SPIM_PORT, &gsWb02hWrCMD, SPIM_CTL0_OPMODE_PAGEWRITE);
+        SPIM_DMADMM_InitPhase(SPIM_PORT, &gsWbEBhRdCMD, SPIM_CTL0_OPMODE_DIRECTMAP);
+
+        /* Trim RX clock delay cycle. Adjust the sampling clock of received data to latch the correct data. */
+        SPIM_TrimRxClkDlyNum(SPIM_PORT, &gsWb02hWrCMD, &gsWbEBhRdCMD);
+
+        /* Enter DMM Mode */
+        SPIM_EnterDirectMapMode(SPIM_PORT, (gsWbEBhRdCMD.u32AddrWidth == PHASE_WIDTH_32) ? SPIM_OP_ENABLE : SPIM_OP_DISABLE, gsWbEBhRdCMD.u32CMDCode, 1);
+    }
 
 lexit:
     return;
