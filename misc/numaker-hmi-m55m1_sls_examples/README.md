@@ -28,3 +28,4 @@ Use LT7381 EBI LCD panel with capacitive touch screen(FT5316)
 ## **Purchase**
 
 ## **Resources**
+[Port SLS_Example Steps](./Port_SLS_Example.md)
