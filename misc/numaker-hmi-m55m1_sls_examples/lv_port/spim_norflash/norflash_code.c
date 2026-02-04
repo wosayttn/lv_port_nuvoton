@@ -156,30 +156,60 @@ void SPIM_TrimRxClkDlyNum(SPIM_T *spim, SPIM_PHASE_T *psWbWrCMD, SPIM_PHASE_T *p
         pu8TrimPattern[u32k] = ~(uint8_t)(u32Val ^ (u32k << 3) ^ (u32k >> 2));
     }
 
-    /* Set SPIM clock divider to 8 */
+    /* Initialize SPIM DMA/DMM read phases for page read operation */
+    SPIM_DMADMM_InitPhase(spim, psWbRdCMD, SPIM_CTL0_OPMODE_PAGEREAD);
+
+    /* Switch SPIM operation mode to Direct Map after page read phase is set */
+    SPIM_DMADMM_InitPhase(spim, psWbRdCMD, SPIM_CTL0_OPMODE_DIRECTMAP);
+
+    /* Temporarily reduce SPIM clock speed to improve read stability */
     SPIM_SET_CLOCK_DIVIDER(spim, 8);
 
-    /* Erase 64KB block */
-    SPIM_EraseBlock(spim,
-                    u32SrcAddr,
-                    psWbWrCMD->u32AddrWidth == PHASE_WIDTH_32 ? SPIM_OP_ENABLE : SPIM_OP_DISABLE,
-                    OPCODE_BE_64K,
-                    SPIM_PhaseModeToNBit(psWbWrCMD->u32CMDPhase),
-                    SPIM_OP_ENABLE);
+    /*
+     * Perform DMA read from SPIM flash to verify trim pattern.
+     * This verification step is used to avoid unnecessary erase/write
+     * operations on every boot, thereby extending flash endurance.
+     */
+    SPIM_DMA_Read(SPIM_PORT,
+                  u32SrcAddr,
+                  (psWbRdCMD->u32AddrWidth == PHASE_WIDTH_32) ? SPIM_OP_ENABLE : SPIM_OP_DISABLE,
+                  u32PatternSize,
+                  &pu8VerifyBuf[0],
+                  psWbRdCMD->u32CMDCode,
+                  SPIM_OP_ENABLE);
 
-    /* Write trim pattern */
-    SPIM_DMA_Write(spim,
-                   u32SrcAddr,
-                   psWbWrCMD->u32AddrWidth == PHASE_WIDTH_32 ? SPIM_OP_ENABLE : SPIM_OP_DISABLE,
-                   sizeof(au64TrimPattern),
-                   pu8TrimPattern,
-                   psWbWrCMD->u32CMDCode);
+    /* Compare read-back data with expected trim pattern */
+    if (memcmp(pu8TrimPattern, pu8VerifyBuf, TRIM_PAT_SIZE) != 0)
+    {
+        /*
+         * Trim pattern mismatch detected:
+         * Only erase and reprogram the flash when the stored pattern
+         * is invalid or missing. This prevents redundant erase/write
+         * cycles on every power-up and helps prolong flash lifetime.
+         */
 
-    /* Restore clock divider */
-    SPIM_SET_CLOCK_DIVIDER(spim, u32Div); // Restore clock divider
+        printf("Trim pattern not exist!! \n");
+        printf("Will ERASE-PROGRAM Trim pattern at latest block address(0x%08X).\n", u32SrcAddr);
 
-    SPIM_DMADMM_InitPhase(spim, psWbRdCMD, SPIM_CTL0_OPMODE_PAGEREAD);
-    SPIM_DMADMM_InitPhase(spim, psWbRdCMD, SPIM_CTL0_OPMODE_DIRECTMAP);
+        /* Erase 64KB block at source address */
+        SPIM_EraseBlock(spim,
+                        u32SrcAddr,
+                        (psWbWrCMD->u32AddrWidth == PHASE_WIDTH_32) ? SPIM_OP_ENABLE : SPIM_OP_DISABLE,
+                        OPCODE_BE_64K,
+                        SPIM_PhaseModeToNBit(psWbWrCMD->u32CMDPhase),
+                        SPIM_OP_ENABLE);
+
+        /* Write trim pattern back to flash using DMA */
+        SPIM_DMA_Write(spim,
+                       u32SrcAddr,
+                       (psWbWrCMD->u32AddrWidth == PHASE_WIDTH_32) ? SPIM_OP_ENABLE : SPIM_OP_DISABLE,
+                       sizeof(au64TrimPattern),
+                       pu8TrimPattern,
+                       psWbWrCMD->u32CMDCode);
+    }
+
+    /* Restore original SPIM clock divider after trim operation */
+    SPIM_SET_CLOCK_DIVIDER(spim, u32Div);
 
     for (u32ReTrimCnt = 0; u32ReTrimCnt < u32ReTrimMaxCnt; u32ReTrimCnt++)
     {
