@@ -215,5 +215,11 @@ LR_ROM_2 SPIM0_START
     {
         * (.spim_data)
     }
+	
+    ; Empty section to get maximum size of SPIM region with Image$$SPIM_END$$Base
+    SPIM_END (SPIM0_START + SPIM0_SIZE)
+    {
+        .ANY (SPIM_END)
+    }
 }
     
