@@ -15,6 +15,7 @@
 #define SPIM_PORT                   SPIM0
 #define SPIM_PORT_MAX_DIV           8
 
+#if 1
 static const uint32_t crc32_tab[] =
 {
     0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
@@ -78,7 +79,59 @@ static uint32_t crc32(uint8_t *ptr, uint32_t len)
     return crc ^ ~0U;
 }
 
-static uint8_t idBuf[3] = {0};
+#else
+
+static uint32_t crc32(uint8_t *ptr, uint32_t len)
+{
+    volatile uint32_t reg;
+    uint32_t u32DMAChecksum = 0xFFFFFFFF;
+
+    CLK_EnableModuleClock(CRC0_MODULE);
+
+    CRC_Open(CRC_32, (CRC_WDATA_RVS | CRC_CHECKSUM_RVS | CRC_CHECKSUM_COM), 0xFFFFFFFF, CRC_CPU_WDATA_32);
+
+    /*Set input data address for CRC DMA Master*/
+    CRC_SET_DMA_SADDR(CRC, (uint32_t)ptr);
+
+    CRC_SET_DMACNT_WORD(CRC, len / 4);
+
+    CRC_ENABLE_DMA_INT(CRC);
+
+    CRC_DMA_START(CRC);
+
+    while (CRC->DMACTL & CRC_DMACTL_START_Msk) {};
+
+    reg = CRC->DMASTS;
+    if ((reg & CRC_DMASTS_FINISH_Msk) == CRC_DMASTS_FINISH_Msk) /* transfer done */
+    {
+        CRC->DMASTS |= CRC_DMASTS_FINISH_Msk;
+        u32DMAChecksum =  CRC->CHECKSUM;
+    }
+    else
+    {
+        if ((reg & CRC_DMASTS_ABORTED_Msk) == CRC_DMASTS_ABORTED_Msk)   /* target abort */
+        {
+            printf("abort flag 0x%x\n", reg);
+            CRC->DMASTS |= CRC_DMASTS_ABORTED_Msk;
+        }
+
+        if ((reg & CRC_DMASTS_CFGERR_Msk) == CRC_DMASTS_CFGERR_Msk) /* config error */
+        {
+            printf("config error 0x%x\n", reg);
+            CRC->DMASTS |= CRC_DMASTS_CFGERR_Msk;
+        }
+
+        if ((reg & CRC_DMASTS_ACCERR_Msk) == CRC_DMASTS_ACCERR_Msk) /* access error */
+        {
+            printf("access error 0x%x\n", reg);
+            CRC->DMASTS |= CRC_DMASTS_ACCERR_Msk;
+        }
+    }
+
+    return u32DMAChecksum;
+}
+
+#endif
 
 /**
  * @brief Check if the given array of values is consecutive.
@@ -240,9 +293,10 @@ static void SPIM_TrimRxClkDlyNum(SPIM_T *spim, SPIM_PHASE_T *psWbRdCMD)
     }
 }
 
-
 void SPIM_NorFlash_Init(SPIM_T *spim)
 {
+    uint8_t idBuf[3] = {0};
+
     SPIM_SET_CLOCK_DIVIDER(SPIM_PORT, SPIM_PORT_MAX_DIV);
 
     if (SPIM_InitFlash(SPIM_PORT, SPIM_OP_ENABLE))      /* Initialized SPI flash */
@@ -270,9 +324,6 @@ void SPIM_NorFlash_Init(SPIM_T *spim)
         /* Trim RX clock delay cycle. Adjust the sampling clock of received data to latch the correct data. */
         SPIM_TrimRxClkDlyNum(SPIM_PORT, &gsWbEBhRdCMD);
     }
-
-lexit:
-    return;
 }
 
 /*** (C) COPYRIGHT 2023 Nuvoton Technology Corp. ***/

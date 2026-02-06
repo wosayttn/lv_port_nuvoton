@@ -5,7 +5,7 @@ To export SLS UI files into this folder and import all c source files to lvgl pr
 - Specify SLS project name and storing path.
 
 - Fill SLS project attributes.
-  - Resolution: **480x272**  (MUST)
+  - Resolution: **320x240**  (MUST)
   - Rotation: **0 degree**  (MUST)
   - Offset: **X=0, Y=0**  (MUST)
   - Shape: **Rectangle**

@@ -1,11 +1,8 @@
-# **NuMaker-HMI-M55M1**
+# **NuMaker-HMI-M55M1_JPEGD**
 
 | Major Folder | Description |
 |-|-|
-| GCC | GCC project file |
 | KEIL | MDK5 project file |
-| IAR | IAR project file |
-| VSCode | VSCode CSolution project file |
 
 ## **KEIL project**
 
@@ -13,35 +10,8 @@ User can select listed **Target Name** to build target execution using uVision M
 
 | Target | Description |
 |-|-|
-| M55M1_800x480 | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
-| M55M1_480x272 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
-| M55M1_EBI_SYNC_480x272 | Use WQVGA Sync-type LCD panel with capacitive touch screen(FT5446) |
-| M55M1_EBI_SYNC_800x480 | Use WVGA Sync-type LCD panel |
-
-## **GCC project**
-
-To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
-
-| Target | Description |
-|-|-|
-| M55M1_800x480 | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
-
-## **IAR project**
-
-To build target execution using IAR IDE(IAR 9.40).
-
-| Target | Description |
-|-|-|
-| Release | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
-
-## **VSCode project**
-
-To build target execution using VSCode IDE or run the build.ps1 scripts.
-
-| Target | Description |
-|-|-|
-| M55M1800x480 | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
-| M55M1480x272 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
+| JPG_SLIDESHOW | Play all jpeg files in SD card. |
+| MJPG_PLAYBACK | Play movie.avi file in SD card. |
 
 ## **Compiling options**
 
@@ -59,4 +29,3 @@ To build target execution using VSCode IDE or run the build.ps1 scripts.
 
 ## **Resources**
 
-[Use EBI-PDMA To Drive Syne-type LCM](./EBI_Drive_Sync-type_LCD.pdf)
