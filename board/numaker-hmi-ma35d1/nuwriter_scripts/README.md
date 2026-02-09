@@ -108,7 +108,7 @@ For example, the **nuwriter_ddr_download_and_run.bat** modification is as follow
 cd MA35D1_NuWriter
 
 :forever_develop
-NuWriter_MA35.exe -a ddrimg\enc_ddr3_winbond_256mb.bin
+NuWriter_MA35.exe -a ddrimg\MA35D16A887C.bin
 IF %ERRORLEVEL% EQU 0 (
    NuWriter_MA35.exe -o execute -w ddr 0x80400000 ../../GCC/MA35D1_1024x600/lvgl_ma35d1.bin
 )

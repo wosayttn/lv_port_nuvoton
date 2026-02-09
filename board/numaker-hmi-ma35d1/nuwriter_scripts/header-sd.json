@@ -23,7 +23,7 @@
               "offset": "0x1000",
               "loadaddr": "0x28030000",
               "type": "2",
-              "file": "ddrimg/enc_ddr3_winbond_256mb.bin"
+              "file": "ddrimg/MA35D16A887C.bin"
             },
             {
               "offset": "0x4000",
