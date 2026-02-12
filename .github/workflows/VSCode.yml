@@ -24,7 +24,8 @@ jobs:
       - name: Activate & Build each csolution
         shell: bash
         run: |
-          mapfile -t solutions < <(find . -name '*.csolution.yml')
+
+          mapfile -t solutions < <(find ./board ./misc -name '*.csolution.yml')
 
           set +e
           for sol in "${solutions[@]}"; do

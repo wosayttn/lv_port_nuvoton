@@ -29,10 +29,11 @@ jobs:
           arm-none-eabi-gcc --version
           aarch64-none-elf-gcc --version
 
+          mapfile -t solutions < <(find ./board ./misc -name '*.csolution.yml')
           set +e
 
           mkdir -p "$GITHUB_WORKSPACE/artifacts"
-          for dir in $(find . -type f -name .cproject -exec dirname {} \;); do
+          for dir in "${solutions[@]}"; do
 
             mkdir -p "$GITHUB_WORKSPACE/workspace"
 
