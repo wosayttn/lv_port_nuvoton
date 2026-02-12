@@ -11,6 +11,7 @@ Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling)
 
 | Target | Description |
 |-|-|
+| N9H30_Caffee_Machine  | SLSv1.6 Caffee Machine Example |
 | N9H30_3D_Printer      | SLS 3D Printer Example |
 | N9H30_EBike           | SLS E-Bike Example |
 

@@ -2,7 +2,6 @@
 
 | Major Folder | Description |
 |-|-|
-| GCC | GCC project file |
 | KEIL | MDK4 project file |
 
 ## **KEIL project**
@@ -11,14 +10,6 @@ User can select listed **Target Name** to build target execution using uVision M
 | Target | Description |
 |-|-|
 | N9H20K5_NAND_480x272_FreeRTOS | Use 480x272 LCD panel with resistive touch screen(H/W ADC Sampling) |
-| N9H20K5_NAND_800x480_FreeRTOS | Use 800x480 LCD panel with resistive touch screen(H/W ADC Sampling) |
-
-## **GCC project**
-
-To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
-| Target | Description |
-|-|-|
-| N9H20K5_480x272 | Use 480x272 LCD panel with resistive touch screen(H/W ADC Sampling) |
 
 ## **Compiling options**
 
