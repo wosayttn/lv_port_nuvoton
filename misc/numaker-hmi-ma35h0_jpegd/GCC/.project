@@ -25,6 +25,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>App</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>Driver</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -40,7 +45,12 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>lv_demo</name>
+			<name>drv_decoder</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>fatfs</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
@@ -55,9 +65,29 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>sls_files</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			<name>App/avilib.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/avilib/avilib.c</locationURI>
+		</link>
+		<link>
+			<name>App/diskio_ramdisk.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/App/diskio_ramdisk.c</locationURI>
+		</link>
+		<link>
+			<name>App/fatfs_ramdisk.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/jpeg_app/fatfs_ramdisk.c</locationURI>
+		</link>
+		<link>
+			<name>App/ui_init_mjpeg_playback.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/jpeg_app/ui_init_mjpeg_playback.c</locationURI>
+		</link>
+		<link>
+			<name>App/ui_init_show_image.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/jpeg_app/ui_init_show_image.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/GCC.ld</name>
@@ -97,7 +127,7 @@
 		<link>
 			<name>Driver/i2c.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/i2c.c</locationURI>
+			<location>Z:/lv_port_nuvoton2/misc/numaker-hmi-ma35h0_jpegd/i2c.c</location>
 		</link>
 		<link>
 			<name>Driver/irq_ctrl_gic.c</name>
@@ -205,109 +235,29 @@
 			<locationURI>PARENT-1-PROJECT_LOC/components/task_lv.c</locationURI>
 		</link>
 		<link>
-			<name>lv_demo/img_benchmark_avatar.c</name>
+			<name>drv_decoder/drv_hwjpgd.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/img_benchmark_avatar.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_decoder/drv_hwjpgd.c</locationURI>
 		</link>
 		<link>
-			<name>lv_demo/img_benchmark_lvgl_logo_argb.c</name>
+			<name>drv_decoder/plat_jpeg_ma35.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/img_benchmark_lvgl_logo_argb.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_decoder/plat_jpeg_ma35.c</locationURI>
 		</link>
 		<link>
-			<name>lv_demo/img_benchmark_lvgl_logo_rgb.c</name>
+			<name>fatfs/ff.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/img_benchmark_lvgl_logo_rgb.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs-r15/source/ff.c</locationURI>
 		</link>
 		<link>
-			<name>lv_demo/img_clothes.c</name>
+			<name>fatfs/ffsystem.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/widgets/assets/img_clothes.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs-r15/source/ffsystem.c</locationURI>
 		</link>
 		<link>
-			<name>lv_demo/img_demo_widgets_avatar.c</name>
+			<name>fatfs/ffunicode.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/widgets/assets/img_demo_widgets_avatar.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/img_demo_widgets_needle.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/widgets/assets/img_demo_widgets_needle.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/img_lvgl_logo.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/widgets/assets/img_lvgl_logo.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_demo_benchmark.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/lv_demo_benchmark.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_demo_widgets.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/widgets/lv_demo_widgets.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_demo_widgets_analytics.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/widgets/lv_demo_widgets_analytics.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_demo_widgets_components.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/widgets/lv_demo_widgets_components.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_demo_widgets_profile.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/widgets/lv_demo_widgets_profile.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_demo_widgets_shop.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/widgets/lv_demo_widgets_shop.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_demos.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/lv_demos.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_font_benchmark_montserrat_12_aligned.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_12_aligned.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_font_benchmark_montserrat_14_aligned.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_14_aligned.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_font_benchmark_montserrat_16_aligned.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_16_aligned.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_font_benchmark_montserrat_18_aligned.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_18_aligned.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_font_benchmark_montserrat_20_aligned.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_20_aligned.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_font_benchmark_montserrat_24_aligned.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_24_aligned.c</locationURI>
-		</link>
-		<link>
-			<name>lv_demo/lv_font_benchmark_montserrat_26_aligned.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_26_aligned.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs-r15/source/ffunicode.c</locationURI>
 		</link>
 		<link>
 			<name>lv_port/lv_demo.c</name>
@@ -347,7 +297,7 @@
 		<link>
 			<name>lv_port/touch_gt911.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_gt911.c</locationURI>
+			<location>Z:/lv_port_nuvoton2/common/drv_indev/touch_gt911.c</location>
 		</link>
 		<link>
 			<name>lvgl/gif.c</name>

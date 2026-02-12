@@ -32,7 +32,7 @@ jobs:
           set +e
 
           mkdir -p "$GITHUB_WORKSPACE/artifacts"
-          for dir in $(find ./board -type f -name .cproject -exec dirname {} \;); do
+          for dir in $(find . -type f -name .cproject -exec dirname {} \;); do
 
             mkdir -p "$GITHUB_WORKSPACE/workspace"
 

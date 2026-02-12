@@ -92,7 +92,7 @@ int fatfs_ramdisk_init(void)
         /* Get number of free clusters */
         if ((f_getfree(logic_nbr, (DWORD *)&p1, &fs) == FR_OK) && fs)
         {
-            printf(", %10u bytes free\n", p1 * fs->csize * 4096);
+        	LV_LOG_INFO(", %10u bytes free", p1 * fs->csize * 4096);
         }
     }
 

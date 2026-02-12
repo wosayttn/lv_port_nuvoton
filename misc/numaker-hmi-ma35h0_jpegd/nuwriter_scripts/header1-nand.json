@@ -1,0 +1,36 @@
+{
+    "header":
+    {
+        "version": "0xFFFFFFFF",
+        "spiinfo":
+        {
+            "pagesize": "2048",
+            "sparearea": "64",
+            "pageperblk": "64",
+            "quadread": "0x6B",
+            "readsts": "0x05",
+            "writests": "0x01",
+            "stsvalue": "0x02",
+            "dummy1": "0",
+            "dummy2": "1",
+            "suspintvl": "1"
+        },
+        "secureboot": "no",
+        "entrypoint": "0x80000000",
+        "image":
+        [
+            {
+              "offset": "0xC0000",
+              "loadaddr": "0x28030000",
+              "type": "2",
+              "file": "ddrimg/MA35H04F764C.bin"
+            },
+            {
+              "offset": "0x2100000",
+              "loadaddr": "0x80000000",
+              "type": "4",
+              "file": "../../GCC/MA35H0_1024x600/lvgl_ma35h0.bin"
+            }
+        ]
+    }
+}
