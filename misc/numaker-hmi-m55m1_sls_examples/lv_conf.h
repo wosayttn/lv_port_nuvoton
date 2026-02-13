@@ -59,7 +59,7 @@
 #define LV_USE_PERF_MONITOR             1
 #define LV_USE_LOG                      0
 
-#define CONFIG_LV_MEM_SIZE              (768*1024U)
+#define CONFIG_LV_MEM_SIZE              (800*1024U)
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE

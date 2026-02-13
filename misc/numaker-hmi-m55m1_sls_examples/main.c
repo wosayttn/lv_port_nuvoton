@@ -250,6 +250,8 @@ static void sys_init(void)
     if (SDReader_LoadFile(
 #if defined(SLS_CAFFEE_MACHINE)
                 "0:CAFFEE_MACHINE_SPIM",
+#elif defined(SLS_EBIKE_480x272)
+                "0:EBIKE_480X272_SPIM",
 #elif defined(SLS_EBIKE)
                 "0:EBIKE_SPIM",
 #elif defined(SLS_3D_PRINTER)

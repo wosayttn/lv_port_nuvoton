@@ -14,6 +14,7 @@ Use LT7381 EBI LCD panel with capacitive touch screen(FT5316)
 | [M55M1_Caffee_Machine](https://youtu.be/q52U7EFQdIg)  | SLSv1.6 Caffee Machine Example |
 | [M55M1_3D_Printer](https://youtu.be/_j92tXy30pQ)      | SLSv1.6 3D Printer Example |
 | [M55M1_EBike](https://youtu.be/b2ea5MImvhU)           | SLSv1.6 E-Bike Example |
+| [M55M1_EBike_480x272](https://youtu.be/EKddwPokQMg)   | SLSv1.6 E-Bike 480x272 Example, NV3041A LCD panel and GT911 TPC board |
 
 ## **Compiling options**
 
