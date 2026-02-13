@@ -10,8 +10,10 @@ User can select listed **Target Name** to build target execution using uVision M
 
 | Target | Description |
 |-|-|
-| JPG_SLIDESHOW | Play all jpeg files in SD card. |
-| MJPG_PLAYBACK | Play movie.avi file in SD card. |
+| JPG_SLIDESHOW | Play all jpeg files in SD card. (Use LT7381 EBI LCD panel with capacitive touch screen(FT5316)) |
+| MJPG_PLAYBACK | Play movie.avi file in SD card. (Use LT7381 EBI LCD panel with capacitive touch screen(FT5316)) |
+| JPG_SLIDESHOW_480X272 | Play all jpeg files in SD card. (Use NV3041A EBI LCD panel with capacitive touch screen(GT911)) |
+| MJPG_PLAYBACK_480X272 | Play movie.avi file in SD card. (Use NV3041A EBI LCD panel with capacitive touch screen(GT911)) |
 
 ## **Compiling options**
 
@@ -24,8 +26,6 @@ User can select listed **Target Name** to build target execution using uVision M
 - The partial update approach is applied in this port.
 
 ## **Purchase**
-
-[Nuvoton Direct]()
 
 ## **Resources**
 

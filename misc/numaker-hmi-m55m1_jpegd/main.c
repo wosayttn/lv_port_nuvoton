@@ -174,6 +174,7 @@ static void sys_init(void)
 
     InitDebugUart();
 
+#if defined(USE_HYPERRAM_AS_FRAMEBUFFER)
     /* Enable SPIM module clock */
     CLK_EnableModuleClock(SPIM0_MODULE);
 
@@ -214,12 +215,13 @@ static void sys_init(void)
     GPIO_SetSlewCtl(PH, (BIT12 | BIT13 | BIT14 | BIT15), GPIO_SLEWCTL_FAST0);
     GPIO_SetSlewCtl(PJ, (BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7), GPIO_SLEWCTL_FAST0);
 
-    extern void HyperRAM_Init(SPIM_T * spim);
-    HyperRAM_Init(SPIM0);
+    extern void SPIM_HyperRAM_Init(SPIM_T * spim);
+    SPIM_HyperRAM_Init(SPIM0);
 
-    SPIM_HYPER_EnterDirectMapMode(SPIM0);
 
-    DNA350DevInit();
+#endif
+
+
 
     if (SDH_Open_Disk(SDH0, CardDetect_From_GPIO) != SDH_OK)
     {
@@ -227,6 +229,7 @@ static void sys_init(void)
         while (1);
     }
 
+    DNA350DevInit();
 }
 
 int main(void)

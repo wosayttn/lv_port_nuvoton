@@ -9,7 +9,8 @@
 #include "avilib.h"
 #include "lvgl.h"
 
-#define DEF_JPG_BITSTREAM_BUFFER_ADDR   (0x82000000 + (7*1024*1024))
+/* The array size must larger max. frame size in media file. */
+static char framebuf[64*1024] __attribute__((aligned(32)));
 
 // Timer callback to read the next frame from the AVI file and update the image
 static void img_timer(lv_timer_t *t) {
@@ -17,7 +18,6 @@ static void img_timer(lv_timer_t *t) {
   static lv_img_dsc_t JpgImg = {0};
   static uint32_t idx = 0;
   lv_obj_t *img = (lv_obj_t *)lv_timer_get_user_data(t);
-  static char *framebuf = (char *)DEF_JPG_BITSTREAM_BUFFER_ADDR;
 
   if (!avi) {
     // AVI-MJPEG Player

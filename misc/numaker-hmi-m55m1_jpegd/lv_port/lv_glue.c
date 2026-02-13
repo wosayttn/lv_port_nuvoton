@@ -19,11 +19,11 @@
 #endif
 #define CONFIG_VRAM_TOTAL_ALLOCATED_SIZE    NVT_ALIGN((CONFIG_VRAM_BUFFER_NUM * LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (LV_COLOR_DEPTH/8)), DCACHE_LINE_SIZE)
 
-//#if defined(USE_HYPERRAM_AS_FRAMEBUFFER)
+#if defined(USE_HYPERRAM_AS_FRAMEBUFFER)
     static uint8_t *s_au8FrameBuf = (uint8_t *)SPIM_DMM0_SADDR;
-//#else
-//    static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DCACHE_LINE_SIZE)));
-//#endif
+#else
+    static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DCACHE_LINE_SIZE)));
+#endif
 
 void sysDelay(uint32_t ms)
 {
@@ -96,19 +96,27 @@ int lcd_device_initialize(void)
     GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
 
 
-#if defined(__800x480__ )
+#if defined(__800x480__)
+    // For LT7381 write-cycle timing
+
     /* Open EBI  */
     EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
 
     /* Optimization timing. */
     EBI_SetBusTiming(CONFIG_DISP_EBI, EBI_TCTL_RAHDOFF_Msk | EBI_TCTL_WAHDOFF_Msk | (4 << EBI_TCTL_TACC_Pos), EBI_MCLKDIV_2);
-#else
+
+#elif defined(__480x272__)
+    // For NV3041A write-cycle timing
+
     /* Open EBI  */
-    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_SLOW, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
-#endif
+    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
+
+    /* Optimization timing. */
+    EBI_SetBusTiming(CONFIG_DISP_EBI, EBI_TCTL_RAHDOFF_Msk | EBI_TCTL_WAHDOFF_Msk | (3 << EBI_TCTL_TACC_Pos), EBI_MCLKDIV_4);
 
 #endif
 
+#endif
 
     return disp_init();
 }

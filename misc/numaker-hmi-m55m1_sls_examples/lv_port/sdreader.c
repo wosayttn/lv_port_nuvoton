@@ -12,8 +12,124 @@
 
 static FIL     FileObject;
 static TCHAR  _Path[3];
-static FATFS  _FatfsVolSd0;
-static FATFS  _FatfsVolSd1;
+static FATFS  _FatfsVolSd;
+
+static void put_rc(FRESULT rc)
+{
+    const TCHAR *p =
+        _T("OK\0DISK_ERR\0INT_ERR\0NOT_READY\0NO_FILE\0NO_PATH\0INVALID_NAME\0")
+        _T("DENIED\0EXIST\0INVALID_OBJECT\0WRITE_PROTECTED\0INVALID_DRIVE\0")
+        _T("NOT_ENABLED\0NO_FILE_SYSTEM\0MKFS_ABORTED\0TIMEOUT\0LOCKED\0")
+        _T("NOT_ENOUGH_CORE\0TOO_MANY_OPEN_FILES\0INVALID_PARAMETER\0");
+
+    uint32_t i;
+
+    for (i = 0; (i != (UINT)rc) && *p; i++)
+    {
+        while (*p++) ;
+    }
+
+    printf(_T("rc=%u FR_%s\n"), (UINT)rc, p);
+}
+
+static const char* get_fname(FILINFO *fno)
+{
+    return fno->fname;
+}
+
+static void print_size(unsigned long size)
+{
+    if (size < 1024)
+    {
+        printf("%6lu B ", size);
+    }
+    else if (size < (1024UL * 1024))
+    {
+        printf("%6lu KB", size >> 10);
+    }
+    else
+    {
+        printf("%6lu MB", size >> 20);
+    }
+}
+
+static void fatfs_ls(const char *path)
+{
+    FRESULT res;
+    DIR dir;
+    FILINFO fno;
+
+    unsigned long total_files = 0;
+    unsigned long total_dirs  = 0;
+    unsigned long total_size  = 0;
+
+    res = f_opendir(&dir, path);
+    if (res != FR_OK)
+    {
+        printf("opendir failed (%d)\n", res);
+        return;
+    }
+
+    printf("\nATTR   DATE        TIME   NAME                     SIZE\n");
+    printf("-----------------------------------------------------------\n");
+
+    while (1)
+    {
+        res = f_readdir(&dir, &fno);
+        if (res != FR_OK || fno.fname[0] == 0)
+            break;
+
+        if (fno.fname[0] == '.')
+            continue;
+
+        const char *name = get_fname(&fno);
+
+        /* attributes */
+        printf("%c%c%c%c%c  ",
+            (fno.fattrib & AM_DIR) ? 'D' : '-',
+            (fno.fattrib & AM_RDO) ? 'R' : '-',
+            (fno.fattrib & AM_HID) ? 'H' : '-',
+            (fno.fattrib & AM_SYS) ? 'S' : '-',
+            (fno.fattrib & AM_ARC) ? 'A' : '-');
+
+        /* date */
+        printf("%04u/%02u/%02u  ",
+            (fno.fdate >> 9) + 1980,
+            (fno.fdate >> 5) & 15,
+            fno.fdate & 31);
+
+        /* time */
+        printf("%02u:%02u  ",
+            (fno.ftime >> 11),
+            (fno.ftime >> 5) & 63);
+
+        /* name */
+        printf("%-24s  ", name);
+
+        /* size */
+        if (fno.fattrib & AM_DIR)
+        {
+            printf("<DIR>\n");
+            total_dirs++;
+        }
+        else
+        {
+            print_size(fno.fsize);
+            printf("\n");
+            total_files++;
+            total_size += fno.fsize;
+        }
+    }
+
+    f_closedir(&dir);
+
+    printf("-----------------------------------------------------------\n");
+    printf("%4lu File(s), ", total_files);
+    print_size(total_size);
+    printf("\n");
+    printf("%4lu Dir(s)\n\n", total_dirs);
+}
+
 
 static void SDH_ISR(SDH_T *sdh)
 {
@@ -189,6 +305,7 @@ SDReader_Rewind(VOID)
 int32_t SDH_Open_Disk(SDH_T *sdh, uint32_t u32CardDetSrc)
 {
     static int bInit = 0;
+    FRESULT res;
 
     if (bInit) return SDH_OK;
 
@@ -200,19 +317,16 @@ int32_t SDH_Open_Disk(SDH_T *sdh, uint32_t u32CardDetSrc)
         return SDH_ERR_FAIL;
     }
 
+    _Path[0] = 'A';
     _Path[1] = ':';
     _Path[2] = 0;
 
-    if (sdh == SDH0)
+    if ((res = f_mount(&_FatfsVolSd, _Path, 1)) != 0)
     {
-        _Path[0] = '0';
-        f_mount(&_FatfsVolSd0, _Path, 1);
+        put_rc(res);
+        return SDH_ERR_FAIL;
     }
-    else
-    {
-        _Path[0] = '1';
-        f_mount(&_FatfsVolSd1, _Path, 1);
-    }
+		fatfs_ls(_Path);
 
     bInit = 1;
     return SDH_OK;
@@ -220,18 +334,9 @@ int32_t SDH_Open_Disk(SDH_T *sdh, uint32_t u32CardDetSrc)
 
 void SDH_Close_Disk(SDH_T *sdh)
 {
-    if (sdh == SDH0)
-    {
-        memset(&SD0, 0, sizeof(SDH_INFO_T));
-        f_mount(NULL, _Path, 1);
-        memset(&_FatfsVolSd0, 0, sizeof(FATFS));
-    }
-    else
-    {
-        memset(&SD1, 0, sizeof(SDH_INFO_T));
-        f_mount(NULL, _Path, 1);
-        memset(&_FatfsVolSd1, 0, sizeof(FATFS));
-    }
+		memset(&SD0, 0, sizeof(SDH_INFO_T));
+		f_mount(NULL, _Path, 1);
+		memset(&_FatfsVolSd, 0, sizeof(FATFS));
 }
 
 DWORD get_fattime(void)

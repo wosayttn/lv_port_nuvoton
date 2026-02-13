@@ -22,7 +22,6 @@
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
 #if defined(__480x272__)
     #define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX)
-    #define CONFIG_XY_REVERSED               1 //GT911 Reverse X/Y
 #else
     #define CONFIG_DISP_LINE_BUFFER_NUMBER  (LV_VER_RES_MAX/2)
 #endif
@@ -65,6 +64,10 @@
     #endif
 
 #else
+
+#if defined(__480x272__)
+    #define CONFIG_XY_REVERSED               1 //GT911 Reverse X/Y
+#endif
 
     /* FSA506/LT7381/NV3041A EBI */
     #define CONFIG_DISP_USE_PDMA
