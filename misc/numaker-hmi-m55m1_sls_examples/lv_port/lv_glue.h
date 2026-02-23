@@ -17,7 +17,9 @@
 #include "task.h"
 #include "semphr.h"
 
-#define PORT_OFFSET   0x40
+#if !defined(PORT_OFFSET)
+    #define PORT_OFFSET         0x40
+#endif
 
 /* Define off-screen line buffer number,  Range: 1~LV_VER_RES_MAX */
 #if defined(__480x272__)
@@ -28,6 +30,23 @@
 
 #if (CONFIG_DISP_LINE_BUFFER_NUMBER < 1) || (CONFIG_DISP_LINE_BUFFER_NUMBER > LV_VER_RES_MAX)
     #error "Wrong CONFIG_DISP_LINE_BUFFER_NUMBER definition"
+#endif
+
+#if defined(USE_NUMAKER_TFT_LCD5_V_1_2)
+    //For NUMAKER_TFT_LCD5_V1.2 board
+    #define CONFIG_INDEV_TOUCH_FT5316   1
+    #define CONFIG_DISP_LT7381          1
+#elif defined(USE_NUMAKER_TFT_LCD43_V_1_1)
+    //For NUMAKER_TFT_LCD43_V1.1 board
+    #define CONFIG_INDEV_TOUCH_GT911    1
+    #define CONFIG_DISP_NV3041A         1
+    #define CONFIG_XY_REVERSED          1
+#elif defined(USE_NUMAKER_TFT_LCD43_V_1_0)
+    //For NUMAKER_TFT_LCD43_V1.0 board
+    #define CONFIG_INDEV_TOUCH_ST1663I  1
+    #define CONFIG_DISP_FSA506          1
+#else
+    #error "Select the LCD panel board"
 #endif
 
 #define GPIO_PIN_DATA              GPIO_PIN_DATA_S
@@ -64,11 +83,6 @@
     #endif
 
 #else
-
-#if defined(__480x272__)
-    #define CONFIG_XY_REVERSED               1 //GT911 Reverse X/Y
-#endif
-
     /* FSA506/LT7381/NV3041A EBI */
     #define CONFIG_DISP_USE_PDMA
     #define CONFIG_DISP_EBI_ADDR       (EBI_BANK0_BASE_ADDR+(CONFIG_DISP_EBI*EBI_MAX_SIZE))

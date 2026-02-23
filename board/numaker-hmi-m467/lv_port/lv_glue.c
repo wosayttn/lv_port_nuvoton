@@ -52,12 +52,20 @@ int lcd_device_initialize(void)
 #if defined(CONFIG_DISP_EBI)
 
     /* Open EBI  */
-#if defined(CONFIG_DISP_FSA506)
-    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_SLOW, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
-#elif defined(CONFIG_DISP_NV3041A)
     EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_FAST, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
+
+#if defined(CONFIG_DISP_FSA506)
+    // For FSA506 write-cycle timing
+
+    /* Optimization timing. */
+    EBI_SetBusTiming(CONFIG_DISP_EBI, EBI_TCTL_RAHDOFF_Msk | EBI_TCTL_WAHDOFF_Msk | (0x5 << EBI_TCTL_W2X_Pos) | (0x4 << EBI_TCTL_TAHD_Pos) | (0x4 << EBI_TCTL_TACC_Pos), EBI_MCLKDIV_2);
+
+#elif defined(CONFIG_DISP_NV3041A)
+    // For NV3041A write-cycle timing
+
     /* Optimization timing. */
     EBI_SetBusTiming(CONFIG_DISP_EBI, (0x4 << EBI_TCTL_W2X_Pos) | (0x4 << EBI_TCTL_TAHD_Pos) | (0x0 << EBI_TCTL_TACC_Pos), EBI_MCLKDIV_2);
+
 #endif
 
 #elif defined(CONFIG_DISP_SPI)

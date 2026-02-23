@@ -89,32 +89,40 @@ int lcd_device_initialize(void)
     GPIO_T *PORT;
 
     /* Set GPIO Output mode for display pins. */
+#if defined(CONFIG_DISP_PIN_RESET)
     PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_RESET) * PORT_OFFSET));
     GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_RESET)), GPIO_MODE_OUTPUT);
+#endif
 
+#if defined(CONFIG_DISP_PIN_BACKLIGHT)
     PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_PIN_BACKLIGHT) * PORT_OFFSET));
     GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_DISP_PIN_BACKLIGHT)), GPIO_MODE_OUTPUT);
-
-
-#if defined(__800x480__)
-    // For LT7381 write-cycle timing
+#endif
 
     /* Open EBI  */
-    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
+    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_FAST, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
+
+#if defined(CONFIG_DISP_LT7381)
+    // For LT7381 write-cycle timing
 
     /* Optimization timing. */
     EBI_SetBusTiming(CONFIG_DISP_EBI, EBI_TCTL_RAHDOFF_Msk | EBI_TCTL_WAHDOFF_Msk | (4 << EBI_TCTL_TACC_Pos), EBI_MCLKDIV_2);
 
-#elif defined(__480x272__)
-    // For NV3041A write-cycle timing
-
-    /* Open EBI  */
-    EBI_Open(CONFIG_DISP_EBI, EBI_BUSWIDTH_16BIT, EBI_TIMING_NORMAL, EBI_OPMODE_CACCESS | EBI_OPMODE_ADSEPARATE, EBI_CS_ACTIVE_LOW);
+#elif defined(CONFIG_DISP_FSA506)
+    // For FSA506 write-cycle timing
 
     /* Optimization timing. */
-    EBI_SetBusTiming(CONFIG_DISP_EBI, EBI_TCTL_RAHDOFF_Msk | EBI_TCTL_WAHDOFF_Msk | (3 << EBI_TCTL_TACC_Pos), EBI_MCLKDIV_4);
+    EBI_SetBusTiming(CONFIG_DISP_EBI, EBI_TCTL_RAHDOFF_Msk | EBI_TCTL_WAHDOFF_Msk | (0x6 << EBI_TCTL_W2X_Pos) | (0x6 << EBI_TCTL_TAHD_Pos) | (0x6 << EBI_TCTL_TACC_Pos), EBI_MCLKDIV_2);
+
+#elif defined(CONFIG_DISP_NV3041A)
+    // For NV3041A write-cycle timing
+
+    /* Optimization timing. */
+    EBI_SetBusTiming(CONFIG_DISP_EBI, (0x4 << EBI_TCTL_W2X_Pos) | (0x4 << EBI_TCTL_TAHD_Pos) | (0x0 << EBI_TCTL_TACC_Pos), EBI_MCLKDIV_2);
 
 #endif
+
+
 
 #endif
 
