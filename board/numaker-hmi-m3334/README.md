@@ -13,7 +13,8 @@ User can select listed **Target Name** to build target execution using uVision M
 
 | Target | Description |
 |-|-|
-| M3334KI_320x240_ILI9341 | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
+| M3334KI_NUFUN | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
+| M3334KI_NUTFT | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
 
 ## **GCC project**
 
@@ -21,7 +22,7 @@ To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 
 | Target | Description |
 |-|-|
-| M3334KI_320x240_ILI9341 | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
+| M3334KI_NUFUN | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
 
 ## **IAR project**
 
@@ -29,7 +30,7 @@ To build target execution using IAR IDE(IAR 9.40).
 
 | Target | Description |
 |-|-|
-| Release | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
+| Release | (NUFUN) Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
 
 ## **VSCode project**
 
@@ -37,7 +38,7 @@ To build target execution using VSCode IDE or run the build.ps1 scripts.
 
 | Target | Description |
 |-|-|
-| M3334KI_320x240_ILI9341 | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
+| M3334KI_NUFUN | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
 
 ## **Compiling options**
 

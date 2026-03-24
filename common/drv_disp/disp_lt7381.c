@@ -6,7 +6,7 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "disp.h"
+#include "numaker_disp.h"
 
 #define LCD_VBPD        20
 #define LCD_VFPD        12
@@ -15,8 +15,8 @@
 #define LCD_HFPD        160
 #define LCD_HSPW        20
 
-#define PIXEL_CLOCK ((LCD_HBPD + LCD_HFPD + LCD_HSPW + LV_HOR_RES_MAX) * \
-                    (LCD_VBPD + LCD_VFPD + LCD_VSPW + LV_VER_RES_MAX) * 60)
+#define PIXEL_CLOCK ((LCD_HBPD + LCD_HFPD + LCD_HSPW + DISP_HOR_RES_MAX) * \
+                    (LCD_VBPD + LCD_VFPD + LCD_VSPW + DISP_VER_RES_MAX) * 60)
 
 #define PIXEL_CLOCK_MZ (PIXEL_CLOCK/1000000)
 
@@ -300,10 +300,10 @@ static void lt7381_initial_panel(void)
     [1Bh] Vertical Display Height Bit[10:8]
     Vertical Display Height(Line) = VDHR + 1
     */
-    disp_write_reg(0x14, (LV_HOR_RES_MAX < 8) ? 0 : ((LV_HOR_RES_MAX / 8) - 1));
-    disp_write_reg(0x15, (LV_HOR_RES_MAX < 8) ? LV_HOR_RES_MAX : LV_HOR_RES_MAX % 8);
-    disp_write_reg(0x1A, (LV_VER_RES_MAX - 1));
-    disp_write_reg(0x1B, (LV_VER_RES_MAX - 1) >> 8);
+    disp_write_reg(0x14, (DISP_HOR_RES_MAX < 8) ? 0 : ((DISP_HOR_RES_MAX / 8) - 1));
+    disp_write_reg(0x15, (DISP_HOR_RES_MAX < 8) ? DISP_HOR_RES_MAX : DISP_HOR_RES_MAX % 8);
+    disp_write_reg(0x1A, (DISP_VER_RES_MAX - 1));
+    disp_write_reg(0x1B, (DISP_VER_RES_MAX - 1) >> 8);
 
     //**[16h][17h][18h][19]**//
     /*
@@ -406,8 +406,8 @@ static void lt7381_initial_main_window(void)
     It must be divisible by 4. MIW Bit [1:0] tie to ?? internally.
     The value is physical pixel number. Maximum value is 8188 pixels
     */
-    disp_write_reg(0x24, LV_HOR_RES_MAX);
-    disp_write_reg(0x25, LV_HOR_RES_MAX >> 8);
+    disp_write_reg(0x24, DISP_HOR_RES_MAX);
+    disp_write_reg(0x25, DISP_HOR_RES_MAX >> 8);
 
     //**[26h][27h]**//
     /*
@@ -442,8 +442,8 @@ static void lt7381_initial_main_window(void)
     disp_write_reg(0x51, 0x0 >> 8);
     disp_write_reg(0x52, 0x0 >> 16);
     disp_write_reg(0x53, 0x0 >> 24);
-    disp_write_reg(0x54, LV_HOR_RES_MAX);
-    disp_write_reg(0x55, LV_HOR_RES_MAX >> 8);
+    disp_write_reg(0x54, DISP_HOR_RES_MAX);
+    disp_write_reg(0x55, DISP_HOR_RES_MAX >> 8);
 
     //**[56h][57h][58h][59h][5Ah][5Bh][5Ch][5Dh]**//
     /*
@@ -460,10 +460,10 @@ static void lt7381_initial_main_window(void)
     disp_write_reg(0x57, 0x0 >> 8);
     disp_write_reg(0x58, 0x0);
     disp_write_reg(0x59, 0x0 >> 8);
-    disp_write_reg(0x5A, LV_HOR_RES_MAX);
-    disp_write_reg(0x5B, LV_HOR_RES_MAX >> 8);
-    disp_write_reg(0x5C, LV_VER_RES_MAX);
-    disp_write_reg(0x5D, LV_VER_RES_MAX >> 8);
+    disp_write_reg(0x5A, DISP_HOR_RES_MAX);
+    disp_write_reg(0x5B, DISP_HOR_RES_MAX >> 8);
+    disp_write_reg(0x5C, DISP_VER_RES_MAX);
+    disp_write_reg(0x5D, DISP_VER_RES_MAX >> 8);
 }
 
 int disp_init(void)
@@ -496,21 +496,38 @@ int disp_init(void)
     return 0;
 }
 
-void disp_fillrect(uint16_t *pixels, const lv_area_t *area)
+void disp_fillrect(uint16_t *pixels, const disp_area_t *area)
 {
-    int32_t w = lv_area_get_width(area);
-    int32_t h = lv_area_get_height(area);
-
-    LV_LOG_TRACE("%08x WxH=%dx%d (%d, %d) (%d, %d)",
-                 pixels,
-                 lv_area_get_width(area),
-                 lv_area_get_height(area),
-                 area->x1,
-                 area->y1,
-                 area->x2,
-                 area->y2);
+    int32_t w = (int32_t)(area->x2 - area->x1 + 1);
+    int32_t h = (int32_t)(area->y2 - area->y1 + 1);
 
     disp_set_column(area->x1, area->x2);
     disp_set_page(area->y1, area->y2);
+
+    /* Set Graphic Read/Write position */
+    disp_write_reg(0x5F, 0);
+    disp_write_reg(0x60, 0);
+    disp_write_reg(0x61, 0);
+    disp_write_reg(0x62, 0);
+    DISP_WRITE_REG(0x04);
+
     disp_send_pixels(pixels, h * w * sizeof(uint16_t));
+}
+
+void disp_readrect(uint16_t *pixels, const disp_area_t *area)
+{
+    int32_t w = (int32_t)(area->x2 - area->x1 + 1);
+    int32_t h = (int32_t)(area->y2 - area->y1 + 1);
+
+    disp_set_column(area->x1, area->x2);
+    disp_set_page(area->y1, area->y2);
+
+    /* Set Graphic Read/Write position */
+    disp_write_reg(0x5F, 0);
+    disp_write_reg(0x60, 0);
+    disp_write_reg(0x61, 0);
+    disp_write_reg(0x62, 0);
+    DISP_WRITE_REG(0x04);
+
+    disp_receive_pixels(pixels, h * w * sizeof(uint16_t));
 }

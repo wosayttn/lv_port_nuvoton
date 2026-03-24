@@ -8,6 +8,24 @@
 
 #include "lv_glue.h"
 
+void MPU_Config_ARMv7M(void)
+{
+    // 1. MPU
+    MPU->CTRL = 0;
+
+    // 2. Region 0: 0x60000000 (Size: 2MB = 2^(20+1) -> 20)
+    MPU->RNR  = 0;
+    MPU->RBAR = 0x60000000UL;
+    // TEX=0, C=0, B=0 (Device-nGnRnE), S=0, AP=3 (Full Access), Size=20 (2MB), Enable=1
+    MPU->RASR = (0x03UL << 24) | (20UL << 1) | 0x01UL;
+
+    // 4. MPU (PRIVDEFENA)
+    MPU->CTRL = MPU_CTRL_ENABLE_Msk | MPU_CTRL_PRIVDEFENA_Msk;
+
+    __DSB();
+    __ISB();
+}
+
 static void sys_init(void)
 {
     /* Unlock protected registers */
@@ -19,8 +37,8 @@ static void sys_init(void)
     /* Waiting for clock source ready */
     CLK_WaitClockReady(CLK_STATUS_HIRCSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HXTSTB_Msk);
 
-    /* Set core clock to 192MHz */
-    CLK_SetCoreClock(FREQ_192MHZ);
+    /* Set core clock to 200MHz */
+    CLK_SetCoreClock(FREQ_200MHZ);
 
     /* Set PCLK-related clock */
     CLK->PCLKDIV = (CLK_PCLKDIV_PCLK0DIV2 | CLK_PCLKDIV_PCLK1DIV2);
@@ -47,8 +65,6 @@ static void sys_init(void)
     /* Update System Core Clock */
     SystemCoreClockUpdate();
 
-#if defined(USE_NUTFT)
-
     /* SPI2 */
     CLK_EnableModuleClock(SPI2_MODULE);
 
@@ -58,6 +74,7 @@ static void sys_init(void)
     /* EADC Analog Pin */
     CLK_EnableModuleClock(EADC0_MODULE);
 
+    /* Select EADC peripheral clock source. */
     SYS->GPB_MFP1 &= ~(SYS_GPB_MFP1_PB7MFP_Msk | SYS_GPB_MFP1_PB6MFP_Msk);
     SYS->GPB_MFP1 |= (SYS_GPB_MFP1_PB7MFP_EADC0_CH7 | SYS_GPB_MFP1_PB6MFP_EADC0_CH6);
     SYS->GPB_MFP2 &= ~(SYS_GPB_MFP2_PB9MFP_Msk | SYS_GPB_MFP2_PB8MFP_Msk);
@@ -66,7 +83,6 @@ static void sys_init(void)
     /* Disable digital path on these EADC pins */
     GPIO_DISABLE_DIGITAL_PATH(PB, BIT6 | BIT7 | BIT8 | BIT9);
 
-#else
     /* Enable EBI module clock */
     CLK_EnableModuleClock(EBI_MODULE);
 
@@ -89,13 +105,13 @@ static void sys_init(void)
     SYS->GPJ_MFP2 &= ~(SYS_GPJ_MFP2_PJ9MFP_Msk | SYS_GPJ_MFP2_PJ8MFP_Msk);
     SYS->GPJ_MFP2 |= (SYS_GPJ_MFP2_PJ9MFP_EBI_nWR | SYS_GPJ_MFP2_PJ8MFP_EBI_nRD);
 
-    GPIO_SetSlewCtl(PC, (BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PD, (BIT8 | BIT9), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PE, (BIT14 | BIT15), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PE, (BIT0 | BIT1), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PH, (BIT7 | BIT8 | BIT9 | BIT10 | BIT11), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PJ, (BIT8 | BIT9), GPIO_SLEWCTL_FAST);
-    GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_FAST);
+    GPIO_SetSlewCtl(PC, (BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5), GPIO_SLEWCTL_HIGH);
+    GPIO_SetSlewCtl(PD, (BIT8 | BIT9), GPIO_SLEWCTL_HIGH);
+    GPIO_SetSlewCtl(PE, (BIT14 | BIT15), GPIO_SLEWCTL_HIGH);
+    GPIO_SetSlewCtl(PE, (BIT0 | BIT1), GPIO_SLEWCTL_HIGH);
+    GPIO_SetSlewCtl(PH, (BIT7 | BIT8 | BIT9 | BIT10 | BIT11), GPIO_SLEWCTL_HIGH);
+    GPIO_SetSlewCtl(PJ, (BIT8 | BIT9), GPIO_SLEWCTL_HIGH);
+    GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_HIGH);
 
     /* Enable I2C1 module clock */
     CLK_EnableModuleClock(I2C1_MODULE);
@@ -104,7 +120,6 @@ static void sys_init(void)
     SYS->GPB_MFP2 |= (SYS_GPB_MFP2_PB11MFP_I2C1_SCL | SYS_GPB_MFP2_PB10MFP_I2C1_SDA);
 
     GPIO_SetPullCtl(PB, BIT11 | BIT10, GPIO_PUSEL_PULL_UP);
-#endif
 
     /* Set GPB multi-function pins for UART0 RXD and TXD */
     SYS->GPB_MFP3 &= ~(SYS_GPB_MFP3_PB13MFP_Msk | SYS_GPB_MFP3_PB12MFP_Msk);
@@ -112,6 +127,8 @@ static void sys_init(void)
 
     UART_Open(UART0, 115200);
 
+
+    MPU_Config_ARMv7M();
 }
 
 int main(void)

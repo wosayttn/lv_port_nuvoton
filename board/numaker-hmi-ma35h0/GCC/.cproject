@@ -72,11 +72,11 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/portable/GCC/ARM_CA35&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../lv_port/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_disp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_indev&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_decoder&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../plat_driver/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/core&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../lvgl/src/draw&quot;"/>
@@ -96,6 +96,7 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1464253970" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="MA35H0=1"/>
+									<listOptionValue builtIn="false" value="__FREERTOS__=1"/>
 									<listOptionValue builtIn="false" value="LV_CONF_INCLUDE_SIMPLE"/>
 									<listOptionValue builtIn="false" value="__1024x600__"/>
 								</option>
@@ -194,7 +195,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../lv_port/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../plat_driver/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_disp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_indev&quot;"/>
@@ -227,7 +228,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="Driver/i2c.c|lv_port/touch_gt911.c|App|App/ui_init_mjpeg_playback.c|GUI_Config/GUIConf.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Driver/i2c.c|plat_driver/touch_gt911.c|App|App/ui_init_mjpeg_playback.c|GUI_Config/GUIConf.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -306,7 +307,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/portable/GCC/ARM_CA35&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../lv_port/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../plat_driver/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_disp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_indev&quot;"/>
@@ -330,6 +331,7 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1271037695" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="MA35H0=1"/>
+									<listOptionValue builtIn="false" value="__FREERTOS__=1"/>
 									<listOptionValue builtIn="false" value="USE_1024x600_GT911=1"/>
 									<listOptionValue builtIn="false" value="LV_CONF_INCLUDE_SIMPLE"/>
 									<listOptionValue builtIn="false" value="__1024x600__"/>
@@ -429,7 +431,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../lv_port/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../plat_driver/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_disp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_indev&quot;"/>
@@ -462,7 +464,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="lv_port/touch_adc_calibration.c|App|App/ui_init_mjpeg_playback.c|GUI_Config/GUIConf.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="plat_driver/touch_adc_calibration.c|App|App/ui_init_mjpeg_playback.c|GUI_Config/GUIConf.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

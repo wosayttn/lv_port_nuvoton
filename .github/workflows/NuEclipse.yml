@@ -29,7 +29,7 @@ jobs:
           arm-none-eabi-gcc --version
           aarch64-none-elf-gcc --version
 
-          mapfile -t solutions < <(find . -type f -name .cproject -exec dirname {} \;)
+          mapfile -t solutions < <(find board misc -type f -name .cproject -exec dirname {} \;)
           set +e
 
           mkdir -p "$GITHUB_WORKSPACE/artifacts"

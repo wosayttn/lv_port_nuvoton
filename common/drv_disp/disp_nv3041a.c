@@ -6,7 +6,10 @@
  * @copyright (C) 2025 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "disp.h"
+#include "numaker_disp.h"
+
+#define DISP_HOR_RES_MAX      480
+#define DISP_VER_RES_MAX      272
 
 int disp_init(void)
 {
@@ -139,24 +142,27 @@ int disp_init(void)
     return 0;
 }
 
-void disp_fillrect(uint16_t *pixels, const lv_area_t *area)
+void disp_fillrect(uint16_t *pixels, const disp_area_t *area)
 {
-    int32_t w = lv_area_get_width(area);
-    int32_t h = lv_area_get_height(area);
-
-    LV_LOG_INFO("%08x WxH=%dx%d (%d, %d) (%d, %d)",
-                pixels,
-                lv_area_get_width(area),
-                lv_area_get_height(area),
-                area->x1,
-                area->y1,
-                area->x2,
-                area->y2);
+    int32_t w = (int32_t)(area->x2 - area->x1 + 1);
+    int32_t h = (int32_t)(area->y2 - area->y1 + 1);
 
     disp_set_column(area->x1, area->x2);
     disp_set_page(area->y1, area->y2);
-
-    DISP_WRITE_REG(0x2c);
+    DISP_WRITE_REG(0x2C);
 
     disp_send_pixels(pixels, h * w * sizeof(uint16_t));
+}
+
+void disp_readrect(uint16_t *pixels, const disp_area_t *area)
+{
+    uint16_t u16SysID[2] = {0};
+
+    DISP_WRITE_REG(0x4);
+    u16SysID[0] = DISP_READ_DATA();
+    DISP_READ_DATA();
+    u16SysID[1] = DISP_READ_DATA();
+    DISP_READ_DATA();
+
+    printf("[%s]SysID: %02X%02X -- Not supported\n", __func__, u16SysID[0], u16SysID[1]);
 }

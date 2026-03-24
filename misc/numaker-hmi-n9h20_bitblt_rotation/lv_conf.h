@@ -14,7 +14,7 @@
 
 #define LV_USE_DRAW_BITBLT                     1
 #define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     32
-#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE)))
 #define CONFIG_LV_DRAW_BUF_ALIGN               32
 
 #define LV_USE_OS                       LV_OS_FREERTOS

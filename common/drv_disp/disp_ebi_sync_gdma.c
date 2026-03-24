@@ -9,7 +9,7 @@
 
 #include "dma350_lib.h"
 #include "dma350_ch_drv.h"
-#include "disp.h"
+#include "numaker_disp.h"
 
 /* Don't touch me */
 #define CONFIG_DISP_VSYNC_BITMASK        (1<<CONFIG_DISP_VSYNC_BITIDX)

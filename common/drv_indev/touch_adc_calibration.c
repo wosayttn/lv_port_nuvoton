@@ -7,8 +7,8 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "lvgl.h"
-#include "lv_glue.h"
+#include "numaker_disp.h"
+#include "numaker_touch.h"
 
 #define DEF_CAL_POINT_NUM  5
 #define DEF_DOT_NUMBER    9
@@ -25,23 +25,22 @@ void ad_touch_reset_calmat(void)
 
 void ad_touch_update_calmat(S_CALIBRATION_MATRIX *psNewCalMat)
 {
-    LV_ASSERT(psNewCalMat);
     if (psNewCalMat->div != 0)
     {
         memcpy(&g_sCalMat, psNewCalMat, sizeof(S_CALIBRATION_MATRIX));
-        LV_LOG_INFO("Applied calibration data: %d, %d, %d, %d, %d, %d, %d",
-                    g_sCalMat.a,
-                    g_sCalMat.b,
-                    g_sCalMat.c,
-                    g_sCalMat.d,
-                    g_sCalMat.e,
-                    g_sCalMat.f,
-                    g_sCalMat.div);
+//        printf("Applied calibration data: %d, %d, %d, %d, %d, %d, %d\n",
+//               g_sCalMat.a,
+//               g_sCalMat.b,
+//               g_sCalMat.c,
+//               g_sCalMat.d,
+//               g_sCalMat.e,
+//               g_sCalMat.f,
+//               g_sCalMat.div);
 
     }
 }
 
-int ad_cal_mat_get(const lv_point_t *psDispCP, lv_point_t *psADCCP, S_CALIBRATION_MATRIX *psCM)
+int ad_cal_mat_get(const numaker_point_t *psDispCP, numaker_point_t *psADCCP, S_CALIBRATION_MATRIX *psCM)
 {
 #if (DEF_CAL_POINT_NUM==3)
 
@@ -141,20 +140,20 @@ int ad_cal_mat_get(const lv_point_t *psDispCP, lv_point_t *psADCCP, S_CALIBRATIO
 #if (DEF_CAL_POINT_NUM==3)
 const lv_point_t sDispPoints[DEF_CAL_POINT_NUM] =
 {
-    {LV_HOR_RES_MAX / 4, LV_VER_RES_MAX / 2},
-    {LV_HOR_RES_MAX - LV_HOR_RES_MAX / 4, LV_VER_RES_MAX / 4},
-    {LV_HOR_RES_MAX / 2, LV_VER_RES_MAX - LV_VER_RES_MAX / 4}
+    {DISP_HOR_RES_MAX / 4, DISP_VER_RES_MAX / 2},
+    {DISP_HOR_RES_MAX - DISP_HOR_RES_MAX / 4, DISP_VER_RES_MAX / 4},
+    {DISP_HOR_RES_MAX / 2, DISP_VER_RES_MAX - DISP_VER_RES_MAX / 4}
 };
 #elif (DEF_CAL_POINT_NUM==5)
-const static lv_point_t sDispPoints[DEF_CAL_POINT_NUM] =
+const static numaker_point_t sDispPoints[DEF_CAL_POINT_NUM] =
 {
 #define DEF_CUT_PIECES 8
-    {LV_HOR_RES_MAX / DEF_CUT_PIECES, LV_VER_RES_MAX / DEF_CUT_PIECES},
-    {LV_HOR_RES_MAX - LV_HOR_RES_MAX / DEF_CUT_PIECES, LV_VER_RES_MAX / DEF_CUT_PIECES},
-    {LV_HOR_RES_MAX - LV_HOR_RES_MAX / DEF_CUT_PIECES, LV_VER_RES_MAX - LV_VER_RES_MAX / DEF_CUT_PIECES},
-    {LV_HOR_RES_MAX / DEF_CUT_PIECES, LV_VER_RES_MAX - LV_VER_RES_MAX / DEF_CUT_PIECES},
+    {DISP_HOR_RES_MAX / DEF_CUT_PIECES, DISP_VER_RES_MAX / DEF_CUT_PIECES},
+    {DISP_HOR_RES_MAX - DISP_HOR_RES_MAX / DEF_CUT_PIECES, DISP_VER_RES_MAX / DEF_CUT_PIECES},
+    {DISP_HOR_RES_MAX - DISP_HOR_RES_MAX / DEF_CUT_PIECES, DISP_VER_RES_MAX - DISP_VER_RES_MAX / DEF_CUT_PIECES},
+    {DISP_HOR_RES_MAX / DEF_CUT_PIECES, DISP_VER_RES_MAX - DISP_VER_RES_MAX / DEF_CUT_PIECES},
 
-    {LV_HOR_RES_MAX / 2, LV_VER_RES_MAX / 2}
+    {DISP_HOR_RES_MAX / 2, DISP_VER_RES_MAX / 2}
 };
 #endif
 
@@ -182,26 +181,30 @@ static void _cleanscreen(void)
     /* Sync-type LCD panel, will fill to VRAM directly. */
     int i, line = 0;
     S_LCD_INFO sLcdInfo = {0};
-    lv_area_t area;
+    disp_area_t area;
 
-    LV_LOG_INFO("BEGIN");
+    if (lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) != 0)
+    {
+        while (1);
+    }
 
-    LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
+    uint32_t u32LineBufNum = sLcdInfo.u32VramSize / sLcdInfo.u32BytePerPixel / sLcdInfo.u32ResWidth;
+    u32LineBufNum = (u32LineBufNum > DISP_VER_RES_MAX) ? DISP_VER_RES_MAX : u32LineBufNum;
 
     switch (sLcdInfo.evLCDType)
     {
     case evLCD_TYPE_SYNC:
     {
-#if (LV_COLOR_DEPTH == 16)  //RGB565
+#if (DISP_COLOR_DEPTH == 16)  //RGB565
         volatile uint16_t *plvColorStart = (volatile uint16_t *)sLcdInfo.pvVramStartAddr;
-#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+#elif (DISP_COLOR_DEPTH == 32)  //ARGB888
         volatile uint32_t *plvColorStart = (volatile uint32_t *)sLcdInfo.pvVramStartAddr;
 #endif
-        for (i = 0; i < LV_HOR_RES_MAX * LV_VER_RES_MAX; i++)
+        for (i = 0; i < DISP_HOR_RES_MAX * DISP_VER_RES_MAX; i++)
         {
-#if (LV_COLOR_DEPTH == 16)  //RGB565
+#if (DISP_COLOR_DEPTH == 16)  //RGB565
             *((uint16_t *)plvColorStart) = 0xCADB;
-#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+#elif (DISP_COLOR_DEPTH == 32)  //ARGB888
             *((uint32_t *)plvColorStart) = (uint32_t)0xFF97CADB;
 #endif
             plvColorStart++;
@@ -211,19 +214,19 @@ static void _cleanscreen(void)
 
     case evLCD_TYPE_MPU:
     {
-        while (line < LV_VER_RES_MAX)
+        while (line < DISP_VER_RES_MAX)
         {
-#if (LV_COLOR_DEPTH == 16)  //RGB565
+#if (DISP_COLOR_DEPTH == 16)  //RGB565
             volatile uint16_t *plvColorStart = (volatile uint16_t *)sLcdInfo.pvVramStartAddr;
-#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+#elif (DISP_COLOR_DEPTH == 32)  //ARGB888
             volatile uint32_t *plvColorStart = (volatile uint32_t *)sLcdInfo.pvVramStartAddr;
 #endif
 
-            for (i = 0; i < LV_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER; i++)
+            for (i = 0; i < DISP_HOR_RES_MAX * u32LineBufNum; i++)
             {
-#if (LV_COLOR_DEPTH == 16)  //RGB565
+#if (DISP_COLOR_DEPTH == 16)  //RGB565
                 *((uint16_t *)plvColorStart) = 0xCADB;
-#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+#elif (DISP_COLOR_DEPTH == 32)  //ARGB888
                 *((uint32_t *)plvColorStart) = (uint32_t)0xFF97CADB;
 #endif
                 plvColorStart++;
@@ -231,13 +234,16 @@ static void _cleanscreen(void)
 
             area.x1 = 0;
             area.y1 = line;
-            area.x2 = LV_HOR_RES_MAX - 1;
-            area.y2 = ((line + CONFIG_DISP_LINE_BUFFER_NUMBER) < LV_VER_RES_MAX) ? (line + CONFIG_DISP_LINE_BUFFER_NUMBER) - 1 : LV_VER_RES_MAX - 1;
+            area.x2 = DISP_HOR_RES_MAX - 1;
+            area.y2 = ((line + u32LineBufNum) < DISP_VER_RES_MAX) ? (line + u32LineBufNum) - 1 : DISP_VER_RES_MAX - 1;
 
             /* Update dirty region. */
-            LV_ASSERT(lcd_device_control(evLCD_CTRL_RECT_UPDATE, (void *)&area) == 0);
+            if (lcd_device_control(evLCD_CTRL_RECT_UPDATE, (void *)&area) != 0)
+            {
+                while (1);
+            }
 
-            line += CONFIG_DISP_LINE_BUFFER_NUMBER;
+            line += u32LineBufNum;
         }
     }
     break;
@@ -245,45 +251,44 @@ static void _cleanscreen(void)
     default:
         break;
     }
-
-    LV_LOG_INFO("END");
 }
 
 static void _draw_bots(int x, int y)
 {
-    lv_area_t area;
+    disp_area_t area;
 
     /* Rendering */
     int start_x = x - (DEF_DOT_NUMBER / 2);
     int start_y = y - (DEF_DOT_NUMBER / 2);
 
-    LV_LOG_INFO("BEGIN");
-
     S_LCD_INFO sLcdInfo = {0};
-    LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
+    if (lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) != 0)
+    {
+        while (1);
+    }
 
     switch (sLcdInfo.evLCDType)
     {
     case evLCD_TYPE_SYNC:
     {
         int i, j;
-#if (LV_COLOR_DEPTH == 16)  //RGB565
-        volatile uint16_t *plvColorStart = (volatile uint16_t *)((uintptr_t)sLcdInfo.pvVramStartAddr + (start_y) * (LV_HOR_RES_MAX * (LV_COLOR_DEPTH / 8)) + (start_x * 2));
-#elif (LV_COLOR_DEPTH == 32)  //ARGB888
-        volatile uint32_t *plvColorStart = (volatile uint32_t *)((uintptr_t)sLcdInfo.pvVramStartAddr + (start_y) * (LV_HOR_RES_MAX * (LV_COLOR_DEPTH / 8)) + (start_x * 4));
+#if (DISP_COLOR_DEPTH == 16)  //RGB565
+        volatile uint16_t *plvColorStart = (volatile uint16_t *)((uintptr_t)sLcdInfo.pvVramStartAddr + (start_y) * (DISP_HOR_RES_MAX * (DISP_COLOR_DEPTH / 8)) + (start_x * 2));
+#elif (DISP_COLOR_DEPTH == 32)  //ARGB888
+        volatile uint32_t *plvColorStart = (volatile uint32_t *)((uintptr_t)sLcdInfo.pvVramStartAddr + (start_y) * (DISP_HOR_RES_MAX * (DISP_COLOR_DEPTH / 8)) + (start_x * 4));
 #endif
         for (i = 0; i < DEF_DOT_NUMBER; i++)
         {
             for (j = 0; j < DEF_DOT_NUMBER; j++)
             {
-#if (LV_COLOR_DEPTH == 16)  //RGB565
+#if (DISP_COLOR_DEPTH == 16)  //RGB565
                 *plvColorStart = 0x07E0; //RGB565
-#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+#elif (DISP_COLOR_DEPTH == 32)  //ARGB888
                 *plvColorStart = 0xFF001B48; //ARGB888
 #endif
                 plvColorStart++;
             }
-            plvColorStart += (LV_HOR_RES_MAX - DEF_DOT_NUMBER);
+            plvColorStart += (DISP_HOR_RES_MAX - DEF_DOT_NUMBER);
         }
     }
     break;
@@ -291,16 +296,16 @@ static void _draw_bots(int x, int y)
     case evLCD_TYPE_MPU:
     {
         int i;
-#if (LV_COLOR_DEPTH == 16)  //RGB565
+#if (DISP_COLOR_DEPTH == 16)  //RGB565
         volatile uint16_t *plvColorStart = (volatile uint16_t *)sLcdInfo.pvVramStartAddr;
-#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+#elif (DISP_COLOR_DEPTH == 32)  //ARGB888
         volatile uint32_t *plvColorStart = (volatile uint32_t *)sLcdInfo.pvVramStartAddr;
 #endif
         for (i = 0; i < DEF_DOT_NUMBER * DEF_DOT_NUMBER; i++)
         {
-#if (LV_COLOR_DEPTH == 16)  //RGB565
+#if (DISP_COLOR_DEPTH == 16)  //RGB565
             *plvColorStart = 0x07E0; //RGB565
-#elif (LV_COLOR_DEPTH == 32)  //ARGB888
+#elif (DISP_COLOR_DEPTH == 32)  //ARGB888
             *plvColorStart = 0xFF001B48; //ARGB888
 #endif
             plvColorStart++;
@@ -317,9 +322,8 @@ static void _draw_bots(int x, int y)
     }
 
     /* Update dirty region. */
-    LV_ASSERT(lcd_device_control(evLCD_CTRL_RECT_UPDATE, (void *)&area) == 0);
+    lcd_device_control(evLCD_CTRL_RECT_UPDATE, (void *)&area);
 
-    LV_LOG_INFO("END");
 
     return;
 }
@@ -329,8 +333,8 @@ int ad_touch_calibrate(void)
 {
     int i;
     S_CALIBRATION_MATRIX sCalMat;
-    lv_point_t sADCPoints[DEF_CAL_POINT_NUM];
-    lv_indev_data_t sInDevData;
+    numaker_point_t sADCPoints[DEF_CAL_POINT_NUM];
+    numaker_indev_data_t sInDevData;
 
     ad_touch_reset_calmat();
 
@@ -357,24 +361,24 @@ int ad_touch_calibrate(void)
             }
             else
             {
-                u32SumX += (lv_coord_t)sInDevData.point.x;
-                u32SumY += (lv_coord_t)sInDevData.point.y;
-                LV_LOG_INFO("[%d %d] - Disp:[%d, %d] -> ADC:[%d, %d], SUM:[%d, %d]",
-                            i,
-                            count,
-                            sDispPoints[i].x,
-                            sDispPoints[i].y,
-                            sInDevData.point.x,
-                            sInDevData.point.y,
-                            u32SumX,
-                            u32SumY);
+                u32SumX += (uint32_t)sInDevData.point.x;
+                u32SumY += (uint32_t)sInDevData.point.y;
+//                printf("[%d %d] - Disp:[%d, %d] -> ADC:[%d, %d], SUM:[%d, %d]\n",
+//                       i,
+//                       count,
+//                       sDispPoints[i].x,
+//                       sDispPoints[i].y,
+//                       sInDevData.point.x,
+//                       sInDevData.point.y,
+//                       u32SumX,
+//                       u32SumY);
                 count++;
             }
         }
 
-        sADCPoints[i].x = (lv_coord_t)((float)u32SumX / DEF_MAX_GET_POINT_NUM);
-        sADCPoints[i].y = (lv_coord_t)((float)u32SumY / DEF_MAX_GET_POINT_NUM);
-        LV_LOG_INFO("[%d] - Disp:[%d, %d], AVG-ADC:[%d, %d]", i, sDispPoints[i].x, sDispPoints[i].y, sADCPoints[i].x, sADCPoints[i].y);
+        sADCPoints[i].x = (uint32_t)((float)u32SumX / DEF_MAX_GET_POINT_NUM);
+        sADCPoints[i].y = (uint32_t)((float)u32SumY / DEF_MAX_GET_POINT_NUM);
+//        printf("[%d] - Disp:[%d, %d], AVG-ADC:[%d, %d]\n", i, sDispPoints[i].x, sDispPoints[i].y, sADCPoints[i].x, sADCPoints[i].y);
 
         _cleanscreen();
 
@@ -399,12 +403,12 @@ int ad_touch_calibrate(void)
 
             ad_touch_map(&sumx, &sumy);
 
-            LV_LOG_INFO("[%d] - Disp:[%d, %d], ADC:[%d, %d] -> map[%d, %d]", i, sDispPoints[i].x, sDispPoints[i].y, sADCPoints[i].x, sADCPoints[i].y, sumx, sumy);
+//            printf("[%d] - Disp:[%d, %d], ADC:[%d, %d] -> map[%d, %d]\n", i, sDispPoints[i].x, sDispPoints[i].y, sADCPoints[i].x, sADCPoints[i].y, sumx, sumy);
         }
     }
     else
     {
-        LV_LOG_ERROR("Failed to calibrate.");
+//        printf("Failed to calibrate.");
     }
 
     return 0;

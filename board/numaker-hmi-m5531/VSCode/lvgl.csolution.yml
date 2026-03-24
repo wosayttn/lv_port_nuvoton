@@ -1,10 +1,10 @@
 solution:
   created-by: uv2csolution@1.6.0
   created-for: CMSIS-Toolbox@2.7.0
-  compiler: GCC@>=10.3.1
+  compiler: AC6
   target-types:
-    - type: M5531_320x240
+    - type: M5531_NUTFT
       device: M5531H2LJAE
-      optimize: speed
+      optimize: debug
   projects:
     - project: lvgl.cproject.yml

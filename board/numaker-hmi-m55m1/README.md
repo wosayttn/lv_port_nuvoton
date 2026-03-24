@@ -13,10 +13,10 @@ User can select listed **Target Name** to build target execution using uVision M
 
 | Target | Description |
 |-|-|
-| M55M1_800x480 | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
-| M55M1_480x272 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
-| M55M1_EBI_SYNC_480x272 | Use WQVGA Sync-type LCD panel with capacitive touch screen(FT5446) |
-| M55M1_EBI_SYNC_800x480 | Use WVGA Sync-type LCD panel |
+| LCD5_V1_2  | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
+| LCD43_V1_1 | Use NV3041A EBI LCD panel with capacitive touch screen(GT911) |
+| LCD43_V1_0 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
+| NUTFT_V1_3 | Use ILI9341 SPI LCD panel with resistive touch screen(SW ADC) |
 
 ## **GCC project**
 
@@ -24,7 +24,7 @@ To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 
 | Target | Description |
 |-|-|
-| M55M1_800x480 | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
+| LCD5_V1_2  | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
 
 ## **IAR project**
 
@@ -40,8 +40,10 @@ To build target execution using VSCode IDE or run the build.ps1 scripts.
 
 | Target | Description |
 |-|-|
-| M55M1800x480 | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
-| M55M1480x272 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
+| LCD5_V1_2  | Use LT7381 EBI LCD panel with capacitive touch screen(FT5316) |
+| LCD43_V1_1 | Use NV3041A EBI LCD panel with capacitive touch screen(GT911) |
+| LCD43_V1_0 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
+| NUTFT_V1_3 | Use ILI9341 SPI LCD panel with resistive touch screen(SW ADC) |
 
 ## **Compiling options**
 
@@ -58,5 +60,3 @@ To build target execution using VSCode IDE or run the build.ps1 scripts.
 [Nuvoton Direct]()
 
 ## **Resources**
-
-[Use EBI-PDMA To Drive Syne-type LCM](./EBI_Drive_Sync-type_LCD.pdf)

@@ -7,7 +7,7 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "indev_touch.h"
+#include "numaker_touch.h"
 #include "plat_touch.h"
 
 #define GT911_REGITER_LEN     2
@@ -192,12 +192,11 @@ static int gt911_get_product_id(void)
 
     if (gt911_read_reg(GT911_PRODUCT_ID, (uint8_t *)&sPID, sizeof(sPID)) != 0)
     {
-        LV_LOG_ERROR("read id failed");
         return -1;
     }
 
-    LV_LOG_INFO("Product ID: GT%c%c%c%c", sPID.u8PID1, sPID.u8PID2, sPID.u8PID3, sPID.u8PID4);
-    LV_LOG_INFO("Firmware Version: %04X", sPID.u16FWVersion);
+    ////printf("Product ID: GT%c%c%c%c\n", sPID.u8PID1, sPID.u8PID2, sPID.u8PID3, sPID.u8PID4);
+    ////printf("Firmware Version: %04X\n", sPID.u16FWVersion);
 
     return 0;
 }
@@ -208,13 +207,13 @@ static int gt911_get_info(void)
 
     if (gt911_read_reg(GT911_CONFIG_START, out_info, sizeof(out_info)) != 0)
     {
-        LV_LOG_ERROR("read info failed");
+        ////printf("read info failed\n");
         return -1;
     }
 
-    LV_LOG_INFO("X range: %d", (out_info[2] << 8) | out_info[1]);
-    LV_LOG_INFO("Y range: %d", (out_info[4] << 8) | out_info[3]);
-    LV_LOG_INFO("Point number: %d", out_info[5] & 0x0f);
+    //printf("X range: %d\n", (out_info[2] << 8) | out_info[1]);
+    //printf("Y range: %d\n", (out_info[4] << 8) | out_info[3]);
+    //printf("Point number: %d\n", out_info[5] & 0x0f);
 
     return 0;
 }
@@ -225,20 +224,20 @@ static int gt911_soft_reset(void)
 
     if (gt911_write_reg(GT911_COMMAND_REG, &u8Data, sizeof(u8Data)) != 0)
     {
-        LV_LOG_ERROR("soft reset failed");
+        //printf("soft reset failed\n");
         return -1;
     }
 
     return 0;
 }
 
-static void gt911_touch_up(lv_indev_data_t *buf, int16_t id)
+static void gt911_touch_up(numaker_indev_data_t *buf, int16_t id)
 {
     s_tp_dowm[id] = 0;
 
     if (id == 0)
     {
-        buf[id].state = LV_INDEV_STATE_RELEASED;
+        buf[id].state = NUMAKER_INDEV_STATE_RELEASED;
         buf[id].point.x = pre_x[id];
         buf[id].point.y = pre_y[id];
     }
@@ -248,7 +247,7 @@ static void gt911_touch_up(lv_indev_data_t *buf, int16_t id)
     pre_w[id] = -1;
 }
 
-static void gt911_touch_down(lv_indev_data_t *buf, int8_t id, int16_t x, int16_t y, int16_t w)
+static void gt911_touch_down(numaker_indev_data_t *buf, int8_t id, int16_t x, int16_t y, int16_t w)
 {
     s_tp_dowm[id] = 1;
 
@@ -256,7 +255,7 @@ static void gt911_touch_down(lv_indev_data_t *buf, int8_t id, int16_t x, int16_t
     {
         buf[id].point.x = x;
         buf[id].point.y = y;
-        buf[id].state = LV_INDEV_STATE_PRESSED;
+        buf[id].state = NUMAKER_INDEV_STATE_PRESSED;
     }
 
     pre_x[id] = x; /* save last point */
@@ -264,7 +263,7 @@ static void gt911_touch_down(lv_indev_data_t *buf, int8_t id, int16_t x, int16_t
     pre_w[id] = w;
 }
 
-int indev_touch_get_data(lv_indev_data_t *psInDevData)
+int indev_touch_get_data(numaker_indev_data_t *psInDevData)
 {
     int i, error = 0;
     int32_t touch_event, touchid;
@@ -332,7 +331,7 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
             w = read_buf[off_set + 5] | (read_buf[off_set + 6] << 8); /* size */
 
 #if defined(CONFIG_XY_REVERSED)
-            gt911_touch_down(psInDevData, touchid, (LV_HOR_RES_MAX - 1) - x, (LV_VER_RES_MAX - 1) - y, w);
+            gt911_touch_down(psInDevData, touchid, (DISP_HOR_RES_MAX - 1) - x, (DISP_VER_RES_MAX - 1) - y, w);
 #else
             gt911_touch_down(psInDevData, touchid, x, y, w);
 #endif
@@ -350,7 +349,7 @@ exit_indev_touch_get_data:
 
     // LV_LOG_TRACE("%s (%d, %d)\n", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
 
-    return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
+    return (psInDevData->state == NUMAKER_INDEV_STATE_PRESSED) ? 1 : 0;
 }
 
 static void gt911_dump_config(void)
@@ -358,20 +357,20 @@ static void gt911_dump_config(void)
     // Update configuration to GT911
     gt911_read_reg(GT911_CONFIG_START, GT911_CFG_TBL, sizeof(GT911_CFG_TBL));
 
-    LV_LOG_INFO("========================================================");
+    //printf("========================================================\n");
     for (int i = 0; i < sizeof(GT911_CFG_TBL); i += 8)
     {
-        LV_LOG_INFO("0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X",
-                    GT911_CFG_TBL[i + 0],
-                    GT911_CFG_TBL[i + 1],
-                    GT911_CFG_TBL[i + 2],
-                    GT911_CFG_TBL[i + 3],
-                    GT911_CFG_TBL[i + 4],
-                    GT911_CFG_TBL[i + 5],
-                    GT911_CFG_TBL[i + 6],
-                    GT911_CFG_TBL[i + 7]);
+//        printf("0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X\n",
+//               GT911_CFG_TBL[i + 0],
+//               GT911_CFG_TBL[i + 1],
+//               GT911_CFG_TBL[i + 2],
+//               GT911_CFG_TBL[i + 3],
+//               GT911_CFG_TBL[i + 4],
+//               GT911_CFG_TBL[i + 5],
+//               GT911_CFG_TBL[i + 6],
+//               GT911_CFG_TBL[i + 7]);
     }
-    LV_LOG_INFO("========================================================");
+    //printf("========================================================\n");
 }
 
 int indev_touch_init(void)
@@ -407,12 +406,12 @@ int indev_touch_init(void)
     GT911_CFG_TBL[GT911_CONFIG_START - GT911_CONFIG_START] = 0x6B;
 
     // Update PANEL - Width.
-    GT911_CFG_TBL[GT911_CONFIG_X_OUTPUT_MAX_LOW - GT911_CONFIG_START] = (LV_HOR_RES_MAX & 0xFF); // X output max low byte
-    GT911_CFG_TBL[GT911_CONFIG_X_OUTPUT_MAX_HIGH - GT911_CONFIG_START] = (LV_HOR_RES_MAX >> 8) & 0xFF; // X output max high byte
+    GT911_CFG_TBL[GT911_CONFIG_X_OUTPUT_MAX_LOW - GT911_CONFIG_START] = (DISP_HOR_RES_MAX & 0xFF); // X output max low byte
+    GT911_CFG_TBL[GT911_CONFIG_X_OUTPUT_MAX_HIGH - GT911_CONFIG_START] = (DISP_HOR_RES_MAX >> 8) & 0xFF; // X output max high byte
 
     // Update PANEL - Height.
-    GT911_CFG_TBL[GT911_CONFIG_Y_OUTPUT_MAX_LOW - GT911_CONFIG_START] = (LV_VER_RES_MAX & 0xFF); // Y output max low byte
-    GT911_CFG_TBL[GT911_CONFIG_Y_OUTPUT_MAX_HIGH - GT911_CONFIG_START] = (LV_VER_RES_MAX >> 8) & 0xFF; // Y output max high byte
+    GT911_CFG_TBL[GT911_CONFIG_Y_OUTPUT_MAX_LOW - GT911_CONFIG_START] = (DISP_VER_RES_MAX & 0xFF); // Y output max low byte
+    GT911_CFG_TBL[GT911_CONFIG_Y_OUTPUT_MAX_HIGH - GT911_CONFIG_START] = (DISP_VER_RES_MAX >> 8) & 0xFF; // Y output max high byte
 
     /* INT mode, Rising triggering */
     GT911_CFG_TBL[GT911_CONFIG_MODULE_SWITCH1 - GT911_CONFIG_START] = 0x04;

@@ -17,7 +17,7 @@ project:
     - ../../../common
     - ../../../common/drv_disp
     - ../../../common/drv_indev
-    - ../lv_port
+    - ../plat_driver
     - ../../../lvgl/src
     - ../../../lvgl/src/core
     - ../../../lvgl/src/draw
@@ -326,19 +326,19 @@ project:
     - file: ../../../lvgl/src/widgets/textarea/lv_textarea.c
     - file: ../../../lvgl/src/widgets/tileview/lv_tileview.c
     - file: ../../../lvgl/src/widgets/win/lv_win.c
-  - group: lv_port
+  - group: plat_driver
     files:
     - file: ../../../common/lv_demo.c
     - file: ../../../common/lv_port_disp.c
     - file: ../../../common/lv_port_indev.c
-    - file: ../lv_port/lv_glue.c
+    - file: ../plat_driver/disp_glue.c
     - file: ../lv_conf.h
-    - file: ../lv_port/lv_glue.h
+    - file: ../plat_driver/lv_glue.h
     - file: ../../../common/drv_disp/disp_ili9341.c
     - file: ../../../common/drv_disp/ili9341_ebi.c
     - file: ../../../common/drv_indev/touch_adc.c
     - file: ../../../common/nu_misc.c
-    - file: ../lv_port/drv_pdma.c
+    - file: ../plat_driver/drv_pdma.c
     - file: ../../../common/drv_indev/touch_adc_calibration.c
   - group: FreeRTOS
     files:

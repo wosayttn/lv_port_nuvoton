@@ -6,7 +6,10 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "disp.h"
+#include "numaker_disp.h"
+
+#define DISP_HOR_RES_MAX      480
+#define DISP_VER_RES_MAX      272
 
 int disp_init(void)
 {
@@ -25,8 +28,8 @@ int disp_init(void)
     disp_write_reg(0x42, 0x06);   // PLL Programmable loop divider: 6
 
     /* Set the panel X size */
-    disp_write_reg(0x08, (LV_HOR_RES_MAX >> 8)); //Set the panel X size H[1.0]
-    disp_write_reg(0x09, (LV_HOR_RES_MAX));    //Set the panel X size L[7:0]
+    disp_write_reg(0x08, (DISP_HOR_RES_MAX >> 8)); //Set the panel X size H[1.0]
+    disp_write_reg(0x09, (DISP_HOR_RES_MAX));    //Set the panel X size L[7:0]
 
     /* Memory write start address */
     disp_write_reg(0x0a, 0x00); //[17:16] bits of memory write start address
@@ -45,8 +48,8 @@ int disp_init(void)
 
     disp_write_reg(0x16, (43 >> 8));        //DE pulse start position H-Byte
     disp_write_reg(0x17, (43));             //DE pulse start position L-Byte
-    disp_write_reg(0x18, (LV_HOR_RES_MAX >> 8)); //DE pulse width H-Byte
-    disp_write_reg(0x19, (LV_HOR_RES_MAX));     //DE pulse width L-Byte
+    disp_write_reg(0x18, (DISP_HOR_RES_MAX >> 8)); //DE pulse width H-Byte
+    disp_write_reg(0x19, (DISP_HOR_RES_MAX));     //DE pulse width L-Byte
     disp_write_reg(0x1a, (525 >> 8));       //Hsync total clocks H-Byte
     disp_write_reg(0x1b, (525));            //Hsync total clocks H-Byte
     disp_write_reg(0x1c, 0x00);                      //Vsync start position H-Byte
@@ -55,8 +58,8 @@ int disp_init(void)
     disp_write_reg(0x1f, (10));             //Vsync pulse width L-Byte
     disp_write_reg(0x20, (12 >> 8));        //Vertical DE pulse start position H-Byte
     disp_write_reg(0x21, (12));             //Vertical DE pulse start position L-Byte
-    disp_write_reg(0x22, (LV_VER_RES_MAX >> 8)); //Vertical Active width H-Byte
-    disp_write_reg(0x23, (LV_VER_RES_MAX));     //Vertical Active width H-Byte
+    disp_write_reg(0x22, (DISP_VER_RES_MAX >> 8)); //Vertical Active width H-Byte
+    disp_write_reg(0x23, (DISP_VER_RES_MAX));     //Vertical Active width H-Byte
     disp_write_reg(0x24, (286 >> 8));       //Vertical total width H-Byte
     disp_write_reg(0x25, (286));            //Vertical total width L-Byte
 
@@ -77,31 +80,32 @@ int disp_init(void)
     disp_write_reg(0x31, 0x00);                        //_L byte H-Offset[7:0]
     disp_write_reg(0x32, 0x00);                        //_H byte V-Offset[3:0]
     disp_write_reg(0x33, 0x00);                        //_L byte V-Offset[7:0]
-    disp_write_reg(0x34, (LV_HOR_RES_MAX >> 8));  //H byte H-def[3:0]
-    disp_write_reg(0x35, (LV_HOR_RES_MAX));       //_L byte H-def[7:0]
-    disp_write_reg(0x36, ((2 * LV_VER_RES_MAX) >> 8)); //[3:0] MSB of image vertical physical resolution in memory
-    disp_write_reg(0x37, (2 * LV_VER_RES_MAX));   //[7:0] LSB of image vertical physical resolution in memory
+    disp_write_reg(0x34, (DISP_HOR_RES_MAX >> 8));  //H byte H-def[3:0]
+    disp_write_reg(0x35, (DISP_HOR_RES_MAX));       //_L byte H-def[7:0]
+    disp_write_reg(0x36, ((2 * DISP_VER_RES_MAX) >> 8)); //[3:0] MSB of image vertical physical resolution in memory
+    disp_write_reg(0x37, (2 * DISP_VER_RES_MAX));   //[7:0] LSB of image vertical physical resolution in memory
 
     DISP_SET_BACKLIGHT;
 
     return 0;
 }
 
-void disp_fillrect(uint16_t *pixels, const lv_area_t *area)
+void disp_fillrect(uint16_t *pixels, const disp_area_t *area)
 {
-    int32_t w = lv_area_get_width(area);
-    int32_t h = lv_area_get_height(area);
-
-    LV_LOG_INFO("%08x WxH=%dx%d (%d, %d) (%d, %d)",
-                pixels,
-                lv_area_get_width(area),
-                lv_area_get_height(area),
-                area->x1,
-                area->y1,
-                area->x2,
-                area->y2);
+    int32_t w = (int32_t)(area->x2 - area->x1 + 1);
+    int32_t h = (int32_t)(area->y2 - area->y1 + 1);
 
     disp_set_column(area->x1, area->x2);
     disp_set_page(area->y1, area->y2);
     disp_send_pixels(pixels, h * w * sizeof(uint16_t));
+}
+
+void disp_readrect(uint16_t *pixels, const disp_area_t *area)
+{
+    int32_t w = (int32_t)(area->x2 - area->x1 + 1);
+    int32_t h = (int32_t)(area->y2 - area->y1 + 1);
+
+    disp_set_column(area->x1, area->x2);
+    disp_set_page(area->y1, area->y2);
+    disp_receive_pixels(pixels, h * w * sizeof(uint16_t));
 }

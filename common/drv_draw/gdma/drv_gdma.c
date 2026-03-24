@@ -2,9 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lv_glue.h"
+#include "lvgl.h"
+#include "NuMicro.h"
 #include "dma350_ch_drv.h"
 #include "dma350_lib.h"
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    #include "FreeRTOS.h"
+    #include "task.h"
+    #include "semphr.h"
+#endif
 
 #if defined(__ICCARM__)
     #include "arm_cmse.h" // patch from EWARM 9.50.2 service pack
@@ -29,7 +35,7 @@ void gdmaWaitForCompletion(struct dma350_ch_dev_t *dev, enum dma350_lib_exec_typ
         dma350_ch_cmd(dev, DMA350_CH_CMD_ENABLECMD);
         if (dma350_ch_is_stat_set(dev, DMA350_CH_STAT_ERR))
         {
-            LV_ASSERT(0);
+            while(1);
         }
 
         while (xSemaphoreTake(s_xGDMASem, portMAX_DELAY) != pdTRUE);
@@ -45,12 +51,12 @@ void gdmaWaitForCompletion(struct dma350_ch_dev_t *dev, enum dma350_lib_exec_typ
         status = dma350_ch_wait_status(dev);
         if (!status.b.STAT_DONE || status.b.STAT_ERR)
         {
-            LV_ASSERT(0);
+            while(1);
         }
         break;
 
     default:
-        LV_ASSERT(0);
+        while(1);
     }
 }
 
@@ -76,7 +82,7 @@ void gdmaInterruptInit(void)
 {
 #if (LV_USE_OS==LV_OS_FREERTOS)
     s_xGDMASem = xSemaphoreCreateBinary();
-    LV_ASSERT(s_xGDMASem != NULL);
+    while(s_xGDMASem == NULL);	
 #endif
 }
 

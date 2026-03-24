@@ -6,7 +6,8 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "touch_adc.h"
+#include "numaker_touch.h"
+#include "numaker_disp.h"
 
 #if defined(CONFIG_NG_MFP)
 
@@ -69,7 +70,6 @@ static void tp_switch_to_digital(uint32_t pin)
     __weak uint32_t nu_adc_sampling(uint32_t channel)
 #endif
 {
-    LV_LOG_ERROR("Implement your ad sampling routine in lv_glue.c");
     return 0;
 }
 

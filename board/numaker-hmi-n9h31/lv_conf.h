@@ -9,10 +9,11 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
-#define LV_NUVOTON_INCLUDE     "N9H31.h"
+#define LV_NUVOTON_INCLUDE     "NuMicro.h"
 #include LV_NUVOTON_INCLUDE
 
-#define LV_USE_DRAW_2DGE                1
+#define PLAT_NUVOTON_N9H3X                     1
+#define LV_USE_DRAW_2DGE                       1
 #define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     32
 #define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
 #define CONFIG_LV_DRAW_BUF_ALIGN               32

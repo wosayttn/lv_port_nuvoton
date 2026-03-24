@@ -9,7 +9,7 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
-#define LV_NUVOTON_INCLUDE     "N9H30.h"
+#define LV_NUVOTON_INCLUDE     "NuMicro.h"
 #include LV_NUVOTON_INCLUDE
 
 #define PLAT_NUVOTON_N9H3X                     1

@@ -11,6 +11,7 @@ typedef enum
     evLCD_CTRL_PAN_DISPLAY,
     evLCD_CTRL_WAIT_VSYNC,
     evLCD_CTRL_RECT_UPDATE,
+    evLCD_CTRL_RECT_READ,
     evLCD_CTRL_CNT
 } E_LCD_CTRL;
 
@@ -58,5 +59,10 @@ typedef struct
 
 void *nvt_malloc_align(uint32_t size, uint32_t align);
 void nvt_free_align(void *ptr);
+
+uint32_t ns_to_cycles_ceil(double ns, double clk_hz);
+uint32_t hz_to_ns_ceil(double hz);
+double ns_to_cycles(double ns, double clk_hz);
+double hz_to_ns(double hz);
 
 #endif //__NU_MISC_H__

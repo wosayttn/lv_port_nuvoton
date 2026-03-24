@@ -28,7 +28,7 @@ static void sys_init(void)
         .uiParity = WB_PARITY_NONE,
         .uiRxTriggerLevel = LEVEL_1_BYTE,
     };
-    uart.uiFreq = CONFIG_EXTERN_FREQUENCY;
+    uart.uiFreq = sysGetExternalClock();
 
     //sysUartPort(WB_UART_1);
     sysInitializeUART(&uart);

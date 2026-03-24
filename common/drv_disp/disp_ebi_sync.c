@@ -7,7 +7,7 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "disp.h"
+#include "numaker_disp.h"
 #include "drv_pdma.h"
 
 /* Don't touch me */

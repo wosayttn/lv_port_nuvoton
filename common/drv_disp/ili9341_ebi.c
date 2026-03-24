@@ -6,7 +6,7 @@
  * @copyright (C) 2024 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "disp.h"
+#include "numaker_disp.h"
 
 void disp_set_column(uint16_t StartCol, uint16_t EndCol)
 {
@@ -45,5 +45,49 @@ void disp_send_pixels(uint16_t *pixels, int byte_len)
             DISP_WRITE_DATA(pixels[i]);
             i++;
         }
+    }
+}
+
+static disp_area_t s_receive_area = {0};
+void disp_ili9341_set_area(const disp_area_t *area)
+{
+    s_receive_area = *area;
+}
+
+void disp_receive_pixels(uint16_t *pixels, int byte_len)
+{
+    int i = 0, count;
+
+    int32_t w = (int32_t)(s_receive_area.x2 - s_receive_area.x1 + 1);
+    int32_t h = (int32_t)(s_receive_area.y2 - s_receive_area.y1 + 1);
+
+    disp_set_column(s_receive_area.x1, s_receive_area.x2);
+    disp_set_page(s_receive_area.y1, s_receive_area.y2);
+    DISP_WRITE_REG(0x2E);
+
+    DISP_READ_DATA(); //dummy
+
+    count = h * w;
+
+    while (i < count)
+    {
+        uint8_t r, g, b;
+
+        uint16_t d0 = DISP_READ_DATA();
+        uint16_t d1 = DISP_READ_DATA();
+        uint16_t d2 = DISP_READ_DATA();
+
+        r = d0 >> 8;
+        g = d0 & 0xFF;
+        b = d1 >> 8;
+
+        pixels[i++] = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
+
+        r = d1 & 0xFF;
+        g = d2 >> 8;
+        b = d2 & 0xFF;
+
+        if (i < count)
+            pixels[i++] = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
     }
 }

@@ -2,7 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lv_glue.h"
+#if defined(__FREERTOS__)
+    #include "FreeRTOS.h"
+    #include "task.h"
+    #include "semphr.h"
+#endif
+
+#include "lvgl.h"
 
 #if (LV_USE_OS==LV_OS_FREERTOS)
     static SemaphoreHandle_t s_xGE2DSem = NULL;

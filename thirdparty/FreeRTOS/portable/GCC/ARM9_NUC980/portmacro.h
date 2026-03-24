@@ -177,7 +177,20 @@ extern volatile uint32_t ulCriticalNesting;                    \
 }
 
 extern void vTaskSwitchContext( void );
-#define portYIELD_FROM_ISR()        vTaskSwitchContext()
+/* If a switch is required then we just need to call */
+/* vTaskSwitchContext() as the context has already been */
+/* saved. */
+#define portEXIT_SWITCHING_ISR(SwitchRequired)               \
+{                                                            \
+extern void vTaskSwitchContext(void);                        \
+                                                             \
+        if(SwitchRequired)                                   \
+        {                                                    \
+            vTaskSwitchContext();                            \
+        }                                                    \
+}                                                            \
+
+#define portYIELD_FROM_ISR          portEXIT_SWITCHING_ISR
 #define portYIELD()                 __asm volatile ( "SWI 0" )
 /*-----------------------------------------------------------*/
 

@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_proj.xsd">
-
   <SchemaVersion>1.1</SchemaVersion>
-
   <Header>### uVision Project, (C) Keil Software</Header>
-
   <Targets>
     <Target>
-      <TargetName>N9H30F6_800x480</TargetName>
+      <TargetName>N9H30_800x480</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
@@ -46,14 +43,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\lvgl_app_demo_image_n9h30f6_800x480\</OutputDirectory>
-          <OutputName>lvgl_app_demo_image_n9h30f6_800x480</OutputName>
+          <OutputDirectory>.\lvgl_n9h30_800x480\</OutputDirectory>
+          <OutputName>lvgl_n9h30_800x480</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>.\lvgl_app_demo_image_n9h30f6_800x480\</ListingPath>
+          <ListingPath>.\lvgl_n9h30_800x480\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -377,9 +374,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE __FreeRTOS__ CONFIG_APP_DEMO_IMG=1</Define>
+              <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE __FreeRTOS__ CONFIG_APP_DEMO_IMG=1 __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h30\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H30;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\lvgl\examples;..\..\..\;..\sls_files;..\..\..\thirdparty\FatFs-r15\source;..\..\..\thirdparty\avilib;..\App;..\..\..\common\drv_decoder</IncludePath>
+              <IncludePath>..\;..\..\..\board\numaker-hmi-n9h30\plat_driver;..\..\..\board\numaker-hmi-n9h30\;..\..\..\bsp\n9h30\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H30;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common\drv_indev;..\..\..\common\drv_disp;..\..\..\common\drv_decoder;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\lvgl\examples;..\..\..\;..\sls_files;..\..\..\thirdparty\FatFs-r15\source;..\..\..\thirdparty\avilib;..\App</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -426,7 +423,7 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\main.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h30\main.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -482,17 +479,12 @@
             <File>
               <FileName>task_lv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\components\task_lv.c</FilePath>
-            </File>
-            <File>
-              <FileName>FreeRTOSConfig.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\FreeRTOSConfig.h</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h30\components\task_lv.c</FilePath>
             </File>
             <File>
               <FileName>multithread.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\multithread.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h30\multithread.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -597,27 +589,17 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h30\plat_driver\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_glue.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_conf.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\lv_conf.h</FilePath>
             </File>
             <File>
               <FileName>nu_misc.c</FileName>
@@ -628,6 +610,16 @@
               <FileName>touch_adc_calibration.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
+            </File>
+            <File>
+              <FileName>disp_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\board\numaker-hmi-n9h30\plat_driver\disp_glue.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\board\numaker-hmi-n9h30\plat_driver\touch_glue.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2012,5 +2004,4 @@
       </Groups>
     </Target>
   </Targets>
-
 </Project>

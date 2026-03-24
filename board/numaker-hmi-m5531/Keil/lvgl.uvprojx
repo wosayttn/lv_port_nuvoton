@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>M5531_320x240</TargetName>
+      <TargetName>M5531_NUTFT</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>6220000::V6.22::ARMCLANG</pCCUsed>
@@ -16,7 +16,7 @@
         <TargetCommonOption>
           <Device>M5531H2LJAE</Device>
           <Vendor>Nuvoton</Vendor>
-          <PackID>Nuvoton.NuMicroM55_DFP.1.0.1</PackID>
+          <PackID>Nuvoton.NuMicroM55_DFP.3.1.4-rc.3</PackID>
           <PackURL>https://github.com/OpenNuvoton/cmsis-packs/raw/master/Nuvoton_DFP/</PackURL>
           <Cpu>IRAM(0x20100000,0x150000) IRAM2(0x30100000,0x150000) IROM(0x00100000,0x200000) IROM2(0x10100000,0x200000) CPUTYPE("Cortex-M55") FPU3(DFPU) DSP TZ MVE(FP) CLOCK(12000000) ESEL ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -48,8 +48,8 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\lvgl_m5531_320x240\</OutputDirectory>
-          <OutputName>lvgl_m5531_320x240</OutputName>
+          <OutputDirectory>.\lvgl_m5531_nutft\</OutputDirectory>
+          <OutputName>lvgl_m5531_nutft</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__320x240__ USE_NUTFT LV_CONF_INCLUDE_SIMPLE NVT_DCACHE_ON</Define>
+              <Define>__320x240__ USE_NUTFT LV_CONF_INCLUDE_SIMPLE NVT_DCACHE_ON __FREERTOS__=1 CONFIG_DISP_ILI9341=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port\spim_hyperram;..\lv_port\gdma;..\..\..\bsp\m5531\Library\CMSIS\DSP\Include;..\..\..\bsp\M5531\Library\CMSIS\Core\Include;..\..\..\bsp\M5531\Library\Device\Nuvoton\M5531\Include;..\..\..\bsp\M5531\Library\StdDriver\inc;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\plat_driver\spim_hyperram;..\plat_driver\gdma;..\..\..\bsp\m5531\Library\CMSIS\DSP\Include;..\..\..\bsp\M5531\Library\CMSIS\Core\Include;..\..\..\bsp\M5531\Library\Device\Nuvoton\M5531\Include;..\..\..\bsp\M5531\Library\StdDriver\inc;..\plat_driver;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -498,17 +498,17 @@
             <File>
               <FileName>dma350_ch_drv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\gdma\dma350_ch_drv.c</FilePath>
+              <FilePath>..\plat_driver\gdma\dma350_ch_drv.c</FilePath>
             </File>
             <File>
               <FileName>dma350_drv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\gdma\dma350_drv.c</FilePath>
+              <FilePath>..\plat_driver\gdma\dma350_drv.c</FilePath>
             </File>
             <File>
               <FileName>dma350_lib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\gdma\dma350_lib.c</FilePath>
+              <FilePath>..\plat_driver\gdma\dma350_lib.c</FilePath>
             </File>
             <File>
               <FileName>system_M5531.c</FileName>
@@ -1757,7 +1757,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_demo.c</FileName>
@@ -1775,9 +1775,9 @@
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.c</FileName>
+              <FileName>disp_glue.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
+              <FilePath>..\plat_driver\disp_glue.c</FilePath>
             </File>
             <File>
               <FileName>lv_conf.h</FileName>
@@ -1787,12 +1787,12 @@
             <File>
               <FileName>lv_glue.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\lv_port\lv_glue.h</FilePath>
+              <FilePath>..\plat_driver\lv_glue.h</FilePath>
             </File>
             <File>
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_pdma.c</FilePath>
+              <FilePath>..\plat_driver\drv_pdma.c</FilePath>
             </File>
             <File>
               <FileName>nu_misc.c</FileName>
@@ -1802,7 +1802,7 @@
             <File>
               <FileName>drv_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_spi.c</FilePath>
+              <FilePath>..\plat_driver\drv_spi.c</FilePath>
             </File>
             <File>
               <FileName>disp_ili9341.c</FileName>
@@ -1823,6 +1823,11 @@
               <FileName>touch_adc_calibration.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\touch_glue.c</FilePath>
             </File>
           </Files>
         </Group>

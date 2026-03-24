@@ -3110,7 +3110,7 @@
   </Group>
 
   <Group>
-    <GroupName>lv_port</GroupName>
+    <GroupName>plat_driver</GroupName>
     <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
@@ -3158,8 +3158,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\lv_port\lv_glue.c</PathWithFileName>
-      <FilenameWithoutPath>lv_glue.c</FilenameWithoutPath>
+      <PathWithFileName>..\plat_driver\disp_glue.c</PathWithFileName>
+      <FilenameWithoutPath>disp_glue.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3178,18 +3178,6 @@
     <File>
       <GroupNumber>4</GroupNumber>
       <FileNumber>249</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\lv_port\lv_glue.h</PathWithFileName>
-      <FilenameWithoutPath>lv_glue.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>4</GroupNumber>
-      <FileNumber>250</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -3201,7 +3189,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>251</FileNumber>
+      <FileNumber>250</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -3213,7 +3201,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>252</FileNumber>
+      <FileNumber>251</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -3225,7 +3213,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>253</FileNumber>
+      <FileNumber>252</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -3237,13 +3225,25 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
+      <FileNumber>253</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\plat_driver\drv_pdma.c</PathWithFileName>
+      <FilenameWithoutPath>drv_pdma.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>4</GroupNumber>
       <FileNumber>254</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\lv_port\drv_pdma.c</PathWithFileName>
-      <FilenameWithoutPath>drv_pdma.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\common\drv_indev\touch_adc_calibration.c</PathWithFileName>
+      <FilenameWithoutPath>touch_adc_calibration.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3254,8 +3254,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\common\drv_indev\touch_adc_calibration.c</PathWithFileName>
-      <FilenameWithoutPath>touch_adc_calibration.c</FilenameWithoutPath>
+      <PathWithFileName>..\plat_driver\touch_glue.c</PathWithFileName>
+      <FilenameWithoutPath>touch_glue.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

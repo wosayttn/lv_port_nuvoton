@@ -119,8 +119,6 @@ LR_ROM __RO_BASE __RO_SIZE  {                       ; load region size_region
     ER_ROM __RO_BASE __RO_SIZE  {                   ; load address = execution address
         *.o (RESET, +First)
         *(InRoot$$Sections)
-        ; Make sure reset_handler ends up in root segment
-        startup_M3351.o
         .ANY (+RO)
     }
 

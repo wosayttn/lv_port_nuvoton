@@ -14,6 +14,7 @@ extern "C" {
  *      INCLUDES
  *********************/
 #include "../lv_draw.h"
+#include "../../misc/lv_area_private.h"
 
 #if LV_USE_DRAW_2DGE
 #include "../sw/lv_draw_sw_private.h"

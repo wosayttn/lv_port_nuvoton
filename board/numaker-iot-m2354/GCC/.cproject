@@ -70,7 +70,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/CherryUSB/class/msc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/CherryUSB/common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/SFUD/sfud/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../lv_port/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../plat_driver/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_disp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_indev&quot;"/>
@@ -92,6 +92,8 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.1464253970" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="M2354KJ=1"/>
+									<listOptionValue builtIn="false" value="__FREERTOS__=1"/>
+									<listOptionValue builtIn="false" value="CONFIG_DISP_ILI9341=1"/>
 									<listOptionValue builtIn="false" value="LV_CONF_INCLUDE_SIMPLE"/>
 									<listOptionValue builtIn="false" value="__320x240__"/>
 								</option>

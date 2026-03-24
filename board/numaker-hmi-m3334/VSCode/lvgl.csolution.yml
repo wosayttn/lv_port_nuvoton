@@ -1,10 +1,13 @@
 solution:
-  created-by: uv2csolution@1.3.0
-  created-for: CMSIS-Toolbox@2.2.0
-  compiler: GCC@>=10.3.1
+  created-by: uv2csolution@1.6.0
+  created-for: CMSIS-Toolbox@2.7.0
+  compiler: AC6
   target-types:
-    - type: M3334KI_320x240_ILI9341
+    - type: M3334KI_NUFUN
       device: M3334KIGAE
-      optimize: size
+      optimize: debug
+    - type: M3334KI_NUTFT
+      device: M3334KIGAE
+      optimize: debug
   projects:
     - project: lvgl.cproject.yml

@@ -117,4 +117,3 @@ if __name__ == "__main__":
     validate_project(board_cwd)
     misc_cwd = os.path.abspath(os.path.join(os.getcwd(), '../../misc/'))
     validate_project(misc_cwd)
-

@@ -193,7 +193,7 @@
             <useUlib>0</useUlib>
             <EndSel>1</EndSel>
             <uLtcg>0</uLtcg>
-            <nSecure>0</nSecure>
+            <nSecure>2</nSecure>
             <RoSelD>3</RoSelD>
             <RwSelD>3</RwSelD>
             <CodeSel>0</CodeSel>
@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__320x240__ CPU_CORTEX_M33 LV_CONF_INCLUDE_SIMPLE NUFUN=1</Define>
+              <Define>__320x240__ CPU_CORTEX_M33 LV_CONF_INCLUDE_SIMPLE CONFIG_DISP_ILI9341=1 __FREERTOS__=1 NUFUN=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\bsp\m3331\Library\CMSIS\Core\Include;..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Include;..\..\..\bsp\m3331\Library\StdDriver\inc;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM33\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\lv_port;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Include;..\..\..\bsp\m3331\Library\CMSIS\Core\Include;..\..\..\bsp\m3331\Library\StdDriver\inc;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM33\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\plat_driver;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -371,10 +371,10 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>.\m3331.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc>--map --first='startup_m3331.o(RESET)' --datacompressor=off --info=inline --entry Reset_Handler</Misc>
+            <Misc></Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -491,9 +491,9 @@
               <FilePath>..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Source\system_m3331.c</FilePath>
             </File>
             <File>
-              <FileName>startup_m3331.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Source\ARM\startup_m3331.s</FilePath>
+              <FileName>startup_m3331.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Source\startup_m3331.c</FilePath>
             </File>
             <File>
               <FileName>spi.c</FileName>
@@ -1732,7 +1732,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_demo.c</FileName>
@@ -1750,24 +1750,14 @@
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_conf.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\lv_conf.h</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\lv_port\lv_glue.h</FilePath>
-            </File>
-            <File>
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_pdma.c</FilePath>
+              <FilePath>..\plat_driver\drv_pdma.c</FilePath>
             </File>
             <File>
               <FileName>nu_misc.c</FileName>
@@ -1787,7 +1777,7 @@
             <File>
               <FileName>drv_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_spi.c</FilePath>
+              <FilePath>..\plat_driver\drv_spi.c</FilePath>
             </File>
             <File>
               <FileName>touch_adc.c</FileName>
@@ -1798,6 +1788,16 @@
               <FileName>touch_adc_calibration.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
+            </File>
+            <File>
+              <FileName>disp_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\disp_glue.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\touch_glue.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2288,9 +2288,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__320x240__ CPU_CORTEX_M33 LV_CONF_INCLUDE_SIMPLE</Define>
+              <Define>__320x240__ CPU_CORTEX_M33 LV_CONF_INCLUDE_SIMPLE __FREERTOS__=1 CONFIG_DISP_ILI9341=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\bsp\m3331\Library\CMSIS\Core\Include;..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Include;..\..\..\bsp\m3331\Library\StdDriver\inc;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM33\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\lv_port;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\m3331\Library\CMSIS\Core\Include;..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Include;..\..\..\bsp\m3331\Library\StdDriver\inc;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM33\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\plat_driver;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2321,10 +2321,10 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>.\m3331.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc>--map --first='startup_m3331.o(RESET)' --datacompressor=off --info=inline --entry Reset_Handler</Misc>
+            <Misc></Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -2441,9 +2441,9 @@
               <FilePath>..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Source\system_m3331.c</FilePath>
             </File>
             <File>
-              <FileName>startup_m3331.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Source\ARM\startup_m3331.s</FilePath>
+              <FileName>startup_m3331.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Source\startup_m3331.c</FilePath>
             </File>
             <File>
               <FileName>spi.c</FileName>
@@ -3682,7 +3682,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_demo.c</FileName>
@@ -3700,24 +3700,14 @@
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_conf.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\lv_conf.h</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\lv_port\lv_glue.h</FilePath>
-            </File>
-            <File>
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_pdma.c</FilePath>
+              <FilePath>..\plat_driver\drv_pdma.c</FilePath>
             </File>
             <File>
               <FileName>nu_misc.c</FileName>
@@ -3737,7 +3727,7 @@
             <File>
               <FileName>drv_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_spi.c</FilePath>
+              <FilePath>..\plat_driver\drv_spi.c</FilePath>
             </File>
             <File>
               <FileName>touch_adc.c</FileName>
@@ -3748,6 +3738,16 @@
               <FileName>touch_adc_calibration.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
+            </File>
+            <File>
+              <FileName>disp_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\disp_glue.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\touch_glue.c</FilePath>
             </File>
           </Files>
         </Group>

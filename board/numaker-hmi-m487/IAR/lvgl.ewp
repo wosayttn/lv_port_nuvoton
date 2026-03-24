@@ -362,7 +362,7 @@
                     <state>$PROJ_DIR$/../../../common/drv_disp</state>
                     <state>$PROJ_DIR$/../../../common/drv_indev</state>
                     <state>$PROJ_DIR$/../../../common</state>
-                    <state>$PROJ_DIR$/../lv_port</state>
+                    <state>$PROJ_DIR$/../plat_driver</state>
                     <state>$PROJ_DIR$/../../../lvgl/src</state>
                     <state>$PROJ_DIR$/../../../lvgl/src/core</state>
                     <state>$PROJ_DIR$/../../../lvgl/src/draw</state>
@@ -1248,15 +1248,15 @@
         </file>
     </group>
     <group>
-        <name>lv_port</name>
+        <name>plat_driver</name>
         <file>
             <name>$PROJ_DIR$\..\..\..\common\drv_disp\disp_ili9341.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\lv_port\drv_pdma.c</name>
+            <name>$PROJ_DIR$\..\plat_driver\drv_pdma.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\lv_port\drv_pdma.h</name>
+            <name>$PROJ_DIR$\..\plat_driver\drv_pdma.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\common\drv_disp\ili9341_ebi.c</name>
@@ -1265,10 +1265,10 @@
             <name>$PROJ_DIR$\..\..\..\common\lv_demo.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\lv_port\lv_glue.c</name>
+            <name>$PROJ_DIR$\..\plat_driver\disp_glue.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\lv_port\lv_glue.h</name>
+            <name>$PROJ_DIR$\..\plat_driver\lv_glue.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\common\lv_port_disp.c</name>

@@ -6,7 +6,16 @@
  * Copyright (C) 2024 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 
-#include "lv_glue.h"
+#include "lvgl.h"
+
+#if defined(__FREERTOS__)
+    #include "FreeRTOS.h"
+    #include "task.h"
+    #include "semphr.h"
+#endif
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
 
 #define CONFIG_LV_TASK_STACKSIZE     4096
 #define CONFIG_LV_TASK_PRIORITY      (configMAX_PRIORITIES-1)
@@ -57,7 +66,7 @@ void lv_nuvoton_task(void *pdata)
 
 int task_lv_init(void)
 {
-    xTaskCreate(lv_tick_task, "lv_tick", configMINIMAL_STACK_SIZE, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
+    xTaskCreate(lv_tick_task, "lv_tick", configMINIMAL_STACK_SIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
     xTaskCreate(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
     return 0;
 }

@@ -9,6 +9,10 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     32
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
+#define CONFIG_LV_DRAW_BUF_ALIGN               32
+
 #define LV_USE_OS   LV_OS_FREERTOS
 
 #define LV_USE_DRAW_GDMA                  1
@@ -38,6 +42,8 @@
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_16           1
 #define LV_FONT_MONTSERRAT_24           1
+
+#define CONFIG_LV_DRAW_BUF_ALIGN        32
 
 #define LV_USE_DEMO_WIDGETS             1
 //#define LV_USE_DEMO_BENCHMARK           1

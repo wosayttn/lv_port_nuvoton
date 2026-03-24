@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_proj.xsd">
-
   <SchemaVersion>1.1</SchemaVersion>
-
   <Header>### uVision Project, (C) Keil Software</Header>
-
   <Targets>
     <Target>
-      <TargetName>N9H20K5_NAND_480x272_FreeRTOS</TargetName>
+      <TargetName>480x272_FreeRTOS</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
@@ -46,14 +43,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\lvgl_app_demo_image_n9h20k5_nand_480x272_freertos\</OutputDirectory>
-          <OutputName>lvgl_app_demo_image_n9h20k5_nand_480x272_freertos</OutputName>
+          <OutputDirectory>.\lvgl_480x272_freertos\</OutputDirectory>
+          <OutputName>lvgl_480x272_freertos</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>.\lvgl_app_demo_image_n9h20k5_nand_480x272_freertos\</ListingPath>
+          <ListingPath>.\lvgl_480x272_freertos\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -377,9 +374,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE __FreeRTOS__ CONFIG_APP_DEMO_IMG=1</Define>
+              <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE __FreeRTOS__ __FREERTOS__=1 CONFIG_APP_DEMO_IMG=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h20\BSP\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H20;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\lvgl\examples;..\..\..\;..\sls_files;..\..\..\thirdparty\FatFs-r15\source;..\..\..\thirdparty\avilib;..\App;..\..\..\common\drv_decoder</IncludePath>
+              <IncludePath>..\;..\..\..\board\numaker-hmi-n9h20\plat_driver;..\..\..\board\numaker-hmi-n9h20;..\..\..\bsp\n9h20\BSP\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H20;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_decoder;..\..\..\common\drv_indev;..\..\..\common\drv_disp;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\lvgl\examples;..\..\..\;..\sls_files;..\..\..\thirdparty\FatFs-r15\source;..\..\..\thirdparty\avilib;..\App</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -426,7 +423,7 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\main.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\main.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -482,22 +479,22 @@
             <File>
               <FileName>wb_init.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\wb_init.s</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\wb_init.s</FilePath>
             </File>
             <File>
               <FileName>standalone.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\standalone.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\standalone.c</FilePath>
             </File>
             <File>
               <FileName>multithread.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\multithread.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\multithread.c</FilePath>
             </File>
             <File>
               <FileName>task_lv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\components\task_lv.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\components\task_lv.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -525,7 +522,7 @@
                   <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
-                <FileArmAds/>
+                <FileArmAds></FileArmAds>
               </FileOption>
             </File>
             <File>
@@ -549,7 +546,7 @@
                   <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
-                <FileArmAds/>
+                <FileArmAds></FileArmAds>
               </FileOption>
             </File>
             <File>
@@ -573,7 +570,7 @@
                   <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
-                <FileArmAds/>
+                <FileArmAds></FileArmAds>
               </FileOption>
             </File>
             <File>
@@ -664,78 +661,12 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
-            <File>
-              <FileName>lv_demo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\common\lv_demo.c</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>0</IncludeInBuild>
-                  <AlwaysBuild>0</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
-            </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_glue.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_conf.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\lv_conf.h</FilePath>
             </File>
             <File>
               <FileName>nu_misc.c</FileName>
@@ -750,7 +681,17 @@
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\plat_driver\lv_port_disp.c</FilePath>
+            </File>
+            <File>
+              <FileName>disp_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\plat_driver\disp_glue.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\plat_driver\touch_glue.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2015,6 +1956,62 @@
           <GroupName>App</GroupName>
           <Files>
             <File>
+              <FileName>lv_demo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\lv_demo.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>0</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
               <FileName>diskio_ramdisk.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\diskio_ramdisk.c</FilePath>
@@ -2135,5 +2132,4 @@
       </Groups>
     </Target>
   </Targets>
-
 </Project>

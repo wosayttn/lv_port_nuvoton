@@ -13,9 +13,9 @@ User can select listed **Target Name** to build target execution using uVision M
 
 | Target | Description |
 |-|-|
-| M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
-| M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1 | Use NV3041A EBI LCD panel with capacitive touch screen(GT911) |
-| M467HJ_USE_NUTFT | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
+| LCD43_V1_1 | Use NV3041A EBI LCD panel with capacitive touch screen(GT911) |
+| LCD43_V1_0 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
+| NUTFT_V1_3 | Use ILI9341 SPI LCD panel with resistive touch screen(SW ADC) |
 
 ## **GCC project**
 
@@ -23,9 +23,9 @@ To build target execution using Eclipse-base IDE(NuEclipse V1.02.023r).
 
 | Configuration | Description |
 |-|-|
-| M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
-| M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1 | Use NV3041A EBI LCD panel with capacitive touch screen(GT911) |
-| M467HJ_USE_NUTFT | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
+| LCD43_V1_0 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
+| LCD43_V1_1 | Use NV3041A EBI LCD panel with capacitive touch screen(GT911) |
+| NUTFT_V1_3 | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
 
 ## **VSCode project**
 
@@ -33,9 +33,9 @@ To build target execution using VSCode IDE or run the build.ps1 scripts.
 
 | Context | Description |
 |-|-|
-| +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_0 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
-| +M467HJ_USE_NUMAKER_TFT_LCD43_V_1_1 | Use NV3041A EBI LCD panel with capacitive touch screen(GT911) |
-| +M467HJ_USE_NUTFT | Use ILI9431 SPI LCD panel with resistive touch screen(S/W ADC Sampling) |
+| LCD43_V1_1 | Use NV3041A EBI LCD panel with capacitive touch screen(GT911) |
+| LCD43_V1_0 | Use FSA506 EBI LCD panel with capacitive touch screen(ST1663I) |
+| NUTFT_V1_3 | Use ILI9341 SPI LCD panel with resistive touch screen(SW ADC) |
 
 ## **IAR project**
 

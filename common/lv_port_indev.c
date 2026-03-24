@@ -10,7 +10,12 @@
 
 static void input_read(lv_indev_t *indev, lv_indev_data_t *data)
 {
-    touchpad_device_read(data);
+    numaker_indev_data_t numaker_data = {0};
+
+    touchpad_device_read((numaker_indev_data_t*)&numaker_data);
+    data->point.x = numaker_data.point.x;
+    data->point.y = numaker_data.point.y; 
+    data->state   = (lv_indev_state_t)numaker_data.state;
 }
 
 void lv_port_indev_init(void)

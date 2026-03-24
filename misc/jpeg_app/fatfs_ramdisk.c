@@ -6,7 +6,7 @@
  * Copyright (C) 2024 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 
-#include "lv_glue.h"
+#include "lvgl.h"
 #include "ff.h"
 #include "diskio.h"
 

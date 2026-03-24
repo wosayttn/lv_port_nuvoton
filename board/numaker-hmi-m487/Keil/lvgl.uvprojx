@@ -16,7 +16,7 @@
         <TargetCommonOption>
           <Device>M487JIDAE</Device>
           <Vendor>Nuvoton</Vendor>
-          <PackID>Nuvoton.NuMicroM4_DFP.1.0.0</PackID>
+          <PackID>Nuvoton.NuMicroM4_DFP.1.0.1</PackID>
           <PackURL>https://github.com/OpenNuvoton/cmsis-packs/raw/master/Nuvoton_DFP/</PackURL>
           <Cpu>IRAM(0x20000000-0x20003FFF) IROM(0-0x9FFF) CLOCK(72000000) CPUTYPE("Cortex-M4") FPU2</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE CPU_CORTEX_M4</Define>
+              <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE CPU_CORTEX_M4 CONFIG_DISP_ILI9341=1 __FREERTOS__</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\bsp\m480\Library\CMSIS\Include;..\..\..\bsp\m480\Library\Device\Nuvoton\M480\Include;..\..\..\bsp\m480\Library\StdDriver\inc;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM4F;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\lv_port;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\m480\Library\CMSIS\Include;..\..\..\bsp\m480\Library\Device\Nuvoton\M480\Include;..\..\..\bsp\m480\Library\StdDriver\inc;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM4F;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\plat_driver;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1732,7 +1732,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_demo.c</FileName>
@@ -1750,19 +1750,14 @@
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.c</FileName>
+              <FileName>disp_glue.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
+              <FilePath>..\plat_driver\disp_glue.c</FilePath>
             </File>
             <File>
               <FileName>lv_conf.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\lv_conf.h</FilePath>
-            </File>
-            <File>
-              <FileName>lv_glue.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\lv_port\lv_glue.h</FilePath>
             </File>
             <File>
               <FileName>disp_ili9341.c</FileName>
@@ -1787,12 +1782,17 @@
             <File>
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_pdma.c</FilePath>
+              <FilePath>..\plat_driver\drv_pdma.c</FilePath>
             </File>
             <File>
               <FileName>touch_adc_calibration.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\touch_glue.c</FilePath>
             </File>
           </Files>
         </Group>

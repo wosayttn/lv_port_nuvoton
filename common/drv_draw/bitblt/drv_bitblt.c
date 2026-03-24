@@ -2,8 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "lvgl.h"
 
-#include "lv_glue.h"
+#if (LV_USE_OS==LV_OS_FREERTOS)
+    #include "FreeRTOS.h"
+    #include "task.h"
+    #include "semphr.h"
+#endif
 
 #if (LV_USE_OS==LV_OS_FREERTOS)
     static SemaphoreHandle_t s_xBITBLTSem = NULL;

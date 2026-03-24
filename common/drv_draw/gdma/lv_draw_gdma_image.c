@@ -16,7 +16,6 @@
 #include "lv_draw_gdma.h"
 
 #if LV_USE_DRAW_GDMA
-#include "../../misc/lv_area_private.h"
 
 /*********************
  *      DEFINES

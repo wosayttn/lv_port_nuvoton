@@ -87,7 +87,7 @@
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
-          <SelectedForBatchBuild>0</SelectedForBatchBuild>
+          <SelectedForBatchBuild>1</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
@@ -377,9 +377,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE</Define>
+              <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE __FREERTOS__=1 CONFIG_DISP_ILI9341=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port;..\..\..\bsp\nuc980\Driver\Include;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_NUC980;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\plat_driver;..\..\..\bsp\nuc980\Driver\Include;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_NUC980;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -597,7 +597,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_demo.c</FileName>
@@ -615,14 +615,9 @@
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.c</FileName>
+              <FileName>disp_glue.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_conf.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\lv_conf.h</FilePath>
+              <FilePath>..\plat_driver\disp_glue.c</FilePath>
             </File>
             <File>
               <FileName>disp_ili9341.c</FileName>
@@ -637,22 +632,22 @@
             <File>
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_pdma.c</FilePath>
+              <FilePath>..\plat_driver\drv_pdma.c</FilePath>
             </File>
             <File>
               <FileName>drv_pdma.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\lv_port\drv_pdma.h</FilePath>
+              <FilePath>..\plat_driver\drv_pdma.h</FilePath>
             </File>
             <File>
               <FileName>drv_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_spi.c</FilePath>
+              <FilePath>..\plat_driver\drv_spi.c</FilePath>
             </File>
             <File>
               <FileName>drv_spi.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\lv_port\drv_spi.h</FilePath>
+              <FilePath>..\plat_driver\drv_spi.h</FilePath>
             </File>
             <File>
               <FileName>nu_misc.c</FileName>
@@ -663,6 +658,16 @@
               <FileName>touch_adc_calibration.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\touch_glue.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_sys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\drv_sys.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2086,7 +2091,7 @@
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
-          <SelectedForBatchBuild>0</SelectedForBatchBuild>
+          <SelectedForBatchBuild>1</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
@@ -2376,9 +2381,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE</Define>
+              <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE __FREERTOS__=1 CONFIG_DISP_ILI9341=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port;..\..\..\bsp\nuc980\Driver\Include;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_NUC980;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\plat_driver;..\..\..\bsp\nuc980\Driver\Include;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_NUC980;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2596,7 +2601,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_demo.c</FileName>
@@ -2614,14 +2619,9 @@
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.c</FileName>
+              <FileName>disp_glue.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_conf.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\lv_conf.h</FilePath>
+              <FilePath>..\plat_driver\disp_glue.c</FilePath>
             </File>
             <File>
               <FileName>disp_ili9341.c</FileName>
@@ -2636,22 +2636,22 @@
             <File>
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_pdma.c</FilePath>
+              <FilePath>..\plat_driver\drv_pdma.c</FilePath>
             </File>
             <File>
               <FileName>drv_pdma.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\lv_port\drv_pdma.h</FilePath>
+              <FilePath>..\plat_driver\drv_pdma.h</FilePath>
             </File>
             <File>
               <FileName>drv_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_spi.c</FilePath>
+              <FilePath>..\plat_driver\drv_spi.c</FilePath>
             </File>
             <File>
               <FileName>drv_spi.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\lv_port\drv_spi.h</FilePath>
+              <FilePath>..\plat_driver\drv_spi.h</FilePath>
             </File>
             <File>
               <FileName>nu_misc.c</FileName>
@@ -2662,6 +2662,16 @@
               <FileName>touch_adc_calibration.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\touch_glue.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_sys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\drv_sys.c</FilePath>
             </File>
           </Files>
         </Group>

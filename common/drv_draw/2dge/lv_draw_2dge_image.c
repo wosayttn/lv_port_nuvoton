@@ -15,6 +15,8 @@
 
 #include "lv_draw_2dge.h"
 
+#include "../../misc/lv_area_private.h"
+
 #if LV_USE_DRAW_2DGE
 
 /*********************

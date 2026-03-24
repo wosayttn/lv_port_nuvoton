@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_proj.xsd">
-
   <SchemaVersion>1.1</SchemaVersion>
-
   <Header>### uVision Project, (C) Keil Software</Header>
-
   <Targets>
     <Target>
-      <TargetName>N9H20K5_NAND_480x272_FreeRTOS</TargetName>
+      <TargetName>480x272_FreeRTOS</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
@@ -46,14 +43,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\lvgl_n9h20k5_nand_480x272_freertos\</OutputDirectory>
-          <OutputName>lvgl_n9h20k5_nand_480x272_freertos</OutputName>
+          <OutputDirectory>.\lvgl_480x272_freertos\</OutputDirectory>
+          <OutputName>lvgl_480x272_freertos</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>.\lvgl_n9h20k5_nand_480x272_freertos\</ListingPath>
+          <ListingPath>.\lvgl_480x272_freertos\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -81,7 +78,7 @@
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>fromelf.exe --bin --output "$L@L.bin" "$L@L.axf"</UserProg1Name>
-            <UserProg2Name>fromelf --bin "$L@L.axf" --output "$P../Bin/@L.bin" </UserProg2Name>
+            <UserProg2Name>fromelf --bin "$L@L.axf" --output "$P../Bin/@L.bin"</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
@@ -377,9 +374,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE __FreeRTOS__</Define>
+              <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE __FreeRTOS__ __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h20\BSP\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H20;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\n9h20\BSP\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H20;..\..\..\thirdparty\FreeRTOS\include;..\..\..\board\numaker-hmi-n9h20\plat_driver;..\..\..\board\numaker-hmi-n9h20;..\..\..\common\drv_indev;..\..\..\common\drv_disp;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\sls_files;..\..\..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -426,7 +423,7 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\main.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\main.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -482,22 +479,22 @@
             <File>
               <FileName>wb_init.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\wb_init.s</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\wb_init.s</FilePath>
             </File>
             <File>
               <FileName>standalone.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\standalone.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\standalone.c</FilePath>
             </File>
             <File>
               <FileName>multithread.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\multithread.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\multithread.c</FilePath>
             </File>
             <File>
               <FileName>task_lv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\components\task_lv.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\components\task_lv.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -525,7 +522,7 @@
                   <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
-                <FileArmAds/>
+                <FileArmAds></FileArmAds>
               </FileOption>
             </File>
             <File>
@@ -549,7 +546,7 @@
                   <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
-                <FileArmAds/>
+                <FileArmAds></FileArmAds>
               </FileOption>
             </File>
             <File>
@@ -573,7 +570,7 @@
                   <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
-                <FileArmAds/>
+                <FileArmAds></FileArmAds>
               </FileOption>
             </File>
             <File>
@@ -1938,7 +1935,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_demo.c</FileName>
@@ -2002,11 +1999,6 @@
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_conf.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\lv_conf.h</FilePath>
@@ -2022,9 +2014,19 @@
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
             </File>
             <File>
+              <FileName>disp_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\plat_driver\disp_glue.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\plat_driver\touch_glue.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\..\..\board\numaker-hmi-n9h20\plat_driver\lv_port_disp.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2101,5 +2103,4 @@
       </Groups>
     </Target>
   </Targets>
-
 </Project>

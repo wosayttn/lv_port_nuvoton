@@ -55,12 +55,12 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>lv_port</name>
+			<name>lvgl</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>lvgl</name>
+			<name>plat_driver</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
@@ -78,6 +78,11 @@
 			<name>App/fatfs_ramdisk.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/misc/jpeg_app/fatfs_ramdisk.c</locationURI>
+		</link>
+		<link>
+			<name>App/lv_demo.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/lv_demo.c</locationURI>
 		</link>
 		<link>
 			<name>App/ui_init_mjpeg_playback.c</name>
@@ -127,7 +132,7 @@
 		<link>
 			<name>Driver/i2c.c</name>
 			<type>1</type>
-			<location>Z:/lv_port_nuvoton2/misc/numaker-hmi-ma35h0_jpegd/i2c.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/board/numaker-hmi-ma35h0/i2c.c</locationURI>
 		</link>
 		<link>
 			<name>Driver/irq_ctrl_gic.c</name>
@@ -232,7 +237,7 @@
 		<link>
 			<name>Src/task_lv.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/components/task_lv.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/board/numaker-hmi-ma35h0/components/task_lv.c</locationURI>
 		</link>
 		<link>
 			<name>drv_decoder/drv_hwjpgd.c</name>
@@ -258,46 +263,6 @@
 			<name>fatfs/ffunicode.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs-r15/source/ffunicode.c</locationURI>
-		</link>
-		<link>
-			<name>lv_port/lv_demo.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/lv_demo.c</locationURI>
-		</link>
-		<link>
-			<name>lv_port/lv_glue.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/lv_port/lv_glue.c</locationURI>
-		</link>
-		<link>
-			<name>lv_port/lv_port_disp.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/lv_port/lv_port_disp.c</locationURI>
-		</link>
-		<link>
-			<name>lv_port/lv_port_indev.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/lv_port_indev.c</locationURI>
-		</link>
-		<link>
-			<name>lv_port/nu_misc.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/nu_misc.c</locationURI>
-		</link>
-		<link>
-			<name>lv_port/plat_touch.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/plat_touch.c</locationURI>
-		</link>
-		<link>
-			<name>lv_port/touch_adc_calibration.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_adc_calibration.c</locationURI>
-		</link>
-		<link>
-			<name>lv_port/touch_gt911.c</name>
-			<type>1</type>
-			<location>Z:/lv_port_nuvoton2/common/drv_indev/touch_gt911.c</location>
 		</link>
 		<link>
 			<name>lvgl/gif.c</name>
@@ -1448,6 +1413,46 @@
 			<name>lvgl/vg_lite_matrix.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/others/vg_lite_tvg/vg_lite_matrix.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/disp_glue.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/board/numaker-hmi-ma35h0/plat_driver/disp_glue.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/lv_port_disp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/board/numaker-hmi-ma35h0/plat_driver/lv_port_disp.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/lv_port_indev.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/lv_port_indev.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/nu_misc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/nu_misc.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/plat_touch.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/plat_touch.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/touch_adc_calibration.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_adc_calibration.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/touch_glue.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/board/numaker-hmi-ma35h0/plat_driver/touch_glue.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/touch_gt911.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_indev/touch_gt911.c</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

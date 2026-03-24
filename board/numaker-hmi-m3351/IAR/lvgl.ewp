@@ -232,6 +232,8 @@
                     <state>M3351KJ=1</state>
                     <state>LV_CONF_INCLUDE_SIMPLE</state>
                     <state>__320x240__</state>
+                    <state>__FREERTOS__=1</state>
+                    <state>CONFIG_DISP_ILI9341=1</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -362,7 +364,7 @@
                     <state>$PROJ_DIR$/../../../common/drv_disp</state>
                     <state>$PROJ_DIR$/../../../common/drv_indev</state>
                     <state>$PROJ_DIR$/../../../common</state>
-                    <state>$PROJ_DIR$/../lv_port</state>
+                    <state>$PROJ_DIR$/../plat_driver</state>
                     <state>$PROJ_DIR$/../../../lvgl/src</state>
                     <state>$PROJ_DIR$/../../../lvgl/src/core</state>
                     <state>$PROJ_DIR$/../../../lvgl/src/draw</state>
@@ -704,7 +706,7 @@
             <data>
                 <extensions></extensions>
                 <cmdline></cmdline>
-                <hasPrio>72</hasPrio>
+                <hasPrio>1</hasPrio>
                 <buildSequence>inputOutputBased</buildSequence>
             </data>
         </settings>
@@ -1173,48 +1175,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\bsp\m3351\Library\StdDriver\src\usci_spi.c</name>
-        </file>
-    </group>
-    <group>
-        <name>lv_port</name>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_disp\disp_ili9341.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\lv_port\drv_pdma.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\lv_port\drv_pdma.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\lv_port\drv_uspi.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_disp\ili9341_uspi.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\common\lv_example_entry.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\lv_port\lv_glue.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\lv_port\lv_glue.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\common\lv_port_disp.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\common\lv_port_indev.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\common\nu_misc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_adc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_adc_calibration.c</name>
         </file>
     </group>
     <group>
@@ -1908,6 +1868,48 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\others\vg_lite_tvg\vg_lite_matrix.c</name>
+        </file>
+    </group>
+    <group>
+        <name>plat_driver</name>
+        <file>
+            <name>$PROJ_DIR$\..\plat_driver\disp_glue.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_disp\disp_ili9341.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\plat_driver\drv_pdma.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\plat_driver\drv_pdma.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\plat_driver\drv_uspi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_disp\ili9341_uspi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\lv_example_entry.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\lv_port_disp.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\lv_port_indev.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\nu_misc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_adc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_adc_calibration.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\plat_driver\touch_glue.c</name>
         </file>
     </group>
     <group>

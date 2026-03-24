@@ -10,7 +10,6 @@
 #define __PLAT_TOUCH_H__
 
 #include <stdint.h>
-#include "lv_glue.h"
 
 typedef struct
 {

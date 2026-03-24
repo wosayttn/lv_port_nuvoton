@@ -107,6 +107,40 @@ static void sys_init(void)
 
     /* Enable EBI clock */
     CLK_EnableModuleClock(EBI0_MODULE);
+
+    /* Enable I2C1 clock */
+    CLK_EnableModuleClock(I2C1_MODULE);
+
+    /* Enable SPI2 clock */
+    CLK_EnableModuleClock(SPI2_MODULE);
+
+    /* Enable PDMA clock */
+    CLK_EnableModuleClock(PDMA0_MODULE);
+    CLK_EnableModuleClock(PDMA1_MODULE);
+
+    /* Select TIMER clock source */
+    CLK_SetModuleClock(TMR0_MODULE, CLK_TMRSEL_TMR0SEL_HIRC, 0);
+
+    /* Enable TIMER module clock */
+    CLK_EnableModuleClock(TMR0_MODULE);
+
+    /* EADC Analog Pin */
+    CLK_EnableModuleClock(EADC0_MODULE);
+
+    /* Select EADC peripheral clock source. */
+    CLK_SetModuleClock(EADC0_MODULE, CLK_EADCSEL_EADC0SEL_PCLK0, CLK_EADCDIV_EADC0DIV(8));
+
+    /*---------------------------------------------------------------------------------------------------------*/
+    /* Init I/O Multi-function                                                                                 */
+    /*---------------------------------------------------------------------------------------------------------*/
+    SET_SPI2_SS_PA11();
+    SET_SPI2_CLK_PA10();
+    SET_SPI2_MISO_PA9();
+    SET_SPI2_MOSI_PA8();
+
+    SET_I2C1_SDA_PB10();
+    SET_I2C1_SCL_PB11();
+
     SET_EBI_AD0_PA5();
     SET_EBI_AD1_PA4();
     SET_EBI_AD2_PC2();
@@ -127,14 +161,7 @@ static void sys_init(void)
     SET_EBI_nRD_PJ8();
     SET_EBI_nCS0_PD14();
     SET_EBI_ADR0_PH7();
-#if defined(CONFIG_DISP_USE_EBI_SYNC)
-    SET_EBI_ADR1_PH6();
-    SET_EBI_ADR7_PH0();
-    GPIO_SetSlewCtl(PH, (BIT0 | BIT6 | BIT7 | BIT8 | BIT9 | BIT10 | BIT11), GPIO_SLEWCTL_HIGH);
-#else
     GPIO_SetSlewCtl(PH, (BIT7 | BIT8 | BIT9 | BIT10 | BIT11), GPIO_SLEWCTL_HIGH);
-#endif
-
     GPIO_SetSlewCtl(PA, (BIT4 | BIT5), GPIO_SLEWCTL_HIGH);
     GPIO_SetSlewCtl(PC, (BIT2 | BIT3 | BIT4 | BIT5), GPIO_SLEWCTL_HIGH);
     GPIO_SetSlewCtl(PD, (BIT8 | BIT9), GPIO_SLEWCTL_HIGH);
@@ -143,14 +170,13 @@ static void sys_init(void)
     GPIO_SetSlewCtl(PJ, (BIT8 | BIT9), GPIO_SLEWCTL_HIGH);
     GPIO_SetSlewCtl(PD, BIT14, GPIO_SLEWCTL_HIGH);
 
-    /* Enable I2C1 clock */
-    CLK_EnableModuleClock(I2C1_MODULE);
-    SET_I2C1_SDA_PB10();
-    SET_I2C1_SCL_PB11();
+    SYS->GPB_MFP1 &= ~(SYS_GPB_MFP1_PB7MFP_Msk | SYS_GPB_MFP1_PB6MFP_Msk);
+    SYS->GPB_MFP1 |= (SYS_GPB_MFP1_PB7MFP_EADC0_CH7 | SYS_GPB_MFP1_PB6MFP_EADC0_CH6);
+    SYS->GPB_MFP2 &= ~(SYS_GPB_MFP2_PB9MFP_Msk | SYS_GPB_MFP2_PB8MFP_Msk);
+    SYS->GPB_MFP2 |= (SYS_GPB_MFP2_PB9MFP_EADC0_CH9 | SYS_GPB_MFP2_PB8MFP_EADC0_CH8);
 
-    /* Enable PDMA clock */
-    CLK_EnableModuleClock(PDMA0_MODULE);
-    CLK_EnableModuleClock(PDMA1_MODULE);
+    /* Disable digital path on these EADC pins */
+    GPIO_DISABLE_DIGITAL_PATH(PB, BIT6 | BIT7 | BIT8 | BIT9);
 
     /* Enable SysTick clock */
     CLK_EnableSysTick(CLK_STSEL_ST0SEL_HIRC_DIV2, 0);

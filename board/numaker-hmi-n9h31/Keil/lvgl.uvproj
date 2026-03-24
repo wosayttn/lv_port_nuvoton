@@ -377,9 +377,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE USE_NUMAKER_HMI_N9H31_V1_1=1</Define>
+              <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE USE_NUMAKER_HMI_N9H31_V1_1=1 __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h31\Driver\Include;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H31;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\plat_driver;..\..\..\bsp\n9h31\Driver\Include;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H31;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -602,7 +602,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_demo.c</FileName>
@@ -612,7 +612,7 @@
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\plat_driver\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
@@ -620,9 +620,9 @@
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.c</FileName>
+              <FileName>disp_glue.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
+              <FilePath>..\plat_driver\disp_glue.c</FilePath>
             </File>
             <File>
               <FileName>lv_conf.h</FileName>
@@ -699,6 +699,11 @@
               <FileName>plat_touch.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\drv_indev\plat_touch.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\touch_glue.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2442,9 +2447,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--min_array_alignment=4</MiscControls>
-              <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE</Define>
+              <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\lv_port;..\..\..\bsp\n9h31\Driver\Include;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H31;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\plat_driver;..\..\..\bsp\n9h31\Driver\Include;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H31;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2667,7 +2672,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_demo.c</FileName>
@@ -2677,7 +2682,7 @@
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_port_disp.c</FilePath>
+              <FilePath>..\plat_driver\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
@@ -2685,9 +2690,9 @@
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.c</FileName>
+              <FileName>disp_glue.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
+              <FilePath>..\plat_driver\disp_glue.c</FilePath>
             </File>
             <File>
               <FileName>lv_conf.h</FileName>
@@ -2815,6 +2820,11 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
+            </File>
+            <File>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\touch_glue.c</FilePath>
             </File>
           </Files>
         </Group>

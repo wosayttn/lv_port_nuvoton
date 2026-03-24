@@ -16,7 +16,7 @@
         <TargetCommonOption>
           <Device>M2L31KIDAE</Device>
           <Vendor>Nuvoton</Vendor>
-          <PackID>Nuvoton.NuMicroM23_DFP.1.0.1</PackID>
+          <PackID>Nuvoton.NuMicroM23_DFP.1.0.4</PackID>
           <PackURL>https://github.com/OpenNuvoton/cmsis-packs/raw/master/Nuvoton_DFP/</PackURL>
           <Cpu>IRAM(0x20000000,0x2a000) IROM(0x00000000,0x80000) CPUTYPE("Cortex-M23") CLOCK(12000000) ESEL ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE</Define>
+              <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE __FREERTOS__=1 CONFIG_DISP_ILI9341=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\bsp\m2l31\Library\CMSIS\Core\Include;..\..\..\bsp\m2l31\Library\Device\Nuvoton\M2L31\Include;..\..\..\bsp\m2l31\Library\StdDriver\inc;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM23_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\lv_port;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\..\..\bsp\m2l31\Library\CMSIS\Core\Include;..\..\..\bsp\m2l31\Library\Device\Nuvoton\M2L31\Include;..\..\..\bsp\m2l31\Library\StdDriver\inc;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM23_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\plat_driver;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -353,7 +353,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <ClangAsOpt>4</ClangAsOpt>
+            <ClangAsOpt>1</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>M2L31KI</Define>
@@ -1732,7 +1732,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_port</GroupName>
+          <GroupName>plat_driver</GroupName>
           <Files>
             <File>
               <FileName>lv_demo.c</FileName>
@@ -1750,9 +1750,9 @@
               <FilePath>..\..\..\common\lv_port_indev.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.c</FileName>
+              <FileName>disp_glue.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\lv_glue.c</FilePath>
+              <FilePath>..\plat_driver\disp_glue.c</FilePath>
             </File>
             <File>
               <FileName>lv_conf.h</FileName>
@@ -1787,17 +1787,17 @@
             <File>
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_pdma.c</FilePath>
+              <FilePath>..\plat_driver\drv_pdma.c</FilePath>
             </File>
             <File>
               <FileName>drv_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lv_port\drv_spi.c</FilePath>
+              <FilePath>..\plat_driver\drv_spi.c</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\lv_port\lv_glue.h</FilePath>
+              <FileName>touch_glue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\touch_glue.c</FilePath>
             </File>
           </Files>
         </Group>

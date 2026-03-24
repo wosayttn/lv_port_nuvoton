@@ -6,7 +6,13 @@
  * Copyright (C) 2024 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 
-#include "lv_glue.h"
+#include "lvgl.h"
+
+#if defined(__FREERTOS__)
+    #include "FreeRTOS.h"
+    #include "task.h"
+    #include "semphr.h"
+#endif
 
 #define CONFIG_LV_TASK_STACKSIZE     2048
 #define CONFIG_LV_TASK_PRIORITY      (configMAX_PRIORITIES-1)

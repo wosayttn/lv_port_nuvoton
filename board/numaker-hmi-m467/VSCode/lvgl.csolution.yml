@@ -1,16 +1,16 @@
 solution:
   created-by: uv2csolution@1.6.0
-  created-for: CMSIS-Toolbox@2.5.0
-  compiler: GCC@>=10.3.1
+  created-for: CMSIS-Toolbox@2.7.0
+  compiler: AC6
   target-types:
-    - type: USE_TFT_LCD43_V_1_1
+    - type: LCD43_V1_1
       device: M467HJHAE
-      optimize: speed
-    - type: USE_TFT_LCD43_V_1_0
+      optimize: debug
+    - type: LCD43_V1_0
       device: M467HJHAE
-      optimize: speed
-    - type: USE_NUTFT
+      optimize: debug
+    - type: NUTFT_V1_3
       device: M467HJHAE
-      optimize: speed
+      optimize: debug
   projects:
     - project: lvgl.cproject.yml

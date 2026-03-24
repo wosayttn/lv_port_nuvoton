@@ -7,6 +7,7 @@
  ******************************************************************************/
 
 #include "lv_glue.h"
+#include "displib.h"
 
 static void sys_init(void)
 {

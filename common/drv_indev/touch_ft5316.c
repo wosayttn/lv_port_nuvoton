@@ -7,8 +7,7 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "indev_touch.h"
-#include "plat_touch.h"
+#include "numaker_touch.h"
 
 #define FT5316_REGITER_LEN   1
 #define FT5316_MAX_TOUCH     5
@@ -166,11 +165,11 @@ static int ft5316_read_reg(uint8_t reg, uint8_t data[], uint32_t len)
     return touch_plat_i2c_read(psIfCtx);
 }
 
-static void ft5316_touch_up(lv_indev_data_t *buf, int16_t id)
+static void ft5316_touch_up(numaker_indev_data_t *buf, int16_t id)
 {
     s_tp_dowm[id] = 0;
 
-    buf[id].state = LV_INDEV_STATE_RELEASED;
+    buf[id].state = NUMAKER_INDEV_STATE_RELEASED;
     buf[id].point.x = pre_x[id];
     buf[id].point.y = pre_y[id];
 
@@ -179,20 +178,20 @@ static void ft5316_touch_up(lv_indev_data_t *buf, int16_t id)
     pre_w[id] = -1;
 }
 
-static void ft5316_touch_down(lv_indev_data_t *buf, int8_t id, int16_t x, int16_t y, int16_t w)
+static void ft5316_touch_down(numaker_indev_data_t *buf, int8_t id, int16_t x, int16_t y, int16_t w)
 {
     s_tp_dowm[id] = 1;
 
     buf[id].point.x = x;
     buf[id].point.y = y;
-    buf[id].state = LV_INDEV_STATE_PRESSED;
+    buf[id].state = NUMAKER_INDEV_STATE_PRESSED;
 
     pre_x[id] = x; /* save last point */
     pre_y[id] = y;
     pre_w[id] = w;
 }
 
-int indev_touch_get_data(lv_indev_data_t *psInDevData)
+int indev_touch_get_data(numaker_indev_data_t *psInDevData)
 {
     int i, error = 0;
     int32_t   touch_event, touchid;
@@ -202,13 +201,11 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
     error = ft5316_read_reg(0, (uint8_t *)&sFtRegMap, sizeof(sFtRegMap));
     if (error)
     {
-        LV_LOG_ERROR("Get touch data failed, err:");
         goto exit_indev_touch_get_data;
     }
 
     if (sFtRegMap.u8TDStatus > CONFIG_MAX_TOUCH)
     {
-        LV_LOG_ERROR("FW report max point:%d > panel info. max:%d", sFtRegMap.u8TDStatus, CONFIG_MAX_TOUCH);
         goto exit_indev_touch_get_data;
     }
 
@@ -225,7 +222,6 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
 
             if ((j == sFtRegMap.u8TDStatus) && (pre_id[i] != -1))         /* free this node */
             {
-                // LV_LOG_INFO("free %d tid=%d\n", i, pre_id[i]);
                 ft5316_touch_up(psInDevData, pre_id[i]);
                 pre_id[i] = -1;
             }
@@ -236,8 +232,6 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
     {
         touch_event = sFtRegMap.m_sTP[i].u8EvtFlag;
         touchid = sFtRegMap.m_sTP[i].u8TouchID;
-
-        LV_LOG_INFO("(%d/%d) %d %d", i, sFtRegMap.u8TDStatus, touchid, touch_event);
 
         if (touchid >= 0x0f)
             continue;
@@ -252,12 +246,8 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
             y = ((uint16_t)sFtRegMap.m_sTP[i].u8Y_11_8 << 8) |  sFtRegMap.m_sTP[i].u8Y_7_0;
             w = sFtRegMap.m_sTP[i].m_u8Weight;
 
-            LV_LOG_INFO("[%d] (%d %d %d %d)", touch_event, touchid, x, y, w);
-            if (x >= LV_HOR_RES_MAX || y >= LV_VER_RES_MAX)
+            if (x >= DISP_HOR_RES_MAX || y >= DISP_VER_RES_MAX)
             {
-                LV_LOG_ERROR("invalid position, X[%d,%u,%d], Y[%d,%u,%d]",
-                             0, x, LV_HOR_RES_MAX,
-                             0, y, LV_VER_RES_MAX);
                 continue;
             }
 
@@ -273,9 +263,7 @@ int indev_touch_get_data(lv_indev_data_t *psInDevData)
 
     pre_touch = sFtRegMap.u8TDStatus;
 
-    LV_LOG_INFO("%s (%d, %d)", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
-
-    return (psInDevData->state == LV_INDEV_STATE_PRESSED) ? 1 : 0;
+    return (psInDevData->state == NUMAKER_INDEV_STATE_PRESSED) ? 1 : 0;
 
 exit_indev_touch_get_data:
 

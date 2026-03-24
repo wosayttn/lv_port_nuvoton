@@ -10,7 +10,7 @@
 #define __INDEV_TOUCH_ADC_H__
 
 #include <stdint.h>
-#include "lv_glue.h"
+#include "touch_glue.h"
 
 uint32_t nu_adc_sampling(uint32_t channel);
 uint32_t indev_touch_get_x(void);

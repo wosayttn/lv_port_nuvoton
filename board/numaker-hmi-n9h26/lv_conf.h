@@ -12,11 +12,10 @@
 #define LV_NUVOTON_INCLUDE     "N9H26.h"
 #include LV_NUVOTON_INCLUDE
 
-//#define LV_USE_DRAW_BITBLT                     1
-//#define LV_USE_PARALLEL_DRAW_DEBUG             0
-//#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     32
-//#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(32)))
-//#define CONFIG_LV_DRAW_BUF_ALIGN               32
+#define LV_USE_DRAW_BITBLT                     1
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     32
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE)))
+#define CONFIG_LV_DRAW_BUF_ALIGN               32
 
 #define LV_USE_OS                       LV_OS_FREERTOS
 
@@ -33,6 +32,8 @@
     #define LV_VER_RES_MAX              240
     #define LV_COLOR_DEPTH              16
 #endif
+
+//#define CONFIG_LV_DISP_ROTATION         LV_DISPLAY_ROTATION_90
 
 #define CONFIG_LV_DEF_REFR_PERIOD       25
 #define CONFIG_LV_DISP_FULL_REFRESH     0
@@ -72,7 +73,7 @@
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER

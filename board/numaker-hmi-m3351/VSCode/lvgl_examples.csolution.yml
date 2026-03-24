@@ -1,0 +1,10 @@
+solution:
+  created-by: uv2csolution@1.6.0
+  created-for: CMSIS-Toolbox@2.7.0
+  compiler: AC6
+  target-types:
+    - type: M3351KJ_NUTFT
+      device: M3351KJCAE
+      optimize: debug
+  projects:
+    - project: lvgl_examples.cproject.yml
