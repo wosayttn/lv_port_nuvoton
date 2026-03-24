@@ -6,8 +6,9 @@
  * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include "drv_pdma.h"
 #include <string.h>
+#include <stdio.h>
+#include "drv_pdma.h"
 #include "nu_misc.h"
 
 #if defined(__FREERTOS__)

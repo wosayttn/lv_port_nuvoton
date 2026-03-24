@@ -143,6 +143,7 @@
           <Name>UL2V8M(-S0 -C0 -P0 -FD20000000 -FC8000 -FN2 -FF0M5531_AP_2M -FS0100000 -FL0200000 -FF1M5531_NS -FS110100000 -FL1200000 -FP0($$Device:M5531H2LJAE$Flash\M5531_AP_2M.FLM) -FP1($$Device:M5531H2LJAE$Flash\M5531_NS.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
+      <Breakpoint/>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
