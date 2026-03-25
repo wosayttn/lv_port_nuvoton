@@ -10,18 +10,18 @@
       <TargetName>N9H26K6_320x240_FreeRTOS</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>TMPA900CMXBG</Device>
-          <Vendor>Toshiba</Vendor>
-          <Cpu>IRAM(0xF8002000-0xF8009FFF) CLOCK(24000000) CPUTYPE(ARM926EJ-S)</Cpu>
+          <Device>Nuvoton_ARM9_Series</Device>
+          <Vendor>Nuvoton</Vendor>
+          <Cpu>IRAM(0x0-0x0) CLOCK(000000000) CPUTYPE(ARM926EJ-S)</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
-          <StartupFile>"STARTUP\Toshiba\TMPA900.s" ("Toshiba TMPA910 Startup Code")</StartupFile>
+          <StartupFile></StartupFile>
           <FlashDriverDll></FlashDriverDll>
-          <DeviceId>4898</DeviceId>
-          <RegisterFile>TMPA900.H</RegisterFile>
+          <DeviceId>0</DeviceId>
+          <RegisterFile></RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -177,7 +177,7 @@
           </Flash1>
           <bUseTDR>0</bUseTDR>
           <Flash2>Segger\JLTAgdi.dll</Flash2>
-          <Flash3>"" ()</Flash3>
+          <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -285,8 +285,8 @@
               </Ocm6>
               <IRAM>
                 <Type>0</Type>
-                <StartAddress>0xf8002000</StartAddress>
-                <Size>0x8000</Size>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x1</Size>
               </IRAM>
               <IROM>
                 <Type>0</Type>
@@ -340,8 +340,8 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0xf8002000</StartAddress>
-                <Size>0x8000</Size>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x1</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
