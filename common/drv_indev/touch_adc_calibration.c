@@ -18,11 +18,25 @@ extern S_CALIBRATION_MATRIX g_sCalMat;
 
 static const S_CALIBRATION_MATRIX g_sCalZero = { 1, 0, 0, 0, 1, 0, 1 };
 
+/**
+ * @brief Reset touch calibration matrix to identity/zero state.
+ *
+ * Resets the global calibration matrix to default (no transformation).
+ * This effectively disables any coordinate mapping.
+ */
 void ad_touch_reset_calmat(void)
 {
     memcpy(&g_sCalMat, &g_sCalZero, sizeof(S_CALIBRATION_MATRIX));
 }
 
+/**
+ * @brief Update touch calibration matrix with new calibration data.
+ *
+ * Applies new calibration coefficients if valid (non-zero divisor).
+ * Prints confirmation message showing the applied calibration values.
+ *
+ * @param psNewCalMat[in]  Pointer to new calibration matrix structure
+ */
 void ad_touch_update_calmat(S_CALIBRATION_MATRIX *psNewCalMat)
 {
     if (psNewCalMat->div != 0)
@@ -40,19 +54,37 @@ void ad_touch_update_calmat(S_CALIBRATION_MATRIX *psNewCalMat)
     }
 }
 
+/**
+ * @brief Calculate touch calibration matrix from reference points.
+ *
+ * Computes transformation matrix coefficients using either:
+ * - 3-point method: Fast, but may have lower accuracy
+ * - 5-point method: Uses least-squares fitting for better accuracy
+ *
+ * The calibration matrix maps raw ADC coordinates to display coordinates:
+ * display_x = (a*adc_x + b*adc_y + c) / div
+ * display_y = (d*adc_x + e*adc_y + f) / div
+ *
+ * @param psDispCP[in]   Pointer to display (reference) calibration points
+ * @param psADCCP[in]    Pointer to raw ADC calibration points
+ * @param psCM[out]      Pointer to calculated calibration matrix
+ * @return               0 on success, -1 if calibration points are degenerate
+ */
 int ad_cal_mat_get(const numaker_point_t *psDispCP, numaker_point_t *psADCCP, S_CALIBRATION_MATRIX *psCM)
 {
 #if (DEF_CAL_POINT_NUM==3)
-
+    /* Calculate determinant for matrix inversion */
     psCM->div = ((psADCCP[0].x - psADCCP[2].x) * (psADCCP[1].y - psADCCP[2].y)) -
                 ((psADCCP[1].x - psADCCP[2].x) * (psADCCP[0].y - psADCCP[2].y)) ;
 
     if (psCM->div == 0)
     {
+        /* Calibration points are collinear - cannot calculate transformation */
         return -1;
     }
     else
     {
+        /* Calculate transformation coefficients using Cramer's rule */
         psCM->a = ((psDispCP[0].x - psDispCP[2].x) * (psADCCP[1].y - psADCCP[2].y)) -
                   ((psDispCP[1].x - psDispCP[2].x) * (psADCCP[0].y - psADCCP[2].y)) ;
 
@@ -75,12 +107,13 @@ int ad_cal_mat_get(const numaker_point_t *psDispCP, numaker_point_t *psADCCP, S_
     }
 
 #elif (DEF_CAL_POINT_NUM==5)
-
+    /* Use least-squares fitting for 5-point calibration (more accurate) */
     int i;
     float n, x, y, xx, yy, xy, z, zx, zy;
     float a, b, c, d, e, f, g;
     float scaling = 65536.0f;
 
+    /* Calculate sums for least-squares matrix */
     n = x = y = xx = yy = xy = 0;
     for (i = 0; i < DEF_CAL_POINT_NUM; i++)
     {
@@ -92,12 +125,15 @@ int ad_cal_mat_get(const numaker_point_t *psDispCP, numaker_point_t *psADCCP, S_
         xy += (float)psADCCP[i].x * psADCCP[i].y;
     }
 
+    /* Calculate least-squares determinant */
     d = n * (xx * yy - xy * xy) + x * (xy * y - x * yy) + y * (x * xy - y * xx);
     if (d < (float)0.1 && d > (float) -0.1)
     {
+        /* Calibration points are degenerate - cannot calculate transformation */
         return -1;
     }
 
+    /* Calculate inverse matrix elements */
     a = (xx * yy - xy * xy) / d;
     b = (xy * y  - x * yy)  / d;
     c = (x * xy  - y * xx)  / d;
@@ -105,6 +141,7 @@ int ad_cal_mat_get(const numaker_point_t *psDispCP, numaker_point_t *psADCCP, S_
     f = (x * y   - n * xy)  / d;
     g = (n * xx  - x * x)   / d;
 
+    /* Calculate X-axis coefficients */
     z = zx = zy = 0;
     for (i = 0; i < DEF_CAL_POINT_NUM; i++)
     {
@@ -117,6 +154,7 @@ int ad_cal_mat_get(const numaker_point_t *psDispCP, numaker_point_t *psADCCP, S_
     psCM->a = (int32_t)((b * z + e * zx + f * zy) * scaling);
     psCM->b = (int32_t)((c * z + f * zx + g * zy) * scaling);
 
+    /* Calculate Y-axis coefficients */
     z = zx = zy = 0;
     for (i = 0; i < DEF_CAL_POINT_NUM; i++)
     {

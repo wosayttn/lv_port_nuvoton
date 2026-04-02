@@ -1,3 +1,11 @@
+/**************************************************************************//**
+ * @file     nu_pin.h
+ * @brief    Pin enumeration definitions
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
+ *****************************************************************************/
+
 #ifndef __NU_PIN_H__
 #define __NU_PIN_H__
 

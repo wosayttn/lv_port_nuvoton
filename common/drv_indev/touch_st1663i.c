@@ -84,6 +84,18 @@ static int st1663i_write_reg(uint8_t reg, uint8_t data[], uint32_t len)
 {
     S_TOUCH_IF_I2C *psIfCtx = &s_st1663i_i2c_if;
 
+    /**
+     * @brief Write ST1663i register via I2C interface.
+     *
+     * Configures I2C parameters and writes data to ST1663i touch controller.
+     * ST1663i uses 1-byte register addressing.
+     *
+     * @param reg[in]   Register address (8-bit)
+     * @param data[in]  Data array to write
+     * @param len[in]   Length of data in bytes
+     * @return          0 on success, error code otherwise
+     */
+
     psIfCtx->m_pu8Reg = &reg;
     psIfCtx->m_u32RegLen = sizeof(uint8_t);
     psIfCtx->m_pu8Data = data;
@@ -92,6 +104,16 @@ static int st1663i_write_reg(uint8_t reg, uint8_t data[], uint32_t len)
     return touch_plat_i2c_write(psIfCtx);
 }
 
+/**
+ * @brief Read ST1663i register via I2C interface.
+ *
+ * Configures I2C parameters and reads data from ST1663i touch controller.
+ *
+ * @param reg[in]    Register address (8-bit)
+ * @param data[out]  Buffer to receive register data
+ * @param len[in]    Number of bytes to read
+ * @return           0 on success, error code otherwise
+ */
 static int st1663i_read_reg(uint8_t reg, uint8_t data[], uint32_t len)
 {
     S_TOUCH_IF_I2C *psIfCtx = &s_st1663i_i2c_if;

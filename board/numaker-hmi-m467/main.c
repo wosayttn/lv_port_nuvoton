@@ -1,10 +1,10 @@
 /**************************************************************************//**
  * @file     main.c
- * @brief    M460 Driver Sample Code
+ * @brief    NuMaker Display Driver Sample Code
  *
- * @note
- * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
+ * SPDX-License-Identifier: Apache-2.0
+ * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
+ *****************************************************************************/
 
 #include "lv_glue.h"
 

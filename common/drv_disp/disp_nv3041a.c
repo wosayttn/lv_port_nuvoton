@@ -8,72 +8,92 @@
 
 #include "numaker_disp.h"
 
-#define DISP_HOR_RES_MAX      480
-#define DISP_VER_RES_MAX      272
-
+/**
+ * @brief Initialize NV3041A display controller.
+ *
+ * Performs hardware reset sequence, unlocks extended commands, and configures
+ * all critical registers for:
+ * - Tearing effect signal (TE) output
+ * - Memory access control and pixel format (RGB565)
+ * - Power supply voltage trim and clamp control
+ * - Gate and source timing for panel scanning
+ * - Gamma correction curves (positive and negative)
+ * - Display window configuration
+ *
+ * @return  0 on success
+ */
 int disp_init(void)
 {
     DISP_SET_RST;
     DISP_CLR_BACKLIGHT;
 
-    /* Hardware reset */
+    /* Perform hardware reset: pull low then high with delays */
     DISP_CLR_RST;
-    disp_delay_ms(100);    // Delay 100ms
+    disp_delay_ms(100);    /* Hold reset low for 100ms */
 
     DISP_SET_RST;
-    disp_delay_ms(500);    // Delay 500ms
+    disp_delay_ms(500);    /* Wait 500ms for initialization */
 
-    disp_write_reg(0xFF, 0xA5); // Unlock extended command set
-    disp_write_reg(0xE7, 0x10); // TE output enable (Tearing Effect signal)
-    disp_write_reg(0x35, 0x00); // TEON: Tearing Effect output enable
-    disp_write_reg(0x36, 0x00); // MACTL: Memory data access control (scan direction, RGB order)
-    disp_write_reg(0x3A, 0x01); // COLMOD: Pixel format set to RGB565
-    // disp_write_reg(0x40, 0x00); // Panel type: 01 = IPS, 00 = TN
-    disp_write_reg(0x41, 0x03); // BUS_WD: 16-bit bus width
-    disp_write_reg(0x44, 0x15); // FSM_VBP: Vertical back porch
-    disp_write_reg(0x45, 0x15); // FSM_VFP: Vertical front porch
-    disp_write_reg(0x7D, 0x03); // VDDS_TRIM: Voltage trimming for internal power
+    /* Unlock extended command set for configuration */
+    disp_write_reg(0xFF, 0xA5);
 
-    disp_write_reg(0xC1, 0xBB); // MV_CLP: AVDD/AVCL clamp control
-    disp_write_reg(0xC2, 0x05); // VGH_CLP: VGH clamp control
-    disp_write_reg(0xC3, 0x10); // VGL_CLP: VGL clamp control
-    disp_write_reg(0xC6, 0x3E); // RATIO_CTRL: Power voltage ratio control
-    disp_write_reg(0xC7, 0x25); // MV_PUMP_CLK: Charge pump clock control
-    disp_write_reg(0xC8, 0x11); // HV_PUMP_CLK: VGL clock control
-    disp_write_reg(0x7A, 0x5F); // USR_VGSP: User VGSP voltage
-    disp_write_reg(0x6F, 0x44); // USR_GVDD: User GVDD voltage
-    disp_write_reg(0x78, 0x70); // USR_GVCL: User GVCL voltage
-    disp_write_reg(0xC9, 0x00); // MV_CLK_CLP: MV clock clamp
-    disp_write_reg(0x67, 0x21); // Unknown - possibly internal tuning
+    /* Configure tearing effect signal output and display control */
+    disp_write_reg(0xE7, 0x10); /* TE output enable */
+    disp_write_reg(0x35, 0x00); /* Tearing Effect Line signal enable */
+    disp_write_reg(0x36, 0x00); /* Memory access control: scan direction, RGB order */
+    disp_write_reg(0x3A, 0x01); /* Pixel format: 16-bit RGB565 */
+    disp_write_reg(0x41, 0x03); /* Bus width: 16-bit interface */
+    disp_write_reg(0x44, 0x15); /* Vertical back porch */
+    disp_write_reg(0x45, 0x15); /* Vertical front porch */
+    disp_write_reg(0x7D, 0x03); /* Internal power supply voltage trim */
 
-    // Gate scan settings
-    disp_write_reg(0x51, 0x0A); // GATE_ST_O: Gate start (odd)
-    disp_write_reg(0x52, 0x76); // GATE_ED_O: Gate end (odd)
-    disp_write_reg(0x53, 0x0A); // GATE_ST_E: Gate start (even)
-    disp_write_reg(0x54, 0x76); // GATE_ED_E: Gate end (even)
+    /* Configure power supply voltages and clamp levels */
+    disp_write_reg(0xC1, 0xBB); /* AVDD/AVCL clamp control */
+    disp_write_reg(0xC2, 0x05); /* VGH clamp control */
+    disp_write_reg(0xC3, 0x10); /* VGL clamp control */
+    disp_write_reg(0xC6, 0x3E); /* Power voltage ratio control */
+    disp_write_reg(0xC7, 0x25); /* Charge pump clock control */
+    disp_write_reg(0xC8, 0x11); /* VGL clock control */
+    disp_write_reg(0x7A, 0x5F); /* User VGSP voltage setting */
+    disp_write_reg(0x6F, 0x44); /* User GVDD voltage setting */
+    disp_write_reg(0x78, 0x70); /* User GVCL voltage setting */
+    disp_write_reg(0xC9, 0x00); /* MV clock clamp control */
+    disp_write_reg(0x67, 0x21); /* Internal tuning */
 
-    // Source timing configuration
-    disp_write_reg(0x46, 0x0A); // HBP odd
-    disp_write_reg(0x47, 0x2A); // HFP odd
-    disp_write_reg(0x48, 0x0A); // HBP even
-    disp_write_reg(0x49, 0x1A); // HFP even
-    disp_write_reg(0x56, 0x43); // LD width/start
-    disp_write_reg(0x57, 0x42); // CS enable/start
-    disp_write_reg(0x58, 0x3C); // CS positive width
-    disp_write_reg(0x59, 0x64); // CS negative width
-    disp_write_reg(0x5A, 0x41); // Precharge start (odd)
-    disp_write_reg(0x5B, 0x3C); // Precharge width (odd)
-    disp_write_reg(0x5C, 0x02); // Precharge start (even)
-    disp_write_reg(0x5D, 0x3C); // Precharge width (even)
-    disp_write_reg(0x5E, 0x1F); // Polarity switch
-    disp_write_reg(0x60, 0x80); // Output start (odd)
-    disp_write_reg(0x61, 0x3F); // Output start (even)
-    disp_write_reg(0x62, 0x21); // Output end (MSB)
-    disp_write_reg(0x63, 0x07); // Output end (odd LSB)
-    disp_write_reg(0x64, 0xE0); // Output end (even LSB)
-    disp_write_reg(0x65, 0x02); // Chopper control
+    /* Configure gate scan timing (for odd and even frames) */
+    disp_write_reg(0x51, 0x0A); /* Gate start (odd frame) */
+    disp_write_reg(0x52, 0x76); /* Gate end (odd frame) */
+    disp_write_reg(0x53, 0x0A); /* Gate start (even frame) */
+    disp_write_reg(0x54, 0x76); /* Gate end (even frame) */
 
-    // MUX timing control for AVDD/AVCL/VGH
+    /* Configure source/column timing */
+    disp_write_reg(0x46, 0x0A); /* Horizontal back porch (odd) */
+    disp_write_reg(0x47, 0x2A); /* Horizontal front porch (odd) */
+    disp_write_reg(0x48, 0x0A); /* Horizontal back porch (even) */
+    disp_write_reg(0x49, 0x1A); /* Horizontal front porch (even) */
+
+    /* Configure data line and charge pump timing */
+    disp_write_reg(0x56, 0x43); /* LD (Data Line) width/start */
+    disp_write_reg(0x57, 0x42); /* CS (Column Select) enable/start */
+    disp_write_reg(0x58, 0x3C); /* CS positive width */
+    disp_write_reg(0x59, 0x64); /* CS negative width */
+
+    /* Configure precharge timing (for odd and even frames) */
+    disp_write_reg(0x5A, 0x41); /* Precharge start (odd frame) */
+    disp_write_reg(0x5B, 0x3C); /* Precharge pulse width (odd) */
+    disp_write_reg(0x5C, 0x02); /* Precharge start (even frame) */
+    disp_write_reg(0x5D, 0x3C); /* Precharge pulse width (even) */
+    disp_write_reg(0x5E, 0x1F); /* Polarity switch control */
+
+    /* Configure output window timing */
+    disp_write_reg(0x60, 0x80); /* Output start (odd frame) */
+    disp_write_reg(0x61, 0x3F); /* Output start (even frame) */
+    disp_write_reg(0x62, 0x21); /* Output end (MSB) */
+    disp_write_reg(0x63, 0x07); /* Output end (odd frame LSB) */
+    disp_write_reg(0x64, 0xE0); /* Output end (even frame LSB) */
+    disp_write_reg(0x65, 0x02); /* Chopper control */
+
+    /* MUX timing control for power supply switching (AVDD/AVCL/VGH) */
     disp_write_reg(0xCA, 0x20);
     disp_write_reg(0xCB, 0x52);
     disp_write_reg(0xCC, 0x10);
@@ -85,27 +105,34 @@ int disp_init(void)
     disp_write_reg(0xD4, 0x0A);
     disp_write_reg(0xD5, 0x32);
 
-    // Test mode
+    /* Test mode configuration */
     disp_write_reg(0xF8, 0x03);
     disp_write_reg(0xF9, 0x20);
 
-    // Gamma correction (P & N curves)
+    /* Configure gamma correction curves for positive and negative half-tones */
+    /* Positive gamma curve (first voltage dividing point) */
     disp_write_reg(0x80, 0x00);
     disp_write_reg(0xA0, 0x00);
+    /* Positive gamma curve (second voltage dividing point) */
     disp_write_reg(0x81, 0x05);
     disp_write_reg(0xA1, 0x05);
+    /* Positive gamma curve (third voltage dividing point) */
     disp_write_reg(0x82, 0x04);
     disp_write_reg(0xA2, 0x03);
+    /* Positive gamma curve (middle point) */
     disp_write_reg(0x86, 0x25);
     disp_write_reg(0xA6, 0x1C);
+    /* Positive gamma curve (additional points) */
     disp_write_reg(0x87, 0x2A);
     disp_write_reg(0xA7, 0x2A);
     disp_write_reg(0x83, 0x1D);
     disp_write_reg(0xA3, 0x1D);
     disp_write_reg(0x84, 0x1E);
     disp_write_reg(0xA4, 0x1E);
+    /* Positive gamma curve (final point) */
     disp_write_reg(0x85, 0x3F);
     disp_write_reg(0xA5, 0x3F);
+    /* Positive gamma curve (fine-tuning) */
     disp_write_reg(0x88, 0x0B);
     disp_write_reg(0xA8, 0x0B);
     disp_write_reg(0x89, 0x14);

@@ -1,3 +1,11 @@
+/**************************************************************************//**
+ * @file     nu_misc.h
+ * @brief    Miscellaneous utility structures and definitions
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
+ *****************************************************************************/
+
 #ifndef __NU_MISC_H__
 #define __NU_MISC_H__
 

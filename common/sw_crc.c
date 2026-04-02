@@ -1,6 +1,6 @@
 /**************************************************************************//**
- * @file     perf_ev.c
- * @brief    NuMaker Display Driver performance evaluation routines
+ * @file     sw_crc.c
+ * @brief    Software CRC-32 checksum calculation routines
  *
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
@@ -9,6 +9,11 @@
 #include "NuMicro.h"
 #include <stdint.h>
 
+/**
+ * CRC-32 lookup table for fast polynomial-based checksum calculation.
+ * This table is pre-computed using the standard CRC-32 polynomial (0xEDB88320)
+ * and is used by the crc32() function to calculate checksums efficiently.
+ */
 static const uint32_t crc32_tab[] =
 {
     0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
@@ -56,19 +61,39 @@ static const uint32_t crc32_tab[] =
     0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 };
 
+/**
+ * @brief Calculate 32-bit CRC checksum for a data buffer.
+ *
+ * This function uses a pre-computed lookup table to efficiently calculate
+ * the CRC-32 checksum of a data buffer. The CRC is computed byte-by-byte
+ * using the table-driven algorithm, which is faster than bit-by-bit calculation.
+ *
+ * @param ptr[in]   Pointer to the data buffer for which to calculate CRC
+ * @param len[in]   Length of the data buffer in bytes
+ *
+ * @return The calculated CRC-32 checksum value
+ *
+ * @note The seed value (CRC_SEED) is 0xFFFFFFFF, which is the standard
+ *       initialization value for CRC-32. The final result is XORed with ~0U.
+ */
 uint32_t crc32(uint8_t *ptr, uint32_t len)
 {
-#define CRC_SEED    0xFFFFFFFF
-    uint32_t crc = CRC_SEED;
-    uint32_t i;
-    uint8_t data8;
+#define CRC_SEED    0xFFFFFFFF    /* Initial seed value for CRC calculation */
+    uint32_t crc = CRC_SEED;      /* Initialize CRC with seed value */
+    uint32_t i;                   /* Loop counter */
+    uint8_t data8;                /* Current byte being processed */
 
+    /* Process each byte in the buffer */
     for (i = 0; i < len; i++)
     {
+        /* Get current byte from buffer */
         data8 = ptr[i];
+        /* Update CRC: table lookup based on CRC XOR current byte,
+           then combine with shifted CRC value */
         crc = crc32_tab[(crc ^ data8) & 0xFF] ^ (crc >> 8);
     }
 
+    /* Return final CRC value XORed with all 1s */
     return crc ^ ~0U;
 }
 

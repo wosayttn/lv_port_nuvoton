@@ -145,6 +145,18 @@ static int ft5316_write_reg(uint8_t reg, uint8_t data[], uint32_t len)
 {
     S_TOUCH_IF_I2C *psIfCtx = &s_ft5316_i2c_if;
 
+    /**
+     * @brief Write register via I2C interface
+     *
+     * Sets up I2C parameters and writes data to FT5316 register.
+     * FT5316 uses 1-byte register addressing.
+     *
+     * @param reg[in]   Register address (8-bit)
+     * @param data[in]  Data array to write
+     * @param len[in]   Length of data in bytes
+     * @return          0 on success, error code otherwise
+     */
+
     psIfCtx->m_pu8Reg = &reg;
     psIfCtx->m_u32RegLen = sizeof(uint8_t);
     psIfCtx->m_pu8Data = data;
@@ -156,6 +168,17 @@ static int ft5316_write_reg(uint8_t reg, uint8_t data[], uint32_t len)
 static int ft5316_read_reg(uint8_t reg, uint8_t data[], uint32_t len)
 {
     S_TOUCH_IF_I2C *psIfCtx = &s_ft5316_i2c_if;
+
+    /**
+     * @brief Read register via I2C interface
+     *
+     * Sets up I2C parameters and reads data from FT5316 register.
+     *
+     * @param reg[in]    Register address (8-bit)
+     * @param data[out]  Buffer to receive register data
+     * @param len[in]    Number of bytes to read
+     * @return           0 on success, error code otherwise
+     */
 
     psIfCtx->m_pu8Reg = &reg;
     psIfCtx->m_u32RegLen = sizeof(uint8_t);

@@ -8,22 +8,32 @@
 
 #include "numaker_disp.h"
 
+/**
+ * @brief Initialize ILI9341 display controller.
+ *
+ * Performs hardware reset and sends the complete initialization sequence for ILI9341.
+ * Configures power settings, display timing, color format (RGB565), gamma correction,
+ * and enables the display output with backlight.
+ *
+ * @return 0 on success
+ */
 int disp_init(void)
 {
+    /* Set reset pin high and turn off backlight initially */
     DISP_SET_RST;
     DISP_CLR_BACKLIGHT;
 
-    /* Hardware reset */
+    /* ===== Hardware Reset Sequence ===== */
     DISP_SET_RST;
-    disp_delay_ms(5);     // Delay 5ms
+    disp_delay_ms(5);     /* Wait 5ms */
 
     DISP_CLR_RST;
-    disp_delay_ms(20);    // Delay 20ms
+    disp_delay_ms(20);    /* Wait 20ms for reset */
 
     DISP_SET_RST;
-    disp_delay_ms(40);    // Delay 40ms
+    disp_delay_ms(40);    /* Wait 40ms for stabilization */
 
-    /* Initial control registers */
+    /* ===== Initial Control Registers ===== */
     DISP_WRITE_REG(0xCB);
     DISP_WRITE_DATA(0x39);
     DISP_WRITE_DATA(0x2C);
@@ -54,6 +64,7 @@ int disp_init(void)
     DISP_WRITE_REG(0xF7);
     DISP_WRITE_DATA(0x20);
 
+    /* ===== Power Control ===== */
     DISP_WRITE_REG(0xC0);
     DISP_WRITE_DATA(0x23);
 
@@ -67,16 +78,20 @@ int disp_init(void)
     DISP_WRITE_REG(0xC7);
     DISP_WRITE_DATA(0x86);
 
+    /* ===== Display Configuration ===== */
     DISP_WRITE_REG(0x36);
 
+    /* Set display orientation based on resolution */
     if (DISP_HOR_RES_MAX == 240)
-        DISP_WRITE_DATA(0x48); // for 240x320
+        DISP_WRITE_DATA(0x48); /* Orientation for 240x320 */
     else
-        DISP_WRITE_DATA(0xE8); // for 320x240
+        DISP_WRITE_DATA(0xE8); /* Orientation for 320x240 */
 
+    /* Set pixel format to RGB565 (16-bit color) */
     DISP_WRITE_REG(0x3A);
     DISP_WRITE_DATA(0x55);
 
+    /* Frame rate control */
     DISP_WRITE_REG(0xB1);
     DISP_WRITE_DATA(0x00);
     DISP_WRITE_DATA(0x18);
@@ -92,6 +107,7 @@ int disp_init(void)
     DISP_WRITE_REG(0x26);
     DISP_WRITE_DATA(0x01);
 
+    /* ===== Gamma Correction (Positive) ===== */
     DISP_WRITE_REG(0xE0);
     DISP_WRITE_DATA(0x0F);
     DISP_WRITE_DATA(0x31);
@@ -109,6 +125,7 @@ int disp_init(void)
     DISP_WRITE_DATA(0x09);
     DISP_WRITE_DATA(0x00);
 
+    /* ===== Gamma Correction (Negative) ===== */
     DISP_WRITE_REG(0xE1);
     DISP_WRITE_DATA(0x00);
     DISP_WRITE_DATA(0x0E);
@@ -126,36 +143,62 @@ int disp_init(void)
     DISP_WRITE_DATA(0x36);
     DISP_WRITE_DATA(0x0F);
 
+    /* Exit sleep mode */
     DISP_WRITE_REG(0x11);
+    disp_delay_ms(120);   /* Wait 120ms for display to wake up */
 
-    disp_delay_ms(120);   // Delay 120ms
+    /* Turn display on */
+    DISP_WRITE_REG(0x29);
 
-    DISP_WRITE_REG(0x29);  //Display on
-
+    /* Enable backlight */
     DISP_SET_BACKLIGHT;
 
     return 0;
 }
 
+/**
+ * @brief Fill a rectangular display area with pixel data (ILI9341).
+ *
+ * Sets the column and page address window and sends pixel data.
+ *
+ * @param pixels[in]  Pointer to pixel data buffer (RGB565 format)
+ * @param area[in]    Pointer to rectangular area structure
+ */
 void disp_fillrect(uint16_t *pixels, const disp_area_t *area)
 {
+    /* Calculate width and height */
     int32_t w = (int32_t)(area->x2 - area->x1 + 1);
     int32_t h = (int32_t)(area->y2 - area->y1 + 1);
 
+    /* Set column address */
     disp_set_column(area->x1, area->x2);
+    /* Set page/row address */
     disp_set_page(area->y1, area->y2);
+    /* Write memory command */
     DISP_WRITE_REG(0x2C);
 
+    /* Send pixel data */
     disp_send_pixels(pixels, h * w * sizeof(uint16_t));
 }
 
+/**
+ * @brief Read a rectangular display area from VRAM (ILI9341).
+ *
+ * Sets the address window and reads pixel data from display memory.
+ *
+ * @param pixels[out]  Pointer to buffer to receive pixel data
+ * @param area[in]     Pointer to rectangular area structure
+ */
 void disp_readrect(uint16_t *pixels, const disp_area_t *area)
 {
     void disp_ili9341_set_area(const disp_area_t *area);
+    /* Configure address window */
     disp_ili9341_set_area(area);
 
+    /* Calculate dimensions */
     int32_t w = (int32_t)(area->x2 - area->x1 + 1);
     int32_t h = (int32_t)(area->y2 - area->y1 + 1);
 
+    /* Read pixel data from display memory */
     disp_receive_pixels(pixels, h * w * sizeof(uint16_t));
 }

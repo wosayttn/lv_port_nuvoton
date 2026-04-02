@@ -141,18 +141,40 @@ static S_TOUCH_IF_I2C s_gt911_i2c_if =
     .m_u8DevAddr  = GT911_ADDRESS2,
 };
 
+/**
+ * @brief Calculate GT911 configuration checksum.
+ *
+ * Computes two's complement checksum of configuration data.
+ * Used to validate configuration integrity.
+ *
+ * @param config[in]  Pointer to configuration data
+ * @param len[in]     Length of configuration data in bytes
+ * @return            Calculated checksum value (8-bit)
+ */
 static uint8_t gt911_calculate_checksum(uint8_t *config, uint16_t len)
 {
     uint16_t sum = 0;
 
+    /* Sum all configuration bytes */
     for (uint16_t i = 0; i < len; i++)
     {
         sum += config[i];
     }
 
+    /* Return two's complement checksum */
     return (~(sum & 0xFF)) + 1;
 }
 
+/**
+ * @brief Write GT911 register via I2C interface.
+ *
+ * GT911 uses 16-bit register addressing (big-endian).
+ *
+ * @param reg[in]   Register address (16-bit)
+ * @param data[in]  Data array to write
+ * @param len[in]   Length of data in bytes
+ * @return          0 on success, error code otherwise
+ */
 static int gt911_write_reg(uint16_t reg, uint8_t data[], uint32_t len)
 {
     S_TOUCH_IF_I2C *psIfCtx = &s_gt911_i2c_if;
@@ -165,6 +187,16 @@ static int gt911_write_reg(uint16_t reg, uint8_t data[], uint32_t len)
     return touch_plat_i2c_write(psIfCtx);
 }
 
+/**
+ * @brief Read GT911 register via I2C interface.
+ *
+ * GT911 uses 16-bit register addressing (big-endian).
+ *
+ * @param reg[in]    Register address (16-bit)
+ * @param data[out]  Buffer to receive register data
+ * @param len[in]    Number of bytes to read
+ * @return           0 on success, error code otherwise
+ */
 static int gt911_read_reg(uint16_t reg, uint8_t data[], uint32_t len)
 {
     S_TOUCH_IF_I2C *psIfCtx = &s_gt911_i2c_if;

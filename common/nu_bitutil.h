@@ -1,14 +1,10 @@
 /**************************************************************************//**
-*
-* @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
-*
-* SPDX-License-Identifier: Apache-2.0
-*
-* Change Logs:
-* Date            Author           Notes
-* 2020-2-7        Wayne            First version
-*
-******************************************************************************/
+ * @file     nu_bitutil.h
+ * @brief    Bit manipulation utility functions
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
+ ******************************************************************************/
 #ifndef __NU_BITUTIL_H__
 #define __NU_BITUTIL_H__
 

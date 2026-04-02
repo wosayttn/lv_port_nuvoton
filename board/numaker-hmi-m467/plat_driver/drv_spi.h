@@ -1,5 +1,5 @@
 /**************************************************************************//**
- * @file     drv_spi.c
+ * @file     drv_spi.h
  * @brief    SPI helper function
  *
  * SPDX-License-Identifier: Apache-2.0

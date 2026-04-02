@@ -91,13 +91,27 @@ static void lt7381_hw_reset(void)
     disp_delay_ms(50);
 }
 
+/**
+ * @brief Perform software reset of LT7381 display controller.
+ *
+ * Sends software reset command and waits for completion (100ms delay).
+ */
 static void lt7381_sw_reset(void)
 {
+    /* Send software reset command to register 0x00 */
     DISP_WRITE_REG(0x00);
     DISP_WRITE_DATA(0x01);
+    /* Wait for reset to complete */
     disp_delay_ms(100);
 }
 
+/**
+ * @brief Wait for LT7381 to be ready for operation.
+ *
+ * Polls status register to verify system ready status and core operation mode.
+ * Performs hardware reset retry if status check fails. Blocks until controller
+ * is fully operational.
+ */
 static void lt7381_wait_ready(void)
 {
     uint8_t i = 0;
@@ -105,22 +119,27 @@ static void lt7381_wait_ready(void)
 
     while (1)
     {
+        /* Check if status bit 1 is clear (not busy) */
         if ((DISP_READ_STATUS() & BIT1) == 0x00)
         {
             disp_delay_ms(2);
+            /* Read core operation mode register */
             DISP_WRITE_REG(0x01);
             if ((DISP_READ_DATA() & BIT7) == BIT7)
             {
+                /* Core operation mode is correct, break out */
                 break;
             }
             else
             {
+                /* Set core operation mode */
                 disp_delay_ms(2);
                 DISP_WRITE_REG(0x01);
                 DISP_WRITE_DATA(BIT7);
             }
         }
 
+        /* Retry with hardware reset every 5 iterations */
         if ((i % 5) == 0)
             lt7381_hw_reset();
 
@@ -129,50 +148,68 @@ static void lt7381_wait_ready(void)
 
     disp_delay_ms(100);
 
+    /* Wait for status bit 1 to clear (device not busy) */
     while (DISP_READ_STATUS() & BIT1);
 }
 
-/*
-Display ON/OFF
-0b: Display Off.
-1b: Display On.
-*/
+/**
+ * @brief Enable display output on LT7381.
+ *
+ * Sets the display ON bit in the display control register.
+ * Display output will be visible after this function completes.
+ */
 static void lt7381_display_on(void)
 {
     volatile uint16_t temp;
 
+    /* Read current display control register value */
     DISP_WRITE_REG(0x12);
     temp = DISP_READ_DATA();
+    /* Set display enable bit (bit 6) */
     temp |= BIT6;
     DISP_WRITE_DATA(temp);
 }
 
+/**
+ * @brief Initialize LT7381 PLL (Phase-Locked Loop) for clock generation.
+ *
+ * Configures PLL multiplier/divider values for SCLK, MCLK, and CCLK based on
+ * crystal input frequency. Enables the PLL to generate system clock.
+ * Uses pre-calculated settings from s_PllSettings table based on XI_IN.
+ */
 static void lt7381_initial_pll(void)
 {
+    /* Configure SCLK PLL: output divider, R divider, N divider (MSB) */
     DISP_WRITE_REG(0x05);
     DISP_WRITE_DATA((s_PllSettings[XI_IN].lpllOD_sclk << 6) |
                     (s_PllSettings[XI_IN].lpllR_sclk << 1) |
                     (s_PllSettings[XI_IN].lpllN_sclk >> 8) & 0x1);
 
+    /* Configure MCLK PLL: output divider, R divider, N divider (MSB) */
     DISP_WRITE_REG(0x07);
     DISP_WRITE_DATA((s_PllSettings[XI_IN].lpllOD_mclk << 6) |
                     (s_PllSettings[XI_IN].lpllR_mclk << 1) |
                     (s_PllSettings[XI_IN].lpllN_mclk >> 8) & 0x1);
 
+    /* Configure CCLK PLL: output divider, R divider, N divider (MSB) */
     DISP_WRITE_REG(0x09);
     DISP_WRITE_DATA((s_PllSettings[XI_IN].lpllOD_cclk << 6) |
                     (s_PllSettings[XI_IN].lpllR_cclk << 1) |
                     (s_PllSettings[XI_IN].lpllN_cclk >> 8) & 0x1);
 
+    /* Set SCLK N divider (LSB) */
     DISP_WRITE_REG(0x06);
     DISP_WRITE_DATA(s_PllSettings[XI_IN].lpllN_sclk);
 
+    /* Set MCLK N divider (LSB) */
     DISP_WRITE_REG(0x08);
     DISP_WRITE_DATA(s_PllSettings[XI_IN].lpllN_mclk);
 
+    /* Set CCLK N divider (LSB) */
     DISP_WRITE_REG(0x0a);
     DISP_WRITE_DATA(s_PllSettings[XI_IN].lpllN_cclk);
 
+    /* Enable PLL by setting bit 7 of register 0x00 */
     DISP_WRITE_REG(0x00);
     disp_delay_ms(1);
     DISP_WRITE_DATA(0x80);

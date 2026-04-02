@@ -35,60 +35,99 @@ static IRQn_Type au32GPIRQ[] =
 static volatile numaker_indev_data_t s_sInDevData = {0};
 static volatile uint32_t s_u32LastIRQ = 0;
 
+/**
+ * @brief Touch interrupt service routine for GPIO.
+ *
+ * Handles touch panel interrupt, clears interrupt flag, and updates
+ * the last interrupt timestamp for polling-based touch reading.
+ * Works with both FreeRTOS (using tick count) and bare-metal (using counter).
+ */
 // GPF ISR
 void GPF_IRQHandler(void)
 {
     GPIO_T *PORT = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET));
 
-    /* To check if PF.6 interrupt occurred */
+    /* Check if touch interrupt occurred on configured pin (PF.6) */
     if (GPIO_GET_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ))))
     {
+        /* Clear the interrupt flag */
         GPIO_CLR_INT_FLAG(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)));
 #if defined(__FREERTOS__)
+        /* Record timestamp using FreeRTOS tick count */
         s_u32LastIRQ = xTaskGetTickCount();
 #else
+        /* Record timestamp using simple counter in bare-metal mode */
         s_u32LastIRQ ++;
 #endif
     }
     else
     {
-        /* Un-expected interrupt. Just clear all PD interrupts */
+        /* Unexpected interrupt - clear all GPIO interrupts on this port */
         volatile uint32_t u32temp = PORT->INTSRC;
         PORT->INTSRC = u32temp;
     }
 }
 #endif
 
+/**
+ * @brief Initialize touch panel device and GPIO interrupts.
+ *
+ * Configures touch panel reset GPIO pin as output and optional
+ * interrupt pin as input with pull-up and falling-edge detection.
+ * Enables the GPIO port interrupt handler.
+ *
+ * @return  0 on success, error code from indev_touch_init() on failure
+ */
 int touchpad_device_initialize(void)
 {
     GPIO_T *PORT;
 
-    /* Set GPIO OUTPUT mode for indev touch pins. */
+    /* Set GPIO OUTPUT mode for touch reset pin */
     PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_RESET) * PORT_OFFSET));
     GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_RESET)), GPIO_MODE_OUTPUT);
 
 #if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
-    /* Set GPIO INTPUT mode for indev touch pins. */
+    /* Set GPIO INPUT mode for touch interrupt pin */
     PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ) * PORT_OFFSET));
     GPIO_SetMode(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), GPIO_MODE_INPUT);
+    /* Enable pull-up resistor on interrupt pin */
     GPIO_SetPullCtl(PORT, NU_GET_PIN_MASK(NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ)), GPIO_PUSEL_PULL_UP);
+    /* Enable falling-edge interrupt detection */
     GPIO_EnableInt(PORT, NU_GET_PIN(CONFIG_INDEV_TOUCH_PIN_IRQ), GPIO_INT_FALLING);
+    /* Enable the corresponding GPIO port interrupt in NVIC */
     NVIC_EnableIRQ(au32GPIRQ[NU_GET_PORT(CONFIG_INDEV_TOUCH_PIN_IRQ)]);
 #endif
 
     return indev_touch_init();
 }
 
+/**
+ * @brief Open/prepare touch panel device for reading.
+ *
+ * Currently a placeholder for future device-specific open operations.
+ *
+ * @return  0 (always succeeds)
+ */
 int touchpad_device_open(void)
 {
     return 0;
 }
 
+/**
+ * @brief Read touch panel data into provided buffer.
+ *
+ * Reads touch point data when interrupt occurred (if pin-based reading enabled)
+ * or updates data continuously. Returns touch coordinates and state.
+ *
+ * @param psInDevData[out]  Pointer to buffer for touch data (coordinates and state)
+ * @return                   Number of points read
+ */
 int touchpad_device_read(numaker_indev_data_t *psInDevData)
 {
 #if defined(CONFIG_INDEV_TOUCH_PIN_IRQ)
     static uint32_t u32LastIRQ = 0;
 
+    /* Update touch data only when interrupt has occurred */
     if (u32LastIRQ != s_u32LastIRQ)
     {
         indev_touch_get_data((numaker_indev_data_t *)&s_sInDevData);
