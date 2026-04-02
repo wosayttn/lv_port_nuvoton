@@ -366,7 +366,6 @@ project:
         - file: ../../../common/lv_port_indev.c
         - file: ../plat_driver/disp_glue.c
         - file: ../lv_conf.h
-        - file: ../plat_driver/lv_glue.h
         - file: ../plat_driver/drv_pdma.c
         - file: ../../../common/nu_misc.c
         - file: ../plat_driver/drv_spi.c

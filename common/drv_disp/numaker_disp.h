@@ -94,7 +94,7 @@ typedef struct
         #define DISP_VER_RES_MAX          240
         #define DISP_COLOR_DEPTH           16
 
-        #define CONFIG_DISPLAY_BOARD_NAME  "NUTFT_V1.3, ILI9341-SPI"
+        #define CONFIG_DISPLAY_BOARD_NAME  "ILI9341-SPI"
     #endif
 
     void DISP_WRITE_REG(uint8_t u8Cmd);

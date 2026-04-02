@@ -115,12 +115,6 @@ void disp_set_page(uint16_t StartPage, uint16_t EndPage)
     DISP_WRITE_DATA_2B(EndPage);
 }
 
-void disp_send_pixels(uint16_t *pixels, int byte_len)
-{
-    USPI_SET_DATA_WIDTH(CONFIG_DISP_SPI, 16);
-    nu_uspi_transfer(&s_NuUSPI, (const void *)pixels, NULL, byte_len);
-}
-
 static int ili9341_uspi_send_then_recv(struct nu_uspi *psNuUSPI, const uint8_t *tx, int tx_len, uint8_t *rx, int rx_len, int dw)
 {
     USPI_SET_DATA_WIDTH(psNuUSPI->base, dw * 8);

@@ -333,7 +333,6 @@ project:
     - file: ../../../common/lv_port_indev.c
     - file: ../plat_driver/disp_glue.c
     - file: ../lv_conf.h
-    - file: ../plat_driver/lv_glue.h
     - file: ../../../common/drv_disp/disp_ili9341.c
     - file: ../../../common/drv_disp/ili9341_ebi.c
     - file: ../../../common/drv_indev/touch_adc.c
