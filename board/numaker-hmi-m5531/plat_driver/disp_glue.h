@@ -28,22 +28,19 @@
 #endif
 
 #if defined(CONFIG_DISP_ILI9341) && (CONFIG_DISP_ILI9341==1)
-
-/* ILI9341 SPI */
-#define CONFIG_DISP_SPI              SPI2
-#define CONFIG_DISP_SPI_CLOCK        48000000
-#if defined(CONFIG_DISP_USE_PDMA)
-    #define CONFIG_PDMA_SPI_TX       PDMA_SPI2_TX
-    #define CONFIG_PDMA_SPI_RX       PDMA_SPI2_RX
-    #define CONFIG_SPI_USE_PDMA
-#endif
-
-#define CONFIG_DISP_PIN_DC           NU_GET_PININDEX(evGB, 2)
-#define CONFIG_DISP_PIN_RESET        NU_GET_PININDEX(evGB, 3)
-#define CONFIG_DISP_PIN_BACKLIGHT    NU_GET_PININDEX(evGB, 5)
-#define DISP_SET_RS                  {GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_DC),        NU_GET_PIN(CONFIG_DISP_PIN_DC)) = 1; __DSB();}
-#define DISP_CLR_RS                  {GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_DC),        NU_GET_PIN(CONFIG_DISP_PIN_DC)) = 0; __DSB();}
-
+    /* ILI9341 SPI */
+    #define CONFIG_DISP_SPI            SPI2
+    #define CONFIG_DISP_SPI_CLOCK      74000000
+    #if defined(CONFIG_DISP_USE_PDMA)
+        #define CONFIG_PDMA_SPI_TX     PDMA_SPI2_TX
+        #define CONFIG_PDMA_SPI_RX     PDMA_SPI2_RX
+        #define CONFIG_SPI_USE_PDMA
+    #endif
+    #define CONFIG_DISP_PIN_DC         NU_GET_PININDEX(evGB, 2)
+    #define CONFIG_DISP_PIN_RESET      NU_GET_PININDEX(evGB, 3)
+    #define CONFIG_DISP_PIN_BACKLIGHT  NU_GET_PININDEX(evGB, 5)
+    #define DISP_SET_RS                {GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_DC),        NU_GET_PIN(CONFIG_DISP_PIN_DC)) = 1; __DSB();}
+    #define DISP_CLR_RS                {GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_DC),        NU_GET_PIN(CONFIG_DISP_PIN_DC)) = 0; __DSB();}
 #else
 
 #endif

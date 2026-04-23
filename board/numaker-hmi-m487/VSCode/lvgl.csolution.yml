@@ -1,10 +1,10 @@
 solution:
   created-by: uv2csolution@1.6.0
-  created-for: CMSIS-Toolbox@2.2.0
-  compiler: GCC@>=10.3.1
+  created-for: CMSIS-Toolbox@2.7.0
+  compiler: AC6
   target-types:
     - type: M487JI_320x240
       device: M487JIDAE
-      optimize: size
+      optimize: debug
   projects:
     - project: lvgl.cproject.yml

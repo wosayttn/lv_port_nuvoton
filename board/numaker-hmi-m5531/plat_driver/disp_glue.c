@@ -15,7 +15,7 @@
     #include "semphr.h"
 #endif
 
-static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(4)));
+static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(DCACHE_LINE_SIZE)));
 
 void sysDelay(uint32_t ms)
 {

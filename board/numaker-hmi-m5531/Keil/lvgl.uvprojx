@@ -1785,11 +1785,6 @@
               <FilePath>..\lv_conf.h</FilePath>
             </File>
             <File>
-              <FileName>lv_glue.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\plat_driver\lv_glue.h</FilePath>
-            </File>
-            <File>
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\plat_driver\drv_pdma.c</FilePath>

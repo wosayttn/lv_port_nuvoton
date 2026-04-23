@@ -92,6 +92,9 @@ int nu_uspi_send_then_recv(struct nu_uspi *psNuUSPI, const uint8_t *tx, int tx_l
         while (tx_len > 0)
         {
             tx += nu_uspi_write(psNuUSPI->base, tx, dw);
+
+            while (USPI_IS_BUSY(psNuUSPI->base));
+					
             tx_len -= dw;
         }
     }
@@ -108,9 +111,9 @@ int nu_uspi_send_then_recv(struct nu_uspi *psNuUSPI, const uint8_t *tx, int tx_l
         {
             /* Input data to SPI TX FIFO */
             remain -= nu_uspi_write(psNuUSPI->base, (const uint8_t *)&dummy, dw);
-            while (USPI_IS_BUSY(psNuUSPI->base));
             while ((rx + rx_len) != curr)
             {
+                while (USPI_GET_RX_EMPTY_FLAG(psNuUSPI->base));				
                 curr += nu_uspi_read(psNuUSPI->base, curr, dw);
             }
         }

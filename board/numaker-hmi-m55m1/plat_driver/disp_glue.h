@@ -30,7 +30,7 @@
 #if defined(CONFIG_DISP_ILI9341) && (CONFIG_DISP_ILI9341==1)
     /* ILI9341 SPI */
     #define CONFIG_DISP_SPI            SPI2
-    #define CONFIG_DISP_SPI_CLOCK      48000000
+    #define CONFIG_DISP_SPI_CLOCK      74000000
     #if defined(CONFIG_DISP_USE_PDMA)
         #define CONFIG_PDMA_SPI_TX     PDMA_SPI2_TX
         #define CONFIG_PDMA_SPI_RX     PDMA_SPI2_RX

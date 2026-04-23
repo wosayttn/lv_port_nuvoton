@@ -85,6 +85,7 @@ static void sys_init(void)
 
     /* Enable PLL0 clock from HXT and switch SCLK clock source to PLL0 */
     CLK_SetBusClock(CLK_SCLKSEL_SCLKSEL_APLL0, CLK_APLLCTL_APLLSRC_HXT, FREQ_220MHZ);
+    CLK_SET_PCLK0DIV(1); //For speed-up SPI2 Clock frequency
 
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock. */
@@ -136,6 +137,7 @@ static void sys_init(void)
     SET_SPI2_CLK_PA10();
     SET_SPI2_MISO_PA9();
     SET_SPI2_MOSI_PA8();
+    GPIO_SetSlewCtl(PA, (BIT8 | BIT9 | BIT10 | BIT11), GPIO_SLEWCTL_HIGH);
 
     SET_I2C1_SDA_PB10();
     SET_I2C1_SCL_PB11();

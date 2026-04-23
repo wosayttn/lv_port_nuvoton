@@ -14,9 +14,7 @@
 #if defined(__320x240__)
     #define LV_HOR_RES_MAX                  320
     #define LV_VER_RES_MAX                  240
-#elif defined(__480x272__)
-    #define LV_HOR_RES_MAX                  480
-    #define LV_VER_RES_MAX                  272
+    #define CONFIG_LV_DEF_REFR_PERIOD       16
 #endif
 
 #define LV_COLOR_DEPTH                  16

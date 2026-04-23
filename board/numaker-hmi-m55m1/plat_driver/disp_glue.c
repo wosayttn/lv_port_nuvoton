@@ -123,6 +123,7 @@ int lcd_device_initialize(void)
 
     /* Set sequence to MSB first */
     SPI_SET_MSB_FIRST(CONFIG_DISP_SPI);
+
 #endif
 
     return disp_init();

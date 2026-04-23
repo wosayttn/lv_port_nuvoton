@@ -24,11 +24,8 @@ static void sys_init(void)
     /* Set CPU clock to 72MHz */
     CLK_SetHCLK(CLK_CLKSEL0_HCLKSEL_PLL, CLK_CLKDIV0_HCLK(2));
 
-    /* Set PCLK0 = PCLK1 = HCLK */
+    /* Set PCLK-related clock */
     CLK->PCLKDIV = (CLK_PCLKDIV_APB0DIV_DIV1 | CLK_PCLKDIV_APB1DIV_DIV1);
-
-    /* Set PCLK0 = PCLK1 = HCLK/2 */
-    //CLK->PCLKDIV = (CLK_PCLKDIV_APB0DIV_DIV2 | CLK_PCLKDIV_APB1DIV_DIV2);
 
     SystemCoreClockUpdate();
 

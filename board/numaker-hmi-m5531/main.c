@@ -85,6 +85,7 @@ static void sys_init(void)
 
     /* Enable PLL0 clock from HXT and switch SCLK clock source to PLL0 */
     CLK_SetBusClock(CLK_SCLKSEL_SCLKSEL_APLL0, CLK_APLLCTL_APLLSRC_HXT, FREQ_220MHZ);
+    CLK_SET_PCLK0DIV(1); //For speed-up SPI2 Clock frequency
 
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock. */
@@ -104,14 +105,28 @@ static void sys_init(void)
     CLK_EnableModuleClock(GPIOI_MODULE);
     CLK_EnableModuleClock(GPIOJ_MODULE);
 
-    /* SPI2 */
+    /* Enable SPI2 clock */
     CLK_EnableModuleClock(SPI2_MODULE);
 
-    SYS->GPA_MFP2 &= ~(SYS_GPA_MFP2_PA11MFP_Msk | SYS_GPA_MFP2_PA10MFP_Msk | SYS_GPA_MFP2_PA9MFP_Msk | SYS_GPA_MFP2_PA8MFP_Msk);
-    SYS->GPA_MFP2 |= (SYS_GPA_MFP2_PA11MFP_SPI2_SS | SYS_GPA_MFP2_PA10MFP_SPI2_CLK | SYS_GPA_MFP2_PA9MFP_SPI2_MISO | SYS_GPA_MFP2_PA8MFP_SPI2_MOSI);
+    /* Enable PDMA clock */
+    CLK_EnableModuleClock(PDMA0_MODULE);
+    CLK_EnableModuleClock(PDMA1_MODULE);
 
     /* EADC Analog Pin */
     CLK_EnableModuleClock(EADC0_MODULE);
+
+    /* Select EADC peripheral clock source. */
+    CLK_SetModuleClock(EADC0_MODULE, CLK_EADCSEL_EADC0SEL_PCLK0, CLK_EADCDIV_EADC0DIV(8));
+
+    /*---------------------------------------------------------------------------------------------------------*/
+    /* Init I/O Multi-function                                                                                 */
+    /*---------------------------------------------------------------------------------------------------------*/
+    SET_SPI2_SS_PA11();
+    SET_SPI2_CLK_PA10();
+    SET_SPI2_MISO_PA9();
+    SET_SPI2_MOSI_PA8();
+    GPIO_SetSlewCtl(PA, (BIT8 | BIT9 | BIT10 | BIT11), GPIO_SLEWCTL_HIGH);
+
 
     SYS->GPB_MFP1 &= ~(SYS_GPB_MFP1_PB7MFP_Msk | SYS_GPB_MFP1_PB6MFP_Msk);
     SYS->GPB_MFP1 |= (SYS_GPB_MFP1_PB7MFP_EADC0_CH7 | SYS_GPB_MFP1_PB6MFP_EADC0_CH6);
@@ -121,12 +136,9 @@ static void sys_init(void)
     /* Disable digital path on these EADC pins */
     GPIO_DISABLE_DIGITAL_PATH(PB, BIT6 | BIT7 | BIT8 | BIT9);
 
-    /* Enable PDMA clock */
-    CLK_EnableModuleClock(PDMA0_MODULE);
-    CLK_EnableModuleClock(PDMA1_MODULE);
-
     /* Enable SysTick clock */
     CLK_EnableSysTick(CLK_STSEL_ST0SEL_HIRC_DIV2, 0);
+
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -140,10 +152,9 @@ static void sys_init(void)
 
 int main(void)
 {
-    int task_lv_init(void);
-
     sys_init();
 
+    int task_lv_init(void);
     task_lv_init();
 
     /* Start scheduling. */

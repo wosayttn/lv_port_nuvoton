@@ -16,6 +16,7 @@
 #define LV_HOR_RES_MAX                  320
 #define LV_VER_RES_MAX                  240
 #define LV_COLOR_DEPTH                  16
+#define CONFIG_LV_DEF_REFR_PERIOD       16
 
 #define CONFIG_LV_DISP_FULL_REFRESH     0
 
