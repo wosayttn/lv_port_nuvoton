@@ -2078,6 +2078,21 @@
               <FileType>1</FileType>
               <FilePath>..\ui_files\ui_clock.c</FilePath>
             </File>
+            <File>
+              <FileName>ui_lang.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ui_files\ui_lang.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_cjk_16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ui_files\ui_font_cjk_16.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_cjk_20.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ui_files\ui_font_cjk_20.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

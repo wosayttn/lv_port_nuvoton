@@ -106,7 +106,7 @@ void ui_screen_menu_create(void)
     lv_obj_clear_flag(s_scr_menu, LV_OBJ_FLAG_SCROLLABLE);
 
     /* Status bar */
-    ui_create_status_bar(s_scr_menu, "Select Mode");
+    ui_create_status_bar(s_scr_menu, ui_str(STR_SELECT_MODE));
 
     /* List area */
     lv_obj_t *list_cont = lv_obj_create(s_scr_menu);
@@ -132,8 +132,8 @@ void ui_screen_menu_create(void)
         lv_obj_add_event_cb(s_items[i], menu_item_click_cb, LV_EVENT_CLICKED, (void *)(uintptr_t)i);
 
         lv_obj_t *lbl = lv_label_create(s_items[i]);
-        lv_label_set_text(lbl, cook_mode_names[i]);
-        lv_obj_set_style_text_font(lbl, &lv_font_montserrat_16, 0);
+        lv_label_set_text(lbl, ui_str((ui_str_id_t)(STR_MODE_WHITE_RICE + i)));
+        lv_obj_set_style_text_font(lbl, ui_lang_font_normal(), 0);
         lv_obj_align(lbl, LV_ALIGN_LEFT_MID, 0, 0);
     }
 
@@ -146,13 +146,13 @@ void ui_screen_menu_create(void)
     lv_obj_set_style_bg_color(btn_back, UI_COLOR_STATUS_BG, 0);
     lv_obj_add_event_cb(btn_back, menu_back_btn_cb, LV_EVENT_CLICKED, NULL);
     lv_obj_t *bl = lv_label_create(btn_back);
-    lv_label_set_text(bl, LV_SYMBOL_LEFT " Back");
+    lv_label_set_text(bl, ui_str(STR_BTN_BACK));
     lv_obj_set_style_text_color(bl, UI_COLOR_TEXT, 0);
-    lv_obj_set_style_text_font(bl, &lv_font_montserrat_12, 0);
+    lv_obj_set_style_text_font(bl, ui_lang_font_normal(), 0);
     lv_obj_center(bl);
 
     /* Softkey bar */
-    ui_create_softkey_bar(s_scr_menu, "[UP/DN] Select  [START] Confirm  [MENU] Back");
+    ui_create_softkey_bar(s_scr_menu, ui_str(STR_HINT_MENU));
 
     /* Key handler */
     lv_obj_add_event_cb(s_scr_menu, menu_key_cb, LV_EVENT_KEY, NULL);

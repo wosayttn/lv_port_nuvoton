@@ -18,6 +18,14 @@ static void home_menu_btn_cb(lv_event_t *e)
     ui_switch_state(UI_STATE_MENU);
 }
 
+static void home_lang_btn_cb(lv_event_t *e)
+{
+    (void)e;
+    ui_lang_next();
+    /* Reload home screen with new language */
+    ui_switch_state(UI_STATE_HOME);
+}
+
 /*============================================================================
  * Key handler
  *============================================================================*/
@@ -42,7 +50,7 @@ void ui_screen_home_create(void)
     lv_obj_clear_flag(s_scr_home, LV_OBJ_FLAG_SCROLLABLE);
 
     /* Status bar */
-    ui_create_status_bar(s_scr_home, "Rice Cooker");
+    ui_create_status_bar(s_scr_home, ui_str(STR_APP_TITLE));
 
     /* Center content area */
     lv_obj_t *cont = lv_obj_create(s_scr_home);
@@ -56,9 +64,9 @@ void ui_screen_home_create(void)
 
     /* Ready icon / text */
     lv_obj_t *lbl_ready = lv_label_create(cont);
-    lv_label_set_text(lbl_ready, LV_SYMBOL_OK "  Ready");
+    lv_label_set_text(lbl_ready, ui_str(STR_READY));
     lv_obj_set_style_text_color(lbl_ready, UI_COLOR_SUCCESS, 0);
-    lv_obj_set_style_text_font(lbl_ready, &lv_font_montserrat_24, 0);
+    lv_obj_set_style_text_font(lbl_ready, ui_lang_font_large(), 0);
 
     /* Current time (placeholder) */
     lv_obj_t *lbl_time = lv_label_create(cont);
@@ -73,12 +81,27 @@ void ui_screen_home_create(void)
     lv_obj_set_style_radius(btn_menu, 6, 0);
     lv_obj_add_event_cb(btn_menu, home_menu_btn_cb, LV_EVENT_CLICKED, NULL);
     lv_obj_t *btn_lbl = lv_label_create(btn_menu);
-    lv_label_set_text(btn_lbl, LV_SYMBOL_LIST "  Menu");
+    lv_label_set_text(btn_lbl, ui_str(STR_BTN_MENU));
     lv_obj_set_style_text_color(btn_lbl, lv_color_hex(0xFFFFFF), 0);
+    lv_obj_set_style_text_font(btn_lbl, ui_lang_font_normal(), 0);
     lv_obj_center(btn_lbl);
 
     /* Softkey bar */
-    ui_create_softkey_bar(s_scr_home, "[MENU] Enter Menu");
+    ui_create_softkey_bar(s_scr_home, ui_str(STR_HINT_HOME));
+
+    /* Touch: Language switch button (bottom-right, above softkey bar) */
+    lv_obj_t *btn_lang = lv_button_create(s_scr_home);
+    lv_obj_set_size(btn_lang, 50, 24);
+    lv_obj_align(btn_lang, LV_ALIGN_BOTTOM_RIGHT, -10, -UI_SOFTKEY_BAR_H - 4);
+    lv_obj_set_style_bg_color(btn_lang, UI_COLOR_STATUS_BG, 0);
+    lv_obj_set_style_radius(btn_lang, 4, 0);
+    lv_obj_add_event_cb(btn_lang, home_lang_btn_cb, LV_EVENT_CLICKED, NULL);
+    lv_obj_t *lang_lbl = lv_label_create(btn_lang);
+    const char *lang_names[] = {"EN", "JA", "ZH"};
+    lv_label_set_text(lang_lbl, lang_names[ui_lang_get()]);
+    lv_obj_set_style_text_color(lang_lbl, UI_COLOR_TEXT, 0);
+    lv_obj_set_style_text_font(lang_lbl, &lv_font_montserrat_12, 0);
+    lv_obj_center(lang_lbl);
 
     /* Register key handler */
     lv_obj_add_event_cb(s_scr_home, home_key_cb, LV_EVENT_KEY, NULL);

@@ -9,6 +9,7 @@
 #define __UI_COMMON_H__
 
 #include "ui.h"
+#include "ui_lang.h"
 
 #ifdef __cplusplus
 extern "C" {

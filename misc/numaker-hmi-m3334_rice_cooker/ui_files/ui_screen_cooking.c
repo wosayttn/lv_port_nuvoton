@@ -68,9 +68,9 @@ static void cooking_pause_btn_cb(lv_event_t *e)
     (void)e;
     g_cook_ctx.is_paused = !g_cook_ctx.is_paused;
     if (g_cook_ctx.is_paused)
-        lv_label_set_text(s_lbl_mode, "PAUSED");
+        lv_label_set_text(s_lbl_mode, ui_str(STR_PAUSED));
     else
-        lv_label_set_text_fmt(s_lbl_mode, "%s", cook_mode_names[g_cook_ctx.mode]);
+        lv_label_set_text(s_lbl_mode, ui_str((ui_str_id_t)(STR_MODE_WHITE_RICE + g_cook_ctx.mode)));
 }
 
 static void cooking_stop_btn_cb(lv_event_t *e)
@@ -93,9 +93,9 @@ static void cooking_key_cb(lv_event_t *e)
             /* Toggle pause / resume */
             g_cook_ctx.is_paused = !g_cook_ctx.is_paused;
             if (g_cook_ctx.is_paused)
-                lv_label_set_text(s_lbl_mode, "PAUSED");
+                lv_label_set_text(s_lbl_mode, ui_str(STR_PAUSED));
             else
-                lv_label_set_text_fmt(s_lbl_mode, "%s", cook_mode_names[g_cook_ctx.mode]);
+                lv_label_set_text(s_lbl_mode, ui_str((ui_str_id_t)(STR_MODE_WHITE_RICE + g_cook_ctx.mode)));
             break;
 
         case UI_KEY_MENU:
@@ -120,7 +120,7 @@ void ui_screen_cooking_create(void)
     lv_obj_clear_flag(s_scr_cook, LV_OBJ_FLAG_SCROLLABLE);
 
     /* Status bar */
-    ui_create_status_bar(s_scr_cook, "Cooking");
+    ui_create_status_bar(s_scr_cook, ui_str(STR_COOKING));
 
     /* Content area */
     lv_obj_t *cont = lv_obj_create(s_scr_cook);
@@ -132,9 +132,9 @@ void ui_screen_cooking_create(void)
 
     /* Mode name */
     s_lbl_mode = lv_label_create(cont);
-    lv_label_set_text(s_lbl_mode, cook_mode_names[g_cook_ctx.mode]);
+    lv_label_set_text(s_lbl_mode, ui_str((ui_str_id_t)(STR_MODE_WHITE_RICE + g_cook_ctx.mode)));
     lv_obj_set_style_text_color(s_lbl_mode, UI_COLOR_ACCENT, 0);
-    lv_obj_set_style_text_font(s_lbl_mode, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(s_lbl_mode, ui_lang_font_normal(), 0);
     lv_obj_align(s_lbl_mode, LV_ALIGN_TOP_MID, 0, 5);
 
     /* Large countdown */
@@ -152,7 +152,7 @@ void ui_screen_cooking_create(void)
                           g_cook_ctx.temperature / 10,
                           g_cook_ctx.temperature % 10);
     lv_obj_set_style_text_color(s_lbl_temp, UI_COLOR_DANGER, 0);
-    lv_obj_set_style_text_font(s_lbl_temp, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(s_lbl_temp, ui_lang_font_normal(), 0);
     lv_obj_align(s_lbl_temp, LV_ALIGN_CENTER, 0, 10);
 
     /* Progress bar */
@@ -172,9 +172,9 @@ void ui_screen_cooking_create(void)
     lv_obj_set_style_radius(btn_pause, 6, 0);
     lv_obj_add_event_cb(btn_pause, cooking_pause_btn_cb, LV_EVENT_CLICKED, NULL);
     lv_obj_t *pl = lv_label_create(btn_pause);
-    lv_label_set_text(pl, LV_SYMBOL_PAUSE " Pause");
+    lv_label_set_text(pl, ui_str(STR_BTN_PAUSE));
     lv_obj_set_style_text_color(pl, lv_color_hex(0x000000), 0);
-    lv_obj_set_style_text_font(pl, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(pl, ui_lang_font_normal(), 0);
     lv_obj_center(pl);
 
     /* Touch: Stop button – placed inside content area */
@@ -185,13 +185,13 @@ void ui_screen_cooking_create(void)
     lv_obj_set_style_radius(btn_stop, 6, 0);
     lv_obj_add_event_cb(btn_stop, cooking_stop_btn_cb, LV_EVENT_CLICKED, NULL);
     lv_obj_t *sl = lv_label_create(btn_stop);
-    lv_label_set_text(sl, LV_SYMBOL_CLOSE " Stop");
+    lv_label_set_text(sl, ui_str(STR_BTN_STOP));
     lv_obj_set_style_text_color(sl, lv_color_hex(0xFFFFFF), 0);
-    lv_obj_set_style_text_font(sl, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(sl, ui_lang_font_normal(), 0);
     lv_obj_center(sl);
 
     /* Softkey bar */
-    ui_create_softkey_bar(s_scr_cook, "[START] Pause/Resume  [MENU] Stop");
+    ui_create_softkey_bar(s_scr_cook, ui_str(STR_HINT_COOKING));
 
     /* Key handler */
     lv_obj_add_event_cb(s_scr_cook, cooking_key_cb, LV_EVENT_KEY, NULL);

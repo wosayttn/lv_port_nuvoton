@@ -71,7 +71,7 @@ void ui_screen_finish_create(void)
     lv_obj_clear_flag(s_scr_finish, LV_OBJ_FLAG_SCROLLABLE);
 
     /* Status bar */
-    ui_create_status_bar(s_scr_finish, "Complete!");
+    ui_create_status_bar(s_scr_finish, ui_str(STR_COMPLETE));
 
     /* Content */
     lv_obj_t *cont = lv_obj_create(s_scr_finish);
@@ -85,9 +85,9 @@ void ui_screen_finish_create(void)
 
     /* Done icon */
     lv_obj_t *lbl_done = lv_label_create(cont);
-    lv_label_set_text(lbl_done, LV_SYMBOL_OK "  Cooking Done!");
+    lv_label_set_text(lbl_done, ui_str(STR_COOKING_DONE));
     lv_obj_set_style_text_color(lbl_done, UI_COLOR_SUCCESS, 0);
-    lv_obj_set_style_text_font(lbl_done, &lv_font_montserrat_24, 0);
+    lv_obj_set_style_text_font(lbl_done, ui_lang_font_large(), 0);
 
     /* Temperature / Keep Warm */
     s_lbl_temp = lv_label_create(cont);
@@ -95,7 +95,7 @@ void ui_screen_finish_create(void)
                           g_cook_ctx.temperature / 10,
                           g_cook_ctx.temperature % 10);
     lv_obj_set_style_text_color(s_lbl_temp, UI_COLOR_ACCENT, 0);
-    lv_obj_set_style_text_font(s_lbl_temp, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(s_lbl_temp, ui_lang_font_normal(), 0);
 
     /* Touch: Home button */
     lv_obj_t *btn_home = lv_button_create(cont);
@@ -104,12 +104,13 @@ void ui_screen_finish_create(void)
     lv_obj_set_style_radius(btn_home, 6, 0);
     lv_obj_add_event_cb(btn_home, finish_home_btn_cb, LV_EVENT_CLICKED, NULL);
     lv_obj_t *hl = lv_label_create(btn_home);
-    lv_label_set_text(hl, LV_SYMBOL_HOME "  Home");
+    lv_label_set_text(hl, ui_str(STR_BTN_HOME));
     lv_obj_set_style_text_color(hl, lv_color_hex(0xFFFFFF), 0);
+    lv_obj_set_style_text_font(hl, ui_lang_font_normal(), 0);
     lv_obj_center(hl);
 
     /* Softkey bar */
-    ui_create_softkey_bar(s_scr_finish, "[MENU] or [START] Return Home");
+    ui_create_softkey_bar(s_scr_finish, ui_str(STR_HINT_FINISH));
 
     /* Key handler */
     lv_obj_add_event_cb(s_scr_finish, finish_key_cb, LV_EVENT_KEY, NULL);
