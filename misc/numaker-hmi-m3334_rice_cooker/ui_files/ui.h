@@ -66,6 +66,9 @@ void ui_key_pressed(ui_key_t key);
 /* Physical keypad GPIO driver */
 void ui_keypad_init(void);
 
+/* Performance monitor toggle (show/hide) */
+void ui_perf_monitor_toggle(void);
+
 #ifdef __cplusplus
 }
 #endif

@@ -85,6 +85,24 @@ void ui_key_pressed(ui_key_t key)
 }
 
 /*============================================================================
+ * Performance monitor toggle
+ *============================================================================*/
+#if LV_USE_PERF_MONITOR
+static bool s_perf_visible = true;
+
+void ui_perf_monitor_toggle(void)
+{
+    if (s_perf_visible)
+        lv_sysmon_hide_performance(NULL);
+    else
+        lv_sysmon_show_performance(NULL);
+    s_perf_visible = !s_perf_visible;
+}
+#else
+void ui_perf_monitor_toggle(void) {}
+#endif
+
+/*============================================================================
  * Init
  *============================================================================*/
 void ui_init(void)

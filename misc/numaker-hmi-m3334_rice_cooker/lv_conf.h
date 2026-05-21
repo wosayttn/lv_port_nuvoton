@@ -35,8 +35,8 @@
     #define LV_FONT_MONTSERRAT_26           1
 #endif
 
-//#define LV_USE_SYSMON                   1
-//#define LV_USE_PERF_MONITOR             1
+#define LV_USE_SYSMON                   1
+#define LV_USE_PERF_MONITOR             1
 #define LV_USE_LOG                      0
 
 #define CONFIG_LV_MEM_SIZE            (128*1024U)

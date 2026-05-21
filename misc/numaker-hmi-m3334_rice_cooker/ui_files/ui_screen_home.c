@@ -26,6 +26,12 @@ static void home_lang_btn_cb(lv_event_t *e)
     ui_switch_state(UI_STATE_HOME);
 }
 
+static void home_perf_btn_cb(lv_event_t *e)
+{
+    (void)e;
+    ui_perf_monitor_toggle();
+}
+
 /*============================================================================
  * Key handler
  *============================================================================*/
@@ -102,6 +108,19 @@ void ui_screen_home_create(void)
     lv_obj_set_style_text_color(lang_lbl, UI_COLOR_TEXT, 0);
     lv_obj_set_style_text_font(lang_lbl, &lv_font_montserrat_12, 0);
     lv_obj_center(lang_lbl);
+
+    /* Touch: FPS toggle button (bottom-left, above softkey bar) */
+    lv_obj_t *btn_fps = lv_button_create(s_scr_home);
+    lv_obj_set_size(btn_fps, 50, 24);
+    lv_obj_align(btn_fps, LV_ALIGN_BOTTOM_LEFT, 10, -UI_SOFTKEY_BAR_H - 4);
+    lv_obj_set_style_bg_color(btn_fps, lv_color_hex(0x444444), 0);
+    lv_obj_set_style_radius(btn_fps, 4, 0);
+    lv_obj_add_event_cb(btn_fps, home_perf_btn_cb, LV_EVENT_CLICKED, NULL);
+    lv_obj_t *fps_lbl = lv_label_create(btn_fps);
+    lv_label_set_text(fps_lbl, "FPS");
+    lv_obj_set_style_text_color(fps_lbl, lv_color_hex(0x00FF00), 0);
+    lv_obj_set_style_text_font(fps_lbl, &lv_font_montserrat_12, 0);
+    lv_obj_center(fps_lbl);
 
     /* Register key handler */
     lv_obj_add_event_cb(s_scr_home, home_key_cb, LV_EVENT_KEY, NULL);
