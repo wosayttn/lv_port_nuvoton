@@ -6,13 +6,37 @@
  * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 #include "ui_common.h"
+#include "ui_img_mascot.h"
 
 static lv_obj_t   *s_scr_cook    = NULL;
 static lv_obj_t   *s_lbl_time    = NULL;
 static lv_obj_t   *s_lbl_temp    = NULL;
 static lv_obj_t   *s_lbl_mode    = NULL;
-static lv_obj_t   *s_bar_progress = NULL;
+static lv_obj_t   *s_img_mascot  = NULL;
 static lv_timer_t *s_timer       = NULL;
+static lv_timer_t *s_anim_timer  = NULL;
+static uint8_t     s_mascot_frame = 0;
+
+/* Mascot animation frames: front -> side -> back -> side -> (repeat) */
+static const lv_image_dsc_t *s_mascot_frames[] = {
+    &img_mascot_front,
+    &img_mascot_side,
+    &img_mascot_back,
+    &img_mascot_side,
+};
+
+/*============================================================================
+ * Mascot animation timer – runs every 500 ms
+ *============================================================================*/
+static void mascot_anim_cb(lv_timer_t *t)
+{
+    (void)t;
+    if (s_img_mascot == NULL) return;
+    if (g_cook_ctx.is_paused) return;
+
+    s_mascot_frame = (s_mascot_frame + 1) % 4;
+    lv_image_set_src(s_img_mascot, s_mascot_frames[s_mascot_frame]);
+}
 
 /*============================================================================
  * Timer callback – runs every 1 s
@@ -37,9 +61,10 @@ static void cooking_timer_cb(lv_timer_t *t)
     }
     else
     {
-        /* Cooking done – stop timer first, then switch to finish screen */
+        /* Cooking done – stop timers first, then switch to finish screen */
         lv_timer_delete(s_timer);
         s_timer = NULL;
+        if (s_anim_timer) { lv_timer_delete(s_anim_timer); s_anim_timer = NULL; }
         ui_switch_state(UI_STATE_FINISH);
         return;
     }
@@ -51,13 +76,6 @@ static void cooking_timer_cb(lv_timer_t *t)
     lv_label_set_text_fmt(s_lbl_temp, "%d.%d " LV_SYMBOL_CHARGE "C",
                           g_cook_ctx.temperature / 10,
                           g_cook_ctx.temperature % 10);
-
-    /* Progress bar */
-    if (g_cook_ctx.total_seconds > 0)
-    {
-        int32_t pct = 100 - (int32_t)(g_cook_ctx.remaining_seconds * 100 / g_cook_ctx.total_seconds);
-        lv_bar_set_value(s_bar_progress, pct, LV_ANIM_ON);
-    }
 }
 
 /*============================================================================
@@ -77,6 +95,7 @@ static void cooking_stop_btn_cb(lv_event_t *e)
 {
     (void)e;
     if (s_timer) { lv_timer_delete(s_timer); s_timer = NULL; }
+    if (s_anim_timer) { lv_timer_delete(s_anim_timer); s_anim_timer = NULL; }
     ui_switch_state(UI_STATE_HOME);
 }
 
@@ -101,6 +120,7 @@ static void cooking_key_cb(lv_event_t *e)
         case UI_KEY_MENU:
             /* Stop cooking, back to home */
             if (s_timer) { lv_timer_delete(s_timer); s_timer = NULL; }
+            if (s_anim_timer) { lv_timer_delete(s_anim_timer); s_anim_timer = NULL; }
             ui_switch_state(UI_STATE_HOME);
             break;
 
@@ -130,44 +150,44 @@ void ui_screen_cooking_create(void)
     lv_obj_set_style_border_width(cont, 0, 0);
     lv_obj_clear_flag(cont, LV_OBJ_FLAG_SCROLLABLE);
 
-    /* Mode name */
+    /* Mode name – top left */
     s_lbl_mode = lv_label_create(cont);
     lv_label_set_text(s_lbl_mode, ui_str((ui_str_id_t)(STR_MODE_WHITE_RICE + g_cook_ctx.mode)));
     lv_obj_set_style_text_color(s_lbl_mode, UI_COLOR_ACCENT, 0);
     lv_obj_set_style_text_font(s_lbl_mode, ui_lang_font_normal(), 0);
-    lv_obj_align(s_lbl_mode, LV_ALIGN_TOP_MID, 0, 5);
+    lv_obj_align(s_lbl_mode, LV_ALIGN_TOP_LEFT, 5, 2);
 
-    /* Large countdown */
+    /* Large countdown – left side */
     s_lbl_time = lv_label_create(cont);
     uint32_t min = g_cook_ctx.remaining_seconds / 60;
     uint32_t sec = g_cook_ctx.remaining_seconds % 60;
     lv_label_set_text_fmt(s_lbl_time, "%02lu:%02lu", (unsigned long)min, (unsigned long)sec);
     lv_obj_set_style_text_color(s_lbl_time, UI_COLOR_TEXT, 0);
     lv_obj_set_style_text_font(s_lbl_time, &lv_font_montserrat_24, 0);
-    lv_obj_align(s_lbl_time, LV_ALIGN_CENTER, 0, -15);
+    lv_obj_align(s_lbl_time, LV_ALIGN_TOP_LEFT, 10, 22);
 
-    /* Temperature */
+    /* Temperature – left side */
     s_lbl_temp = lv_label_create(cont);
     lv_label_set_text_fmt(s_lbl_temp, "%d.%d " LV_SYMBOL_CHARGE "C",
                           g_cook_ctx.temperature / 10,
                           g_cook_ctx.temperature % 10);
     lv_obj_set_style_text_color(s_lbl_temp, UI_COLOR_DANGER, 0);
     lv_obj_set_style_text_font(s_lbl_temp, ui_lang_font_normal(), 0);
-    lv_obj_align(s_lbl_temp, LV_ALIGN_CENTER, 0, 10);
+    lv_obj_align(s_lbl_temp, LV_ALIGN_TOP_LEFT, 10, 50);
 
-    /* Progress bar */
-    s_bar_progress = lv_bar_create(cont);
-    lv_obj_set_size(s_bar_progress, UI_HOR_RES - 80, 12);
-    lv_obj_align(s_bar_progress, LV_ALIGN_BOTTOM_MID, 0, -50);
-    lv_bar_set_range(s_bar_progress, 0, 100);
-    lv_bar_set_value(s_bar_progress, 0, LV_ANIM_OFF);
-    lv_obj_set_style_bg_color(s_bar_progress, UI_COLOR_STATUS_BG, 0);
-    lv_obj_set_style_bg_color(s_bar_progress, UI_COLOR_PRIMARY, LV_PART_INDICATOR);
+    /* Nuvoton mascot animation – right side */
+    s_img_mascot = lv_image_create(cont);
+    lv_image_set_src(s_img_mascot, s_mascot_frames[0]);
+    lv_obj_align(s_img_mascot, LV_ALIGN_TOP_RIGHT, 0, 0);
+    s_mascot_frame = 0;
+
+    /* Start mascot animation timer (500ms per frame) */
+    s_anim_timer = lv_timer_create(mascot_anim_cb, 500, NULL);
 
     /* Touch: Pause button – placed inside content area */
     lv_obj_t *btn_pause = lv_button_create(cont);
-    lv_obj_set_size(btn_pause, 120, 38);
-    lv_obj_align(btn_pause, LV_ALIGN_BOTTOM_LEFT, 10, -5);
+    lv_obj_set_size(btn_pause, 120, 34);
+    lv_obj_align(btn_pause, LV_ALIGN_BOTTOM_LEFT, 10, 0);
     lv_obj_set_style_bg_color(btn_pause, UI_COLOR_ACCENT, 0);
     lv_obj_set_style_radius(btn_pause, 6, 0);
     lv_obj_add_event_cb(btn_pause, cooking_pause_btn_cb, LV_EVENT_CLICKED, NULL);
@@ -179,8 +199,8 @@ void ui_screen_cooking_create(void)
 
     /* Touch: Stop button – placed inside content area */
     lv_obj_t *btn_stop = lv_button_create(cont);
-    lv_obj_set_size(btn_stop, 120, 38);
-    lv_obj_align(btn_stop, LV_ALIGN_BOTTOM_RIGHT, -10, -5);
+    lv_obj_set_size(btn_stop, 120, 34);
+    lv_obj_align(btn_stop, LV_ALIGN_BOTTOM_RIGHT, -10, 0);
     lv_obj_set_style_bg_color(btn_stop, UI_COLOR_DANGER, 0);
     lv_obj_set_style_radius(btn_stop, 6, 0);
     lv_obj_add_event_cb(btn_stop, cooking_stop_btn_cb, LV_EVENT_CLICKED, NULL);

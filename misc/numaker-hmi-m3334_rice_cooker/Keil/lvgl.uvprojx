@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>3</Optim>
+            <Optim>7</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -2092,6 +2092,11 @@
               <FileName>ui_font_cjk_20.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\ui_files\ui_font_cjk_20.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_img_mascot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ui_files\ui_img_mascot.c</FilePath>
             </File>
           </Files>
         </Group>

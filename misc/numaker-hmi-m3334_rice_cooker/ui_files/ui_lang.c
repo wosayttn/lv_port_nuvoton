@@ -10,18 +10,11 @@
 
 /*============================================================================
  * Custom CJK font declarations
- * Generate with lv_font_conv:
- *   lv_font_conv --bpp 4 --size 16 --font NotoSansJP-Regular.ttf
- *     --range 0x20-0x7F --symbols "<all JA/ZH chars used>"
- *     --format lvgl -o ui_font_cjk_16.c
- *   (repeat for size 20)
- *
- * If fonts not yet generated, fallback to built-in Montserrat (EN only).
+ * Generated with lv_font_conv using SourceHanSansSC-Normal.otf
+ * Contains all JA/ZH/KO/DE special characters used in UI strings.
  *============================================================================*/
-#if defined(UI_FONT_CJK_AVAILABLE) && (UI_FONT_CJK_AVAILABLE == 1)
 LV_FONT_DECLARE(ui_font_cjk_16);
 LV_FONT_DECLARE(ui_font_cjk_20);
-#endif
 
 static ui_lang_t s_lang = UI_LANG_EN;
 
@@ -121,11 +114,75 @@ static const char *s_strings_zh[STR_ID_MAX] =
     [STR_KEEP_WARM_TEMP]  = "\xe4\xbf\x9d\xe6\xba\xab: %d.%d " LV_SYMBOL_CHARGE "C",           /* 保溫: */
 };
 
+static const char *s_strings_ko[STR_ID_MAX] =
+{
+    [STR_APP_TITLE]       = "\xec\xa0\x84\xea\xb8\xb0\xeb\xb0\xa5\xec\x86\xa5",                               /* 전기밥솥 */
+    [STR_READY]           = LV_SYMBOL_OK "  \xec\xa4\x80\xeb\xb9\x84 \xec\x99\x84\xeb\xa3\x8c",              /* 준비 완료 */
+    [STR_SELECT_MODE]     = "\xeb\xaa\xa8\xeb\x93\x9c \xec\x84\xa0\xed\x83\x9d",                             /* 모드 선택 */
+    [STR_COOKING]         = "\xec\xb7\xa8\xec\x82\xac \xec\xa4\x91",                                         /* 취사 중 */
+    [STR_COMPLETE]        = "\xec\x99\x84\xeb\xa3\x8c!",                                                     /* 완료! */
+    [STR_KEEP_WARM]       = "\xeb\xb3\xb4\xec\x98\xa8",                                                     /* 보온 */
+    [STR_PAUSED]          = "\xec\x9d\xbc\xec\x8b\x9c\xec\xa0\x95\xec\xa7\x80",                             /* 일시정지 */
+
+    [STR_MODE_WHITE_RICE] = "\xeb\xb0\xb1\xeb\xaf\xb8",                                                     /* 백미 */
+    [STR_MODE_QUICK_COOK] = "\xeb\xb9\xa0\xeb\xa5\xb8 \xec\xb7\xa8\xec\x82\xac",                           /* 빠른 취사 */
+    [STR_MODE_PORRIDGE]   = "\xec\xa3\xbd",                                                                 /* 죽 */
+    [STR_MODE_STEAM]      = "\xec\xb0\x9c\xea\xb8\xb0",                                                     /* 찜기 */
+    [STR_MODE_KEEP_WARM]  = "\xeb\xb3\xb4\xec\x98\xa8",                                                     /* 보온 */
+
+    [STR_MENU_ENTER]      = "\xeb\xa9\x94\xeb\x89\xb4",                                                     /* 메뉴 */
+    [STR_BTN_PAUSE]       = LV_SYMBOL_PAUSE " \xec\x9d\xbc\xec\x8b\x9c\xec\xa0\x95\xec\xa7\x80",           /* 일시정지 */
+    [STR_BTN_STOP]        = LV_SYMBOL_CLOSE " \xec\xa0\x95\xec\xa7\x80",                                     /* 정지 */
+    [STR_BTN_HOME]        = LV_SYMBOL_HOME "  \xed\x99\x88",                                                /* 홈 */
+    [STR_BTN_BACK]        = LV_SYMBOL_LEFT " \xeb\x92\xa4\xeb\xa1\x9c",                                      /* 뒤로 */
+    [STR_BTN_MENU]        = LV_SYMBOL_LIST "  \xeb\xa9\x94\xeb\x89\xb4",                                    /* 메뉴 */
+    [STR_HINT_HOME]       = "[MENU] \xeb\xa9\x94\xeb\x89\xb4\xeb\xa1\x9c",                                  /* 메뉴로 */
+    [STR_HINT_MENU]       = "[UP/DN] \xec\x84\xa0\xed\x83\x9d  [START] \xed\x99\x95\xec\x9d\xb8  [MENU] \xeb\x92\xa4\xeb\xa1\x9c", /* 선택 확인 뒤로 */
+    [STR_HINT_COOKING]    = "[START] \xec\x9d\xbc\xec\x8b\x9c\xec\xa0\x95\xec\xa7\x80  [MENU] \xec\xa0\x95\xec\xa7\x80", /* 일시정지 정지 */
+    [STR_HINT_FINISH]     = "[MENU]/[START] \xed\x99\x88\xec\x9c\xbc\xeb\xa1\x9c",                          /* 홈으로 */
+
+    [STR_COOKING_DONE]    = LV_SYMBOL_OK "  \xec\xb7\xa8\xec\x82\xac \xec\x99\x84\xeb\xa3\x8c!",            /* 취사 완료! */
+    [STR_KEEP_WARM_TEMP]  = "\xeb\xb3\xb4\xec\x98\xa8: %d.%d " LV_SYMBOL_CHARGE "C",                       /* 보온: */
+};
+
+static const char *s_strings_de[STR_ID_MAX] =
+{
+    [STR_APP_TITLE]       = "Reiskocher",
+    [STR_READY]           = LV_SYMBOL_OK "  Bereit",
+    [STR_SELECT_MODE]     = "Modus w\xc3\xa4hlen",                                              /* Modus wählen */
+    [STR_COOKING]         = "Kocht",
+    [STR_COMPLETE]        = "Fertig!",
+    [STR_KEEP_WARM]       = "Warmhalten",
+    [STR_PAUSED]          = "PAUSIERT",
+
+    [STR_MODE_WHITE_RICE] = "Wei\xc3\x9f" "er Reis",                                             /* Weißer Reis */
+    [STR_MODE_QUICK_COOK] = "Schnellkochen",
+    [STR_MODE_PORRIDGE]   = "Brei",
+    [STR_MODE_STEAM]      = "Dampfgaren",
+    [STR_MODE_KEEP_WARM]  = "Warmhalten",
+
+    [STR_MENU_ENTER]      = "Men\xc3\xbc",                                                      /* Menü */
+    [STR_BTN_PAUSE]       = LV_SYMBOL_PAUSE " Pause",
+    [STR_BTN_STOP]        = LV_SYMBOL_CLOSE " Stopp",
+    [STR_BTN_HOME]        = LV_SYMBOL_HOME "  Start",
+    [STR_BTN_BACK]        = LV_SYMBOL_LEFT " Zur\xc3\xbc" "ck",                                  /* Zurück */
+    [STR_BTN_MENU]        = LV_SYMBOL_LIST "  Men\xc3\xbc",                                     /* Menü */
+    [STR_HINT_HOME]       = "[MENU] Men\xc3\xbc" " \xc3\xb6" "ffnen",                           /* Menü öffnen */
+    [STR_HINT_MENU]       = "[UP/DN] W\xc3\xa4" "hlen  [START] Best\xc3\xa4" "tigen  [MENU] Zur\xc3\xbc" "ck", /* Wählen Bestätigen Zurück */
+    [STR_HINT_COOKING]    = "[START] Pause  [MENU] Stopp",
+    [STR_HINT_FINISH]     = "[MENU]/[START] Zur\xc3\xbc" "ck zum Start",                         /* Zurück zum Start */
+
+    [STR_COOKING_DONE]    = LV_SYMBOL_OK "  Kochen fertig!",
+    [STR_KEEP_WARM_TEMP]  = "Warmhalten: %d.%d " LV_SYMBOL_CHARGE "C",
+};
+
 static const char **s_string_tables[UI_LANG_MAX] =
 {
     [UI_LANG_EN]    = s_strings_en,
     [UI_LANG_JA]    = s_strings_ja,
     [UI_LANG_ZH_TW] = s_strings_zh,
+    [UI_LANG_KO]    = s_strings_ko,
+    [UI_LANG_DE]    = s_strings_de,
 };
 
 /*============================================================================
@@ -158,18 +215,14 @@ const char *ui_str(ui_str_id_t id)
 
 const lv_font_t *ui_lang_font_normal(void)
 {
-#if defined(UI_FONT_CJK_AVAILABLE) && (UI_FONT_CJK_AVAILABLE == 1)
-    if (s_lang == UI_LANG_JA || s_lang == UI_LANG_ZH_TW)
+    if (s_lang != UI_LANG_EN)
         return &ui_font_cjk_16;
-#endif
     return &lv_font_montserrat_16;
 }
 
 const lv_font_t *ui_lang_font_large(void)
 {
-#if defined(UI_FONT_CJK_AVAILABLE) && (UI_FONT_CJK_AVAILABLE == 1)
-    if (s_lang == UI_LANG_JA || s_lang == UI_LANG_ZH_TW)
+    if (s_lang != UI_LANG_EN)
         return &ui_font_cjk_20;
-#endif
     return &lv_font_montserrat_24;
 }

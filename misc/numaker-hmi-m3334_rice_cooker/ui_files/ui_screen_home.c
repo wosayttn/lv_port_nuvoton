@@ -103,7 +103,7 @@ void ui_screen_home_create(void)
     lv_obj_set_style_radius(btn_lang, 4, 0);
     lv_obj_add_event_cb(btn_lang, home_lang_btn_cb, LV_EVENT_CLICKED, NULL);
     lv_obj_t *lang_lbl = lv_label_create(btn_lang);
-    const char *lang_names[] = {"EN", "JA", "ZH"};
+    const char *lang_names[] = {"EN", "JA", "ZH", "KO", "DE"};
     lv_label_set_text(lang_lbl, lang_names[ui_lang_get()]);
     lv_obj_set_style_text_color(lang_lbl, UI_COLOR_TEXT, 0);
     lv_obj_set_style_text_font(lang_lbl, &lv_font_montserrat_12, 0);

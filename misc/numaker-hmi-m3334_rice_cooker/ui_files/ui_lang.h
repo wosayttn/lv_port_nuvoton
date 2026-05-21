@@ -22,6 +22,8 @@ typedef enum
     UI_LANG_EN = 0,     /* English */
     UI_LANG_JA,         /* Japanese */
     UI_LANG_ZH_TW,      /* Traditional Chinese */
+    UI_LANG_KO,         /* Korean */
+    UI_LANG_DE,         /* German */
     UI_LANG_MAX
 } ui_lang_t;
 
