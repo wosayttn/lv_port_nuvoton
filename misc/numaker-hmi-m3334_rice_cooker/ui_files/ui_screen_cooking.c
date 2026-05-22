@@ -181,8 +181,8 @@ void ui_screen_cooking_create(void)
     lv_obj_align(s_img_mascot, LV_ALIGN_TOP_RIGHT, 0, 0);
     s_mascot_frame = 0;
 
-    /* Start mascot animation timer (500ms per frame) */
-    s_anim_timer = lv_timer_create(mascot_anim_cb, 500, NULL);
+    /* Start mascot animation timer (100ms per frame) */
+    s_anim_timer = lv_timer_create(mascot_anim_cb, 100, NULL);
 
     /* Touch: Pause button – placed inside content area */
     lv_obj_t *btn_pause = lv_button_create(cont);

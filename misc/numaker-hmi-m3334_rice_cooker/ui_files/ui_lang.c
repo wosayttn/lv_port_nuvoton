@@ -224,5 +224,5 @@ const lv_font_t *ui_lang_font_large(void)
 {
     if (s_lang != UI_LANG_EN)
         return &ui_font_cjk_20;
-    return &lv_font_montserrat_24;
+    return &lv_font_montserrat_20;
 }

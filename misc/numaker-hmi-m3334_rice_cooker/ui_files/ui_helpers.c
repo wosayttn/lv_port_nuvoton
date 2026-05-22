@@ -60,7 +60,7 @@ void ui_create_softkey_bar(lv_obj_t *parent, const char *hint)
     lv_obj_set_style_text_color(lbl, UI_COLOR_TEXT_DIM, 0);
     lv_obj_set_style_text_font(lbl, ui_lang_font_normal(), 0);
     lv_label_set_long_mode(lbl, LV_LABEL_LONG_SCROLL_CIRCULAR);
-    lv_obj_set_width(lbl, UI_HOR_RES - 20);
-    lv_obj_set_style_anim_duration(lbl, 4000, LV_PART_MAIN);
+    lv_obj_set_width(lbl, UI_HOR_RES - 40);
+    lv_obj_set_style_anim_duration(lbl, 5000, LV_PART_MAIN);
     lv_obj_align(lbl, LV_ALIGN_LEFT_MID, 10, 0);
 }

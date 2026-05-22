@@ -28,7 +28,10 @@ static void clock_update_cb(lv_timer_t *t)
     S_RTC_TIME_DATA_T sTime;
     RTC_GetDateAndTime(&sTime);
 
-    lv_label_set_text_fmt(s_lbl_clock, "%02lu:%02lu:%02lu",
+    lv_label_set_text_fmt(s_lbl_clock, "%04lu/%02lu/%02lu %02lu:%02lu:%02lu",
+                          (unsigned long)sTime.u32Year,
+                          (unsigned long)sTime.u32Month,
+                          (unsigned long)sTime.u32Day,
                           (unsigned long)sTime.u32Hour,
                           (unsigned long)sTime.u32Minute,
                           (unsigned long)sTime.u32Second);
