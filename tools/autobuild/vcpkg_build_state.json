@@ -1,0 +1,26 @@
+{
+  "c:\\d\\prj\\lv_port_nuvoton\\board\\numaker-hmi-m2l31\\vscode\\lvgl.csolution.yml": {
+    "build_log": "c:\\D\\PRJ\\lv_port_nuvoton\\board\\numaker-hmi-m2l31\\VSCode\\lvgl.csolution.yml.log",
+    "signature": "94c2f68639f0c7c4269b4a56fd045db46dc69c96cf058e7a1a245a02a3270a95",
+    "status": "failed",
+    "updated_at": "2026-05-22T16:36:16"
+  },
+  "c:\\d\\prj\\lv_port_nuvoton\\board\\numaker-hmi-m3334\\vscode\\lvgl.csolution.yml": {
+    "build_log": "c:\\D\\PRJ\\lv_port_nuvoton\\board\\numaker-hmi-m3334\\VSCode\\lvgl.csolution.yml.log",
+    "signature": "6fa108575ffb9f26feb1c7ec128b8697b7d7e609d423b9341d0543054f6fde1e",
+    "status": "success",
+    "updated_at": "2026-05-22T16:39:33"
+  },
+  "c:\\d\\prj\\lv_port_nuvoton\\board\\numaker-hmi-m3351\\vscode\\lvgl_examples.csolution.yml": {
+    "build_log": "c:\\D\\PRJ\\lv_port_nuvoton\\board\\numaker-hmi-m3351\\VSCode\\lvgl_examples.csolution.yml.log",
+    "signature": "942eaf0d6e3d21bf92c5a3f04fefb635ed1ed101b4174b965e698e0c5cd7152b",
+    "status": "success",
+    "updated_at": "2026-05-22T16:41:18"
+  },
+  "c:\\d\\prj\\lv_port_nuvoton\\board\\numaker-hmi-m467\\vscode\\lvgl.csolution.yml": {
+    "build_log": "c:\\D\\PRJ\\lv_port_nuvoton\\board\\numaker-hmi-m467\\VSCode\\lvgl.csolution.yml.log",
+    "signature": "8681507d2dd2a02dde5e50d9370a31918cfbe539ba282d0892291d0dcca37f40",
+    "status": "failed",
+    "updated_at": "2026-05-22T16:46:18"
+  }
+}

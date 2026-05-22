@@ -8,7 +8,7 @@ extern const lv_image_dsc_t img_mascot_side;
 extern const lv_image_dsc_t img_mascot_back;
 
 #define MASCOT_FRAME_COUNT  3
-#define MASCOT_W  112
-#define MASCOT_H  112
+#define MASCOT_W  96
+#define MASCOT_H  96
 
 #endif

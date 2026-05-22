@@ -11,7 +11,7 @@
 #endif
 
 #ifndef UI_FONT_CJK_20
-#define UI_FONT_CJK_20 1
+#define UI_FONT_CJK_20 0
 #endif
 
 #if UI_FONT_CJK_20

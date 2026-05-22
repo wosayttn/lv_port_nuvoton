@@ -2,7 +2,11 @@ echo on
 
 :forever_develop
 
-py -3 update_v9.4.py
+if exist "..\..\.venv\Scripts\python.exe" (
+	"..\..\.venv\Scripts\python.exe" update_v9.5.py
+) else (
+	py -3 update_v9.5.py
+)
 
 pause
 

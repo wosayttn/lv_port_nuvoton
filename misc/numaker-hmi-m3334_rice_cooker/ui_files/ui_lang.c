@@ -14,7 +14,6 @@
  * Contains all JA/ZH/KO/DE special characters used in UI strings.
  *============================================================================*/
 LV_FONT_DECLARE(ui_font_cjk_16);
-LV_FONT_DECLARE(ui_font_cjk_20);
 
 static ui_lang_t s_lang = UI_LANG_EN;
 
@@ -223,6 +222,6 @@ const lv_font_t *ui_lang_font_normal(void)
 const lv_font_t *ui_lang_font_large(void)
 {
     if (s_lang != UI_LANG_EN)
-        return &ui_font_cjk_20;
+        return &ui_font_cjk_16;
     return &lv_font_montserrat_20;
 }

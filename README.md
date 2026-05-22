@@ -3,7 +3,7 @@
 ![Eclipse Build](https://github.com/wosayttn/lv_port_nuvoton/actions/workflows/NuEclipse.yml/badge.svg)
 ![VSCode Build](https://github.com/wosayttn/lv_port_nuvoton/actions/workflows/VSCode.yml/badge.svg)
 
-Currently, the LVGL version is synchronized with **release/v9.4**.
+Currently, the LVGL version is synchronized with **release/v9.5**.
 
 This repository contains the LVGLv9 demo port for the NuMaker development board from Nuvoton.
 
