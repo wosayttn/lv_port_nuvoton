@@ -17,10 +17,10 @@ static void sys_init(void)
     SYS_SetPowerLevel(SYS_PLCTL_PLSEL_PL0);
 
     /* Enable clock source */
-    CLK_EnableXtalRC(CLK_PWRCTL_HIRCEN_Msk | /*CLK_PWRCTL_LXTEN_Msk |*/ CLK_PWRCTL_HXTEN_Msk);
+    CLK_EnableXtalRC(CLK_PWRCTL_HIRCEN_Msk | CLK_PWRCTL_LXTEN_Msk | CLK_PWRCTL_HXTEN_Msk);
 
     /* Waiting for clock source ready */
-    CLK_WaitClockReady(CLK_STATUS_HIRCSTB_Msk | /*CLK_STATUS_LXTSTB_Msk |*/ CLK_STATUS_HXTSTB_Msk);
+    CLK_WaitClockReady(CLK_STATUS_HIRCSTB_Msk | CLK_STATUS_LXTSTB_Msk | CLK_STATUS_HXTSTB_Msk);
 
     /* Set core clock to __HSI */
     CLK_SetCoreClock(180000000);

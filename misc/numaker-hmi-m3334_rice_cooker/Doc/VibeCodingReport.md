@@ -39,7 +39,7 @@
 > 狀態列右上角顯示 RTC 即時時鐘，格式為 `YYYY/MM/DD HH:MM:SS`，每秒更新
 
 ### 8. 多語言支援
-> 支援五種語言切換：English / 日本語 / 繁體中文 / 한국어 / Deutsch
+> 支援六種語言切換：English / 日本語 / 繁體中文 / 简体中文 / 한국어 / Deutsch
 > - 字串表 (string table) 架構
 > - `ui_lang_next()` 循環切換
 > - Home 畫面右下角 Language 按鈕
@@ -48,7 +48,7 @@
 > 使用 `lv_font_conv` 產生 CJK 自訂字型：
 > - `ui_font_cjk_16.c` (16px)
 > - `ui_font_cjk_20.c` (20px)
-> - 包含所有 UI 使用的中日韓文字元 + 德文特殊字元 (105 字)
+> - 包含所有 UI 使用的中日韓文字元 + 德文特殊字元 (119 字)
 > - 字型來源: SourceHanSansSC-Normal.otf
 > - 使用 `--no-compress --no-prefilter`，bitmap_format=0 (與內建字型一致)
 > - Fallback 設定為 Montserrat，確保 LVGL 符號可顯示
@@ -168,7 +168,7 @@ ui_files/
 ├── ui_keypad.c           -- GPIO 按鍵掃描 (20ms timer, debounce)
 ├── ui_buzzer.h / .c      -- 蜂鳴器驅動 (GPIO toggle, non-blocking)
 ├── ui_clock.h / .c       -- RTC 時鐘 (YYYY/MM/DD HH:MM:SS, 1s update)
-├── ui_lang.h / .c        -- 多語言字串表 & 字型選擇 (5 語言)
+├── ui_lang.h / .c        -- 多語言字串表 & 字型選擇 (6 語言)
 ├── ui_img_mascot.h / .c  -- 吉祥物動畫圖片 (3 幀, 112x112, ARGB8888)
 ├── ui_font_cjk_16.c      -- CJK 自訂字型 16px (無壓縮)
 ├── ui_font_cjk_20.c      -- CJK 自訂字型 20px (無壓縮)
@@ -207,7 +207,7 @@ ui_files/
 | 畫面 | 按鈕 | 功能 |
 |------|------|------|
 | Home | Menu | 進入選單 |
-| Home | EN/JA/ZH/KO/DE | 切換語言 |
+| Home | EN/JA/TW/CN/KO/DE | 切換語言 |
 | Home | PERF | 切換效能監控顯示 |
 | Menu | 項目 | 選擇烹煮模式 |
 | Menu | Back | 返回 Home |
@@ -366,6 +366,19 @@ flowchart LR
 
 ---
 
+## 補充更新 (2026-05-25)
+
+### 簡中語言支援增補
+
+- 新增第 6 種語言 `简体中文 (ZH-CN)`，語系循環更新為 `EN → JA → ZH-TW → ZH-CN → KO → DE`
+- `ui_lang.h / ui_lang.c` 已加入 `UI_LANG_ZH_CN` 枚舉與完整簡中字串表
+- Home 畫面語言按鈕縮寫改為 `EN / JA / TW / CN / KO / DE`，避免繁中與簡中共用 `ZH` 造成辨識不清
+- 補回 `_symbols.txt` 並重建 `ui_font_cjk_16.c` / `ui_font_cjk_20.c`，確保簡中字元如 `电/饭/锅/选/择/确/认/继/续` 可正常顯示
+- `_gen_font.py` 調整為只收集非 ASCII 字元，避免換行字元被誤當成 glyph range，提升後續維護穩定性
+- 已完成 PC Simulator 建置驗證，確認新增簡中支援後模擬器仍可正常編譯
+
+---
+
 ## 八、開發時間統計
 
 ### 各階段耗時
@@ -375,7 +388,7 @@ flowchart LR
 | 需求提取 | PPTX → 產品需求.md | ~10 min |
 | UI 程式碼產生 | 5 個畫面 + helpers | ~20 min |
 | 觸控 & 按鍵 | touch button + GPIO keypad | ~15 min |
-| 字型 & 多語言 | 5 語言 + CJK 字型產生 | ~40 min |
+| 字型 & 多語言 | 6 語言 + CJK 字型產生 | ~40 min |
 | CJK Bug 修復 | Bug #4~#8 多次迭代 (編碼/壓縮/條件編譯) | ~50 min |
 | RTC & Buzzer | 時鐘顯示 + 蜂鳴器 | ~10 min |
 | Perf Monitor | FPS toggle 功能 | ~5 min |

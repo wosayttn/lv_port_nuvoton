@@ -22,10 +22,17 @@ void ui_clock_init(void);
 
 /**
  * @brief Register a label to receive clock updates.
- *        Each status bar calls this so the active label gets refreshed.
+ *        Status bars use this to show full date and time.
  * @param lbl  Pointer to an lv_label object, or NULL to unregister.
  */
 void ui_clock_register_label(lv_obj_t *lbl);
+
+/**
+ * @brief Register a label to receive compact time updates.
+ *        Used by the Home screen center clock display.
+ * @param lbl  Pointer to an lv_label object, or NULL to unregister.
+ */
+void ui_clock_register_time_label(lv_obj_t *lbl);
 
 #ifdef __cplusplus
 }

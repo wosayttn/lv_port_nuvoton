@@ -6,6 +6,7 @@
  * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 #include "ui_common.h"
+#include "ui_clock.h"
 
 static lv_obj_t *s_scr_home = NULL;
 
@@ -72,13 +73,16 @@ void ui_screen_home_create(void)
     lv_obj_t *lbl_ready = lv_label_create(cont);
     lv_label_set_text(lbl_ready, ui_str(STR_READY));
     lv_obj_set_style_text_color(lbl_ready, UI_COLOR_SUCCESS, 0);
-    lv_obj_set_style_text_font(lbl_ready, ui_lang_font_large(), 0);
+    lv_obj_set_style_text_font(lbl_ready,
+                               (ui_lang_get() == UI_LANG_EN) ? ui_lang_font_normal() : ui_lang_font_large(),
+                               0);
 
-    /* Current time (placeholder) */
+    /* Current time (live RTC) */
     lv_obj_t *lbl_time = lv_label_create(cont);
-    lv_label_set_text(lbl_time, "12:00");
+    lv_label_set_text(lbl_time, "--:--:--");
     lv_obj_set_style_text_color(lbl_time, UI_COLOR_TEXT, 0);
     lv_obj_set_style_text_font(lbl_time, &lv_font_montserrat_20, 0);
+    ui_clock_register_time_label(lbl_time);
 
     /* Touch: Menu button */
     lv_obj_t *btn_menu = lv_button_create(cont);
@@ -103,7 +107,7 @@ void ui_screen_home_create(void)
     lv_obj_set_style_radius(btn_lang, 4, 0);
     lv_obj_add_event_cb(btn_lang, home_lang_btn_cb, LV_EVENT_CLICKED, NULL);
     lv_obj_t *lang_lbl = lv_label_create(btn_lang);
-    const char *lang_names[] = {"EN", "JA", "ZH", "KO", "DE"};
+    const char *lang_names[] = {"EN", "JA", "TW", "CN", "KO", "DE"};
     lv_label_set_text(lang_lbl, lang_names[ui_lang_get()]);
     lv_obj_set_style_text_color(lang_lbl, UI_COLOR_TEXT, 0);
     lv_obj_set_style_text_font(lang_lbl, &lv_font_montserrat_12, 0);

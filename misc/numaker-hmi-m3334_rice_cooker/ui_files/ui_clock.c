@@ -13,7 +13,16 @@
 #include "NuMicro.h"
 
 static lv_obj_t   *s_lbl_clock = NULL;
+static lv_obj_t   *s_lbl_time  = NULL;
 static lv_timer_t *s_timer     = NULL;
+
+static lv_obj_t *clock_get_valid_label(lv_obj_t **lbl)
+{
+    if ((*lbl != NULL) && !lv_obj_is_valid(*lbl))
+        *lbl = NULL;
+
+    return *lbl;
+}
 
 /*============================================================================
  * Timer callback – read RTC and update label
@@ -22,19 +31,33 @@ static void clock_update_cb(lv_timer_t *t)
 {
     (void)t;
 
-    if (s_lbl_clock == NULL)
+    lv_obj_t *lbl_clock = clock_get_valid_label(&s_lbl_clock);
+    lv_obj_t *lbl_time = clock_get_valid_label(&s_lbl_time);
+
+    if ((lbl_clock == NULL) && (lbl_time == NULL))
         return;
 
     S_RTC_TIME_DATA_T sTime;
     RTC_GetDateAndTime(&sTime);
 
-    lv_label_set_text_fmt(s_lbl_clock, "%04lu/%02lu/%02lu %02lu:%02lu:%02lu",
-                          (unsigned long)sTime.u32Year,
-                          (unsigned long)sTime.u32Month,
-                          (unsigned long)sTime.u32Day,
-                          (unsigned long)sTime.u32Hour,
-                          (unsigned long)sTime.u32Minute,
-                          (unsigned long)sTime.u32Second);
+    if (lbl_clock)
+    {
+        lv_label_set_text_fmt(lbl_clock, "%04lu/%02lu/%02lu %02lu:%02lu:%02lu",
+                              (unsigned long)sTime.u32Year,
+                              (unsigned long)sTime.u32Month,
+                              (unsigned long)sTime.u32Day,
+                              (unsigned long)sTime.u32Hour,
+                              (unsigned long)sTime.u32Minute,
+                              (unsigned long)sTime.u32Second);
+    }
+
+    if (lbl_time)
+    {
+        lv_label_set_text_fmt(lbl_time, "%02lu:%02lu:%02lu",
+                              (unsigned long)sTime.u32Hour,
+                              (unsigned long)sTime.u32Minute,
+                              (unsigned long)sTime.u32Second);
+    }
 }
 
 /*============================================================================
@@ -44,13 +67,27 @@ void ui_clock_register_label(lv_obj_t *lbl)
 {
     s_lbl_clock = lbl;
 
-    /* Immediately update so it doesn't show stale "12:00" */
+    /* Immediately update so it doesn't show stale placeholder text */
+    if (lbl)
+        clock_update_cb(NULL);
+}
+
+void ui_clock_register_time_label(lv_obj_t *lbl)
+{
+    s_lbl_time = lbl;
+
     if (lbl)
         clock_update_cb(NULL);
 }
 
 void ui_clock_init(void)
 {
+    if (s_timer)
+    {
+        lv_timer_delete(s_timer);
+        s_timer = NULL;
+    }
+
     /* Enable RTC clock source */
     CLK_EnableModuleClock(RTC_MODULE);
 

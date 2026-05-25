@@ -7,7 +7,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 with open('_symbols.txt', 'r', encoding='utf-8') as f:
     chars = f.read().strip()
 
-codepoints = sorted(set(ord(c) for c in chars))
+codepoints = sorted(set(ord(c) for c in chars if ord(c) > 0x7F))
 ranges = ','.join(f'0x{cp:04X}' for cp in codepoints)
 print(f'Total non-ASCII codepoints: {len(codepoints)}')
 

@@ -1,6 +1,6 @@
 /**************************************************************************//**
  * @file     ui_lang.h
- * @brief    Rice Cooker UI - Multi-language support (EN / JA / ZH-TW)
+ * @brief    Rice Cooker UI - Multi-language support (EN / JA / ZH-TW / ZH-CN)
  *
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
@@ -22,6 +22,7 @@ typedef enum
     UI_LANG_EN = 0,     /* English */
     UI_LANG_JA,         /* Japanese */
     UI_LANG_ZH_TW,      /* Traditional Chinese */
+    UI_LANG_ZH_CN,      /* Simplified Chinese */
     UI_LANG_KO,         /* Korean */
     UI_LANG_DE,         /* German */
     UI_LANG_MAX
@@ -81,7 +82,7 @@ void ui_lang_set(ui_lang_t lang);
 ui_lang_t ui_lang_get(void);
 
 /**
- * @brief Cycle to next language (EN -> JA -> ZH_TW -> EN ...).
+ * @brief Cycle to next language (EN -> JA -> ZH_TW -> ZH_CN -> ...).
  */
 void ui_lang_next(void);
 

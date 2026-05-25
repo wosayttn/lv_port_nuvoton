@@ -15,7 +15,7 @@
  *============================================================================*/
 LV_FONT_DECLARE(ui_font_cjk_16);
 
-static ui_lang_t s_lang = UI_LANG_EN;
+static ui_lang_t s_lang = UI_LANG_JA;
 
 /*============================================================================
  * String tables
@@ -82,7 +82,7 @@ static const char *s_strings_ja[STR_ID_MAX] =
     [STR_KEEP_WARM_TEMP]  = "\xe4\xbf\x9d\xe6\xb8\xa9: %d.%d " LV_SYMBOL_CHARGE "C",           /* 保温: */
 };
 
-static const char *s_strings_zh[STR_ID_MAX] =
+static const char *s_strings_zh_tw[STR_ID_MAX] =
 {
     [STR_APP_TITLE]       = "\xe9\x9b\xbb\xe5\xad\x90\xe9\x8d\x8b",                             /* 電子鍋 */
     [STR_READY]           = LV_SYMBOL_OK "  \xe5\xb0\xb1\xe7\xb7\x92",                          /* 就緒 */
@@ -111,6 +111,37 @@ static const char *s_strings_zh[STR_ID_MAX] =
 
     [STR_COOKING_DONE]    = LV_SYMBOL_OK "  \xe7\x83\xb9\xe7\x85\xae\xe5\xae\x8c\xe6\x88\x90\xef\xbc\x81", /* 烹煮完成！ */
     [STR_KEEP_WARM_TEMP]  = "\xe4\xbf\x9d\xe6\xba\xab: %d.%d " LV_SYMBOL_CHARGE "C",           /* 保溫: */
+};
+
+static const char *s_strings_zh_cn[STR_ID_MAX] =
+{
+    [STR_APP_TITLE]       = "\xe7\x94\xb5\xe9\xa5\xad\xe9\x94\x85",                             /* 电饭锅 */
+    [STR_READY]           = LV_SYMBOL_OK "  \xe5\xb0\xb1\xe7\xbb\xaa",                          /* 就绪 */
+    [STR_SELECT_MODE]     = "\xe9\x80\x89\xe6\x8b\xa9\xe6\xa8\xa1\xe5\xbc\x8f",             /* 选择模式 */
+    [STR_COOKING]         = "\xe7\x83\xb9\xe7\x85\xae\xe4\xb8\xad",                             /* 烹煮中 */
+    [STR_COMPLETE]        = "\xe5\xae\x8c\xe6\x88\x90\xef\xbc\x81",                             /* 完成！ */
+    [STR_KEEP_WARM]       = "\xe4\xbf\x9d\xe6\xb8\xa9",                                         /* 保温 */
+    [STR_PAUSED]          = "\xe5\xb7\xb2\xe6\x9a\x82\xe5\x81\x9c",                             /* 已暂停 */
+
+    [STR_MODE_WHITE_RICE] = "\xe7\x99\xbd\xe7\xb1\xb3",                                         /* 白米 */
+    [STR_MODE_QUICK_COOK] = "\xe5\xbf\xab\xe7\x85\xae",                                         /* 快煮 */
+    [STR_MODE_PORRIDGE]   = "\xe7\xa8\x80\xe9\xa5\xad",                                         /* 稀饭 */
+    [STR_MODE_STEAM]      = "\xe8\x92\xb8\xe7\x85\xae",                                         /* 蒸煮 */
+    [STR_MODE_KEEP_WARM]  = "\xe4\xbf\x9d\xe6\xb8\xa9",                                         /* 保温 */
+
+    [STR_MENU_ENTER]      = "\xe8\x8f\x9c\xe5\x8d\x95",                                         /* 菜单 */
+    [STR_BTN_PAUSE]       = LV_SYMBOL_PAUSE " \xe6\x9a\x82\xe5\x81\x9c",                        /* 暂停 */
+    [STR_BTN_STOP]        = LV_SYMBOL_CLOSE " \xe5\x81\x9c\xe6\xad\xa2",                        /* 停止 */
+    [STR_BTN_HOME]        = LV_SYMBOL_HOME "  \xe9\xa6\x96\xe9\xa1\xb5",                         /* 首页 */
+    [STR_BTN_BACK]        = LV_SYMBOL_LEFT " \xe8\xbf\x94\xe5\x9b\x9e",                          /* 返回 */
+    [STR_BTN_MENU]        = LV_SYMBOL_LIST "  \xe8\x8f\x9c\xe5\x8d\x95",                        /* 菜单 */
+    [STR_HINT_HOME]       = "[MENU] \xe8\xbf\x9b\xe5\x85\xa5\xe8\x8f\x9c\xe5\x8d\x95",     /* 进入菜单 */
+    [STR_HINT_MENU]       = "[UP/DN] \xe9\x80\x89\xe6\x8b\xa9  [START] \xe7\xa1\xae\xe8\xae\xa4  [MENU] \xe8\xbf\x94\xe5\x9b\x9e", /* 选择 确认 返回 */
+    [STR_HINT_COOKING]    = "[START] \xe6\x9a\x82\xe5\x81\x9c/\xe7\xbb\xa7\xe7\xbb\xad  [MENU] \xe5\x81\x9c\xe6\xad\xa2", /* 暂停/继续 停止 */
+    [STR_HINT_FINISH]     = "[MENU]/[START] \xe8\xbf\x94\xe5\x9b\x9e\xe9\xa6\x96\xe9\xa1\xb5", /* 返回首页 */
+
+    [STR_COOKING_DONE]    = LV_SYMBOL_OK "  \xe7\x83\xb9\xe7\x85\xae\xe5\xae\x8c\xe6\x88\x90\xef\xbc\x81", /* 烹煮完成！ */
+    [STR_KEEP_WARM_TEMP]  = "\xe4\xbf\x9d\xe6\xb8\xa9: %d.%d " LV_SYMBOL_CHARGE "C",           /* 保温: */
 };
 
 static const char *s_strings_ko[STR_ID_MAX] =
@@ -179,7 +210,8 @@ static const char **s_string_tables[UI_LANG_MAX] =
 {
     [UI_LANG_EN]    = s_strings_en,
     [UI_LANG_JA]    = s_strings_ja,
-    [UI_LANG_ZH_TW] = s_strings_zh,
+    [UI_LANG_ZH_TW] = s_strings_zh_tw,
+    [UI_LANG_ZH_CN] = s_strings_zh_cn,
     [UI_LANG_KO]    = s_strings_ko,
     [UI_LANG_DE]    = s_strings_de,
 };
