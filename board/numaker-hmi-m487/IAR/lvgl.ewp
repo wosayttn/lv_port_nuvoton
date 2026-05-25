@@ -1184,12 +1184,6 @@
     <group>
         <name>lv_demo</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\demos\lv_demos.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\demos\benchmark\lv_demo_benchmark.c</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\demos\benchmark\assets\img_benchmark_avatar.c</name>
         </file>
         <file>
@@ -1220,6 +1214,24 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\demos\benchmark\assets\lv_font_benchmark_montserrat_26_aligned.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\demos\benchmark\lv_demo_benchmark.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\demos\lv_demos.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\demos\widgets\assets\img_clothes.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\demos\widgets\assets\img_demo_widgets_avatar.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\demos\widgets\assets\img_demo_widgets_needle.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\demos\widgets\assets\img_lvgl_logo.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\demos\widgets\lv_demo_widgets.c</name>
         </file>
         <file>
@@ -1233,18 +1245,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\demos\widgets\lv_demo_widgets_shop.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\demos\widgets\assets\img_clothes.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\demos\widgets\assets\img_demo_widgets_avatar.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\demos\widgets\assets\img_demo_widgets_needle.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\demos\widgets\assets\img_lvgl_logo.c</name>
         </file>
     </group>
     <group>
@@ -1289,9 +1289,6 @@
     <group>
         <name>lvgl</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\lv_init.c</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\core\lv_group.c</name>
         </file>
         <file>
@@ -1328,10 +1325,31 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\core\lv_obj_tree.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\core\lv_observer.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\core\lv_refr.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\debugging\monkey\lv_monkey.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\debugging\sysmon\lv_sysmon.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\debugging\vg_lite_tvg\vg_lite_matrix.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\display\lv_display.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\convert\helium\lv_draw_buf_convert_helium.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\convert\lv_draw_buf_convert.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\convert\neon\lv_draw_buf_convert_neon.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\lv_draw.c</name>
@@ -1341,6 +1359,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\lv_draw_arc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\lv_draw_blur.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\lv_draw_buf.c</name>
@@ -1370,19 +1391,55 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\lv_image_decoder.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\convert\lv_draw_buf_convert.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\snapshot\lv_snapshot.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\convert\helium\lv_draw_buf_convert_helium.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\convert\neon\lv_draw_buf_convert_neon.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_a8.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_al88.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_argb8888.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_argb8888_premultiplied.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_i1.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_l8.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_rgb565.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_rgb565_swapped.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_rgb888.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\neon\lv_draw_sw_blend_neon_to_rgb565.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\neon\lv_draw_sw_blend_neon_to_rgb888.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\riscv_v\lv_draw_sw_blend_riscv_v_to_rgb888.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\lv_draw_sw.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\lv_draw_sw_arc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\lv_draw_sw_blur.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\lv_draw_sw_border.c</name>
@@ -1424,49 +1481,25 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\lv_draw_sw_vector.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\font\binfont_loader\lv_binfont_loader.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_al88.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\font\fmt_txt\lv_font_fmt_txt.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_argb8888.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\font\font_manager\lv_font_manager.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_argb8888_premultiplied.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\font\font_manager\lv_font_manager_recycle.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_i1.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_l8.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_rgb565.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_rgb565_swapped.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend_to_rgb888.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\neon\lv_draw_sw_blend_neon_to_rgb565.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\neon\lv_draw_sw_blend_neon_to_rgb888.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\font\lv_binfont_loader.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\font\imgfont\lv_imgfont.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\font\lv_font.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\font\lv_font_dejavu_16_persian_hebrew.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\font\lv_font_fmt_txt.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\font\lv_font_montserrat_10.c</name>
@@ -1550,6 +1583,9 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\font\lv_font_unscii_8.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\indev\lv_gridnav.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\indev\lv_indev.c</name>
         </file>
         <file>
@@ -1559,13 +1595,13 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\indev\lv_indev_scroll.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\layouts\lv_layout.c</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\layouts\flex\lv_flex.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\layouts\grid\lv_grid.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\layouts\lv_layout.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\bin_decoder\lv_bin_decoder.c</name>
@@ -1604,13 +1640,13 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\fsdrv\lv_fs_win32.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\gif\lv_gif.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\gif\AnimatedGIF\src\gif.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\gif\gif.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\libpng\lv_libpng.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\libwebp\lv_libwebp.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\lodepng\lodepng.c</name>
@@ -1622,10 +1658,37 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\lz4\lz4.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\nanovg\nanovg.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\tjpgd\lv_tjpgd.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\tjpgd\tjpgd.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\lv_init.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\class\lv_cache_lru_ll.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\class\lv_cache_lru_rb.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\class\lv_cache_sc_da.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\instance\lv_image_cache.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\instance\lv_image_header_cache.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\lv_cache.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\lv_cache_entry.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_anim.c</name>
@@ -1685,6 +1748,9 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_palette.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_pending.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_profiler_builtin.c</name>
         </file>
         <file>
@@ -1716,27 +1782,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_utils.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\lv_cache.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\lv_cache_entry.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\class\lv_cache_lru_ll.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\class\lv_cache_lru_rb.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\class\lv_cache_sc_da.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\instance\lv_image_cache.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\cache\instance\lv_image_header_cache.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\osal\lv_cmsis_rtos2.c</name>
@@ -1772,40 +1817,7 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\others\file_explorer\lv_file_explorer.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\others\font_manager\lv_font_manager.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\others\font_manager\lv_font_manager_recycle.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\others\gridnav\lv_gridnav.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\others\ime\lv_ime_pinyin.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\others\imgfont\lv_imgfont.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\others\monkey\lv_monkey.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\others\observer\lv_observer.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\others\snapshot\lv_snapshot.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\others\sysmon\lv_sysmon.c</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\others\translation\lv_translation.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\others\vg_lite_tvg\vg_lite_matrix.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\lv_mem.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</name>
@@ -1820,10 +1832,13 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\builtin\lv_tlsf.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\themes\lv_theme.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\lv_mem.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\themes\default\lv_theme_default.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\themes\lv_theme.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\themes\mono\lv_theme_mono.c</name>
@@ -1880,10 +1895,16 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\dropdown\lv_dropdown.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\gif\lv_gif.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\image\lv_image.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\imagebutton\lv_imagebutton.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\ime\lv_ime_pinyin.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\keyboard\lv_keyboard.c</name>
@@ -1916,6 +1937,21 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_animimage_properties.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_arc_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_bar_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_buttonmatrix_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_chart_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_checkbox_properties.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_dropdown_properties.c</name>
         </file>
         <file>
@@ -1928,16 +1964,46 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_label_properties.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_led_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_line_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_menu_properties.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_obj_properties.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_roller_properties.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_scale_properties.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_slider_properties.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_span_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_spinbox_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_spinner_properties.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_style_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_switch_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_table_properties.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_tabview_properties.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\widgets\property\lv_textarea_properties.c</name>

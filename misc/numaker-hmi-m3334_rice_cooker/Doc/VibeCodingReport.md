@@ -56,7 +56,7 @@
 
 ### 10. Performance Monitor 動態切換
 > 加入 `lv_sysmon_show/hide_performance()` 動態切換功能
-> - Home 畫面左下角「FPS」按鈕
+> - Home 畫面左下角「PERF」按鈕
 > - `ui_perf_monitor_toggle()` 公開 API
 
 ### 11. Cooking 畫面吉祥物動畫
@@ -70,6 +70,16 @@
 > 所有語言介面底部 softkey hint bar 強制跑馬燈滾動
 > - `LV_LABEL_LONG_SCROLL_CIRCULAR` 模式
 > - 寬度 280px，動畫 5000ms/循環
+
+### 13. PC Simulator (所見即所得)
+> 建立 PC 端 SDL2 模擬器，在電腦上預覽 UI layout 與測試觸控/按鍵功能
+> - 使用 LVGL 內建 SDL2 driver，320×240 視窗像素精確對應 LCD
+> - 滑鼠左鍵 = 觸控點擊，鍵盤 M/↑/↓/Enter = 實體按鍵
+> - `ui_files/*.c` 在 PC 與 MCU 之間共用，零修改
+> - `sim_stubs.c` 提供 buzzer/clock/keypad 的 PC stub
+> - `build_emulator.ps1` 一鍵建置腳本 (自動安裝 WinLibs + SDL2)
+> - SDL event watcher + deferred dispatch 解決按鍵 re-entrancy 問題
+> - 明確呼叫 `lv_sdl_mouse_create()` 啟用滑鼠觸控模擬
 
 ---
 
@@ -123,17 +133,35 @@
 **現象**: 簡單的 `rgb > 200` 門檻把人物白色部分也去掉了  
 **修復**: 改用 flood-fill 從四角擴散移除背景，不影響人物本體白色
 
+### Bug #10: PC Simulator 鍵盤按鍵無反應
+**現象**: 按 M/Up/Down/Enter 鍵時，UI 沒有反應  
+**原因**: `SDL_GetKeyboardState()` 輪詢方式無效，因 LVGL SDL driver 內部 `SDL_PollEvent()` 已消費鍵盤事件  
+**修復**: 改用 `SDL_AddEventWatch()` 註冊事件回調攔截 `SDL_KEYDOWN`，並使用 ring buffer + LVGL timer 做 deferred dispatch 避免 re-entrancy
+
+### Bug #11: PC Simulator 滑鼠點擊無反應
+**現象**: 滑鼠點擊按鈕無效，無法觸發 `LV_EVENT_CLICKED`  
+**原因**: `lv_sdl_window_create()` 只建立 display，不會自動建立 mouse indev  
+**修復**: 明確呼叫 `lv_sdl_mouse_create()` 建立 pointer indev
+
 ---
 
 ## 三、檔案結構
 
 ```
+pc_simulator/
+├── build_emulator.ps1    -- 一鍵建置腳本 (安裝 WinLibs + SDL2 + build)
+├── CMakeLists.txt        -- CMake 建構腳本 (Ninja + MinGW)
+├── lv_conf.h             -- PC 專用 LVGL 設定 (SDL2, No OS)
+├── main.c                -- SDL2 視窗 + 鍵盤映射 (event watcher)
+├── sim_stubs.c           -- 硬體 stub (buzzer→printf, clock→PC time)
+└── README.md
+
 ui_files/
 ├── ui.h                  -- 公開 API (state enum, key enum, init, toggle)
 ├── ui.c                  -- 狀態機、按鍵分派、初始化、perf toggle
 ├── ui_common.h           -- 顯示幾何、色彩定義、cook context struct
 ├── ui_helpers.c          -- 狀態列、軟鍵列 helper (跑馬燈)
-├── ui_screen_home.c      -- Home 待機畫面 (語言/FPS 按鈕)
+├── ui_screen_home.c      -- Home 待機畫面 (語言/PERF 按鈕)
 ├── ui_screen_menu.c      -- Menu 選單畫面 (circular scroll)
 ├── ui_screen_cooking.c   -- Cooking 烹煮畫面 (吉祥物動畫 + countdown)
 ├── ui_screen_finish.c    -- Finish 完成畫面 (buzzer, keep warm)
@@ -180,7 +208,7 @@ ui_files/
 |------|------|------|
 | Home | Menu | 進入選單 |
 | Home | EN/JA/ZH/KO/DE | 切換語言 |
-| Home | FPS | 切換效能監控顯示 |
+| Home | PERF | 切換效能監控顯示 |
 | Menu | 項目 | 選擇烹煮模式 |
 | Menu | Back | 返回 Home |
 | Cooking | Pause | 暫停 (吉祥物動畫同步暫停) |
@@ -353,8 +381,9 @@ flowchart LR
 | Perf Monitor | FPS toggle 功能 | ~5 min |
 | 吉祥物動畫 | 圖片轉換 + 去背 + 動畫邏輯 | ~30 min |
 | 佈局調整 | 字型統一、跑馬燈、版面微調 | ~15 min |
+| PC Simulator | SDL2 模擬器 + 除錯 (mouse/key) | ~30 min |
 | 文件整理 | report.md + 流程圖 | ~15 min |
-| **總計** | | **~3.5 – 4 小時** |
+| **總計** | | **~4 – 4.5 小時** |
 
 ### 與傳統開發方式對比
 

@@ -1,126 +1,164 @@
-import os
-import sys
-import time
-import subprocess
-import shutil
+"""
+Autobuild script for NuEclipse (GCC) projects.
+
+Walks PROJ_FOLDER_ROOTS for .cproject files, builds via the Eclipse headless
+builder, and reports errors. Supports incremental builds by skipping projects
+whose inputs have not changed since the last success.
+"""
+
 import fnmatch
-import tempfile
-import glob
-import re
+import os
+import shutil
+import subprocess
 import sys
-import datetime
-import xml.etree.ElementTree as ET # phone home :p
-import mmap
+import tempfile
 
-PROJ_FOLDER_NAME='..\\..\\board'
-PATH_ECLIPSE="C:\\Program Files (x86)\\Nuvoton Tools\\NuEclipse\\V1.02.025c\\NuEclipse\\eclipse\\eclipsec.exe"
+import build_state
+from config import (
+    NUECLIPSE_BLACKLIST,
+    NUECLIPSE_EXE_PATH,
+    NUECLIPSE_LOG_FILE,
+    NUECLIPSE_LOG_SKIP_LINES,
+    NUECLIPSE_PROJECT_FILE,
+    NUECLIPSE_STATE_FILE,
+    PROJ_FOLDER_ROOTS,
+)
 
-def blacklist_check(BUILDLOG):
-    Blacklist = ['[Fatal Error]', 'An error has occurred.', ' error: ', 'Error: ']
 
-    # Find any error/warning
-    fp = open(BUILDLOG, "r")
-    lines = fp.readlines()
-    fp.close()
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
 
-    # Skip 3 lines at first
-    # For ignore warning. OpenJDK 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.
-    lines.pop(0)
-    lines.pop(1)
-    lines.pop(2)
-    lines.pop(3)
+def _collect_source_files(project_dir: str) -> list[str]:
+    """Collect source/header/linker files under the project directory."""
+    files: list[str] = []
+    project_file = os.path.join(project_dir, '.project')
+    if os.path.isfile(project_file):
+        files.append(project_file)
+    cproject_file = os.path.join(project_dir, '.cproject')
+    if os.path.isfile(cproject_file):
+        files.append(cproject_file)
 
-    new_lines = ''
+    for root_dir, _, filenames in os.walk(project_dir):
+        for f in filenames:
+            if f.endswith(('.c', '.h', '.s', '.S', '.ld')):
+                files.append(os.path.join(root_dir, f))
+    return files
 
-    found = 0
-    for l in lines:
-        new_lines += l
-        for br in Blacklist:
-            pos = l.find(br)
+
+def _blacklist_check(log_path: str) -> int:
+    """Return count of blacklisted patterns found in build log."""
+    try:
+        with open(log_path, 'r', errors='replace') as fp:
+            lines = fp.readlines()
+    except OSError:
+        return 0
+
+    # Skip initial JVM deprecation warnings
+    lines = lines[NUECLIPSE_LOG_SKIP_LINES:]
+
+    annotated = ''
+    hits = 0
+    for line in lines:
+        annotated += line
+        for pattern in NUECLIPSE_BLACKLIST:
+            pos = line.find(pattern)
             if pos >= 0:
-                space_string = ' ' * pos
-                arrow_string = '^' * len(br)
-                new_lines += space_string + arrow_string + ' <- Received a blacklist rule.\n\n'
-                found += 1
+                annotated += ' ' * pos + '^' * len(pattern) + ' <- Blacklist hit.\n\n'
+                hits += 1
 
-    if found > 0:
-        # Update BUILDLOG
-        fp = open(BUILDLOG, "w")
-        fp.writelines(new_lines)
-        fp.close()
+    if hits > 0:
+        with open(log_path, 'w', errors='replace') as fp:
+            fp.write(annotated)
 
-    return found
+    return hits
 
-def get_memory_info():
-    cmd = 'cmd /c \"systeminfo | find /i \"Available Physical Memory\"\"'
+
+def _create_temp_workspace(root_dir: str) -> str:
+    """Create a unique temporary Eclipse workspace under the autobuild folder."""
+    return tempfile.mkdtemp(prefix='Temp_', dir=root_dir)
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+def main() -> int:
     si = subprocess.STARTUPINFO()
     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-    subprocess.check_call(cmd, startupinfo=si)
-    sys.stdout.flush()
 
-if __name__ == "__main__":
-    si = subprocess.STARTUPINFO()
-    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-    err = 0
     root = os.getcwd()
-    f = open('gcc.txt', "w")
-   
-    prj_count = 0
+    state_path = os.path.join(root, NUECLIPSE_STATE_FILE)
+    state = build_state.load(state_path)
 
-    for dirPath, dirNames, fileNames in os.walk(PROJ_FOLDER_NAME):
+    errors = 0
+    count = 0
 
-        for file in fnmatch.filter(fileNames, '*.cproject'):
+    with open(NUECLIPSE_LOG_FILE, 'w') as log:
+        for folder in PROJ_FOLDER_ROOTS:
+            if not os.path.isdir(folder):
+                continue
 
-            if os.path.isdir('Temp'):
-                shutil.rmtree('Temp')
+            for dir_path, _, file_names in os.walk(folder):
+                for fname in fnmatch.filter(file_names, NUECLIPSE_PROJECT_FILE):
+                    project_path = os.path.abspath(os.path.join(dir_path, fname))
+                    project_dir = os.path.dirname(project_path)
+                    basename = os.path.basename(os.path.dirname(dir_path))
+                    build_log = os.path.abspath(os.path.join(dir_path, basename) + '.log')
 
-            #print("[" + str(prj_count) + "] "+ os.path.abspath(file) +  " found.", flush=True)
-            #get_memory_info()
+                    inputs = _collect_source_files(project_dir)
+                    signature = build_state.compute_signature(inputs)
+                    key = os.path.normcase(project_path)
 
-            os.mkdir('Temp')
-            basename = os.path.basename(os.path.dirname(dirPath))
-            buildcommnd = PATH_ECLIPSE + " -nosplash --launcher.suppressErrors -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data Temp -import " + dirPath + " -build all"
+                    # Skip if unchanged since last success
+                    if build_state.should_skip(state, key, signature):
+                        log.write(f'[{count}] {project_path} skipped (previous success).\n')
+                        print(f'[{count}] {project_path} skipped (previous success).', flush=True)
+                        count += 1
+                        log.flush()
+                        continue
 
-            BUILDLOG = os.path.join(dirPath, basename) + '.log'
+                    # Prepare temp workspace
+                    temp_dir = _create_temp_workspace(root)
 
-            try:
-                #print(dirPath + " building ...")
-                fp = open(BUILDLOG, "w")
-                found = subprocess.check_call(buildcommnd, startupinfo=si, stdout=fp, stderr=fp)
-                fp.flush()
-                fp.close()
+                    cmd = (
+                        f'{NUECLIPSE_EXE_PATH}'
+                        f' -nosplash --launcher.suppressErrors'
+                        f' -application org.eclipse.cdt.managedbuilder.core.headlessbuild'
+                        f' -data {temp_dir} -import {dir_path} -build all'
+                    )
 
-                found += blacklist_check(BUILDLOG)
-                if found > 0:
-                    err += 1
-                    f.write("[" + str(prj_count) + "] "+ dirPath +  " has error or warning.\n")
-                    print("[" + str(prj_count) + "] "+ dirPath +  " has error or warning.", flush=True)
-                else:
-                    #f.write("[" + str(prj_count) + "] "+ os.path.abspath(file) +  " pass...\n")
-                    print("[" + str(prj_count) + "] "+ dirPath +  " pass...", flush=True)
-            except Exception as e:
-                f.write("[" + str(prj_count) + "] "+ dirPath +  " has error or warning.\n")
-                #print("[" + str(prj_count) + "] "+ dirPath +  " has error or warning.", flush=True)
-                err += 1
-            except OSError:
-                #print("Build" + file +  "has Ooops...\n")
-                f.write("[" + str(prj_count) + "] "+ dirPath +  " has Ooops.\n")
-                err += 1
-                pass                # Silently ignore
+                    try:
+                        with open(build_log, 'w') as fp:
+                            subprocess.check_call(cmd, startupinfo=si, stdout=fp, stderr=fp)
 
-            prj_count += 1
-            f.flush()
+                        hits = _blacklist_check(build_log)
+                        if hits > 0:
+                            errors += 1
+                            log.write(f'[{count}] {dir_path} has error or warning.\n')
+                            print(f'[{count}] {dir_path} has error or warning.', flush=True)
+                            build_state.record(state, project_path, signature, 'failed', build_log)
+                        else:
+                            print(f'[{count}] {dir_path} pass...', flush=True)
+                            build_state.record(state, project_path, signature, 'success', build_log)
 
-    shutil.rmtree('Temp')
+                    except Exception:
+                        errors += 1
+                        log.write(f'[{count}] {dir_path} build failed.\n')
+                        build_state.record(state, project_path, signature, 'failed', build_log)
+                    finally:
+                        shutil.rmtree(temp_dir, ignore_errors=True)
 
-    if err == 0:
-        f.write("Build " + str(prj_count-1) + " projects successfully.\n")
-        #print("Build " + str(prj_count-1) + " projects successfully.\n", flush=True)
+                    count += 1
+                    log.flush()
+                    build_state.save(state_path, state)
 
-    BLOG_SUMMARY = f.name
-    f.close()
+        if errors == 0:
+            log.write(f'Build {count} projects successfully.\n')
 
-    if err == 0:
-        sys.exit(0)
-    else:
-        sys.exit(1)
+    build_state.save(state_path, state)
+    return 1 if errors else 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

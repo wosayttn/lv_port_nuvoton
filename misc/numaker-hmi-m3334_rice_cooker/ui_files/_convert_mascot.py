@@ -11,8 +11,8 @@ import struct
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Target frame size for 320x240 display
-FRAME_W = 112
-FRAME_H = 112
+FRAME_W = 96
+FRAME_H = 96
 
 def remove_background(img):
     """Remove grid/blue background using flood-fill from corners."""

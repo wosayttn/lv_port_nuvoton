@@ -1,166 +1,189 @@
-import os
-import sys
-import time
-import subprocess
-import shutil
+"""
+Autobuild script for Keil MDK (µVision) projects.
+
+Walks PROJ_FOLDER_ROOTS for *.uvproj / *.uvprojx files, builds each one via
+the Uv4 command-line interface, and reports errors. Supports incremental builds
+by skipping projects whose inputs have not changed since the last success.
+"""
+
 import fnmatch
-import tempfile
-import glob
-import re
-import sys
-import datetime
-import xml.etree.ElementTree as ET # phone home :p
 import mmap
+import os
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
 
-PROJ_FOLDER_NAME='..\\..\\board'
-PATH_UV4="C:\\Keil_v5\\UV4\\Uv4.exe"
+import build_state
+from config import (
+    BUILD_TIMEOUT,
+    KEIL_BLACKLIST,
+    KEIL_LOG_FILE,
+    KEIL_PROJECT_EXTENSIONS,
+    KEIL_STATE_FILE,
+    KEIL_UV4_PATH,
+    KEIL_WHITELIST,
+    PROJ_FOLDER_ROOTS,
+)
 
-def blacklist_check(BUILDLOG):
-    Blacklist = ['warning:', 'Warning: ', 'error: ', 'Error: ']
-    Whitelist = ['[-Wlicense-management]', 'Q9931W:', 'Your license ', ' does not support the selected User Based Licensing technology']
 
-    # Find any error/warning
-    fp = open(BUILDLOG, "r")
-    lines = fp.readlines()
-    fp.close()
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
 
-    new_lines = ''
+def _get_project_input_files(project_path: str) -> list[str]:
+    """Extract referenced source files from a Keil .uvproj(x) XML."""
+    files = [project_path]
+    try:
+        tree = ET.parse(project_path)
+    except Exception:
+        return files
 
-    found = 0
-    for l in lines:
-        new_lines += l
-        for br in Blacklist:
-            pos = l.find(br)
+    project_dir = os.path.dirname(project_path)
+    seen = {os.path.normcase(os.path.abspath(project_path))}
+
+    for node in tree.getroot().iter('FilePath'):
+        rel = (node.text or '').strip()
+        if not rel:
+            continue
+        absolute = os.path.abspath(os.path.join(project_dir, rel.replace('\\', os.sep)))
+        key = os.path.normcase(absolute)
+        if key not in seen:
+            seen.add(key)
+            files.append(absolute)
+
+    return files
+
+
+def _blacklist_check(log_path: str) -> int:
+    """Return count of blacklisted patterns found (minus whitelisted)."""
+    with open(log_path, 'r', errors='replace') as fp:
+        lines = fp.readlines()
+
+    annotated = ''
+    hits = 0
+    for line in lines:
+        annotated += line
+        for pattern in KEIL_BLACKLIST:
+            pos = line.find(pattern)
             if pos >= 0:
-                space_string = ' ' * pos
-                arrow_string = '^' * len(br)
-                new_lines += space_string + arrow_string + ' <- Received a blacklist rule.\n\n'
-                found += 1
-        for br in Whitelist:
-            pos = l.find(br)
-            if pos >= 0:
-                found -= 1
+                annotated += ' ' * pos + '^' * len(pattern) + ' <- Blacklist hit.\n\n'
+                hits += 1
+        for pattern in KEIL_WHITELIST:
+            if pattern in line:
+                hits -= 1
 
-    if found > 0:
-        # Update BUILDLOG
-        fp = open(BUILDLOG, "w")
-        fp.writelines(new_lines)
-        fp.close()
+    if hits > 0:
+        with open(log_path, 'w', errors='replace') as fp:
+            fp.write(annotated)
 
-    return found
+    return hits
 
-def get_memory_info():
-    cmd = 'cmd /c \"systeminfo | find /i \"Available Physical Memory\"\"'
+
+def _disable_cross_module_opt(project_file: str) -> None:
+    """Patch <OptFeed>1</OptFeed> to 0 to speed up builds."""
+    try:
+        with open(project_file, 'r+b') as fh:
+            mm = mmap.mmap(fh.fileno(), 0)
+            pos = mm.find(b'<OptFeed>1</OptFeed>')
+            if pos != -1:
+                mm.seek(pos + 9)
+                mm.write(b'0')
+            mm.close()
+    except Exception:
+        pass
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+def main() -> int:
     si = subprocess.STARTUPINFO()
     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-    subprocess.check_call(cmd, startupinfo=si)
-    sys.stdout.flush()
 
-if __name__ == "__main__":
-    LIST_MAIL_ATTACHMENT = []
-    si = subprocess.STARTUPINFO()
-    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-    err = 0
+    root = os.getcwd()
+    state_path = os.path.join(root, KEIL_STATE_FILE)
+    state = build_state.load(state_path)
 
-    print('User-> ' + os.environ['USERNAME'], flush=True)
+    errors = 0
+    count = 0
+    attachments: list[str] = []
 
-    root = os.getcwd()    
-    f = open('keil.txt', "w+")
+    print(f'User-> {os.environ.get("USERNAME", "unknown")}', flush=True)
 
-    os.chdir(root)
-    
-    prj_count = 0
+    with open(KEIL_LOG_FILE, 'w+') as log:
+        for folder in PROJ_FOLDER_ROOTS:
+            if not os.path.isdir(folder):
+                continue
 
-    for dirPath, dirNames, fileNames in os.walk(PROJ_FOLDER_NAME):
-        for extension in ('*.uvproj', '*.uvprojx'):
-            for file in fnmatch.filter(fileNames, extension):
-                os.chdir(dirPath)
+            for dir_path, _, file_names in os.walk(folder):
+                for ext in KEIL_PROJECT_EXTENSIONS:
+                    for fname in fnmatch.filter(file_names, ext):
+                        os.chdir(dir_path)
+                        project_path = os.path.abspath(fname)
+                        build_log = os.path.abspath(fname + '.log')
+                        inputs = _get_project_input_files(project_path)
+                        signature = build_state.compute_signature(inputs)
+                        key = os.path.normcase(project_path)
 
-                #print("[" + str(prj_count) + "] "+ os.path.abspath(file) +  " found.", flush=True)
+                        # Skip if unchanged since last success
+                        if build_state.should_skip(state, key, signature):
+                            log.write(f'[{count}] {project_path} skipped (previous success).\n')
+                            print(f'[{count}] {project_path} skipped (previous success).', flush=True)
+                            count += 1
+                            log.flush()
+                            os.chdir(root)
+                            continue
 
-                #get_memory_info()
+                        _disable_cross_module_opt(fname)
 
-                try:
-                    f1 = open(file, 'r+')
-                    mm = mmap.mmap(f1.fileno(), 0)
-                except:
-                    printf("Parse " + file + " failed\n")
-                    f1.close()
-                    pass
-                else:
-                    # disable cross module optimization to reduce build time
-                    pos = mm.find(b'<OptFeed>1</OptFeed>')
-                    if pos != -1:
-                        mm.seek(pos + 9)
-                        mm.write(b"0")
-                    mm.close()
-                    f1.close()
+                        try:
+                            # Clean
+                            p = subprocess.Popen(
+                                f'{KEIL_UV4_PATH} -j0 -c {fname}',
+                                startupinfo=si, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                            )
+                            p.wait(BUILD_TIMEOUT)
 
-                try:
-                    BUILDLOG = file + ".log"
-                    buildcommnd = PATH_UV4 + " -b -j0 -z -o " + BUILDLOG + " " + file
-                    cleancommnd = PATH_UV4 + " -j0 -c " + file
+                            # Build
+                            p = subprocess.Popen(
+                                f'{KEIL_UV4_PATH} -b -j0 -z -o {build_log} {fname}',
+                                startupinfo=si, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                            )
+                            p.wait(BUILD_TIMEOUT)
 
-                    # https://www.keil.com/support/man/docs/uv4cl/uv4cl_commandline.htm
-                    # -j0   Hides the µVision GUI. Messages are suppressed. Use this option for batch testing.
-                    # -z    Re-builds all targets of a project or multiple-project. 
-                    #       Ensure that each target has another object output folder.
-                    #       Use the menu Projects - Options for Target - Output - Select Folder for Objects.
-                    # -b    Builds the last current target of a project and exits after the build process finished.
-                    #       Refer to option -t to change the target. 
-                    #       For multi-projects, the command builds the targets as defined in the dialog Project - Batch Build.
-                    # -o outputfile
-                    #f.write("[" + str(prj_count) + "] Build " + os.path.abspath(file) +  "\n")
+                            hits = _blacklist_check(build_log)
+                            if hits > 0:
+                                errors += 1
+                                log.write(f'[{count}] {project_path} error/warning({hits}).\n')
+                                print(f'[{count}] {project_path} has error or warning.', flush=True)
+                                attachments.append(build_log)
+                                build_state.record(state, project_path, signature, 'failed', build_log)
+                            else:
+                                print(f'[{count}] {project_path} pass...', flush=True)
+                                build_state.record(state, project_path, signature, 'success', build_log)
 
-                    #print("[" + str(prj_count) + "] "+ os.getcwd() + "\\" + file +  " cleaning.\n", flush=True)                
-                    #subprocess.call(cleancommnd, startupinfo=si, stdout=f, stderr=f)
-                    p = subprocess.Popen(cleancommnd, startupinfo=si, stdout=f, stderr=f)
-                    p.wait(300) #Anti-zombie
+                        except subprocess.TimeoutExpired:
+                            p.kill()
+                            errors += 1
+                            log.write(f'[{count}] Build {fname} timed out.\n')
+                            build_state.record(state, project_path, signature, 'failed', build_log)
+                        except Exception:
+                            errors += 1
+                            log.write(f'[{count}] Build {fname} raised exception.\n')
+                            build_state.record(state, project_path, signature, 'failed', build_log)
 
-                    #print("[" + str(prj_count) + "] "+ os.getcwd() + "\\" + file +  " building.\n", flush=True)                
-                    #subprocess.call(buildcommnd, startupinfo=si, stdout=f, stderr=f)
-                    p = subprocess.Popen(buildcommnd, startupinfo=si, stdout=f, stderr=f)
-                    p.wait(300)  #Anti-zombie
+                        count += 1
+                        log.flush()
+                        build_state.save(state_path, state)
+                        os.chdir(root)
 
-                    found = blacklist_check(BUILDLOG)
-                    if found > 0:
-                        err += 1
-                        f.write("[" + str(prj_count) + "] "+ os.path.abspath(file) +  " has error or warning(" + str(found) + ").\n")
-                        print("[" + str(prj_count) + "] "+ os.path.abspath(file) +  " has error or warning.", flush=True)
-                        LIST_MAIL_ATTACHMENT.append(os.path.abspath(BUILDLOG))
-                    else:
-                        print("[" + str(prj_count) + "] "+ os.path.abspath(file) +  " pass...", flush=True)
-                        #f.write("[" + str(prj_count) + "] "+ os.path.abspath(file) +  " pass...\n")
+        if errors == 0:
+            log.write(f'Build {count} projects successfully.\n')
 
-                except subprocess.TimeoutExpired:
-                    p.kill()
-                    f.write("[" + str(prj_count) + "] "+ "Build " + file +  " has exception.\n")
-                    #print("[" + str(prj_count) + "] "+ "Build" + file +  "has exception.\n")
-                    err += 1
-                except Exception as e:
-                    f.write("[" + str(prj_count) + "] "+ "Build " + file +  " has exception.\n")
-                    #print("[" + str(prj_count) + "] "+ "Build" + file +  "has exception.", flush=True)
-                    err += 1                
-                except OSError:
-                    f.write("[" + str(prj_count) + "] " + os.path.abspath(file) + "Ooops\n")
-                    #print("[" + str(prj_count) + "] " + os.path.abspath(file) + "Ooops", flush=True)
-                    pass #Silently ignore
+    build_state.save(state_path, state)
+    return 1 if errors else 0
 
-                prj_count += 1
 
-                f.flush()
-                os.chdir(root)
-
-    if err == 0:
-        f.write("Build " + str(prj_count-1) + " projects successfully.\n")
-        #print("Build " + str(prj_count-1) + " projects successfully.\n", flush=True)
-
-    BLOG_SUMMARY = f.name
-    f.close()
-
-    os.chdir(root)
-
-    if err == 0:
-        sys.exit(0)
-    else:
-        sys.exit(1)
+if __name__ == '__main__':
+    sys.exit(main())
