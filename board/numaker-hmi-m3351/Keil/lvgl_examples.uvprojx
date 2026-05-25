@@ -10,7 +10,7 @@
       <TargetName>M3351KJ_NUTFT</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6220000::V6.22::ARMCLANG</pCCUsed>
+      <pCCUsed>6240000::V6.24::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -501,9 +501,9 @@
               <FilePath>..\..\..\bsp\m3351\Library\Device\Nuvoton\M3351\Source\startup_M3351.c</FilePath>
             </File>
             <File>
-              <FileName>usci_spi.c</FileName>
+              <FileName>spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\m3351\Library\StdDriver\src\usci_spi.c</FilePath>
+              <FilePath>..\..\..\bsp\m3351\Library\StdDriver\src\spi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1890,16 +1890,6 @@
               <FilePath>..\..\..\common\drv_indev\touch_adc_calibration.c</FilePath>
             </File>
             <File>
-              <FileName>ili9341_uspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\common\drv_disp\ili9341_uspi.c</FilePath>
-            </File>
-            <File>
-              <FileName>drv_uspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\plat_driver\drv_uspi.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_example_entry.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\common\lv_example_entry.c</FilePath>
@@ -1908,6 +1898,16 @@
               <FileName>touch_glue.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\plat_driver\touch_glue.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\plat_driver\drv_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>ili9341_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_disp\ili9341_spi.c</FilePath>
             </File>
           </Files>
         </Group>

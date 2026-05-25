@@ -48,12 +48,12 @@ int lcd_device_initialize(void)
 
 #if defined(CONFIG_DISP_SPI)
     /* Open SPI */
-    USPI_Open(CONFIG_DISP_SPI, SPI_MASTER, SPI_MODE_0, 8, CONFIG_DISP_SPI_CLOCK);
+    SPI_Open(CONFIG_DISP_SPI, SPI_MASTER, SPI_MODE_0, 8, CONFIG_DISP_SPI_CLOCK);
 
-    USPI_DisableAutoSS(CONFIG_DISP_SPI);
+    SPI_DisableAutoSS(CONFIG_DISP_SPI);
 
     /* Set sequence to MSB first */
-    USPI_SET_MSB_FIRST(CONFIG_DISP_SPI);
+    SPI_SET_MSB_FIRST(CONFIG_DISP_SPI);
 
 #if defined(CONFIG_DISP_SPI_SS_PIN)
     PORT    = (GPIO_T *)(GPIOA_BASE + (NU_GET_PORT(CONFIG_DISP_SPI_SS_PIN) * PORT_OFFSET));
@@ -61,7 +61,7 @@ int lcd_device_initialize(void)
     GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_SPI_SS_PIN), NU_GET_PIN(CONFIG_DISP_SPI_SS_PIN)) = 1;
 #else
     /* Set CS pin to HIGH */
-    USPI_SET_SS_HIGH(CONFIG_DISP_SPI);
+    SPI_SET_SS_HIGH(CONFIG_DISP_SPI);
 #endif
 
 #endif

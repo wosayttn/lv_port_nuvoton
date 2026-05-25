@@ -186,7 +186,7 @@
 
   <Group>
     <GroupName>src</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -230,7 +230,7 @@
 
   <Group>
     <GroupName>libraries</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -349,8 +349,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\bsp\m3351\Library\StdDriver\src\usci_spi.c</PathWithFileName>
-      <FilenameWithoutPath>usci_spi.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\bsp\m3351\Library\StdDriver\src\spi.c</PathWithFileName>
+      <FilenameWithoutPath>spi.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3509,8 +3509,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\common\drv_disp\ili9341_uspi.c</PathWithFileName>
-      <FilenameWithoutPath>ili9341_uspi.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\common\lv_example_entry.c</PathWithFileName>
+      <FilenameWithoutPath>lv_example_entry.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3521,8 +3521,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\plat_driver\drv_uspi.c</PathWithFileName>
-      <FilenameWithoutPath>drv_uspi.c</FilenameWithoutPath>
+      <PathWithFileName>..\plat_driver\touch_glue.c</PathWithFileName>
+      <FilenameWithoutPath>touch_glue.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3533,8 +3533,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\common\lv_example_entry.c</PathWithFileName>
-      <FilenameWithoutPath>lv_example_entry.c</FilenameWithoutPath>
+      <PathWithFileName>..\plat_driver\drv_spi.c</PathWithFileName>
+      <FilenameWithoutPath>drv_spi.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3545,8 +3545,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\plat_driver\touch_glue.c</PathWithFileName>
-      <FilenameWithoutPath>touch_glue.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\common\drv_disp\ili9341_spi.c</PathWithFileName>
+      <FilenameWithoutPath>ili9341_spi.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

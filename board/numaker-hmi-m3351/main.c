@@ -13,21 +13,6 @@ static void sys_init(void)
     /* Unlock protected registers */
     SYS_UnlockReg();
 
-    /*------------------------------------------------------------------------*/
-    /* Init System Clock                                                      */
-    /*------------------------------------------------------------------------*/
-//    /* Enable HXT clock */
-//    CLK_EnableXtalRC(CLK_PWRCTL_HXTEN_Msk);
-
-//    /* Wait for HXT clock ready */
-//    CLK_WaitClockReady(CLK_STATUS_HXTSTB_Msk);
-
-//    /* Set core clock */
-//    CLK_SetCoreClock(__HSI);
-
-//    /* Update System Core Clock */
-//    SystemCoreClockUpdate();
-
     /* Set PCLK-related clock */
     CLK->PCLKDIV = (CLK_PCLKDIV_APB0DIV_DIV1 | CLK_PCLKDIV_APB1DIV_DIV1);
 
@@ -42,12 +27,12 @@ static void sys_init(void)
     CLK_EnableModuleClock(EADC0_MODULE);
     CLK_SetModuleClock(EADC0_MODULE, CLK_CLKSEL0_EADC0SEL_PLL, CLK_CLKDIV0_EADC0(12));
 
-    /* USCI0, NU5 */
-    CLK_EnableModuleClock(USCI0_MODULE);
-    SET_USCI0_CTL1_PA8();
-    SET_USCI0_DAT1_PA9();
-    SET_USCI0_DAT0_PA10();
-    SET_USCI0_CLK_PA11();
+    /* For V1.2 SPI1, NU5 */
+    CLK_EnableModuleClock(SPI1_MODULE);
+    SET_SPI1_MISO_PC7();
+    SET_SPI1_CLK_PA7();
+    SET_SPI1_SS_PA6();
+    SET_SPI1_MOSI_PC6();
 
     /* EADC Analog Pin: UNO_A0, UNO_A1, UNO_A2, UNO_A3 */
     SET_EADC0_CH4_PB4();
