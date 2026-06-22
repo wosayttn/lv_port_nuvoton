@@ -15,8 +15,8 @@ def validate_mdk(xml_file):
     Update MDK project XML with consistent OutputDirectory, ListingPath, and OutputName per target.
 
     Example changes:
-    - <OutputDirectory> -> .\Data_<TargetName>\
-    - <ListingPath> -> .\Data_<TargetName>\
+    - <OutputDirectory> -> .\\Data_<TargetName>\\
+    - <ListingPath> -> .\\Data_<TargetName>\\
     - <OutputName> -> lvgl_demo_<TargetName>
     """
     print(f"<<<{inspect.currentframe().f_code.co_name}>>> {xml_file}")

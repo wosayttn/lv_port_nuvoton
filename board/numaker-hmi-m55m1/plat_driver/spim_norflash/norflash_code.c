@@ -14,6 +14,14 @@
 //------------------------------------------------------------------------------
 #define SPIM_PORT                   SPIM0
 #define SPIM_PORT_MAX_DIV           8
+#define SPIM_FLASH_DEFAULT_LENGTH   (1024 * 1024)
+
+#define ENABLE_DEBUG    1
+#if ENABLE_DEBUG
+    #define SPIM_DBGMSG   printf
+#else
+    #define SPIM_DBGMSG(...)   do { } while (0)      /* disable debug */
+#endif
 
 #if 1
 static const uint32_t crc32_tab[] =
@@ -111,19 +119,19 @@ static uint32_t crc32(uint8_t *ptr, uint32_t len)
     {
         if ((reg & CRC_DMASTS_ABORTED_Msk) == CRC_DMASTS_ABORTED_Msk)   /* target abort */
         {
-            printf("abort flag 0x%x\n", reg);
+            SPIM_DBGMSG("abort flag 0x%x\n", reg);
             CRC->DMASTS |= CRC_DMASTS_ABORTED_Msk;
         }
 
         if ((reg & CRC_DMASTS_CFGERR_Msk) == CRC_DMASTS_CFGERR_Msk) /* config error */
         {
-            printf("config error 0x%x\n", reg);
+            SPIM_DBGMSG("config error 0x%x\n", reg);
             CRC->DMASTS |= CRC_DMASTS_CFGERR_Msk;
         }
 
         if ((reg & CRC_DMASTS_ACCERR_Msk) == CRC_DMASTS_ACCERR_Msk) /* access error */
         {
-            printf("access error 0x%x\n", reg);
+            SPIM_DBGMSG("access error 0x%x\n", reg);
             CRC->DMASTS |= CRC_DMASTS_ACCERR_Msk;
         }
     }
@@ -202,10 +210,46 @@ static void SPIM_TrimRxClkDlyNum(SPIM_T *spim, SPIM_PHASE_T *psWbRdCMD)
 
     uint32_t spim_start, spim_used_size;
 
-    /* Get start address of .spim_data section */
-    spim_start  = (uint32_t)&Image$$SPIM$$Base;
-    /* Get used size of .spim_data section */
-    spim_used_size = (uint32_t)&Image$$SPIM$$Length;
+#if defined(__ICCARM__)    /* IAR Compiler */
+    #pragma section = "SPIM"
+    spim_start = (uint32_t)__section_begin("SPIM");
+    spim_used_size = (uint32_t)__section_size("SPIM");
+
+    if ((spim_start == 0) || (spim_used_size == 0))
+    {
+        spim_start = (uint32_t)SPIM_HYPER_DMM0_SADDR;
+        spim_used_size = (uint32_t)SPIM_FLASH_DEFAULT_LENGTH;
+    }
+
+#elif defined(__GNUC__) && !defined(__ARMCC_VERSION)    /* GCC */
+    extern uint32_t __spim_start__ __attribute__((weak));
+    extern uint32_t __spim_end__ __attribute__((weak));
+
+    if (((uint32_t)&__spim_start__ == 0) || ((uint32_t)&__spim_end__ == 0))
+    {
+        spim_start = (uint32_t)SPIM_HYPER_DMM0_SADDR;
+        spim_used_size = (uint32_t)SPIM_FLASH_DEFAULT_LENGTH;
+    }
+    else
+    {
+        spim_start = (uint32_t)&__spim_start__;
+        spim_used_size = (uint32_t)&__spim_end__ - (uint32_t)&__spim_start__;
+    }
+
+#else    /* ARM Compiler 5/6 (ARMCC / ARMCLANG) */
+    __WEAK extern uint32_t Image$$SPIM$$Base, Image$$SPIM$$Length;
+
+    if (((uint32_t)&Image$$SPIM$$Base == 0) || ((uint32_t)&Image$$SPIM$$Length == 0))
+    {
+        spim_start = (uint32_t)SPIM_HYPER_DMM0_SADDR;
+        spim_used_size = (uint32_t)SPIM_FLASH_DEFAULT_LENGTH;
+    }
+    else
+    {
+        spim_start = (uint32_t)&Image$$SPIM$$Base;
+        spim_used_size = (uint32_t)&Image$$SPIM$$Length;
+    }
+#endif
 
     uint8_t u8RdDelay = 0;
     uint8_t u8RdDelayRes[SPIM_MAX_DLL_LATENCY] = {0};
@@ -213,8 +257,8 @@ static void SPIM_TrimRxClkDlyNum(SPIM_T *spim, SPIM_PHASE_T *psWbRdCMD)
     uint32_t u32Div;  // Divider value
     uint32_t u32ExcpectedCRC32Chksum;
 
-    printf("start address of spim_data is at 0x%08X\n", spim_start);
-    printf("Used size of spim_data is %d\n", spim_used_size);
+    SPIM_DBGMSG("start address of spim_data is at 0x%08X\n", spim_start);
+    SPIM_DBGMSG("Used size of spim_data is %d\n", spim_used_size);
 
     /* Switch SPIM operation mode to Direct Map after page read phase is set */
     SPIM_DMADMM_InitPhase(spim, psWbRdCMD, SPIM_CTL0_OPMODE_DIRECTMAP);
@@ -230,14 +274,14 @@ static void SPIM_TrimRxClkDlyNum(SPIM_T *spim, SPIM_PHASE_T *psWbRdCMD)
 
     /* Calculate CRC32 checksum in lower speed rate. */
     u32ExcpectedCRC32Chksum = crc32((uint8_t *)spim_start, spim_used_size);
-    printf("Excpected CRC32 Chksum is 0x%08X\n", u32ExcpectedCRC32Chksum);
+    SPIM_DBGMSG("Excpected CRC32 Chksum is 0x%08X\n", u32ExcpectedCRC32Chksum);
 
     u32Div = 1; // Divider value
     do
     {
         uint32_t u32RXDlySettings = 0;
 
-        printf("Set SPIM Clock frequency to %d Hz\n", CLK_GetHCLK0Freq() / (u32Div * 2));
+        SPIM_DBGMSG("Set SPIM Clock frequency to %d Hz\n", CLK_GetHCLK0Freq() / (u32Div * 2));
         SPIM_SET_CLOCK_DIVIDER(spim, u32Div);
 
         memset(u8RdDelayRes, 0, SPIM_MAX_DLL_LATENCY);
@@ -265,7 +309,7 @@ static void SPIM_TrimRxClkDlyNum(SPIM_T *spim, SPIM_PHASE_T *psWbRdCMD)
 
         for (u32i = 0; u32i < u8RdDelay; u32i++)
         {
-            printf("[%d/%d]: RXDelayPool Num: %d\r\n", u32i, u8RdDelay, u8RdDelayRes[u32i]);
+            SPIM_DBGMSG("[%d/%d]: RXDelayPool Num: %d\r\n", u32i, u8RdDelay, u8RdDelayRes[u32i]);
             if (u8RdDelayRes[u32i] > 0)
             {
                 u8RdDelayRes[u32RXDlySettings++] = u32i;
@@ -276,7 +320,7 @@ static void SPIM_TrimRxClkDlyNum(SPIM_T *spim, SPIM_PHASE_T *psWbRdCMD)
         {
             u8RdDelay = isConsecutive(u8RdDelayRes, u32RXDlySettings);
 
-            printf("<< Set RX Delay Num to %d. >>\r\n", u8RdDelay);
+            SPIM_DBGMSG("<< Set RX Delay Num to %d. >>\r\n", u8RdDelay);
 
             /* Set the number of intermediate delay steps */
             SPIM_SET_RXCLKDLY_RDDLYSEL(spim, u8RdDelay);
@@ -288,7 +332,7 @@ static void SPIM_TrimRxClkDlyNum(SPIM_T *spim, SPIM_PHASE_T *psWbRdCMD)
 
     if (u32Div == SPIM_PORT_MAX_DIV)
     {
-        printf("!!!ASSERT: No valid RX Delay Num.\r\n");
+        SPIM_DBGMSG("!!!ASSERT: No valid RX Delay Num.\r\n");
         while (1);
     }
 }
@@ -301,25 +345,25 @@ void SPIM_NorFlash_Init(SPIM_T *spim)
 
     if (SPIM_InitFlash(SPIM_PORT, SPIM_OP_ENABLE))      /* Initialized SPI flash */
     {
-        printf("SPIM flash initialize failed!\n");
+        SPIM_DBGMSG("SPIM flash initialize failed!\n");
         while (1);
     }
 
     SPIM_ReadJedecId(SPIM_PORT, idBuf, sizeof(idBuf), SPIM_BITMODE_1);
-    printf("SPIM get JEDEC ID=0x%02X, 0x%02X, 0x%02X\n", idBuf[0], idBuf[1], idBuf[2]);
+    SPIM_DBGMSG("SPIM get JEDEC ID=0x%02X, 0x%02X, 0x%02X\n", idBuf[0], idBuf[1], idBuf[2]);
 
-    printf("SPI NOR Flash Capacity is %dMB.\n", (jedec_capacity_bytes(idBuf[2]) >> 20));
+    SPIM_DBGMSG("SPI NOR Flash Capacity is %dMB.\n", (jedec_capacity_bytes(idBuf[2]) >> 20));
 
     if (jedec_capacity_bytes(idBuf[2]) > (16 * 1024 * 1024)) //32MB
     {
-        printf("Configure 4B-Addressing Quad read...\r\n");
+        SPIM_DBGMSG("Configure 4B-Addressing Quad read...\r\n");
 
         /* Trim RX clock delay cycle. Adjust the sampling clock of received data to latch the correct data. */
         SPIM_TrimRxClkDlyNum(SPIM_PORT, &gsWbEChRdCMD);
     }
     else  //<=16MB
     {
-        printf("Configure 3B-Addressing Quad read...\r\n");
+        SPIM_DBGMSG("Configure 3B-Addressing Quad read...\r\n");
 
         /* Trim RX clock delay cycle. Adjust the sampling clock of received data to latch the correct data. */
         SPIM_TrimRxClkDlyNum(SPIM_PORT, &gsWbEBhRdCMD);
