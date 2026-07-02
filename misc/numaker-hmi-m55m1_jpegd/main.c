@@ -54,7 +54,7 @@ struct dma350_ch_dev_t *const GDMA_CH_DEV_S[] =
     &GDMA_CH1_DEV_S
 };
 
-static void DNA350DevInit(void)
+static void DMA350DevInit(void)
 {
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -255,7 +255,7 @@ static void sys_init(void)
         while (1);
     }
 
-    DNA350DevInit();
+    DMA350DevInit();
 }
 
 int main(void)
