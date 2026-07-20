@@ -1,0 +1,236 @@
+{
+  "supplier": "Nuvoton Technology",
+  "components": [
+    {
+      "name": "thirdparty/FatFs-r15",
+      "version": "0.15",
+      "license": "ChaN License",
+      "purl": "pkg:generic/FatFs@0.15",
+      "cpe": "cpe:2.3:a:elm-chan:fatfs:r0.15b:*:*:*:*:*:*:*",
+      "description": "Generic FAT Filesystem Module",
+      "paths": [
+        "thirdparty/FatFs-r15"
+      ]
+    },
+    {
+      "name": "thirdparty/avilib",
+      "version": "1.0",
+      "license": "GPL-2.0-or-later",
+      "purl": "pkg:generic/avilib@1.0",
+      "cpe": "cpe:2.3:a:transcode_project:avilib:1.0:*:*:*:*:*:*:*",
+      "description": "AVI file format reading/writing library from transcode project",
+      "paths": [
+        "thirdparty/avilib"
+      ]
+    },
+    {
+      "name": "thirdparty/FreeRTOS",
+      "version": "10.5.1",
+      "license": "MIT",
+      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@10.5.1",
+      "cpe": "cpe:2.3:o:amazon:freertos:10.5.1:*:*:*:*:*:*:*",
+      "description": "Real-time operating system kernel for embedded devices",
+      "paths": [
+        "thirdparty/FreeRTOS"
+      ]
+    },
+    {
+      "name": "thirdparty/arm2d",
+      "version": "1.2.5",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/ARM-software/Arm-2D@v1.2.5",
+      "cpe": "cpe:2.3:a:arm:arm-2d:1.2.5:*:*:*:*:*:*:*",
+      "description": "A 2D graphic library optimized for Cortex-M processors",
+      "paths": [
+        "thirdparty/arm2d"
+      ]
+    },
+    {
+      "name": "lvgl",
+      "version": "9.5.0",
+      "license": "MIT",
+      "purl": "pkg:github/lvgl/lvgl@v9.5.0",
+      "cpe": "cpe:2.3:a:lvgl:lvgl:9.5.0:*:*:*:*:*:*:*",
+      "description": "Light and Versatile Graphics Library for embedded systems",
+      "paths": [
+        "lvgl"
+      ]
+    },
+    {
+      "name": "bsp/m031",
+      "version": "3.09.000",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/M031BSP@V3.09.000",
+      "cpe": "cpe:2.3:a:nuvoton:m031bsp:3.09.000:*:*:*:*:*:*:*",
+      "description": "M031 Series BSP",
+      "paths": [
+        "bsp/m031"
+      ]
+    },
+    {
+      "name": "bsp/m2354",
+      "version": "3.00.006",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/M2354BSP@v3.00.006",
+      "cpe": "cpe:2.3:a:nuvoton:m2354bsp:3.00.006:*:*:*:*:*:*:*",
+      "description": "M2354 Series CMSIS BSP",
+      "paths": [
+        "bsp/m2354"
+      ]
+    },
+    {
+      "name": "bsp/m2l31",
+      "version": "3.02.000",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/M2L31BSP@V3.02.000",
+      "cpe": "cpe:2.3:a:nuvoton:m2l31bsp:3.02.000:*:*:*:*:*:*:*",
+      "description": "M2L31 Series CMSIS BSP",
+      "paths": [
+        "bsp/m2l31"
+      ]
+    },
+    {
+      "name": "bsp/m3331",
+      "version": "3.00.002",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/m3331bsp@v3.00.002",
+      "cpe": "cpe:2.3:a:nuvoton:m3331bsp:3.00.002:*:*:*:*:*:*:*",
+      "description": "M3331 Series CMSIS BSP",
+      "paths": [
+        "bsp/m3331"
+      ]
+    },
+    {
+      "name": "bsp/m3351",
+      "version": "3.00.000",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/M3351BSP@V3.00.000",
+      "cpe": "cpe:2.3:a:nuvoton:m3351bsp:3.00.000:*:*:*:*:*:*:*",
+      "description": "M3351 Series CMSIS BSP",
+      "paths": [
+        "bsp/m3351"
+      ]
+    },
+    {
+      "name": "bsp/m460",
+      "version": "3.00.005",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/m460bsp@v3.00.005",
+      "cpe": "cpe:2.3:a:nuvoton:m460bsp:3.00.005:*:*:*:*:*:*:*",
+      "description": "M460 Series CMSIS BSP",
+      "paths": [
+        "bsp/m460"
+      ]
+    },
+    {
+      "name": "bsp/m480",
+      "version": "3.07.000",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/M480BSP@V3.07.000",
+      "cpe": "cpe:2.3:a:nuvoton:m480bsp:3.07.000:*:*:*:*:*:*:*",
+      "description": "M480 Series BSP",
+      "paths": [
+        "bsp/m480"
+      ]
+    },
+    {
+      "name": "bsp/m5531",
+      "version": "3.01.004",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/M5531BSP@V3.01.004",
+      "cpe": "cpe:2.3:a:nuvoton:m5531bsp:3.01.004:*:*:*:*:*:*:*",
+      "description": "M5531 Series CMSIS BSP",
+      "paths": [
+        "bsp/m5531"
+      ]
+    },
+    {
+      "name": "bsp/m55m1",
+      "version": "3.01.004",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/M55M1BSP@V3.01.004",
+      "cpe": "cpe:2.3:a:nuvoton:m55m1bsp:3.01.004:*:*:*:*:*:*:*",
+      "description": "M55M1 Series CMSIS BSP",
+      "paths": [
+        "bsp/m55m1"
+      ]
+    },
+    {
+      "name": "bsp/ma35d1",
+      "version": "1.4",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/MA35D1_NonOS_BSP@v1.4",
+      "cpe": "cpe:2.3:a:nuvoton:ma35d1_nonos_bsp:1.4:*:*:*:*:*:*:*",
+      "description": "MA35D1 NonOS BSP",
+      "paths": [
+        "bsp/ma35d1"
+      ]
+    },
+    {
+      "name": "bsp/ma35h0",
+      "version": "1.4",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/MA35H0_NonOS_BSP@v1.4",
+      "cpe": "cpe:2.3:a:nuvoton:ma35h0_nonos_bsp:1.4:*:*:*:*:*:*:*",
+      "description": "MA35H0 NonOS BSP",
+      "paths": [
+        "bsp/ma35h0"
+      ]
+    },
+    {
+      "name": "bsp/n9h20",
+      "version": "1.03.000",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/N9H20_NonOS_BSP@V1.03.000",
+      "cpe": "cpe:2.3:a:nuvoton:n9h20_nonos_bsp:1.03.000:*:*:*:*:*:*:*",
+      "description": "N9H20 NonOS BSP",
+      "paths": [
+        "bsp/n9h20"
+      ]
+    },
+    {
+      "name": "bsp/n9h26",
+      "version": "1.02.000",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/N9H26_NonOS_BSP@V1.02.000",
+      "cpe": "cpe:2.3:a:nuvoton:n9h26_nonos_bsp:1.02.000:*:*:*:*:*:*:*",
+      "description": "N9H26 NonOS BSP",
+      "paths": [
+        "bsp/n9h26"
+      ]
+    },
+    {
+      "name": "bsp/n9h30",
+      "version": "1.08.000",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/N9H30_NonOS@v1.08.000",
+      "cpe": "cpe:2.3:a:nuvoton:n9h30_nonos:1.08.000:*:*:*:*:*:*:*",
+      "description": "N9H30 NonOS BSP",
+      "paths": [
+        "bsp/n9h30"
+      ]
+    },
+    {
+      "name": "bsp/n9h31",
+      "version": "1.01.000",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/N9H31_NonOS@v1.01.000",
+      "cpe": "cpe:2.3:a:nuvoton:n9h31_nonos:1.01.000:*:*:*:*:*:*:*",
+      "description": "N9H31 NonOS BSP",
+      "paths": [
+        "bsp/n9h31"
+      ]
+    },
+    {
+      "name": "bsp/nuc980",
+      "version": "1.07.000",
+      "license": "Apache-2.0",
+      "purl": "pkg:github/OpenNuvoton/NUC980_NonOS_BSP@v1.07.000",
+      "cpe": "cpe:2.3:a:nuvoton:nuc980_nonos_bsp:1.07.000:*:*:*:*:*:*:*",
+      "description": "NUC980 NonOS BSP",
+      "paths": [
+        "bsp/nuc980"
+      ]
+    }
+  ]
+}

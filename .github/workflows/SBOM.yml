@@ -1,0 +1,68 @@
+name: SBOM
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: code-analysis-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  security_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # =========================
+      # Install tools
+      # =========================
+      - name: Install Syft & Grype
+        run: |
+          mkdir -p /opt
+          cd /opt
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh
+          /opt/bin/syft version
+          /opt/bin/grype version
+
+      # ==========================================
+      # Run SBOM & SCA Generation Script
+      # ==========================================
+      - name: Generate SBOM, CVE Scan, and SCA Reports
+        run: |
+          python3 .github/workflows/generate_sbom_sca.py
+
+      - name: Prepare GitHub Pages content
+        run: |
+          mkdir -p ./pages
+          cp ./sbom/sca-description.html ./pages/index.html
+          cp ./sbom/sca-description.json ./pages/sca-description.json
+          cp ./sbom/sbom.json ./pages/sbom.json
+  
+      # ==========================================
+      # Persist pages to gh-pages branch
+      # ==========================================
+      - name: Persist pages to gh-pages branch
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pages
+          destination_dir: sbom
+          keep_files: true
+
+      # =========================
+      # Upload artifacts
+      # =========================
+      - name: Upload SCA Reports Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: sca-reports
+          path: sca-reports.zip
