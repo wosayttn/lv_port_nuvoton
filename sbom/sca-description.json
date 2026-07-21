@@ -29,7 +29,7 @@
       "vulnerabilities_found": 0
     },
     {
-      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/SDL2.dll",
+      "name": "misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/SDL2.dll",
       "version": null,
       "type": "file",
       "purl": null,
@@ -37,7 +37,7 @@
       "vulnerabilities_found": 0
     },
     {
-      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/rice_cooker_sim.exe",
+      "name": "misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/rice_cooker_sim.exe",
       "version": null,
       "type": "file",
       "purl": null,
