@@ -2,7 +2,7 @@
   "project_name": "lv_port_nuvoton",
   "generated_date": "2026-07-21",
   "supplier": "Nuvoton Technology",
-  "total_components": 41,
+  "total_components": 27,
   "vulnerability_summary": {
     "Critical": 0,
     "High": 1,
@@ -13,82 +13,10 @@
   },
   "components": [
     {
-      "name": "ARM-software/cmsis-actions/armlm",
-      "version": "v1",
-      "type": "library",
-      "purl": "pkg:github/ARM-software/cmsis-actions@v1#armlm",
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "ARM-software/cmsis-actions/vcpkg",
-      "version": "v1",
-      "type": "library",
-      "purl": "pkg:github/ARM-software/cmsis-actions@v1#vcpkg",
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "AStyle",
-      "version": "UNKNOWN",
-      "type": "application",
-      "purl": null,
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
       "name": "Simple DirectMedia Layer",
       "version": "2, 32, 10, 0",
       "type": "application",
       "purl": null,
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "actions/checkout",
-      "version": "v4",
-      "type": "library",
-      "purl": "pkg:github/actions/checkout@v4",
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "actions/checkout",
-      "version": "v4",
-      "type": "library",
-      "purl": "pkg:github/actions/checkout@v4",
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "actions/checkout",
-      "version": "v4",
-      "type": "library",
-      "purl": "pkg:github/actions/checkout@v4",
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "actions/upload-artifact",
-      "version": "v4",
-      "type": "library",
-      "purl": "pkg:github/actions/upload-artifact@v4",
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "actions/upload-artifact",
-      "version": "v4",
-      "type": "library",
-      "purl": "pkg:github/actions/upload-artifact@v4",
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "actions/upload-artifact",
-      "version": "v4",
-      "type": "library",
-      "purl": "pkg:github/actions/upload-artifact@v4",
       "license": "Unknown",
       "vulnerabilities_found": 0
     },
@@ -101,41 +29,9 @@
       "vulnerabilities_found": 0
     },
     {
-      "name": "peaceiris/actions-gh-pages",
-      "version": "v4",
-      "type": "library",
-      "purl": "pkg:github/peaceiris/actions-gh-pages@v4",
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
       "name": "rice_cooker_sim",
       "version": "UNKNOWN",
       "type": "application",
-      "purl": null,
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/NuEclipse.yml",
-      "version": null,
-      "type": "file",
-      "purl": null,
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/SBOM.yml",
-      "version": null,
-      "type": "file",
-      "purl": null,
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/VSCode.yml",
-      "version": null,
-      "type": "file",
       "purl": null,
       "license": "Unknown",
       "vulnerabilities_found": 0
@@ -158,14 +54,6 @@
     },
     {
       "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/rice_cooker_sim.exe",
-      "version": null,
-      "type": "file",
-      "purl": null,
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/tools/coding_style/AStyle/bin/AStyle.exe",
       "version": null,
       "type": "file",
       "purl": null,
