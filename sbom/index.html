@@ -197,8 +197,8 @@
   <div class="card">
     <div class="severity-grid">
       <div class="severity-card critical"><span class="count">0</span>Critical</div>
-      <div class="severity-card high"><span class="count">1</span>High</div>
-      <div class="severity-card medium"><span class="count">0</span>Medium</div>
+      <div class="severity-card high"><span class="count">4</span>High</div>
+      <div class="severity-card medium"><span class="count">3</span>Medium</div>
       <div class="severity-card low"><span class="count">0</span>Low</div>
       <div class="severity-card negligible"><span class="count">0</span>Negligible</div>
       <div class="severity-card unknown"><span class="count">0</span>Unknown</div>
@@ -249,7 +249,7 @@
           <td><code>0.15</code></td>
           <td>library</td>
           <td>ChaN License</td>
-          <td><span class="badge badge-ok">0</span></td>
+          <td><span class="badge badge-danger">6</span></td>
           <td><code>pkg:generic/FatFs@0.15</code></td>
         </tr>
         <tr>
@@ -431,6 +431,54 @@
           <td><code>10.5.1</code></td>
           <td><code>unknown</code></td>
           <td>FreeRTOS is a real-time operating system for microcontrollers. FreeRTOS Kernel versions through 10.6.1 do not sufficiently protect against local privilege escalation via Return Oriented Programming te</td>
+        </tr>
+        <tr>
+          <td><span class="severity severity-high">High</span></td>
+          <td><code>CVE-2026-6687</code></td>
+          <td><strong>thirdparty/FatFs-r15</strong></td>
+          <td><code>0.15</code></td>
+          <td><code>unknown</code></td>
+          <td>FatFs R0.16 and earlier contains a stack overflow bug in f_getlabel() because exFAT label length (XDIR_NumLabel) is trusted without enforcing spec maximums. This maps to CWE-121 (Stack-based Buffer Ov</td>
+        </tr>
+        <tr>
+          <td><span class="severity severity-high">High</span></td>
+          <td><code>CVE-2026-6682</code></td>
+          <td><strong>thirdparty/FatFs-r15</strong></td>
+          <td><code>0.15</code></td>
+          <td><code>unknown</code></td>
+          <td>In FatFS R0.16 and earlier contains a FAT32 integer overflow bug in mount_volume() where fasize *= fs->n_fats can wrap, leading to attacker-controlled file-size metadata and unsafe read lengths in dow</td>
+        </tr>
+        <tr>
+          <td><span class="severity severity-high">High</span></td>
+          <td><code>CVE-2026-6688</code></td>
+          <td><strong>thirdparty/FatFs-r15</strong></td>
+          <td><code>0.15</code></td>
+          <td><code>unknown</code></td>
+          <td>FatFs R0.16 and earlier contains a downstream-caller vulnerability pattern associated with FatFs long filename handling. With LFN enabled, fno.fname can be up to 255 characters; many callers copy it i</td>
+        </tr>
+        <tr>
+          <td><span class="severity severity-medium">Medium</span></td>
+          <td><code>CVE-2026-6683</code></td>
+          <td><strong>thirdparty/FatFs-r15</strong></td>
+          <td><code>0.15</code></td>
+          <td><code>unknown</code></td>
+          <td>FatFs R0.16 and earlier contains a divide-by-zero in exFAT sync logic bug when crafted metadata causes n_fatent - 2 to be zero during write/sync operations. This maps to CWE-369 (Divide By Zero). Esti</td>
+        </tr>
+        <tr>
+          <td><span class="severity severity-medium">Medium</span></td>
+          <td><code>CVE-2026-6684</code></td>
+          <td><strong>thirdparty/FatFs-r15</strong></td>
+          <td><code>0.15</code></td>
+          <td><code>unknown</code></td>
+          <td>FatFs prior to R0.16 that use GPT scanning with 'FF_LBA64 = 1' contains an issue where an unbounded loop count derived from GPT header field GPTH_PtNum, enabling extremely long or effectively infinite</td>
+        </tr>
+        <tr>
+          <td><span class="severity severity-medium">Medium</span></td>
+          <td><code>CVE-2026-6686</code></td>
+          <td><strong>thirdparty/FatFs-r15</strong></td>
+          <td><code>0.15</code></td>
+          <td><code>unknown</code></td>
+          <td>FatFs R0.16 and earlier contains an uninitialized cluster exposure when f_lseek() extends files beyond EOF without zero-filling newly allocated clusters. This maps to CWE-908 (Use of Uninitialized Res</td>
         </tr>
 
       </tbody>

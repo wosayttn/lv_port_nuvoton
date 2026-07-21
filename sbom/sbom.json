@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:e3247248-1a1c-482b-8b84-582257d64f8c",
+  "serialNumber": "urn:uuid:85fd4af3-1489-4c92-91ed-993806317824",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-07-21T09:01:53Z",
+    "timestamp": "2026-07-21T10:07:25Z",
     "tools": {
       "components": [
         {
@@ -149,7 +149,7 @@
       "version": "0.15",
       "description": "Generic FAT Filesystem Module",
       "purl": "pkg:generic/FatFs@0.15",
-      "cpe": "cpe:2.3:a:fatfs_project:fatfs:0.15:*:*:*:*:*:*:*",
+      "cpe": "cpe:2.3:a:elm-chan:fatfs:r0.15b:*:*:*:*:*:*:*",
       "licenses": [
         {
           "license": {
