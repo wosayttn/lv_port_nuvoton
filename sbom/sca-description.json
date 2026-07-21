@@ -2,7 +2,7 @@
   "project_name": "lv_port_nuvoton",
   "generated_date": "2026-07-21",
   "supplier": "Nuvoton Technology",
-  "total_components": 25,
+  "total_components": 21,
   "vulnerability_summary": {
     "Critical": 0,
     "High": 4,
@@ -12,38 +12,6 @@
     "Unknown": 0
   },
   "components": [
-    {
-      "name": "Simple DirectMedia Layer",
-      "version": "2, 32, 10, 0",
-      "type": "application",
-      "purl": null,
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "rice_cooker_sim",
-      "version": "UNKNOWN",
-      "type": "application",
-      "purl": null,
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/SDL2.dll",
-      "version": null,
-      "type": "file",
-      "purl": null,
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
-    {
-      "name": "misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/rice_cooker_sim.exe",
-      "version": null,
-      "type": "file",
-      "purl": null,
-      "license": "Unknown",
-      "vulnerabilities_found": 0
-    },
     {
       "name": "thirdparty/FatFs-r15",
       "version": "0.15",

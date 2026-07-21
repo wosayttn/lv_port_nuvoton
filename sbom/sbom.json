@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:85fd4af3-1489-4c92-91ed-993806317824",
+  "serialNumber": "urn:uuid:fe9ef6d5-d98e-4b3c-ba20-860442959b53",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-07-21T10:07:25Z",
+    "timestamp": "2026-07-21T10:24:49Z",
     "tools": {
       "components": [
         {
@@ -26,122 +26,6 @@
     }
   },
   "components": [
-    {
-      "bom-ref": "fa0dc20707cbac13",
-      "type": "application",
-      "name": "Simple DirectMedia Layer",
-      "version": "2, 32, 10, 0",
-      "cpe": "cpe:2.3:a:Simple_DirectMedia_Layer:Simple_DirectMedia_Layer:2\\,_32\\,_10\\,_0:*:*:*:*:*:*:*",
-      "properties": [
-        {
-          "name": "syft:package:foundBy",
-          "value": "pe-binary-package-cataloger"
-        },
-        {
-          "name": "syft:package:type",
-          "value": "binary"
-        },
-        {
-          "name": "syft:package:metadataType",
-          "value": "pe-binary"
-        },
-        {
-          "name": "syft:location:0:path",
-          "value": "/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/SDL2.dll"
-        }
-      ]
-    },
-    {
-      "bom-ref": "b910c7ecd8417684",
-      "type": "application",
-      "name": "rice_cooker_sim",
-      "version": "UNKNOWN",
-      "cpe": "cpe:2.3:a:rice-cooker-sim:rice-cooker-sim:*:*:*:*:*:*:*:*",
-      "properties": [
-        {
-          "name": "syft:package:foundBy",
-          "value": "pe-binary-package-cataloger"
-        },
-        {
-          "name": "syft:package:type",
-          "value": "binary"
-        },
-        {
-          "name": "syft:package:metadataType",
-          "value": "pe-binary"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:rice-cooker-sim:rice_cooker_sim:*:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:rice_cooker_sim:rice-cooker-sim:*:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:rice_cooker_sim:rice_cooker_sim:*:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:rice-cooker:rice-cooker-sim:*:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:rice-cooker:rice_cooker_sim:*:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:rice_cooker:rice-cooker-sim:*:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:rice_cooker:rice_cooker_sim:*:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:rice:rice-cooker-sim:*:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:rice:rice_cooker_sim:*:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:location:0:path",
-          "value": "/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/rice_cooker_sim.exe"
-        }
-      ]
-    },
-    {
-      "bom-ref": "81bd55b7384bfac9",
-      "type": "file",
-      "name": "misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/SDL2.dll",
-      "hashes": [
-        {
-          "alg": "SHA-1",
-          "content": "2de504ac9e168685b791bcbb23a2300825b64444"
-        },
-        {
-          "alg": "SHA-256",
-          "content": "53e8fa7e9ed43c30bd650c39396f0d9d2067d2fff0b926c9433b75202592e4aa"
-        }
-      ]
-    },
-    {
-      "bom-ref": "c2e3f0ca7d8395a5",
-      "type": "file",
-      "name": "misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/rice_cooker_sim.exe",
-      "hashes": [
-        {
-          "alg": "SHA-1",
-          "content": "70d89ab22730162ef049d73b0dbbf5f7e57a143b"
-        },
-        {
-          "alg": "SHA-256",
-          "content": "bc864648863efdcc5757629754250e33885b9a8a13592d2792ab18999696e0a9"
-        }
-      ]
-    },
     {
       "bom-ref": "pkg:generic/FatFs@0.15?package-id=thirdparty-FatFs-r15",
       "type": "library",
