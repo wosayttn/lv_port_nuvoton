@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCA Report - lv_port_nuvoton</title>
+<style>
+  :root {
+    --color-bg: #f8f9fa;
+    --color-card: #ffffff;
+    --color-border: #dee2e6;
+    --color-text: #212529;
+    --color-muted: #6c757d;
+    --color-critical: #dc3545;
+    --color-high: #fd7e14;
+    --color-medium: #ffc107;
+    --color-low: #28a745;
+    --color-negligible: #17a2b8;
+    --color-unknown: #6c757d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    padding: 2rem;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.35rem; margin: 2rem 0 1rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.4rem; }
+  .subtitle { color: var(--color-muted); margin-bottom: 2rem; }
+  .card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+  .summary-item { text-align: center; }
+  .summary-item .label { font-size: 0.8rem; color: var(--color-muted); text-transform: uppercase; }
+  .summary-item .value { font-size: 1.4rem; font-weight: 700; }
+  .severity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .severity-card {
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .severity-card.critical { background: #f8d7da; color: var(--color-critical); }
+  .severity-card.high { background: #ffe5cc; color: #c35a00; }
+  .severity-card.medium { background: #fff3cd; color: #856404; }
+  .severity-card.low { background: #d4edda; color: #155724; }
+  .severity-card.negligible { background: #d1ecf1; color: #0c5460; }
+  .severity-card.unknown { background: #e2e3e5; color: #383d41; }
+  .severity-card .count { font-size: 1.5rem; display: block; }
+  .status-pass { color: #155724; font-weight: 700; }
+  .status-fail { color: var(--color-critical); font-weight: 700; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  th, td {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-border);
+    text-align: left;
+  }
+  th {
+    background: #e9ecef;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  tr:nth-child(even) { background: #f8f9fa; }
+  code {
+    background: #e9ecef;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+  }
+  .badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .badge-danger { background: #f8d7da; color: var(--color-critical); }
+  .badge-ok { background: #d4edda; color: #155724; }
+  .severity {
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .severity-critical { background: #f8d7da; color: var(--color-critical); }
+  .severity-high { background: #ffe5cc; color: #c35a00; }
+  .severity-medium { background: #fff3cd; color: #856404; }
+  .severity-low { background: #d4edda; color: #155724; }
+  .severity-negligible { background: #d1ecf1; color: #0c5460; }
+  .severity-unknown { background: #e2e3e5; color: #383d41; }
+  .no-vulns { text-align: center; color: #155724; font-weight: 600; padding: 2rem; }
+  .footer { margin-top: 2rem; text-align: center; color: var(--color-muted); font-size: 0.8rem; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Software Composition Analysis (SCA) Report</h1>
+  <p class="subtitle">lv_port_nuvoton</p>
+
+  <div class="card">
+    <div class="summary-grid">
+      <div class="summary-item"><span class="label">Supplier</span><span class="value">Nuvoton Technology</span></div>
+      <div class="summary-item"><span class="label">Generated Date</span><span class="value">2026-07-21</span></div>
+      <div class="summary-item"><span class="label">Components</span><span class="value">41</span></div>
+      <div class="summary-item"><span class="label">Status</span><span class="value status-fail">Action Required</span></div>
+    </div>
+  </div>
+
+  <h2>Security Vulnerability Summary</h2>
+  <div class="card">
+    <div class="severity-grid">
+      <div class="severity-card critical"><span class="count">0</span>Critical</div>
+      <div class="severity-card high"><span class="count">1</span>High</div>
+      <div class="severity-card medium"><span class="count">0</span>Medium</div>
+      <div class="severity-card low"><span class="count">0</span>Low</div>
+      <div class="severity-card negligible"><span class="count">0</span>Negligible</div>
+      <div class="severity-card unknown"><span class="count">0</span>Unknown</div>
+    </div>
+  </div>
+
+  <h2>Component Composition</h2>
+  <div class="card" style="overflow-x:auto;">
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Version</th><th>Type</th><th>License</th><th>Vulns</th><th>Package URL</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ARM-software/cmsis-actions/armlm</strong></td>
+          <td><code>v1</code></td>
+          <td>library</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/ARM-software/cmsis-actions@v1#armlm</code></td>
+        </tr>
+        <tr>
+          <td><strong>ARM-software/cmsis-actions/vcpkg</strong></td>
+          <td><code>v1</code></td>
+          <td>library</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/ARM-software/cmsis-actions@v1#vcpkg</code></td>
+        </tr>
+        <tr>
+          <td><strong>AStyle</strong></td>
+          <td><code>UNKNOWN</code></td>
+          <td>application</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>Simple DirectMedia Layer</strong></td>
+          <td><code>2, 32, 10, 0</code></td>
+          <td>application</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>actions/checkout</strong></td>
+          <td><code>v4</code></td>
+          <td>library</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/actions/checkout@v4</code></td>
+        </tr>
+        <tr>
+          <td><strong>actions/checkout</strong></td>
+          <td><code>v4</code></td>
+          <td>library</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/actions/checkout@v4</code></td>
+        </tr>
+        <tr>
+          <td><strong>actions/checkout</strong></td>
+          <td><code>v4</code></td>
+          <td>library</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/actions/checkout@v4</code></td>
+        </tr>
+        <tr>
+          <td><strong>actions/upload-artifact</strong></td>
+          <td><code>v4</code></td>
+          <td>library</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/actions/upload-artifact@v4</code></td>
+        </tr>
+        <tr>
+          <td><strong>actions/upload-artifact</strong></td>
+          <td><code>v4</code></td>
+          <td>library</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/actions/upload-artifact@v4</code></td>
+        </tr>
+        <tr>
+          <td><strong>actions/upload-artifact</strong></td>
+          <td><code>v4</code></td>
+          <td>library</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/actions/upload-artifact@v4</code></td>
+        </tr>
+        <tr>
+          <td><strong>fatdisk</strong></td>
+          <td><code>UNKNOWN</code></td>
+          <td>application</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>peaceiris/actions-gh-pages</strong></td>
+          <td><code>v4</code></td>
+          <td>library</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/peaceiris/actions-gh-pages@v4</code></td>
+        </tr>
+        <tr>
+          <td><strong>rice_cooker_sim</strong></td>
+          <td><code>UNKNOWN</code></td>
+          <td>application</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/NuEclipse.yml</strong></td>
+          <td><code>None</code></td>
+          <td>file</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/SBOM.yml</strong></td>
+          <td><code>None</code></td>
+          <td>file</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/VSCode.yml</strong></td>
+          <td><code>None</code></td>
+          <td>file</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/jpeg_app/fat/fatdisk.exe</strong></td>
+          <td><code>None</code></td>
+          <td>file</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/SDL2.dll</strong></td>
+          <td><code>None</code></td>
+          <td>file</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/rice_cooker_sim.exe</strong></td>
+          <td><code>None</code></td>
+          <td>file</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/tools/coding_style/AStyle/bin/AStyle.exe</strong></td>
+          <td><code>None</code></td>
+          <td>file</td>
+          <td>Unknown</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>None</code></td>
+        </tr>
+        <tr>
+          <td><strong>FatFs</strong></td>
+          <td><code>0.15</code></td>
+          <td>library</td>
+          <td>ChaN License</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:generic/FatFs@0.15</code></td>
+        </tr>
+        <tr>
+          <td><strong>avilib</strong></td>
+          <td><code>1.0</code></td>
+          <td>library</td>
+          <td>GPL-2.0-or-later</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:generic/avilib@1.0</code></td>
+        </tr>
+        <tr>
+          <td><strong>FreeRTOS-Kernel</strong></td>
+          <td><code>10.5.1</code></td>
+          <td>library</td>
+          <td>MIT</td>
+          <td><span class="badge badge-danger">1</span></td>
+          <td><code>pkg:github/FreeRTOS/FreeRTOS-Kernel@10.5.1</code></td>
+        </tr>
+        <tr>
+          <td><strong>Arm-2D</strong></td>
+          <td><code>1.2.5</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/ARM-software/Arm-2D@v1.2.5</code></td>
+        </tr>
+        <tr>
+          <td><strong>LVGL</strong></td>
+          <td><code>9.5.0</code></td>
+          <td>library</td>
+          <td>MIT</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/lvgl/lvgl@v9.5.0</code></td>
+        </tr>
+        <tr>
+          <td><strong>M031BSP</strong></td>
+          <td><code>3.09.000</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/M031BSP@V3.09.000</code></td>
+        </tr>
+        <tr>
+          <td><strong>M2354BSP</strong></td>
+          <td><code>3.00.006</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/M2354BSP@v3.00.006</code></td>
+        </tr>
+        <tr>
+          <td><strong>M2L31BSP</strong></td>
+          <td><code>3.02.000</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/M2L31BSP@V3.02.000</code></td>
+        </tr>
+        <tr>
+          <td><strong>m3331bsp</strong></td>
+          <td><code>3.00.002</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/m3331bsp@v3.00.002</code></td>
+        </tr>
+        <tr>
+          <td><strong>M3351BSP</strong></td>
+          <td><code>3.00.000</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/M3351BSP@V3.00.000</code></td>
+        </tr>
+        <tr>
+          <td><strong>m460bsp</strong></td>
+          <td><code>3.00.005</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/m460bsp@v3.00.005</code></td>
+        </tr>
+        <tr>
+          <td><strong>M480BSP</strong></td>
+          <td><code>3.07.000</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/M480BSP@V3.07.000</code></td>
+        </tr>
+        <tr>
+          <td><strong>M5531BSP</strong></td>
+          <td><code>3.01.004</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/M5531BSP@V3.01.004</code></td>
+        </tr>
+        <tr>
+          <td><strong>M55M1BSP</strong></td>
+          <td><code>3.01.004</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/M55M1BSP@V3.01.004</code></td>
+        </tr>
+        <tr>
+          <td><strong>MA35D1_NonOS_BSP</strong></td>
+          <td><code>1.4</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/MA35D1_NonOS_BSP@v1.4</code></td>
+        </tr>
+        <tr>
+          <td><strong>MA35H0_NonOS_BSP</strong></td>
+          <td><code>1.4</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/MA35H0_NonOS_BSP@v1.4</code></td>
+        </tr>
+        <tr>
+          <td><strong>N9H20_NonOS_BSP</strong></td>
+          <td><code>1.03.000</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/N9H20_NonOS_BSP@V1.03.000</code></td>
+        </tr>
+        <tr>
+          <td><strong>N9H26_NonOS_BSP</strong></td>
+          <td><code>1.02.000</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/N9H26_NonOS_BSP@V1.02.000</code></td>
+        </tr>
+        <tr>
+          <td><strong>N9H30_NonOS</strong></td>
+          <td><code>1.08.000</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/N9H30_NonOS@v1.08.000</code></td>
+        </tr>
+        <tr>
+          <td><strong>N9H31_NonOS</strong></td>
+          <td><code>1.01.000</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/N9H31_NonOS@v1.01.000</code></td>
+        </tr>
+        <tr>
+          <td><strong>NUC980_NonOS_BSP</strong></td>
+          <td><code>1.07.000</code></td>
+          <td>library</td>
+          <td>Apache-2.0</td>
+          <td><span class="badge badge-ok">0</span></td>
+          <td><code>pkg:github/OpenNuvoton/NUC980_NonOS_BSP@v1.07.000</code></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Detailed Vulnerabilities</h2>
+  <div class="card" style="overflow-x:auto;">
+    <table>
+      <thead>
+        <tr><th>Severity</th><th>ID</th><th>Component</th><th>Version</th><th>Fix Status</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="severity severity-high">High</span></td>
+          <td><code>CVE-2024-28115</code></td>
+          <td><strong>FreeRTOS-Kernel</strong></td>
+          <td><code>10.5.1</code></td>
+          <td><code>unknown</code></td>
+          <td>FreeRTOS is a real-time operating system for microcontrollers. FreeRTOS Kernel versions through 10.6.1 do not sufficiently protect against local privilege escalation via Return Oriented Programming te</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">Generated by lv_port_nuvoton SBOM/SCA pipeline on 2026-07-21</div>
+</div>
+</body>
+</html>

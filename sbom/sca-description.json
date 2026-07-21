@@ -1,0 +1,355 @@
+{
+  "project_name": "lv_port_nuvoton",
+  "generated_date": "2026-07-21",
+  "supplier": "Nuvoton Technology",
+  "total_components": 41,
+  "vulnerability_summary": {
+    "Critical": 0,
+    "High": 1,
+    "Medium": 0,
+    "Low": 0,
+    "Negligible": 0,
+    "Unknown": 0
+  },
+  "components": [
+    {
+      "name": "ARM-software/cmsis-actions/armlm",
+      "version": "v1",
+      "type": "library",
+      "purl": "pkg:github/ARM-software/cmsis-actions@v1#armlm",
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "ARM-software/cmsis-actions/vcpkg",
+      "version": "v1",
+      "type": "library",
+      "purl": "pkg:github/ARM-software/cmsis-actions@v1#vcpkg",
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "AStyle",
+      "version": "UNKNOWN",
+      "type": "application",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "Simple DirectMedia Layer",
+      "version": "2, 32, 10, 0",
+      "type": "application",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "actions/checkout",
+      "version": "v4",
+      "type": "library",
+      "purl": "pkg:github/actions/checkout@v4",
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "actions/checkout",
+      "version": "v4",
+      "type": "library",
+      "purl": "pkg:github/actions/checkout@v4",
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "actions/checkout",
+      "version": "v4",
+      "type": "library",
+      "purl": "pkg:github/actions/checkout@v4",
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "actions/upload-artifact",
+      "version": "v4",
+      "type": "library",
+      "purl": "pkg:github/actions/upload-artifact@v4",
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "actions/upload-artifact",
+      "version": "v4",
+      "type": "library",
+      "purl": "pkg:github/actions/upload-artifact@v4",
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "actions/upload-artifact",
+      "version": "v4",
+      "type": "library",
+      "purl": "pkg:github/actions/upload-artifact@v4",
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "fatdisk",
+      "version": "UNKNOWN",
+      "type": "application",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "peaceiris/actions-gh-pages",
+      "version": "v4",
+      "type": "library",
+      "purl": "pkg:github/peaceiris/actions-gh-pages@v4",
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "rice_cooker_sim",
+      "version": "UNKNOWN",
+      "type": "application",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/NuEclipse.yml",
+      "version": null,
+      "type": "file",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/SBOM.yml",
+      "version": null,
+      "type": "file",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/VSCode.yml",
+      "version": null,
+      "type": "file",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/jpeg_app/fat/fatdisk.exe",
+      "version": null,
+      "type": "file",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/SDL2.dll",
+      "version": null,
+      "type": "file",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/rice_cooker_sim.exe",
+      "version": null,
+      "type": "file",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/tools/coding_style/AStyle/bin/AStyle.exe",
+      "version": null,
+      "type": "file",
+      "purl": null,
+      "license": "Unknown",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "FatFs",
+      "version": "0.15",
+      "type": "library",
+      "purl": "pkg:generic/FatFs@0.15",
+      "license": "ChaN License",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "avilib",
+      "version": "1.0",
+      "type": "library",
+      "purl": "pkg:generic/avilib@1.0",
+      "license": "GPL-2.0-or-later",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "FreeRTOS-Kernel",
+      "version": "10.5.1",
+      "type": "library",
+      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@10.5.1",
+      "license": "MIT",
+      "vulnerabilities_found": 1
+    },
+    {
+      "name": "Arm-2D",
+      "version": "1.2.5",
+      "type": "library",
+      "purl": "pkg:github/ARM-software/Arm-2D@v1.2.5",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "LVGL",
+      "version": "9.5.0",
+      "type": "library",
+      "purl": "pkg:github/lvgl/lvgl@v9.5.0",
+      "license": "MIT",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "M031BSP",
+      "version": "3.09.000",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/M031BSP@V3.09.000",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "M2354BSP",
+      "version": "3.00.006",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/M2354BSP@v3.00.006",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "M2L31BSP",
+      "version": "3.02.000",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/M2L31BSP@V3.02.000",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "m3331bsp",
+      "version": "3.00.002",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/m3331bsp@v3.00.002",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "M3351BSP",
+      "version": "3.00.000",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/M3351BSP@V3.00.000",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "m460bsp",
+      "version": "3.00.005",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/m460bsp@v3.00.005",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "M480BSP",
+      "version": "3.07.000",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/M480BSP@V3.07.000",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "M5531BSP",
+      "version": "3.01.004",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/M5531BSP@V3.01.004",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "M55M1BSP",
+      "version": "3.01.004",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/M55M1BSP@V3.01.004",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "MA35D1_NonOS_BSP",
+      "version": "1.4",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/MA35D1_NonOS_BSP@v1.4",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "MA35H0_NonOS_BSP",
+      "version": "1.4",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/MA35H0_NonOS_BSP@v1.4",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "N9H20_NonOS_BSP",
+      "version": "1.03.000",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/N9H20_NonOS_BSP@V1.03.000",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "N9H26_NonOS_BSP",
+      "version": "1.02.000",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/N9H26_NonOS_BSP@V1.02.000",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "N9H30_NonOS",
+      "version": "1.08.000",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/N9H30_NonOS@v1.08.000",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "N9H31_NonOS",
+      "version": "1.01.000",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/N9H31_NonOS@v1.01.000",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    },
+    {
+      "name": "NUC980_NonOS_BSP",
+      "version": "1.07.000",
+      "type": "library",
+      "purl": "pkg:github/OpenNuvoton/NUC980_NonOS_BSP@v1.07.000",
+      "license": "Apache-2.0",
+      "vulnerabilities_found": 0
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "vuln_id": "CVE-2024-28115",
+      "severity": "High",
+      "package_name": "FreeRTOS-Kernel",
+      "package_version": "10.5.1",
+      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@10.5.1",
+      "description": "FreeRTOS is a real-time operating system for microcontrollers. FreeRTOS Kernel versions through 10.6.1 do not sufficiently protect against local privilege escalation via Return Oriented Programming techniques should a vulnerability exist that allows code injection and execution. These issues affect ARMv7-M MPU ports, and ARMv8-M ports with Memory Protected Unit (MPU) support enabled (i.e. `configENABLE_MPU` set to 1). These issues are fixed in version 10.6.2 with a new MPU wrapper.",
+      "fix_state": "unknown"
+    }
+  ]
+}
