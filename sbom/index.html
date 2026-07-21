@@ -6,11 +6,12 @@
 <title>SCA Report - lv_port_nuvoton</title>
 <style>
   :root {
-    --color-bg: #f8f9fa;
+    --color-bg: #f0f2f5;
     --color-card: #ffffff;
-    --color-border: #dee2e6;
-    --color-text: #212529;
+    --color-border: #e0e0e0;
+    --color-text: #1a1a2e;
     --color-muted: #6c757d;
+    --color-accent: #4caf50;
     --color-critical: #dc3545;
     --color-high: #fd7e14;
     --color-medium: #ffc107;
@@ -20,42 +21,76 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background: var(--color-bg);
     color: var(--color-text);
     line-height: 1.6;
-    padding: 2rem;
+    padding: 0;
   }
-  .container { max-width: 1200px; margin: 0 auto; }
-  h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
-  h2 { font-size: 1.35rem; margin: 2rem 0 1rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.4rem; }
-  .subtitle { color: var(--color-muted); margin-bottom: 2rem; }
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    padding: 2rem 2rem 1.5rem;
+  }
+  .header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; }
+  .header .subtitle { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin-top: 0.25rem; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 2rem; }
+  h2 {
+    font-size: 1.15rem;
+    margin: 2rem 0 0.75rem;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  h2::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 1.15rem;
+    background: var(--color-accent);
+    border-radius: 2px;
+  }
   .card {
     background: var(--color-card);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .summary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1rem;
   }
-  .summary-item { text-align: center; }
-  .summary-item .label { font-size: 0.8rem; color: var(--color-muted); text-transform: uppercase; }
-  .summary-item .value { font-size: 1.4rem; font-weight: 700; }
+  .summary-item {
+    text-align: center;
+    padding: 0.5rem;
+  }
+  .summary-item .label {
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .summary-item .value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: block;
+    margin-top: 0.15rem;
+  }
   .severity-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.6rem;
   }
   .severity-card {
     text-align: center;
-    padding: 0.75rem;
-    border-radius: 6px;
+    padding: 0.6rem 0.4rem;
+    border-radius: 8px;
     font-weight: 600;
+    font-size: 0.8rem;
   }
   .severity-card.critical { background: #f8d7da; color: var(--color-critical); }
   .severity-card.high { background: #ffe5cc; color: #c35a00; }
@@ -63,45 +98,59 @@
   .severity-card.low { background: #d4edda; color: #155724; }
   .severity-card.negligible { background: #d1ecf1; color: #0c5460; }
   .severity-card.unknown { background: #e2e3e5; color: #383d41; }
-  .severity-card .count { font-size: 1.5rem; display: block; }
+  .severity-card .count { font-size: 1.5rem; display: block; line-height: 1.2; }
   .status-pass { color: #155724; font-weight: 700; }
   .status-fail { color: var(--color-critical); font-weight: 700; }
   table {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 0.875rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.82rem;
   }
   th, td {
-    padding: 0.6rem 0.75rem;
-    border: 1px solid var(--color-border);
+    padding: 0.55rem 0.7rem;
     text-align: left;
+    border-bottom: 1px solid var(--color-border);
   }
   th {
-    background: #e9ecef;
+    background: #f5f6f8;
     font-weight: 600;
     white-space: nowrap;
+    position: sticky;
+    top: 0;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-muted);
   }
-  tr:nth-child(even) { background: #f8f9fa; }
+  th:first-child { border-radius: 6px 0 0 0; }
+  th:last-child { border-radius: 0 6px 0 0; }
+  tr:hover { background: #f8f9fb; }
   code {
-    background: #e9ecef;
+    background: #eef1f5;
     padding: 0.15rem 0.4rem;
     border-radius: 3px;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
+    word-break: break-all;
   }
   .badge {
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 10px;
+    font-size: 0.72rem;
     font-weight: 600;
+    display: inline-block;
+    min-width: 1.5rem;
+    text-align: center;
   }
   .badge-danger { background: #f8d7da; color: var(--color-critical); }
   .badge-ok { background: #d4edda; color: #155724; }
   .severity {
-    padding: 0.2rem 0.6rem;
+    padding: 0.2rem 0.55rem;
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
   .severity-critical { background: #f8d7da; color: var(--color-critical); }
   .severity-high { background: #ffe5cc; color: #c35a00; }
@@ -110,13 +159,30 @@
   .severity-negligible { background: #d1ecf1; color: #0c5460; }
   .severity-unknown { background: #e2e3e5; color: #383d41; }
   .no-vulns { text-align: center; color: #155724; font-weight: 600; padding: 2rem; }
-  .footer { margin-top: 2rem; text-align: center; color: var(--color-muted); font-size: 0.8rem; }
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 0.78rem;
+  }
+  @media (max-width: 768px) {
+    .header { padding: 1.5rem 1rem; }
+    .container { padding: 1rem; }
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .severity-grid { grid-template-columns: repeat(3, 1fr); }
+  }
 </style>
 </head>
 <body>
+<div class="header">
+  <div style="max-width:1200px;margin:0 auto;">
+    <h1>Software Composition Analysis (SCA) Report</h1>
+    <p class="subtitle">lv_port_nuvoton</p>
+  </div>
+</div>
 <div class="container">
-  <h1>Software Composition Analysis (SCA) Report</h1>
-  <p class="subtitle">lv_port_nuvoton</p>
 
   <div class="card">
     <div class="summary-grid">
@@ -143,11 +209,11 @@
   <div class="card" style="overflow-x:auto;">
     <table>
       <thead>
-        <tr><th>Name</th><th>Version</th><th>Type</th><th>License</th><th>Vulns</th><th>Package URL</th></tr>
+        <tr><th>Name</th><th>Version</th><th>Type</th><th>License</th><th>Vulns</th><th>Package URL (purl)</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>ARM-software/cmsis-actions/armlm</strong></td>
+          <td><strong>cmsis-actions/armlm</strong></td>
           <td><code>v1</code></td>
           <td>library</td>
           <td>Unknown</td>
@@ -155,7 +221,7 @@
           <td><code>pkg:github/ARM-software/cmsis-actions@v1#armlm</code></td>
         </tr>
         <tr>
-          <td><strong>ARM-software/cmsis-actions/vcpkg</strong></td>
+          <td><strong>cmsis-actions/vcpkg</strong></td>
           <td><code>v1</code></td>
           <td>library</td>
           <td>Unknown</td>
@@ -168,7 +234,7 @@
           <td>application</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
           <td><strong>Simple DirectMedia Layer</strong></td>
@@ -176,10 +242,10 @@
           <td>application</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
-          <td><strong>actions/checkout</strong></td>
+          <td><strong>checkout</strong></td>
           <td><code>v4</code></td>
           <td>library</td>
           <td>Unknown</td>
@@ -187,7 +253,7 @@
           <td><code>pkg:github/actions/checkout@v4</code></td>
         </tr>
         <tr>
-          <td><strong>actions/checkout</strong></td>
+          <td><strong>checkout</strong></td>
           <td><code>v4</code></td>
           <td>library</td>
           <td>Unknown</td>
@@ -195,7 +261,7 @@
           <td><code>pkg:github/actions/checkout@v4</code></td>
         </tr>
         <tr>
-          <td><strong>actions/checkout</strong></td>
+          <td><strong>checkout</strong></td>
           <td><code>v4</code></td>
           <td>library</td>
           <td>Unknown</td>
@@ -203,7 +269,7 @@
           <td><code>pkg:github/actions/checkout@v4</code></td>
         </tr>
         <tr>
-          <td><strong>actions/upload-artifact</strong></td>
+          <td><strong>upload-artifact</strong></td>
           <td><code>v4</code></td>
           <td>library</td>
           <td>Unknown</td>
@@ -211,7 +277,7 @@
           <td><code>pkg:github/actions/upload-artifact@v4</code></td>
         </tr>
         <tr>
-          <td><strong>actions/upload-artifact</strong></td>
+          <td><strong>upload-artifact</strong></td>
           <td><code>v4</code></td>
           <td>library</td>
           <td>Unknown</td>
@@ -219,7 +285,7 @@
           <td><code>pkg:github/actions/upload-artifact@v4</code></td>
         </tr>
         <tr>
-          <td><strong>actions/upload-artifact</strong></td>
+          <td><strong>upload-artifact</strong></td>
           <td><code>v4</code></td>
           <td>library</td>
           <td>Unknown</td>
@@ -232,10 +298,10 @@
           <td>application</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
-          <td><strong>peaceiris/actions-gh-pages</strong></td>
+          <td><strong>actions-gh-pages</strong></td>
           <td><code>v4</code></td>
           <td>library</td>
           <td>Unknown</td>
@@ -248,63 +314,63 @@
           <td>application</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
-          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/NuEclipse.yml</strong></td>
+          <td><strong>workflows/NuEclipse.yml</strong></td>
           <td><code>None</code></td>
           <td>file</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
-          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/SBOM.yml</strong></td>
+          <td><strong>workflows/SBOM.yml</strong></td>
           <td><code>None</code></td>
           <td>file</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
-          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/.github/workflows/VSCode.yml</strong></td>
+          <td><strong>workflows/VSCode.yml</strong></td>
           <td><code>None</code></td>
           <td>file</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
-          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/jpeg_app/fat/fatdisk.exe</strong></td>
+          <td><strong>fat/fatdisk.exe</strong></td>
           <td><code>None</code></td>
           <td>file</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
-          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/SDL2.dll</strong></td>
+          <td><strong>build/SDL2.dll</strong></td>
           <td><code>None</code></td>
           <td>file</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
-          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/misc/numaker-hmi-m3334_rice_cooker/pc_simulator/build/rice_cooker_sim.exe</strong></td>
+          <td><strong>build/rice_cooker_sim.exe</strong></td>
           <td><code>None</code></td>
           <td>file</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
-          <td><strong>/home/runner/work/lv_port_nuvoton/lv_port_nuvoton/tools/coding_style/AStyle/bin/AStyle.exe</strong></td>
+          <td><strong>bin/AStyle.exe</strong></td>
           <td><code>None</code></td>
           <td>file</td>
           <td>Unknown</td>
           <td><span class="badge badge-ok">0</span></td>
-          <td><code>None</code></td>
+          <td><code></code></td>
         </tr>
         <tr>
           <td><strong>FatFs</strong></td>
