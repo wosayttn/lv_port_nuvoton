@@ -2,17 +2,17 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:53e45738-e42b-4094-9899-628e64913abf",
+  "serialNumber": "urn:uuid:094ad194-a81c-40d5-a901-74c90d2f5641",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-07-21T10:42:59Z",
+    "timestamp": "2026-07-23T06:14:19Z",
     "tools": {
       "components": [
         {
           "type": "application",
           "author": "anchore",
           "name": "syft",
-          "version": "1.48.0"
+          "version": "1.49.0"
         }
       ]
     },
@@ -79,13 +79,13 @@
       ]
     },
     {
-      "bom-ref": "pkg:github/FreeRTOS/FreeRTOS-Kernel@10.5.1?package-id=thirdparty-FreeRTOS",
+      "bom-ref": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0?package-id=thirdparty-FreeRTOS",
       "type": "library",
       "name": "thirdparty/FreeRTOS",
-      "version": "10.5.1",
+      "version": "11.3.0",
       "description": "Real-time operating system kernel for embedded devices",
-      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@10.5.1",
-      "cpe": "cpe:2.3:o:amazon:freertos:10.5.1:*:*:*:*:*:*:*",
+      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0",
+      "cpe": "cpe:2.3:o:amazon:freertos:11.3.0:*:*:*:*:*:*:*",
       "licenses": [
         {
           "license": {

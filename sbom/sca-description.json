@@ -1,11 +1,11 @@
 {
   "project_name": "lv_port_nuvoton",
-  "generated_date": "2026-07-21",
+  "generated_date": "2026-07-23",
   "supplier": "Nuvoton Technology",
   "total_components": 21,
   "vulnerability_summary": {
     "Critical": 0,
-    "High": 4,
+    "High": 3,
     "Medium": 3,
     "Low": 0,
     "Negligible": 0,
@@ -30,11 +30,11 @@
     },
     {
       "name": "thirdparty/FreeRTOS",
-      "version": "10.5.1",
+      "version": "11.3.0",
       "type": "library",
-      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@10.5.1",
+      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0",
       "license": "MIT",
-      "vulnerabilities_found": 1
+      "vulnerabilities_found": 0
     },
     {
       "name": "thirdparty/arm2d",
@@ -182,15 +182,6 @@
     }
   ],
   "vulnerabilities": [
-    {
-      "vuln_id": "CVE-2024-28115",
-      "severity": "High",
-      "package_name": "thirdparty/FreeRTOS",
-      "package_version": "10.5.1",
-      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@10.5.1",
-      "description": "FreeRTOS is a real-time operating system for microcontrollers. FreeRTOS Kernel versions through 10.6.1 do not sufficiently protect against local privilege escalation via Return Oriented Programming techniques should a vulnerability exist that allows code injection and execution. These issues affect ARMv7-M MPU ports, and ARMv8-M ports with Memory Protected Unit (MPU) support enabled (i.e. `configENABLE_MPU` set to 1). These issues are fixed in version 10.6.2 with a new MPU wrapper.",
-      "fix_state": "unknown"
-    },
     {
       "vuln_id": "CVE-2026-6687",
       "severity": "High",
