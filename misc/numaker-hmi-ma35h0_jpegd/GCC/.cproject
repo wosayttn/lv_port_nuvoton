@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
 		<cconfiguration id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release.1827786857.2094534922.933613740">
@@ -64,14 +64,14 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../board/numaker-hmi-ma35h0&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../board/numaker-hmi-ma35h0/plat_driver&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/Device/Nuvoton/MA35H0/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FatFs-r15/source&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FatFs/source&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/avilib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/VC8000Lib/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/Arch/Core_A/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/DisplayLib/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/portable/GCC/ARM_CA35&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../misc/FreeRTOS-port/portable/GCC/ARM_CA35&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
@@ -183,14 +183,14 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../board/numaker-hmi-ma35h0&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../board/numaker-hmi-ma35h0/plat_driver&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/Device/Nuvoton/MA35H0/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FatFs-r15/source&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FatFs/source&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/avilib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/VC8000Lib/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/Arch/Core_A/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/DisplayLib/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/portable/GCC/ARM_CA35&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../misc/FreeRTOS-port/portable/GCC/ARM_CA35&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>

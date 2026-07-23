@@ -44,10 +44,6 @@
 [submodule "bsp/ma35h0"]
 	path = bsp/ma35h0
 	url = https://github.com/OpenNuvoton/MA35H0_NonOS_BSP
-[submodule "lvgl"]
-	path = lvgl
-	url = https://github.com/lvgl/lvgl
-	branch = release/v9.5
 [submodule "bsp/m2l31"]
 	path = bsp/m2l31
 	url = https://github.com/OpenNuvoton/M2L31BSP
@@ -63,3 +59,15 @@
 [submodule "thirdparty/arm2d"]
 	path = thirdparty/arm2d
 	url = https://github.com/ARM-software/Arm-2D
+[submodule "thirdparty/FreeRTOS"]
+	path = thirdparty/FreeRTOS
+	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
+	branch = refs/tags/V11.3.0
+[submodule "lvgl"]
+	path = lvgl
+	url = https://github.com/lvgl/lvgl
+	branch = release/v9.5
+[submodule "thirdparty/FatFs"]
+	path = thirdparty/FatFs
+	url = https://github.com/abbrev/fatfs
+	branch = refs/tags/R0.16

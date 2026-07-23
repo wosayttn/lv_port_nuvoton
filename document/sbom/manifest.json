@@ -2,14 +2,14 @@
   "supplier": "Nuvoton Technology",
   "components": [
     {
-      "name": "thirdparty/FatFs-r15",
-      "version": "0.15",
+      "name": "thirdparty/FatFs",
+      "version": "0.16",
       "license": "ChaN License",
-      "purl": "pkg:generic/FatFs@0.15",
-      "cpe": "cpe:2.3:a:elm-chan:fatfs:r0.15b:*:*:*:*:*:*:*",
+      "purl": "pkg:generic/FatFs@0.16",
+      "cpe": "cpe:2.3:a:elm-chan:fatfs:r0.16:*:*:*:*:*:*:*",
       "description": "Generic FAT Filesystem Module",
       "paths": [
-        "thirdparty/FatFs-r15"
+        "thirdparty/FatFs"
       ]
     },
     {

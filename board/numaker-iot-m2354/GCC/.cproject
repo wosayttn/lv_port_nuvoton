@@ -65,7 +65,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM23_NTZ/non_secure&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FatFs-r15/source&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FatFs/source&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/CherryUSB/core&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/CherryUSB/class/msc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/CherryUSB/common&quot;"/>

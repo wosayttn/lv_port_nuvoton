@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+﻿<?xml version='1.0' encoding='UTF-8'?>
 <projectDescription>
 	<name>lvgl_ma35h0</name>
 	<comment></comment>
@@ -197,12 +197,12 @@
 		<link>
 			<name>FreeRTOS/port.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM_CA35/port.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/FreeRTOS-port/portable/GCC/ARM_CA35/port.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/portASM.S</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM_CA35/portASM.S</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/FreeRTOS-port/portable/GCC/ARM_CA35/portASM.S</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/queue.c</name>
@@ -212,7 +212,7 @@
 		<link>
 			<name>FreeRTOS/startup.S</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM_CA35/startup.S</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/FreeRTOS-port/portable/GCC/ARM_CA35/startup.S</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/tasks.c</name>
@@ -222,7 +222,7 @@
 		<link>
 			<name>FreeRTOS/tick_config.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM_CA35/tick_config.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/FreeRTOS-port/portable/GCC/ARM_CA35/tick_config.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/timers.c</name>
@@ -252,17 +252,17 @@
 		<link>
 			<name>fatfs/ff.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs-r15/source/ff.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs/source/ff.c</locationURI>
 		</link>
 		<link>
 			<name>fatfs/ffsystem.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs-r15/source/ffsystem.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs/source/ffsystem.c</locationURI>
 		</link>
 		<link>
 			<name>fatfs/ffunicode.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs-r15/source/ffunicode.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FatFs/source/ffunicode.c</locationURI>
 		</link>
 		<link>
 			<name>plat_driver/disp_glue.c</name>

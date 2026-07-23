@@ -10,7 +10,7 @@
       <TargetName>MJPG_PLAYBACK_LCD5_V1_2</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6220000::V6.22::ARMCLANG</pCCUsed>
+      <pCCUsed>6240000::V6.24::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -337,10 +337,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>-include ../ffconf.h</MiscControls>
               <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE CONFIG_DISP_LT7381=1 __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\thirdparty\FatFs-r15\source;..\..\..\board\numaker-hmi-m55m1;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\avilib;..\..\..\</IncludePath>
+              <IncludePath>..\;..\..\..\thirdparty\FatFs\source;..\..\..\board\numaker-hmi-m55m1;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\avilib;..\..\..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2073,17 +2073,17 @@
             <File>
               <FileName>ff.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ff.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ff.c</FilePath>
             </File>
             <File>
               <FileName>ffsystem.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffsystem.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ffsystem.c</FilePath>
             </File>
             <File>
               <FileName>ffunicode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffunicode.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ffunicode.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2628,10 +2628,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>-include ../ffconf.h</MiscControls>
               <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE CONFIG_DISP_NV3041A=1 __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\thirdparty\FatFs-r15\source;..\..\..\board\numaker-hmi-m55m1;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\avilib;..\..\..\</IncludePath>
+              <IncludePath>..\;..\..\..\thirdparty\FatFs\source;..\..\..\board\numaker-hmi-m55m1;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\avilib;..\..\..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -4364,17 +4364,17 @@
             <File>
               <FileName>ff.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ff.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ff.c</FilePath>
             </File>
             <File>
               <FileName>ffsystem.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffsystem.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ffsystem.c</FilePath>
             </File>
             <File>
               <FileName>ffunicode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffunicode.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ffunicode.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -4919,10 +4919,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>-include ../ffconf.h</MiscControls>
               <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE CONFIG_DISP_FSA506=1 __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\thirdparty\FatFs-r15\source;..\..\..\board\numaker-hmi-m55m1;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\avilib;..\..\..\</IncludePath>
+              <IncludePath>..\;..\..\..\thirdparty\FatFs\source;..\..\..\board\numaker-hmi-m55m1;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\avilib;..\..\..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -6655,17 +6655,17 @@
             <File>
               <FileName>ff.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ff.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ff.c</FilePath>
             </File>
             <File>
               <FileName>ffsystem.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffsystem.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ffsystem.c</FilePath>
             </File>
             <File>
               <FileName>ffunicode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffunicode.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ffunicode.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -7210,10 +7210,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>-include ../ffconf.h</MiscControls>
               <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE CONFIG_DISP_LT7381=1 __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\thirdparty\FatFs-r15\source;..\..\..\board\numaker-hmi-m55m1;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\avilib;..\..\..\</IncludePath>
+              <IncludePath>..\;..\..\..\thirdparty\FatFs\source;..\..\..\board\numaker-hmi-m55m1;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\avilib;..\..\..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -8946,17 +8946,17 @@
             <File>
               <FileName>ff.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ff.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ff.c</FilePath>
             </File>
             <File>
               <FileName>ffsystem.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffsystem.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ffsystem.c</FilePath>
             </File>
             <File>
               <FileName>ffunicode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffunicode.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ffunicode.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -9501,10 +9501,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>-include ../ffconf.h</MiscControls>
               <Define>__480x272__ LV_CONF_INCLUDE_SIMPLE CONFIG_DISP_FSA506=1 __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\thirdparty\FatFs-r15\source;..\..\..\board\numaker-hmi-m55m1;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\avilib;..\..\..\</IncludePath>
+              <IncludePath>..\;..\..\..\thirdparty\FatFs\source;..\..\..\board\numaker-hmi-m55m1;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\thirdparty\avilib;..\..\..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -11237,17 +11237,17 @@
             <File>
               <FileName>ff.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ff.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ff.c</FilePath>
             </File>
             <File>
               <FileName>ffsystem.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffsystem.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ffsystem.c</FilePath>
             </File>
             <File>
               <FileName>ffunicode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FatFs-r15\source\ffunicode.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FatFs\source\ffunicode.c</FilePath>
             </File>
           </Files>
         </Group>
