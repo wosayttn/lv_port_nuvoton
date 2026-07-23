@@ -14,7 +14,7 @@
     #include "semphr.h"
 #endif
 
-#define CONFIG_LV_TASK_STACKSIZE     4096
+#define CONFIG_LV_TASK_STACKSIZE     8192
 #define CONFIG_LV_TASK_PRIORITY      (configMAX_PRIORITIES-1)
 
 #if LV_USE_LOG
@@ -54,6 +54,11 @@ void lv_nuvoton_task(void *pdata)
     lv_tick_set_cb(freertos_tick_get);    /*Expression evaluating to current system time in ms*/
     lv_delay_set_cb(freertos_task_delay);
 
+#if LV_USE_HWJPGD && LV_USE_IMAGE
+    void lv_hwjpgd_init(void);
+    lv_hwjpgd_init();
+#endif
+
     extern void lv_port_disp_init(void);
     lv_port_disp_init();
 
@@ -73,7 +78,7 @@ void lv_nuvoton_task(void *pdata)
 
 int task_lv_init(void)
 {
-    xTaskCreate(lv_tick_task, "lv_tick", configMINIMAL_STACK_SIZE, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
+    xTaskCreate(lv_tick_task, "lv_tick", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
     xTaskCreate(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
     return 0;
 }

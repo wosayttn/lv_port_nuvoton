@@ -107,7 +107,7 @@
 		<link>
 			<name>FreeRTOS/Startup.S</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_NUC980/Startup.S</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/FreeRTOS-port/portable/GCC/ARM9_NUC980/Startup.S</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/event_groups.c</name>
@@ -127,12 +127,12 @@
 		<link>
 			<name>FreeRTOS/port.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_NUC980/port.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/FreeRTOS-port/portable/GCC/ARM9_NUC980/port.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/portISR.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/GCC/ARM9_NUC980/portISR.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/FreeRTOS-port/portable/GCC/ARM9_NUC980/portISR.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/queue.c</name>

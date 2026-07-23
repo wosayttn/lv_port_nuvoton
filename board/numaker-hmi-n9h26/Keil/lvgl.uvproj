@@ -379,7 +379,7 @@
               <MiscControls>--min_array_alignment=4</MiscControls>
               <Define>__320x240__ LV_CONF_INCLUDE_SIMPLE __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\plat_driver;..\..\..\bsp\n9h26\BSP\Driver\Include;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H26;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\plat_driver;..\..\..\bsp\n9h26\BSP\Driver\Include;..\..\..\misc\FreeRTOS-port\portable\RVDS\ARM9_N9H26;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1965,12 +1965,12 @@
             <File>
               <FileName>port.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H26\port.c</FilePath>
+              <FilePath>..\..\..\misc\FreeRTOS-port\portable\RVDS\ARM9_N9H26\port.c</FilePath>
             </File>
             <File>
               <FileName>portASM.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H26\portASM.s</FilePath>
+              <FilePath>..\..\..\misc\FreeRTOS-port\portable\RVDS\ARM9_N9H26\portASM.s</FilePath>
             </File>
             <File>
               <FileName>heap_4.c</FileName>
@@ -2497,7 +2497,7 @@
               <MiscControls>--min_array_alignment=4</MiscControls>
               <Define>__800x480__ LV_CONF_INCLUDE_SIMPLE __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\plat_driver;..\..\..\bsp\n9h26\BSP\Driver\Include;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H26;..\..\..\thirdparty\FreeRTOS\include;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
+              <IncludePath>..\;..\plat_driver;..\..\..\bsp\n9h26\BSP\Driver\Include;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\misc\FreeRTOS-port\portable\RVDS\ARM9_N9H26;..\..\..\thirdparty\FreeRTOS\include;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\;..\sls_files</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -4083,12 +4083,12 @@
             <File>
               <FileName>port.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H26\port.c</FilePath>
+              <FilePath>..\..\..\misc\FreeRTOS-port\portable\RVDS\ARM9_N9H26\port.c</FilePath>
             </File>
             <File>
               <FileName>portASM.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\RVDS\ARM9_N9H26\portASM.s</FilePath>
+              <FilePath>..\..\..\misc\FreeRTOS-port\portable\RVDS\ARM9_N9H26\portASM.s</FilePath>
             </File>
             <File>
               <FileName>heap_4.c</FileName>

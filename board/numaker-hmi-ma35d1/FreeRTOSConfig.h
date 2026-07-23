@@ -77,7 +77,7 @@ extern uint32_t SystemCoreClock;
 #define configUSE_TICK_HOOK             1
 #define configMAX_PRIORITIES            ( 8 )
 #define configMINIMAL_STACK_SIZE        ( ( unsigned short ) 1024)
-#define configTOTAL_HEAP_SIZE           ( ( size_t ) ( 32* 1024* 1024 ) )
+#define configTOTAL_HEAP_SIZE           ( ( size_t ) ( 8 * 1024* 1024 ) )
 #define configMAX_TASK_NAME_LEN         ( 16 )
 
 #define configUSE_TRACE_FACILITY        1
@@ -96,6 +96,8 @@ extern uint32_t SystemCoreClock;
 
 #define configSUPPORT_STATIC_ALLOCATION         1
 #define configSUPPORT_DYNAMIC_ALLOCATION        1 /* Defaults to 1 anyway. */
+
+/* Hooks */
 
 /* Hooks */
 #define traceTASK_SWITCHED_IN()                         { \
@@ -185,8 +187,7 @@ void vConfigureTickInterrupt(void);
 void vClearTickInterrupt(void);
 #define configCLEAR_TICK_INTERRUPT() vClearTickInterrupt()
 
-/* The following constant describe the hardware, and are correct for the
-Nuvoton MA35D1 MPU. */
+/* The following constant describe the hardware, and are correct for the Nuvoton MA35 MPU. */
 #define configINTERRUPT_CONTROLLER_BASE_ADDRESS         ( GIC_DISTRIBUTOR_BASE )
 #define configINTERRUPT_CONTROLLER_CPU_INTERFACE_OFFSET ( GIC_INTERFACE_BASE - GIC_DISTRIBUTOR_BASE )
 #define configUNIQUE_INTERRUPT_PRIORITIES               32

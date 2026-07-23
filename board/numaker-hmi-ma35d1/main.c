@@ -8,7 +8,6 @@
 
 #include "lv_glue.h"
 #include "displib.h"
-#include "disp.h"
 
 static void sys_init(void)
 {

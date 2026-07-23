@@ -110,9 +110,9 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/m3351/Library/StdDriver/src/uart.c</locationURI>
 		</link>
 		<link>
-			<name>Driver/uspi.c</name>
+			<name>Driver/spi.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/m3351/Library/StdDriver/src/usci_spi.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/m3351/Library/StdDriver/src/spi.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/event_groups.c</name>
@@ -180,14 +180,14 @@
 			<locationURI>PARENT-1-PROJECT_LOC/plat_driver/drv_pdma.c</locationURI>
 		</link>
 		<link>
-			<name>plat_driver/drv_uspi.c</name>
+			<name>plat_driver/drv_spi.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/plat_driver/drv_uspi.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/plat_driver/drv_spi.c</locationURI>
 		</link>
 		<link>
-			<name>plat_driver/ili9341_uspi.c</name>
+			<name>plat_driver/ili9341_spi.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/ili9341_uspi.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_disp/ili9341_spi.c</locationURI>
 		</link>
 		<link>
 			<name>plat_driver/lv_example_entry.c</name>

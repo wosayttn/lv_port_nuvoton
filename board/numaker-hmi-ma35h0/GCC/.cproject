@@ -71,7 +71,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/DisplayLib/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/portable/GCC/ARM_CA35&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../misc/FreeRTOS-port/portable/GCC/ARM_CA35&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_disp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_indev&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_decoder&quot;"/>
@@ -191,7 +191,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/DisplayLib/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/portable/GCC/ARM_CA35&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../misc/FreeRTOS-port/portable/GCC/ARM_CA35&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>
@@ -306,7 +306,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/DisplayLib/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/portable/GCC/ARM_CA35&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../misc/FreeRTOS-port/portable/GCC/ARM_CA35&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../plat_driver/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../common/drv_disp&quot;"/>
@@ -427,7 +427,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/DisplayLib/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ma35h0/Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../thirdparty/FreeRTOS/portable/GCC/ARM_CA35&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../misc/FreeRTOS-port/portable/GCC/ARM_CA35&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../&quot;"/>

@@ -12,8 +12,12 @@
 #define LV_NUVOTON_INCLUDE     "MA35D1.h"
 #include LV_NUVOTON_INCLUDE
 
-#define LV_USE_OS   LV_OS_FREERTOS
 
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE     64
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN          __attribute__((aligned(64)))
+#define CONFIG_LV_DRAW_BUF_ALIGN               64
+
+#define LV_USE_OS                       LV_OS_FREERTOS
 #define LV_USE_DRAW_SW_ASM              LV_DRAW_SW_ASM_NEON
 
 #if defined(__1024x600__)

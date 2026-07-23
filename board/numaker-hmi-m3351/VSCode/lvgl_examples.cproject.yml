@@ -107,7 +107,7 @@ project:
     - file: ../../../bsp/m3351/Library/Device/Nuvoton/M3351/Source/system_M3351.c
     - file: ../../../bsp/m3351/Library/StdDriver/src/eadc.c
     - file: ../../../bsp/m3351/Library/Device/Nuvoton/M3351/Source/startup_M3351.c
-    - file: ../../../bsp/m3351/Library/StdDriver/src/usci_spi.c
+    - file: ../../../bsp/m3351/Library/StdDriver/src/spi.c
   - group: lvgl
     misc:
     - C-CPP:
@@ -379,8 +379,8 @@ project:
     - file: ../../../common/drv_disp/disp_ili9341.c
     - file: ../../../common/drv_indev/touch_adc.c
     - file: ../../../common/drv_indev/touch_adc_calibration.c
-    - file: ../../../common/drv_disp/ili9341_uspi.c
-    - file: ../plat_driver/drv_uspi.c
+    - file: ../../../common/drv_disp/ili9341_spi.c
+    - file: ../plat_driver/drv_spi.c
     - file: ../../../common/lv_example_entry.c
     - file: ../plat_driver/touch_glue.c
   - group: FreeRTOS

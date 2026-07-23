@@ -16,6 +16,7 @@ Clone the main lv_port_nuvoton repository and the necessary git modules separate
 git clone https://github.com/OpenNuvoton/lv_port_nuvoton
 cd lv_port_nuvoton
 git submodule update --progress --init -- "lvgl"
+git submodule update --progress --init -- "thirdparty/FreeRTOS"
 git submodule update --progress --init -- "bsp/n9h20"
 ```
 

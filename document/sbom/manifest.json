@@ -25,10 +25,10 @@
     },
     {
       "name": "thirdparty/FreeRTOS",
-      "version": "10.5.1",
+      "version": "11.3.0",
       "license": "MIT",
-      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@10.5.1",
-      "cpe": "cpe:2.3:o:amazon:freertos:10.5.1:*:*:*:*:*:*:*",
+      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0",
+      "cpe": "cpe:2.3:o:amazon:freertos:11.3.0:*:*:*:*:*:*:*",
       "description": "Real-time operating system kernel for embedded devices",
       "paths": [
         "thirdparty/FreeRTOS"
