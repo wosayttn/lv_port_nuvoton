@@ -58,3 +58,4 @@ jobs:
           name: lv_port_nuvoton-vscode
           path: |
             **/board/**/*.bin
+            **/misc/**/*.bin

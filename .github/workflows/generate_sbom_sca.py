@@ -262,7 +262,7 @@ def main():
             desc_short = v["description"][:200] if v["description"] else "N/A"
             html_vuln_rows += f"""        <tr>
           <td><span class="severity severity-{sev_class}">{v['severity']}</span></td>
-          <td><code>{v['vuln_id']}</code></td>
+          <td style="white-space:nowrap"><a href="https://nvd.nist.gov/vuln/detail/{v['vuln_id']}" target="_blank"><code>{v['vuln_id']}</code></a></td>
           <td><strong>{v['package_name']}</strong></td>
           <td><code>{v['package_version']}</code></td>
           <td><code>{v['fix_state']}</code></td>
