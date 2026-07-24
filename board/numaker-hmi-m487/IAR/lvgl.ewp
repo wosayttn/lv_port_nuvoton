@@ -233,6 +233,8 @@
                     <state>LV_CONF_INCLUDE_SIMPLE</state>
                     <state>__320x240__</state>
                     <state>__FPU_PRESENT=1</state>
+                    <state>CONFIG_DISP_ILI9341=1</state>
+                    <state>__FREERTOS__=1</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -272,7 +274,7 @@
                 </option>
                 <option>
                     <name>CCDiagSuppress</name>
-                    <state>Pa089,Pa082,Pe236,Pa118,Pe111,Pe188,Pe546,Pe167,Pe186,Pe191</state>
+                    <state>Pa089,Pa082,Pe236,Pa118,Pe111,Pe188,Pe546,Pe177,Pe167,Pe186,Pe191</state>
                 </option>
                 <option>
                     <name>CCDiagRemark</name>
@@ -651,6 +653,7 @@
                 <option>
                     <name>AUserIncludes</name>
                     <state>$PROJ_DIR$/../</state>
+                    <state>$PROJ_DIR$/../../../thirdparty/FreeRTOS/include</state>
                 </option>
                 <option>
                     <name>AExtraOptionsCheckV2</name>
@@ -1284,6 +1287,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\common\drv_indev\touch_adc_calibration.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\plat_driver\touch_glue.c</name>
         </file>
     </group>
     <group>

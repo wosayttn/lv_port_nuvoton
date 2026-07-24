@@ -656,6 +656,8 @@
                 <option>
                     <name>AUserIncludes</name>
                     <state>$PROJ_DIR$/../</state>
+                    <state>$PROJ_DIR$/../../../thirdparty/FreeRTOS/include</state>
+                    <state>$PROJ_DIR$/../../../lvgl/src</state>
                 </option>
                 <option>
                     <name>AExtraOptionsCheckV2</name>
@@ -1388,9 +1390,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\snapshot\lv_snapshot.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\helium\lv_blend_helium.S</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend.c</name>

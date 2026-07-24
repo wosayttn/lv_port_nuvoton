@@ -4,7 +4,7 @@
     {
       "name": "thirdparty/FatFs",
       "version": "0.16",
-      "license": "ChaN License",
+      "license": "FatFs License",
       "purl": "pkg:generic/FatFs@0.16",
       "cpe": "cpe:2.3:a:elm-chan:fatfs:r0.16:*:*:*:*:*:*:*",
       "description": "Generic FAT Filesystem Module",

@@ -273,7 +273,7 @@
                 </option>
                 <option>
                     <name>CCDiagSuppress</name>
-                    <state>Pa089,Pa082,Pe236,Pa118,Pe111,Pe188,Pe546,Pe167,Pe186,Pe191</state>
+                    <state>Pa089,Pa082,Pe236,Pa118,Pe111,Pe188,Pe546,Pe177,Pe167,Pe186,Pe191</state>
                 </option>
                 <option>
                     <name>CCDiagRemark</name>
@@ -647,6 +647,7 @@
                 <option>
                     <name>AUserIncludes</name>
                     <state>$PROJ_DIR$/../</state>
+                    <state>$PROJ_DIR$/../../../thirdparty/FreeRTOS/include</state>
                 </option>
                 <option>
                     <name>AExtraOptionsCheckV2</name>
@@ -1174,7 +1175,7 @@
             <name>$PROJ_DIR$\..\..\..\bsp\m3351\Library\StdDriver\src\uart.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\bsp\m3351\Library\StdDriver\src\usci_spi.c</name>
+            <name>$PROJ_DIR$\..\..\..\bsp\m3351\Library\StdDriver\src\spi.c</name>
         </file>
     </group>
     <group>
@@ -1951,10 +1952,10 @@
             <name>$PROJ_DIR$\..\plat_driver\drv_pdma.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\plat_driver\drv_uspi.c</name>
+            <name>$PROJ_DIR$\..\plat_driver\drv_spi.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\common\drv_disp\ili9341_uspi.c</name>
+            <name>$PROJ_DIR$\..\..\..\common\drv_disp\ili9341_spi.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\common\lv_example_entry.c</name>

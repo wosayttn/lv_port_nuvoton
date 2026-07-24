@@ -463,7 +463,7 @@ exit_nu_pdma_channel_memctrl_get:
 int nu_pdma_channel_memctrl_set(int i32ChannID, nu_pdma_memctrl_t eMemCtrl)
 {
     int ret = 1;
-//    nu_pdma_chn_t *psPdmaChann = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos];
+    nu_pdma_chn_t *psPdmaChann = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos];
 
     if (nu_pdma_check_is_nonallocated(i32ChannID))
         goto exit_nu_pdma_channel_memctrl_set;
@@ -475,7 +475,7 @@ int nu_pdma_channel_memctrl_set(int i32ChannID, nu_pdma_memctrl_t eMemCtrl)
 //            ((eMemCtrl == eMemCtl_SrcFix_DstInc) || (eMemCtrl == eMemCtl_SrcFix_DstFix))*/)
 //        goto exit_nu_pdma_channel_memctrl_set;
 
-    nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_spPeripCtl.m_eMemCtl = eMemCtrl;
+    psPdmaChann->m_spPeripCtl.m_eMemCtl = eMemCtrl;
 
     ret = 0;
 

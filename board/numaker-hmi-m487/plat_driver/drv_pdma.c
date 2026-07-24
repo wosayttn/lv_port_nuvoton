@@ -525,7 +525,7 @@ int nu_pdma_channel_memctrl_set(int i32ChannID, nu_pdma_memctrl_t eMemCtrl)
 //            ((eMemCtrl == eMemCtl_SrcFix_DstInc) || (eMemCtrl == eMemCtl_SrcFix_DstFix))*/)
 //        goto exit_nu_pdma_channel_memctrl_set;
 
-    nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_spPeripCtl.m_eMemCtl = eMemCtrl;
+    psPdmaChann->m_spPeripCtl.m_eMemCtl = eMemCtrl;
 
     ret = 0;
 
