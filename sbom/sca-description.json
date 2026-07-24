@@ -1,6 +1,6 @@
 {
   "project_name": "lv_port_nuvoton",
-  "generated_date": "2026-07-23",
+  "generated_date": "2026-07-24",
   "supplier": "Nuvoton Technology",
   "total_components": 21,
   "vulnerability_summary": {
@@ -17,7 +17,7 @@
       "version": "0.16",
       "type": "library",
       "purl": "pkg:generic/FatFs@0.16",
-      "license": "ChaN License",
+      "license": "FatFs License",
       "vulnerabilities_found": 5
     },
     {

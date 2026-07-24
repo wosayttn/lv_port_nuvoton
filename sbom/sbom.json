@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:800c15e0-e814-4581-9ff6-8035d5f37eb3",
+  "serialNumber": "urn:uuid:ea7681d3-122a-45a4-817c-e148baa94561",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-07-23T09:41:07Z",
+    "timestamp": "2026-07-24T05:25:59Z",
     "tools": {
       "components": [
         {
@@ -37,7 +37,7 @@
       "licenses": [
         {
           "license": {
-            "name": "ChaN License"
+            "name": "FatFs License"
           }
         }
       ],
