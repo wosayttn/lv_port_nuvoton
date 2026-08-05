@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       # =========================
       # Install tools
@@ -62,7 +62,7 @@ jobs:
       # Upload artifacts
       # =========================
       - name: Upload SCA Reports Bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: sca-reports
           path: sca-reports.zip
