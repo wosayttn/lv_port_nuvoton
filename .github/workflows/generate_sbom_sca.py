@@ -238,35 +238,13 @@ def main():
 
     html_components_rows = ""
     for c in sca_components:
-        vuln_badge = f'<span class="badge badge-danger">{c["vulnerabilities_found"]}</span>' if c["vulnerabilities_found"] > 0 else '<span class="badge badge-ok">0</span>'
         display_name = c['name']
         html_components_rows += f"""        <tr>
           <td><strong>{display_name}</strong></td>
           <td><code>{c['version']}</code></td>
           <td>{c['type']}</td>
           <td>{c['license']}</td>
-          <td>{vuln_badge}</td>
           <td><code>{c['purl'] or ''}</code></td>
-        </tr>
-"""
-
-    severity_order = {"Critical": 0, "High": 1, "Medium": 2, "Low": 3, "Negligible": 4, "Unknown": 5}
-    sorted_vulns = sorted(vulnerability_list, key=lambda x: severity_order.get(x["severity"], 99))
-
-    html_vuln_rows = ""
-    if not vulnerability_list:
-        html_vuln_rows = '<tr><td colspan="6" class="no-vulns">No vulnerabilities were detected in the audited components.</td></tr>'
-    else:
-        for v in sorted_vulns:
-            sev_class = v["severity"].lower()
-            desc_short = v["description"][:200] if v["description"] else "N/A"
-            html_vuln_rows += f"""        <tr>
-          <td><span class="severity severity-{sev_class}">{v['severity']}</span></td>
-          <td style="white-space:nowrap"><a href="https://nvd.nist.gov/vuln/detail/{v['vuln_id']}" target="_blank"><code>{v['vuln_id']}</code></a></td>
-          <td><strong>{v['package_name']}</strong></td>
-          <td><code>{v['package_version']}</code></td>
-          <td><code>{v['fix_state']}</code></td>
-          <td>{desc_short}</td>
         </tr>
 """
 
@@ -461,19 +439,6 @@ def main():
       <div class="summary-item"><span class="label">Supplier</span><span class="value">{supplier}</span></div>
       <div class="summary-item"><span class="label">Generated Date</span><span class="value">{generated_date}</span></div>
       <div class="summary-item"><span class="label">Components</span><span class="value">{sca_description['total_components']}</span></div>
-      <div class="summary-item"><span class="label">Status</span><span class="value {vuln_status_class}">{vuln_status_text}</span></div>
-    </div>
-  </div>
-
-  <h2>Security Vulnerability Summary</h2>
-  <div class="card">
-    <div class="severity-grid">
-      <div class="severity-card critical"><span class="count">{vuln_summary['Critical']}</span>Critical</div>
-      <div class="severity-card high"><span class="count">{vuln_summary['High']}</span>High</div>
-      <div class="severity-card medium"><span class="count">{vuln_summary['Medium']}</span>Medium</div>
-      <div class="severity-card low"><span class="count">{vuln_summary['Low']}</span>Low</div>
-      <div class="severity-card negligible"><span class="count">{vuln_summary['Negligible']}</span>Negligible</div>
-      <div class="severity-card unknown"><span class="count">{vuln_summary['Unknown']}</span>Unknown</div>
     </div>
   </div>
 
@@ -481,22 +446,10 @@ def main():
   <div class="card" style="overflow-x:auto;">
     <table>
       <thead>
-        <tr><th>Name</th><th>Version</th><th>Type</th><th>License</th><th>Vulns</th><th>Package URL (purl)</th></tr>
+        <tr><th>Name</th><th>Version</th><th>Type</th><th>License</th><th>Package URL (purl)</th></tr>
       </thead>
       <tbody>
 {html_components_rows}
-      </tbody>
-    </table>
-  </div>
-
-  <h2>Detailed Vulnerabilities</h2>
-  <div class="card" style="overflow-x:auto;">
-    <table>
-      <thead>
-        <tr><th>Severity</th><th>ID</th><th>Component</th><th>Version</th><th>Fix Status</th><th>Description</th></tr>
-      </thead>
-      <tbody>
-{html_vuln_rows}
       </tbody>
     </table>
   </div>
