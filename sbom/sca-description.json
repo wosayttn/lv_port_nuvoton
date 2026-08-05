@@ -1,6 +1,6 @@
 {
   "project_name": "lv_port_nuvoton",
-  "generated_date": "2026-07-24",
+  "generated_date": "2026-08-05",
   "supplier": "Nuvoton Technology",
   "total_components": 21,
   "vulnerability_summary": {
@@ -192,21 +192,21 @@
       "fix_state": "unknown"
     },
     {
-      "vuln_id": "CVE-2026-6682",
-      "severity": "High",
-      "package_name": "thirdparty/FatFs",
-      "package_version": "0.16",
-      "purl": "pkg:generic/FatFs@0.16",
-      "description": "In FatFS R0.16 and earlier contains a FAT32 integer overflow bug in mount_volume() where fasize *= fs->n_fats can wrap, leading to attacker-controlled file-size metadata and unsafe read lengths in downstream callers. This maps to CWE-190 (Integer Overflow or Wraparound). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H (7.6, High). Remote delivery is also possible in OTA/update pipelines. The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Total.",
-      "fix_state": "unknown"
-    },
-    {
       "vuln_id": "CVE-2026-6688",
       "severity": "High",
       "package_name": "thirdparty/FatFs",
       "package_version": "0.16",
       "purl": "pkg:generic/FatFs@0.16",
       "description": "FatFs R0.16 and earlier contains a downstream-caller vulnerability pattern associated with FatFs long filename handling. With LFN enabled, fno.fname can be up to 255 characters; many callers copy it into short fixed buffers without bounds checks, causing overflow. This maps to CWE-120 (Buffer Copy without Checking Size of Input). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H (7.6, High). The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Total.",
+      "fix_state": "unknown"
+    },
+    {
+      "vuln_id": "CVE-2026-6682",
+      "severity": "High",
+      "package_name": "thirdparty/FatFs",
+      "package_version": "0.16",
+      "purl": "pkg:generic/FatFs@0.16",
+      "description": "In FatFS R0.16 and earlier contains a FAT32 integer overflow bug in mount_volume() where fasize *= fs->n_fats can wrap, leading to attacker-controlled file-size metadata and unsafe read lengths in downstream callers. This maps to CWE-190 (Integer Overflow or Wraparound). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H (7.6, High). Remote delivery is also possible in OTA/update pipelines. The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Total.",
       "fix_state": "unknown"
     },
     {
