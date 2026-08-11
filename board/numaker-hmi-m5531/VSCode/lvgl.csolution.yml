@@ -4,7 +4,7 @@ solution:
   compiler: AC6
   target-types:
     - type: M5531_NUTFT
-      device: M5531H2LJAE
+      device: Nuvoton::M5531H2LJAE
       optimize: debug
   projects:
     - project: lvgl.cproject.yml

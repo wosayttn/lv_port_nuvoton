@@ -4,7 +4,7 @@ solution:
   compiler: AC6
   target-types:
     - type: M487JI_320x240
-      device: M487JIDAE
+      device: Nuvoton::M487JIDAE
       optimize: debug
   projects:
     - project: lvgl.cproject.yml

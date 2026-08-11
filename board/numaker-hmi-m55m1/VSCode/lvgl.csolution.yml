@@ -4,16 +4,16 @@ solution:
   compiler: AC6
   target-types:
     - type: LCD5_V1_2
-      device: M55M1H2LJAE
+      device: Nuvoton::M55M1H2LJAE
       optimize: debug
     - type: LCD43_V1_1
-      device: M55M1H2LJAE
+      device: Nuvoton::M55M1H2LJAE
       optimize: debug
     - type: LCD43_V1_0
-      device: M55M1H2LJAE
+      device: Nuvoton::M55M1H2LJAE
       optimize: debug
     - type: NUTFT_V1_3
-      device: M55M1H2LJAE
+      device: Nuvoton::M55M1H2LJAE
       optimize: debug
   projects:
     - project: lvgl.cproject.yml

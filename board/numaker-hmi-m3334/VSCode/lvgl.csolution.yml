@@ -4,10 +4,10 @@ solution:
   compiler: AC6
   target-types:
     - type: M3334KI_NUFUN
-      device: M3334KIGAE
+      device: Nuvoton::M3334KIGAE
       optimize: debug
     - type: M3334KI_NUTFT
-      device: M3334KIGAE
+      device: Nuvoton::M3334KIGAE
       optimize: debug
   projects:
     - project: lvgl.cproject.yml
