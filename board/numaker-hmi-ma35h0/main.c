@@ -35,6 +35,13 @@ static void sys_init(void)
     /* enable VC8000 clock */
     CLK_EnableModuleClock(VDEC_MODULE);
 
+    CLK_EnableModuleClock(GFX_MODULE);
+    /* Step 3: AXI port 1 enable. */
+    if (inp32(UMCTL2_BASE + 0x540) == 0x0)
+    {
+        outp32(UMCTL2_BASE + 0x540, 0x1);
+    }
+
     /* Enable IP clock */
     CLK_EnableModuleClock(GPA_MODULE);
     CLK_EnableModuleClock(GPM_MODULE);

@@ -150,6 +150,9 @@ static void multiple_rgb_images_cb(void)
             lv_image_set_src(obj, &img_benchmark_lvgl_logo_rgb);
             if(x == 0) lv_obj_add_flag(obj, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);
 
+            int32_t scale = 128 + ((x + y) % 4) * 64; /* 128 (0.5x), 192 (0.75x), 256 (1.0x), 320 (1.25x) */
+            lv_image_set_scale(obj, scale);
+
             fall_anim(obj, 80);
         }
     }
@@ -176,6 +179,9 @@ static void multiple_argb_images_cb(void)
             lv_obj_t * obj = lv_image_create(lv_screen_active());
             lv_image_set_src(obj, &img_benchmark_lvgl_logo_argb);
             if(x == 0) lv_obj_add_flag(obj, LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);
+
+            int32_t scale = 128 + ((x + y) % 4) * 64; /* 128 (0.5x), 192 (0.75x), 256 (1.0x), 320 (1.25x) */
+            lv_image_set_scale(obj, scale);
 
             fall_anim(obj, 80);
         }
@@ -367,8 +373,13 @@ static void containers_with_overlay_cb(void)
         }
     }
 
-    lv_obj_set_style_bg_opa(lv_layer_top(), LV_OPA_50, 0);
-    color_anim(lv_layer_top());
+    lv_obj_t * overlay = lv_obj_create(scr);
+    lv_obj_remove_style_all(overlay);
+    lv_obj_add_flag(overlay, LV_OBJ_FLAG_FLOATING | LV_OBJ_FLAG_IGNORE_LAYOUT);
+    lv_obj_set_size(overlay, lv_pct(100), lv_pct(100));
+    lv_obj_set_pos(overlay, 0, 0);
+    lv_obj_set_style_bg_opa(overlay, LV_OPA_50, 0);
+    color_anim(overlay);
 }
 
 static void containers_with_opa_cb(void)

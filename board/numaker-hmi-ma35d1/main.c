@@ -32,6 +32,9 @@ static void sys_init(void)
     /* Select DISP pixel clock source */
     CLK_SetModuleClock(DCUP_MODULE, CLK_CLKSEL0_DCUSEL_EPLL_DIV2, 0);
 
+    /* enable VC8000 clock */
+    CLK_EnableModuleClock(VDEC_MODULE);
+
     CLK_EnableModuleClock(GFX_MODULE);
     /* Step 3: AXI port 1 enable. */
     if (inp32(UMCTL2_BASE + 0x540) == 0x0)

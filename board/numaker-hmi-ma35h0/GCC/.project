@@ -220,6 +220,26 @@
 			<locationURI>PARENT-1-PROJECT_LOC/plat_driver/lv_port_disp.c</locationURI>
 		</link>
 		<link>
+			<name>plat_driver/lv_draw_gfx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gfx/lv_draw_gfx.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/lv_draw_gfx_fill.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gfx/lv_draw_gfx_fill.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/lv_draw_gfx_image.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gfx/lv_draw_gfx_image.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/lv_draw_gfx_layer.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gfx/lv_draw_gfx_layer.c</locationURI>
+		</link>
+		<link>
 			<name>plat_driver/lv_port_indev.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/common/lv_port_indev.c</locationURI>

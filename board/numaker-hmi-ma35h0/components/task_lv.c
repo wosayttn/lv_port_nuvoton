@@ -1,21 +1,22 @@
-/**************************************************************************//**
+/******************************************************************************
  * @file     task_lv.c
  * @brief    Initialize LVGL task.
  *
  * @note
  * Copyright (C) 2024 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
+******************************************************************************/
 
 #include "lvgl.h"
 
 #if defined(__FREERTOS__)
     #include "FreeRTOS.h"
-    #include "task.h"
     #include "semphr.h"
+    #include "task.h"
+
 #endif
 
-#define CONFIG_LV_TASK_STACKSIZE     8192
-#define CONFIG_LV_TASK_PRIORITY      (configMAX_PRIORITIES-1)
+#define CONFIG_LV_TASK_STACKSIZE 8192
+#define CONFIG_LV_TASK_PRIORITY (configMAX_PRIORITIES - 1)
 
 #if LV_USE_LOG
 static void lv_nuvoton_log(lv_log_level_t level, const char *buf)
@@ -51,16 +52,22 @@ void lv_nuvoton_task(void *pdata)
     lv_log_register_print_cb(lv_nuvoton_log);
 #endif /* LV_USE_LOG */
 
-    lv_tick_set_cb(freertos_tick_get);    /*Expression evaluating to current system time in ms*/
+    lv_tick_set_cb(
+        freertos_tick_get); /*Expression evaluating to current system time in ms*/
     lv_delay_set_cb(freertos_task_delay);
+
+    extern void lv_port_disp_init(void);
+    lv_port_disp_init();
+
+#if defined(LV_USE_DRAW_GFX) && (LV_USE_DRAW_GFX == 1)
+    void lv_draw_gfx_init(void);
+    lv_draw_gfx_init();
+#endif
 
 #if LV_USE_HWJPGD && LV_USE_IMAGE
     void lv_hwjpgd_init(void);
     lv_hwjpgd_init();
 #endif
-
-    extern void lv_port_disp_init(void);
-    lv_port_disp_init();
 
     extern void lv_port_indev_init(void);
     lv_port_indev_init();
@@ -75,10 +82,11 @@ void lv_nuvoton_task(void *pdata)
     }
 }
 
-
 int task_lv_init(void)
 {
-    xTaskCreate(lv_tick_task, "lv_tick", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
-    xTaskCreate(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
+    xTaskCreate(lv_tick_task, "lv_tick", CONFIG_LV_TASK_STACKSIZE, NULL,
+                CONFIG_LV_TASK_PRIORITY - 1, NULL);
+    xTaskCreate(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL,
+                CONFIG_LV_TASK_PRIORITY, NULL);
     return 0;
 }
