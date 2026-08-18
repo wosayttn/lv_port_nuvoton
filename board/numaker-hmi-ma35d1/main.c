@@ -32,6 +32,13 @@ static void sys_init(void)
     /* Select DISP pixel clock source */
     CLK_SetModuleClock(DCUP_MODULE, CLK_CLKSEL0_DCUSEL_EPLL_DIV2, 0);
 
+    CLK_EnableModuleClock(GFX_MODULE);
+    /* Step 3: AXI port 1 enable. */
+    if (inp32(UMCTL2_BASE + 0x540) == 0x0)
+    {
+        outp32(UMCTL2_BASE + 0x540, 0x1);
+    }
+
     CLK_EnableModuleClock(GPK_MODULE);
 
     /* Set multi-function pins for LCD Display Controller */

@@ -16,6 +16,16 @@
     #include "semphr.h"
 #endif
 
+#if defined(LV_USE_DRAW_GFX)
+    #include "gfxlib.h"     /* gfxlib_init(), GFXLIB_Clear(), GFXLIB_Blit(), GFX_STATUS_* */
+    #include "gfx_osal.h"   /* gfx_osal_printf(), gfx_va_to_pa() */
+    #include "gfx_mem.h"    /* gfx_mem_init(), gfx_mem_alloc() */
+    #include "gfx_disp.h"   /* gfx_disp_init(), gfx_disp_enable() */
+
+    #define GFX_2D_DISPDEMO_POOL_SIZE    (512*1024)      /* 512 KB */
+    static uint8_t s_au8GfxBuf[GFX_2D_DISPDEMO_POOL_SIZE] __attribute__((aligned(64)));
+#endif
+
 static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(128)));
 
 /* LCD attributes 1024x600 */
@@ -72,6 +82,8 @@ static void lcd_disp_handler(void)
 
 int lcd_device_initialize(void)
 {
+    int         ret;
+
     /* Unlock protected registers */
     SYS_UnlockReg();
 
@@ -84,13 +96,13 @@ int lcd_device_initialize(void)
     /* Configure DISP Framebuffer settings  */
     DISPLIB_SetFBConfig(
 #if (DISP_COLOR_DEPTH==32)
-                  eFBFmt_A8R8G8B8,
+        eFBFmt_A8R8G8B8,
 #else
-                  eFBFmt_RGB565,
+        eFBFmt_RGB565,
 #endif
-                  DISP_HOR_RES_MAX,
-                  DISP_VER_RES_MAX,
-                  ptr_to_u32(s_au8FrameBuf));
+        DISP_HOR_RES_MAX,
+        DISP_VER_RES_MAX,
+        ptr_to_u32(s_au8FrameBuf));
 
 #if (CONFIG_DISP_FULL_REFRESH==1)
     IRQ_SetHandler((IRQn_ID_t)DISP_IRQn, lcd_disp_handler);
@@ -98,7 +110,34 @@ int lcd_device_initialize(void)
     DISP_ENABLE_INT();
 #endif
 
+#if defined(LV_USE_DRAW_GFX)
+    /* Full SoC-level GC520L bring-up. gfx_disp_init() must run after this
+     * (gfx_disp.h precondition; gfx_hw.c is the sole GPU/EPLL authority). */
+    ret = gfxlib_init();
+    if (ret != GFX_STATUS_OK)
+    {
+        gfx_osal_printf("gfxlib_init:%d\n", ret);
+        goto fail;
+    }
+
+    /* Initialise the GPU-visible uncached pool -- must exist before
+     * gfx_disp_init() is called (gfx_disp.h precondition). */
+    ret = gfx_mem_init((gfx_va_t)(0x100000000ULL + s_au8GfxBuf), GFX_2D_DISPDEMO_POOL_SIZE);
+    if (ret != GFX_STATUS_OK)
+    {
+        gfx_osal_printf("GFX_MEM_UNCACHED_ALIAS_BASE=0x%09llx\n", (unsigned long long)(uintptr_t)GFX_MEM_UNCACHED_ALIAS_BASE);
+        gfx_osal_printf("s_au8GfxBuf=0x%09llx\n", (unsigned long long)(uintptr_t)s_au8GfxBuf);
+        gfx_osal_printf("gfx_mem_init:%d, VA=0x%09llx\n", ret, (unsigned long long)(uintptr_t)(GFX_MEM_UNCACHED_ALIAS_BASE + s_au8GfxBuf));
+        goto fail;
+    }
+
+    gfx_osal_printf("GFX initialized!!\n");
+#endif
+
     return 0;
+
+fail:
+    return -1;
 }
 
 int lcd_device_open(void)
@@ -151,7 +190,7 @@ int lcd_device_control(int cmd, void *argv)
     break;
 
     default:
-        while(1)
+        while (1)
         {
             //Invalid command. Just block here.
         };
