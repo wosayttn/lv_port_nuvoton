@@ -1,11 +1,11 @@
 {
   "project_name": "lv_port_nuvoton",
-  "generated_date": "2026-08-25",
+  "generated_date": "2026-09-08",
   "supplier": "Nuvoton Technology",
   "total_components": 21,
   "vulnerability_summary": {
-    "Critical": 0,
-    "High": 3,
+    "Critical": 1,
+    "High": 6,
     "Medium": 2,
     "Low": 0,
     "Negligible": 0,
@@ -34,7 +34,7 @@
       "type": "library",
       "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0",
       "license": "MIT",
-      "vulnerabilities_found": 0
+      "vulnerabilities_found": 4
     },
     {
       "name": "thirdparty/arm2d",
@@ -192,21 +192,21 @@
       "fix_state": "unknown"
     },
     {
-      "vuln_id": "CVE-2026-6682",
-      "severity": "High",
-      "package_name": "thirdparty/FatFs",
-      "package_version": "0.16",
-      "purl": "pkg:generic/FatFs@0.16",
-      "description": "In FatFS R0.16 and earlier contains a FAT32 integer overflow bug in mount_volume() where fasize *= fs->n_fats can wrap, leading to attacker-controlled file-size metadata and unsafe read lengths in downstream callers. This maps to CWE-190 (Integer Overflow or Wraparound). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H (7.6, High). Remote delivery is also possible in OTA/update pipelines. The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Total.",
-      "fix_state": "unknown"
-    },
-    {
       "vuln_id": "CVE-2026-6688",
       "severity": "High",
       "package_name": "thirdparty/FatFs",
       "package_version": "0.16",
       "purl": "pkg:generic/FatFs@0.16",
       "description": "FatFs R0.16 and earlier contains a downstream-caller vulnerability pattern associated with FatFs long filename handling. With LFN enabled, fno.fname can be up to 255 characters; many callers copy it into short fixed buffers without bounds checks, causing overflow. This maps to CWE-120 (Buffer Copy without Checking Size of Input). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H (7.6, High). The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Total.",
+      "fix_state": "unknown"
+    },
+    {
+      "vuln_id": "CVE-2026-6682",
+      "severity": "High",
+      "package_name": "thirdparty/FatFs",
+      "package_version": "0.16",
+      "purl": "pkg:generic/FatFs@0.16",
+      "description": "In FatFS R0.16 and earlier contains a FAT32 integer overflow bug in mount_volume() where fasize *= fs->n_fats can wrap, leading to attacker-controlled file-size metadata and unsafe read lengths in downstream callers. This maps to CWE-190 (Integer Overflow or Wraparound). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H (7.6, High). Remote delivery is also possible in OTA/update pipelines. The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Total.",
       "fix_state": "unknown"
     },
     {
@@ -225,6 +225,42 @@
       "package_version": "0.16",
       "purl": "pkg:generic/FatFs@0.16",
       "description": "FatFs R0.16 and earlier contains an uninitialized cluster exposure when f_lseek() extends files beyond EOF without zero-filling newly allocated clusters. This maps to CWE-908 (Use of Uninitialized Resource). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N (4.6, Medium). The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Partial.",
+      "fix_state": "unknown"
+    },
+    {
+      "vuln_id": "CVE-2026-77234",
+      "severity": "Critical",
+      "package_name": "thirdparty/FreeRTOS",
+      "package_version": "11.3.0",
+      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0",
+      "description": "Improper input validation in FreeRTOS-Kernel before 11.3.1 might allow an unprivileged task on MPU-enabled ports to execute code in privileged kernel context. To remediate this issue, users should upgrade to version\u00a011.3.1 or later.",
+      "fix_state": "unknown"
+    },
+    {
+      "vuln_id": "CVE-2026-77237",
+      "severity": "High",
+      "package_name": "thirdparty/FreeRTOS",
+      "package_version": "11.3.0",
+      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0",
+      "description": "Missing queue-set type validation in xQueueAddToSet() in the FreeRTOS-Kernel before 11.3.1 might allow an unprivileged task on MPU-enabled ports with configUSE_QUEUE_SETS=1 to read privileged kernel memory.\u00a0To remediate this issue, users should upgrade to version\u00a011.3.1 or later.",
+      "fix_state": "unknown"
+    },
+    {
+      "vuln_id": "CVE-2026-77236",
+      "severity": "High",
+      "package_name": "thirdparty/FreeRTOS",
+      "package_version": "11.3.0",
+      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0",
+      "description": "Missing minimum size validation in secure context allocation in FreeRTOS-Kernel before 11.3.1 might allow local users to corrupt secure-world heap metadata via an out-of-bounds write with an undersized stack size parameter.\u00a0To remediate this issue, users should upgrade to version\u00a011.3.1 or later.",
+      "fix_state": "unknown"
+    },
+    {
+      "vuln_id": "CVE-2026-77235",
+      "severity": "High",
+      "package_name": "thirdparty/FreeRTOS",
+      "package_version": "11.3.0",
+      "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0",
+      "description": "Missing privilege verification in the secure context cleanup handler in FreeRTOS-Kernel before 11.3.1 might allow local users to cause a use-after-free condition in secure-world memory via the SVC handler for secure context deallocation.\u00a0To remediate this issue, users should upgrade to version\u00a011.3.1 or later.",
       "fix_state": "unknown"
     }
   ]
