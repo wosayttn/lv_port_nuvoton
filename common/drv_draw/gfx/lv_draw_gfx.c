@@ -50,6 +50,11 @@ static int32_t _gfx_dispatch(lv_draw_unit_t *draw_unit, lv_layer_t *layer);
  */
 static int32_t _gfx_delete(lv_draw_unit_t *draw_unit);
 
+/*
+ * Wait for all pending GFX draw operations to complete.
+ */
+static int32_t _gfx_wait_for_finish(lv_draw_unit_t *draw_unit);
+
 #if LV_USE_OS
     static void _gfx_render_thread_cb(void *ptr);
 #endif
@@ -99,11 +104,15 @@ void lv_draw_gfx_init(void)
     draw_gfx_unit->base_unit.evaluate_cb = _gfx_evaluate;
     draw_gfx_unit->base_unit.dispatch_cb = _gfx_dispatch;
     draw_gfx_unit->base_unit.delete_cb = _gfx_delete;
+    draw_gfx_unit->base_unit.wait_for_finish_cb = _gfx_wait_for_finish;
+    draw_gfx_unit->base_unit.name = "GFX";
 
 #if LV_USE_OS
     lv_draw_sw_thread_dsc_t *thread_dsc = &draw_gfx_unit->thread_dsc;
     thread_dsc->idx = 0;
     thread_dsc->draw_unit = (void *)draw_gfx_unit;
+    lv_thread_sync_init(&thread_dsc->sync);
+    thread_dsc->inited = true;
     lv_thread_init(&thread_dsc->thread, "gfx_draw", LV_DRAW_THREAD_PRIO,
                    _gfx_render_thread_cb, LV_DRAW_THREAD_STACK_SIZE, thread_dsc);
 #endif
@@ -240,12 +249,13 @@ static int32_t _gfx_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
         /*
          * GC520L hardware fill requirements:
          * 1. 16-byte alignment on X coordinate and width (4 pixels for 32bpp, 8 for 16bpp).
-         * 2. Size threshold: Only accelerate large fills (>= 64x64). Small widgets/boxes
-         *    are much faster on CPU (lv_draw_sw_fill in L1 cache) and avoid GPU/cache overhead.
+         * 2. Size threshold: Only accelerate large fills (area >= 128x128 = 16384 pixels, min dim >= 32).
+         *    Small widgets/boxes are much faster on CPU (lv_draw_sw_fill in L1 cache with NEON)
+         *    and avoid GPU/cache overhead.
          */
-        if (fill_w < 64 || fill_h < 64 ||
-            ((rel_x1 * px_size) & 15u) ||
-            (((uint32_t)fill_w * px_size) & 15u))
+        if (fill_w < 32 || fill_h < 32 || ((uint32_t)fill_w * fill_h < 128 * 128) ||
+                ((rel_x1 * px_size) & 15u) ||
+                (((uint32_t)fill_w * px_size) & 15u))
             goto _gfx_evaluate_not_ok;
     }
     break;
@@ -259,6 +269,13 @@ static int32_t _gfx_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
             goto _gfx_evaluate_not_ok;
 
         bool has_scale = (draw_dsc->scale_x != LV_SCALE_NONE || draw_dsc->scale_y != LV_SCALE_NONE);
+        int32_t layer_w = lv_area_get_width(&task->_real_area);
+        int32_t layer_h = lv_area_get_height(&task->_real_area);
+
+        /* Small unscaled layers are faster on CPU NEON */
+        if (!has_scale && (layer_w < 32 || layer_h < 32 || ((uint32_t)layer_w * layer_h < 64 * 64)))
+            goto _gfx_evaluate_not_ok;
+
         if (!_gfx_src_cf_supported(layer_to_draw->color_format) ||
                 !_gfx_buf_aligned(layer_to_draw->draw_buf->data, layer_to_draw->draw_buf->header.stride) ||
                 !_gfx_is_cf_blend_compatible(layer_to_draw->color_format, draw_dsc_base->layer->color_format) ||
@@ -283,6 +300,17 @@ static int32_t _gfx_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
                              img_dsc->header.stride;
 
         bool has_scale = (draw_dsc->scale_x != LV_SCALE_NONE || draw_dsc->scale_y != LV_SCALE_NONE);
+        int32_t img_w = lv_area_get_width(&task->_real_area);
+        int32_t img_h = lv_area_get_height(&task->_real_area);
+
+        /*
+         * GC520L hardware image requirements:
+         * 1. For unscaled images, small icons (< 64x64 or area < 64x64) are faster on CPU NEON.
+         * 2. Scaled images (has_scale) are computationally expensive on CPU, so accelerate with GFX.
+         */
+        if (!has_scale && (img_w < 32 || img_h < 32 || ((uint32_t)img_w * img_h < 64 * 64)))
+            goto _gfx_evaluate_not_ok;
+
         if (draw_dsc->tile ||
                 !_gfx_src_cf_supported(img_dsc->header.cf) ||
                 !_gfx_buf_aligned(img_dsc->data, src_stride) ||
@@ -302,12 +330,25 @@ static int32_t _gfx_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 
 _gfx_evaluate_ok:
 
-    if (task->preference_score > 70)
+    /* Prioritize heavy operations (scaling) with higher preference (lower score) */
+    if (task->type == LV_DRAW_TASK_TYPE_IMAGE || task->type == LV_DRAW_TASK_TYPE_LAYER)
+    {
+        const lv_draw_image_dsc_t *draw_dsc = (const lv_draw_image_dsc_t *)task->draw_dsc;
+        if (draw_dsc->scale_x != LV_SCALE_NONE || draw_dsc->scale_y != LV_SCALE_NONE)
+        {
+            task->preference_score = 60;
+        }
+        else
+        {
+            task->preference_score = 70;
+        }
+    }
+    else
     {
         task->preference_score = 70;
-        task->preferred_draw_unit_id = DRAW_UNIT_ID_GFX;
     }
 
+    task->preferred_draw_unit_id = DRAW_UNIT_ID_GFX;
     return 1;
 
 _gfx_evaluate_not_ok:
@@ -383,6 +424,20 @@ static int32_t _gfx_delete(lv_draw_unit_t *draw_unit)
 #endif
 }
 
+static int32_t _gfx_wait_for_finish(lv_draw_unit_t *draw_unit)
+{
+    LV_UNUSED(draw_unit);
+
+    if (g_gfx_handle != NULL)
+    {
+        gfx_osal_lock(GFX_OSAL_WAIT_FOREVER);
+        gfx_finish(g_gfx_handle);
+        gfx_osal_unlock();
+    }
+
+    return 0;
+}
+
 static void _gfx_execute_drawing(lv_draw_task_t *t)
 {
     switch (t->type)
@@ -405,8 +460,6 @@ static void _gfx_execute_drawing(lv_draw_task_t *t)
 static void _gfx_render_thread_cb(void *ptr)
 {
     lv_draw_sw_thread_dsc_t *thread_dsc = ptr;
-    lv_thread_sync_init(&thread_dsc->sync);
-    thread_dsc->inited = true;
 
     /* Ensure dedicated render context handle is opened */
     if (g_gfx_handle == NULL)
@@ -480,10 +533,17 @@ static void _gfx_clean_cache(const lv_draw_buf_t *draw_buf, const lv_area_t *are
 
     address = address + (area->x1 * bytes_per_pixel) + (stride * area->y1);
 
-    for (int32_t i = 0; i < lines; i++)
+    if (bytes_to_flush_per_line == (int32_t)stride)
     {
-        dcache_clean_by_mva(address, bytes_to_flush_per_line);
-        address += stride;
+        dcache_clean_by_mva(address, (uint32_t)lines * stride);
+    }
+    else
+    {
+        for (int32_t i = 0; i < lines; i++)
+        {
+            dcache_clean_by_mva(address, bytes_to_flush_per_line);
+            address += stride;
+        }
     }
 }
 
@@ -510,10 +570,17 @@ static void _gfx_invalidate_cache(const lv_draw_buf_t *draw_buf,
     /* Stride is in bytes */
     address = address + (area->x1 * bytes_per_pixel) + (stride * area->y1);
 
-    for (int32_t i = 0; i < lines; i++)
+    if (bytes_to_flush_per_line == (int32_t)stride)
     {
-        dcache_clean_invalidate_by_mva(address, bytes_to_flush_per_line);
-        address += stride;
+        dcache_clean_invalidate_by_mva(address, (uint32_t)lines * stride);
+    }
+    else
+    {
+        for (int32_t i = 0; i < lines; i++)
+        {
+            dcache_clean_invalidate_by_mva(address, bytes_to_flush_per_line);
+            address += stride;
+        }
     }
 }
 

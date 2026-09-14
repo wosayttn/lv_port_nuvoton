@@ -28,6 +28,18 @@ static void lv_port_disp_direct(lv_display_t *disp, const lv_area_t *area,
 
     if (lv_display_flush_is_last(disp))
     {
+#if defined(LV_USE_DRAW_GFX) && (LV_USE_DRAW_GFX == 1)
+        extern void *g_gfx_disp_handle;
+        extern void *g_gfx_handle;
+        if (g_gfx_disp_handle != NULL)
+        {
+            gfx_finish(g_gfx_disp_handle);
+        }
+        if (g_gfx_handle != NULL)
+        {
+            gfx_finish(g_gfx_handle);
+        }
+#endif
         dcache_clean_by_mva((const void *)px_map, psLCDInfo->u32ResHeight * stride);
 
         /*Pan display to the newly rendered active framebuffer*/

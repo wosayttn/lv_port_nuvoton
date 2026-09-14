@@ -132,13 +132,53 @@ void lv_draw_gfx_image(lv_draw_task_t *t)
     dst_surface.rect.br.x = blend_area.x1 + dest_w;
     dst_surface.rect.br.y = blend_area.y1 + dest_h;
 
-    dcache_clean_by_mva((const void *)src_buf,
-                        src_surface.height * src_surface.stride);
+    /*
+     * Cache Maintenance:
+     * 1. Flush source image buffer (bounding box or full image if scaled).
+     */
+    uint32_t src_bpp = lv_color_format_get_size(src_cf);
+    if (has_scale)
+    {
+        dcache_clean_by_mva((const void *)src_buf,
+                            src_surface.height * src_surface.stride);
+    }
+    else
+    {
+        uint32_t src_line_bytes = (uint32_t)dest_w * src_bpp;
+        const uint8_t *src_start = src_buf + (src_surface.rect.tl.y * src_surface.stride) + (src_surface.rect.tl.x * src_bpp);
+        if (src_line_bytes == (uint32_t)src_surface.stride)
+        {
+            dcache_clean_by_mva(src_start, (uint32_t)dest_h * src_surface.stride);
+        }
+        else
+        {
+            for (int32_t y = 0; y < dest_h; y++)
+            {
+                dcache_clean_by_mva(src_start + y * src_surface.stride, src_line_bytes);
+            }
+        }
+    }
 
     gfx_osal_lock(GFX_OSAL_WAIT_FOREVER);
 
-    dcache_clean_by_mva((const void *)dest_buf,
-                        dst_surface.height * dst_surface.stride);
+    /*
+     * 2. Flush destination buffer dirty lines for blend_area so GPU reads updated pixels from DDR.
+     */
+    uint32_t dest_bpp = lv_color_format_get_size(dest_cf);
+    uint32_t dest_line_bytes = (uint32_t)dest_w * dest_bpp;
+    uint8_t *dst_start = dest_buf + (blend_area.y1 * dest_stride) + (blend_area.x1 * dest_bpp);
+
+    if (dest_line_bytes == (uint32_t)dest_stride)
+    {
+        dcache_clean_by_mva(dst_start, (uint32_t)dest_h * dest_stride);
+    }
+    else
+    {
+        for (int32_t y = 0; y < dest_h; y++)
+        {
+            dcache_clean_by_mva(dst_start + y * dest_stride, dest_line_bytes);
+        }
+    }
 
     int ret;
     if (src_cf == LV_COLOR_FORMAT_ARGB8888 || dsc->opa < LV_OPA_MAX)
@@ -173,10 +213,23 @@ void lv_draw_gfx_image(lv_draw_task_t *t)
         LV_LOG_ERROR("gfx_blt returned %d", ret);
     }
 
+    /* Wait for GPU pipeline completion before cache maintenance */
     gfx_finish(g_gfx_handle);
 
-    dcache_invalidate_by_mva((const void *)dest_buf,
-                             dst_surface.height * dst_surface.stride);
+    /*
+     * 3. Clean & Invalidate destination buffer dirty lines for blend_area so CPU fetches GPU-rendered pixels from DDR.
+     */
+    if (dest_line_bytes == (uint32_t)dest_stride)
+    {
+        dcache_clean_invalidate_by_mva(dst_start, (uint32_t)dest_h * dest_stride);
+    }
+    else
+    {
+        for (int32_t y = 0; y < dest_h; y++)
+        {
+            dcache_clean_invalidate_by_mva(dst_start + y * dest_stride, dest_line_bytes);
+        }
+    }
 
     gfx_osal_unlock();
 }

@@ -152,7 +152,7 @@ void lv_draw_gfx_fill(lv_draw_task_t *t)
 
     /*
      * Critical Section:
-     * gfx_fill() submits commands asynchronously (gfx_submit_async) and returns.
+     * gfx_fill() submits commands to GPU.
      * Use gfx_osal_lock/unlock to hold the GPU hardware mutex continuously across
      * submission and gfx_finish(), preventing other tasks from clobbering the GPU engine!
      */
@@ -164,6 +164,7 @@ void lv_draw_gfx_fill(lv_draw_task_t *t)
         sysprintf("[GFX_FILL] gfx_fill failed ret=%d\n", ret);
     }
 
+    /* Wait for GPU pipeline completion before cache maintenance */
     gfx_finish(g_gfx_handle);
 
     /*

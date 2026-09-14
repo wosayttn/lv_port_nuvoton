@@ -13,7 +13,7 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "../lv_draw.h"
+#include "../../lv_conf_internal.h"
 #include "../../misc/lv_area_private.h"
 
 #if LV_USE_DRAW_GFX
