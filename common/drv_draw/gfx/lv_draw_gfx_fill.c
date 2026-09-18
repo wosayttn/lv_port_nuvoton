@@ -101,7 +101,7 @@ void lv_draw_gfx_fill(lv_draw_task_t *t)
     }
     else
     {
-        dst_surface.format = GFX_XRGB8888;
+        dst_surface.format = GFX_ARGB8888;
     }
     dst_surface.width = draw_buf->header.w;
     dst_surface.height = draw_buf->header.h;
@@ -124,6 +124,12 @@ void lv_draw_gfx_fill(lv_draw_task_t *t)
         color_val = lv_color_to_u32(dsc->color) | 0xFF000000;
     }
     dst_surface.clrcolor = (int)color_val;
+
+    if (dsc->opa < LV_OPA_MAX)
+    {
+        dst_surface.global_alpha = dsc->opa;
+        dst_surface.blendfunc = GFX_ONE;
+    }
 
     uint32_t bpp = lv_color_format_get_size(dest_cf);
     uint32_t line_bytes = fill_w * bpp;
@@ -158,10 +164,22 @@ void lv_draw_gfx_fill(lv_draw_task_t *t)
      */
     gfx_osal_lock(GFX_OSAL_WAIT_FOREVER);
 
+    if (dsc->opa < LV_OPA_MAX)
+    {
+        gfx_enable(g_gfx_handle, GFX_BLEND);
+        gfx_enable(g_gfx_handle, GFX_GLOBAL_ALPHA);
+    }
+
     int ret = gfx_fill(g_gfx_handle, &dst_surface);
     if (ret != 0)
     {
         sysprintf("[GFX_FILL] gfx_fill failed ret=%d\n", ret);
+    }
+
+    if (dsc->opa < LV_OPA_MAX)
+    {
+        gfx_disable(g_gfx_handle, GFX_GLOBAL_ALPHA);
+        gfx_disable(g_gfx_handle, GFX_BLEND);
     }
 
     /* Wait for GPU pipeline completion before cache maintenance */
@@ -174,13 +192,15 @@ void lv_draw_gfx_fill(lv_draw_task_t *t)
      */
     if (line_bytes == (uint32_t)dest_stride)
     {
-        dcache_clean_invalidate_by_mva(dst_start, fill_h * dest_stride);
+        //dcache_clean_invalidate_by_mva(dst_start, fill_h * dest_stride);
+        dcache_invalidate_by_mva(dst_start, fill_h * dest_stride);
     }
     else
     {
         for (int32_t y = 0; y < fill_h; y++)
         {
-            dcache_clean_invalidate_by_mva(dst_start + y * dest_stride, line_bytes);
+            //dcache_clean_invalidate_by_mva(dst_start + y * dest_stride, line_bytes);
+            dcache_invalidate_by_mva(dst_start + y * dest_stride, line_bytes);
         }
     }
 

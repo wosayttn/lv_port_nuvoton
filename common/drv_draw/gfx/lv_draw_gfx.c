@@ -232,13 +232,12 @@ static int32_t _gfx_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 
     switch (task->type)
     {
-#if 1
     case LV_DRAW_TASK_TYPE_FILL:
     {
         const lv_draw_fill_dsc_t *draw_dsc = (lv_draw_fill_dsc_t *)task->draw_dsc;
 
         if (!((draw_dsc->radius == 0) && (draw_dsc->grad.dir == LV_GRAD_DIR_NONE) &&
-                (draw_dsc->opa >= LV_OPA_MAX) &&
+                (draw_dsc->opa > LV_OPA_MIN) &&
                 lv_area_is_in(&task->area, &task->clip_area, false)))
             goto _gfx_evaluate_not_ok;
 
@@ -259,7 +258,6 @@ static int32_t _gfx_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
             goto _gfx_evaluate_not_ok;
     }
     break;
-#endif
     case LV_DRAW_TASK_TYPE_LAYER:
     {
         const lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;

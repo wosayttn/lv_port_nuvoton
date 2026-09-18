@@ -116,7 +116,15 @@ static inline int gfx_format_bpp(enum gfx_format fmt) {
 
 /**
  * @brief gfx_blend_func enumeration
- * Describes the blend factor for source and destination.
+ * Describes the blend factor for source and destination, and alpha blending modes.
+ *
+ * Blending Modes:
+ * - Straight-Alpha mode (default when GFX_PRE_MULTIPLIED_ALPHA is not set):
+ *   Unassociated alpha blending where source color is scaled by alpha in the ALU:
+ *   Out = Src * Alpha + Dst * (1 - Alpha).
+ * - Premultiplied Alpha mode (when GFX_PRE_MULTIPLIED_ALPHA is set):
+ *   Source color is already premultiplied or premultiplied by hardware:
+ *   Out = Src_premul + Dst * (1 - Alpha).
  */
 typedef enum gfx_blend_func {
   GFX_ZERO                 = 0,    /**< Blend factor with 0 */
@@ -125,19 +133,31 @@ typedef enum gfx_blend_func {
   GFX_ONE_MINUS_SRC_ALPHA  = 3,    /**< Blend factor with 1 - source alpha */
   GFX_DST_ALPHA            = 4,    /**< Blend factor with destination alpha */
   GFX_ONE_MINUS_DST_ALPHA  = 5,    /**< Blend factor with 1 - destination alpha */
-  GFX_PRE_MULTIPLIED_ALPHA = 0x10, /**< Extensive blend as pre-multiplied alpha */
+  GFX_PRE_MULTIPLIED_ALPHA = 0x10, /**< Extensive blend as pre-multiplied alpha.
+                                    *   When set: Premultiplied Alpha mode (Out = Src_premul + Dst * (1 - Alpha)).
+                                    *   When unset (default): Straight-Alpha mode (Out = Src * Alpha + Dst * (1 - Alpha)). */
   GFX_DEMULTIPLY_OUT_ALPHA = 0x20  /**< Extensive blend as demultiply out alpha */
 } gfx_blend_func_t;
 
 /**
  * @brief gfx_cap_mode enumeration
  * Describes the alternative capability in 2D BLT.
- * Note: GFX_GLOBAL_ALPHA is only valid when GFX_BLEND is enabled.
+ *
+ * Notes:
+ * - GFX_GLOBAL_ALPHA is only valid when GFX_BLEND is enabled.
+ * - Straight-Alpha mode (default when GFX_PRE_MULTIPLIED_ALPHA is not set):
+ *   Unassociated alpha blending where source color is scaled by alpha in the ALU:
+ *   Out = Src * Alpha + Dst * (1 - Alpha), where Alpha is modulated by global alpha.
+ * - Premultiplied Alpha mode (when GFX_PRE_MULTIPLIED_ALPHA is set in blendfunc):
+ *   Source color is already premultiplied or premultiplied by hardware:
+ *   Out = Src_premul + Dst * (1 - Alpha).
  */
 typedef enum gfx_cap_mode {
   GFX_BLEND        = 0, /**< Enable alpha blend in 2D BLT */
   GFX_DITHER       = 1, /**< Enable dither in 2D BLT */
-  GFX_GLOBAL_ALPHA = 2, /**< Enable global alpha in blend */
+  GFX_GLOBAL_ALPHA = 2, /**< Enable global alpha in blend (modulates effective alpha 0..255).
+                         *   Straight-Alpha: Out = Src * Alpha + Dst * (1 - Alpha).
+                         *   Premultiplied:  Out = Src_premul + Dst * (1 - Alpha). */
   GFX_SRC_COLORKEY = 3, /**< Enable source color key transparency */
   GFX_DST_COLORKEY = 4  /**< Enable destination color key transparency */
 } gfx_cap_mode_t;
@@ -260,6 +280,65 @@ typedef struct gfx_pattern {
 } gfx_pattern_t;
 
 /**
+ * @brief gfx_glyph structure
+ * Describes a 1-bit monochrome font character glyph.
+ */
+typedef struct gfx_glyph {
+  const uint8_t *mask;       /**< 1-bit MSB-first packed monochrome mask data */
+  int width;                 /**< Glyph width in pixels */
+  int height;                /**< Glyph height in pixels */
+  int stride;                /**< Stride in bytes per scanline (0 for auto: (width + 7) / 8) */
+  uint32_t fg_color;         /**< 32-bit ARGB8888 foreground text color */
+  uint32_t bg_color;         /**< 32-bit ARGB8888 background color (used if transparent_bg == 0) */
+  uint8_t transparent_bg;    /**< 1: Transparent background (ROP4 0x0030AACC), 0: Opaque (ROP4 0x0030CCCC) */
+} gfx_glyph_t;
+
+/**
+ * @brief Horizontal block width configuration for multi-source blit
+ */
+typedef enum gfx_block_size_w {
+  GFX_BLOCK_W_AUTO = 0,   /**< Hardware auto / default (16 pixels) */
+  GFX_BLOCK_W_16   = 16,  /**< 16 pixels horizontal block */
+  GFX_BLOCK_W_32   = 32,  /**< 32 pixels horizontal block */
+  GFX_BLOCK_W_64   = 64,  /**< 64 pixels horizontal block */
+  GFX_BLOCK_W_128  = 128, /**< 128 pixels horizontal block */
+  GFX_BLOCK_W_256  = 256, /**< 256 pixels horizontal block */
+  GFX_BLOCK_W_512  = 512  /**< 512 pixels horizontal block */
+} gfx_block_size_w_t;
+
+/**
+ * @brief Vertical block height configuration for multi-source blit
+ */
+typedef enum gfx_block_size_h {
+  GFX_BLOCK_H_AUTO = 0,   /**< Hardware auto / default (1 line) */
+  GFX_BLOCK_H_1    = 1,   /**< 1 line vertical block */
+  GFX_BLOCK_H_2    = 2,   /**< 2 lines vertical block */
+  GFX_BLOCK_H_4    = 4,   /**< 4 lines vertical block */
+  GFX_BLOCK_H_8    = 8,   /**< 8 lines vertical block */
+  GFX_BLOCK_H_16   = 16,  /**< 16 lines vertical block */
+  GFX_BLOCK_H_32   = 32,  /**< 32 lines vertical block */
+  GFX_BLOCK_H_64   = 64,  /**< 64 lines vertical block */
+  GFX_BLOCK_H_128  = 128  /**< 128 lines vertical block */
+} gfx_block_size_h_t;
+
+/**
+ * @brief Memory block traversal walking direction
+ */
+typedef enum gfx_tile_walk {
+  GFX_WALK_RIGHT_BOTTOM = 0, /**< Right-to-Bottom scan (Horizontal-first) */
+  GFX_WALK_BOTTOM_RIGHT = 1  /**< Bottom-to-Right scan (Vertical-first, optimal for 90/270 rot) */
+} gfx_tile_walk_t;
+
+/**
+ * @brief Advanced configuration parameters for multi-source blit tuning
+ */
+typedef struct gfx_multi_blt_cfg {
+  gfx_block_size_w_t block_w;  /**< Horizontal block width (0 for AUTO/16px) */
+  gfx_block_size_h_t block_h;  /**< Vertical block height (0 for AUTO/1line) */
+  gfx_tile_walk_t    walk_dir; /**< Memory traversal walk direction */
+} gfx_multi_blt_cfg_t;
+
+/**
  * @brief gfx_buf structure
  * Describes the buffer used as GFX interfaces.
  */
@@ -324,10 +403,21 @@ int gfx_close(void *handle);
 /**
  * @brief gfx_fill
  * Description: Fill a specific area with the color specified in surface
- * attributes (clrcolor).
+ * attributes (clrcolor). Supports both high-speed opaque hardware clear and
+ * translucent alpha-blended rectangular fill.
+ *
+ * Operation Modes:
+ * - Opaque Clear (default): When blending capabilities (GFX_BLEND, GFX_GLOBAL_ALPHA)
+ *   and surface blending attributes (global_alpha, blendfunc) are unset, executes
+ *   maximum-throughput hardware memory clear (COMMAND_CLEAR) with defensive alpha
+ *   register sanitization to prevent state leakage from preceding BLTs.
+ * - Blended Fill: When GFX_BLEND or GFX_GLOBAL_ALPHA is enabled on the handle, or
+ *   area->global_alpha > 0 or area->blendfunc != 0, renders a translucent filled
+ *   rectangle blended over existing destination content using PE 2.0 alpha blending.
  *
  * @param handle [in] GFX device handle.
- * @param area   [in] Pointer to gfx_surface specifying the area to be filled and clrcolor.
+ * @param area   [in] Pointer to gfx_surface specifying the area to be filled, clrcolor,
+ *                    and optional global_alpha / blendfunc for translucent blending.
  * @return Success with 0, fail with -1.
  */
 int gfx_fill(void *handle, struct gfx_surface *area);
@@ -430,15 +520,35 @@ int gfx_flush(void *handle);
 int gfx_finish(void *handle);
 
 /**
+ * @brief gfx_multi_blt_ex
+ * Description: Advanced multi-source blit with variable block size tuning and rotation composition.
+ *
+ * Composites up to 8 distinct source layers into one destination surface in a single
+ * hardware rendering pass. Supports:
+ * - Per-layer independent rotation and flipping via sp[i]->s.rot
+ * - Destination surface rotation via sp[0]->d.rot
+ * - Custom hardware block dimensions and memory traversal walking direction via cfg
+ *
+ * @param handle [in] GFX device handle.
+ * @param sp     [in] Array of pointers to struct gfx_surface_pair (up to 8 pairs).
+ * @param layers [in] Number of the source layers to composite (1 .. 8).
+ * @param cfg    [in] Pointer to advanced configuration (NULL for default auto block behavior).
+ * @return Success with 0, fail with -1.
+ */
+int gfx_multi_blt_ex(void *handle, struct gfx_surface_pair *sp[], int layers, const struct gfx_multi_blt_cfg *cfg);
+
+/**
  * @brief gfx_multi_blt
- * Description: Blit multiple sources to one destination.
+ * Description: Standard multi-source blit (delegates to gfx_multi_blt_ex with default cfg=NULL).
+ *
+ * Reads per-layer rotation/flipping from sp[i]->s.rot and destination rotation
+ * from sp[0]->d.rot, utilizing default automatic block sizing.
  *
  * Restrictions/Notes:
  * - Hardware COMMAND_MULTI_SOURCE_BLT: one DRAW_2D composites up to 8 sources.
  * - Minor3 2D_MULTI_SOURCE_BLT_EX uses BLOCK8 (8 sources); else BLOCK4 (4).
  * - Although gfx_surface_pair binds one source and one destination as a pair,
  *   it only supports one destination surface (many-to-one).
- * - Destination surface rotation is set to 0 degree by default.
  * - Per-layer destination rectangles may be offset; the engine uses the union.
  *
  * @param handle [in] GFX device handle.
@@ -532,6 +642,32 @@ int gfx_patblt(void *handle, struct gfx_surface *dst, const struct gfx_pattern *
  * @return Success with 0, fail with -1.
  */
 int gfx_draw_lines_pattern(void *handle, struct gfx_surface *dst, const struct gfx_line *lines, int count, const struct gfx_pattern *pat);
+
+/**
+ * @brief gfx_draw_glyph
+ * Description: Render a 1-bit monochrome font glyph using hardware ROP4.
+ *
+ * @param handle [in] GFX device handle.
+ * @param dst    [in] Destination surface.
+ * @param x      [in] Destination top-left X coordinate.
+ * @param y      [in] Destination top-left Y coordinate.
+ * @param glyph  [in] Pointer to glyph descriptor.
+ * @return Success with 0, fail with -1.
+ */
+int gfx_draw_glyph(void *handle, struct gfx_surface *dst, int x, int y, const struct gfx_glyph *glyph);
+
+/**
+ * @brief gfx_draw_glyphs
+ * Description: Render an array of 1-bit monochrome glyphs in a single submission.
+ *
+ * @param handle    [in] GFX device handle.
+ * @param dst       [in] Destination surface.
+ * @param glyphs    [in] Array of glyph descriptors of length `count`.
+ * @param positions [in] Array of destination positions (gfx_point_t) of length `count`.
+ * @param count     [in] Number of glyphs to render.
+ * @return Success with 0, fail with -1.
+ */
+int gfx_draw_glyphs(void *handle, struct gfx_surface *dst, const struct gfx_glyph *glyphs, const gfx_point_t *positions, int count);
 
 /**
  * @brief gfx_diag_colorkey
