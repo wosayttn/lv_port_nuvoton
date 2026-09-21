@@ -46,7 +46,7 @@ Configure the macro switch in [lv_conf.h](lv_conf.h):
 
 - **Enabled (`1`, default)**:
   - Registers the dedicated GFX draw unit (`lv_draw_gfx_init()`) during startup.
-  - Automatically offloads supported drawing operations (e.g., large solid fills, image blit & scaling, layer blending, and buffer copying) to the hardware GFX accelerator.
+  - Automatically offloads supported drawing operations (e.g., solid fills with/without global alpha blending, image blit & scaling, layer blending, and buffer copying) to the hardware GFX accelerator.
   - In partial refresh mode (`CONFIG_DISP_DIRECT_REFRESH` set to `0`), dirty areas are also blitted to the framebuffer using `gfx_blt` hardware acceleration.
 - **Disabled (`0`)**:
   - Disables hardware GFX acceleration and falls back to CPU software rendering (ARM Cortex-A35 NEON SIMD vector acceleration / `lv_draw_sw`).
@@ -54,7 +54,7 @@ Configure the macro switch in [lv_conf.h](lv_conf.h):
 ### **2. Advantages of Enabling GFX Acceleration**
 
 1. **Significantly Reduces CPU Overhead (Offloads CPU Load)**
-   - Offloads computationally intensive 2D rendering tasks (such as BitBLT, large rectangular fills, image scaling, and alpha blending) to the dedicated GFX hardware.
+   - Offloads computationally intensive 2D rendering tasks (such as BitBLT, rectangular fills with global alpha blending, image scaling, and layer blending) to the dedicated GFX hardware.
    - Frees up Cortex-A35 CPU cycles for application logic, network communication, and other real-time tasks.
 
 2. **Supports Asynchronous Multi-Threaded Rendering**
@@ -68,7 +68,8 @@ Configure the macro switch in [lv_conf.h](lv_conf.h):
    - In partial refresh mode, dirty regions are transferred directly to the framebuffer via hardware `gfx_blt`, bypassing slow CPU-driven pixel copy loops.
 
 > **Note on Benchmark & FPS:**
-> In synthetic benchmarks such as `LV_USE_DEMO_BENCHMARK`, the overall average FPS may appear comparable between CPU rendering (approx. 54 FPS with Cortex-A35 NEON SIMD) and GFX acceleration (approx. 53 FPS). This is expected because small UI elements (e.g., text, anti-aliased arcs, small icons, and borders) are processed in CPU L1 cache with NEON instructions to avoid GPU/cache synchronization overhead, while GFX selectively accelerates heavy operations (such as large surface fills and image scaling). The primary benefit of GFX is offloading CPU utilization, allowing concurrent application and background processing without degrading UI responsiveness.
+> With the implementation of hardware-accelerated **solid fill with global alpha blending (Fill + Global Alpha Blending)**, GFX acceleration reaches **approx. 55 FPS** in synthetic benchmarks such as `LV_USE_DEMO_BENCHMARK`, outperforming CPU software rendering (approx. 54 FPS with Cortex-A35 NEON SIMD).
+> Small UI elements (e.g., text, anti-aliased arcs, small icons, and borders) continue to be processed in CPU L1 cache with NEON instructions to avoid GPU/cache synchronization overhead, while GFX accelerates heavy operations (such as large surface fills with/without global alpha blending, and image scaling). Beyond raw FPS, the primary benefit of GFX is offloading CPU utilization, allowing concurrent application and background processing without degrading UI responsiveness.
 
 ## **Purchase**
 

@@ -97,6 +97,9 @@ typedef enum gfx_format {
 /**
  * @brief Get bytes per pixel for a gfx_format
  * Handles both plain DE formats and swizzled formats (e.g. GFX_BGR565).
+ *
+ * Alignment Limitations:
+ * - Pure arithmetic utility; no hardware address or memory alignment constraints.
  */
 static inline int gfx_format_bpp(enum gfx_format fmt) {
   uint32_t de = (uint32_t)fmt & GFX_FMT_DE_MASK;
@@ -207,6 +210,13 @@ typedef enum gfx_feature {
  * ========================================================================= */
 
 /**
+ * @brief Hardware cache-line and DMA alignment constraint for MA35 Family GFX Engine / Cortex-A35.
+ */
+#ifndef GFX_ALIGNMENT_BYTES
+#define GFX_ALIGNMENT_BYTES 64
+#endif
+
+/**
  * @brief gfx_point structure
  * Describes a 2D integer coordinate in pixel units.
  */
@@ -236,13 +246,29 @@ typedef struct gfx_line {
 /**
  * @brief gfx_surface structure
  * Describes the surface with operation attributes.
+ *
+ * Alignment Limitations:
+ * - planes[] Base Address:
+ *   - 32-bpp RGB: Minimum 4-byte (DWORD) address alignment (addr & 3 == 0).
+ *   - 16-bpp RGB: Minimum 2-byte (WORD) address alignment (addr & 1 == 0).
+ *   - 8-bpp (A8, INDEX8): 1-byte alignment.
+ *   - 24-bpp packed RGB: Minimum 16-byte address alignment (addr & 15 == 0).
+ *   - Planar YUV (YV12, I420): All Y, U, and V plane addresses MUST be 64-byte aligned (addr & 63 == 0).
+ *   - Semi-Planar YUV (NV12, NV21, NV16, NV61): Both Y and UV plane addresses MUST be 64-byte aligned (addr & 63 == 0).
+ *   - Packed YUV (YUY2, UYVY): Source address MUST be 64-byte aligned for filter blit; destination address MUST be 4-byte aligned.
+ *   - Full LCD Framebuffer: Minimum 128-byte alignment (__attribute__((aligned(128)))) to avoid DRAM bank conflicts.
+ * - stride: Hardware DMA read engine requires 16-byte aligned stride (unaligned source stride is automatically
+ *   staged into 16-byte aligned bounce buffer); destination supports arbitrary stride up to 262,143 bytes (< 256KB),
+ *   with 16-byte aligned stride recommended for optimal AXI bus throughput.
+ * - rect: Coordinates must fall within [-32768, +32767].
  */
 typedef struct gfx_surface {
   enum gfx_format format;        /**< Pixel format of surface buffer */
   int planes[3];                 /**< Physical addresses of surface buffer */
                                  /**< (planes[0]=Y/RGB, planes[1]=U/UV, planes[2]=V) */
+                                 /**< Alignment: 32bpp >= 4B, 16bpp >= 2B, 24bpp >= 16B, YUV >= 64B, FB >= 128B */
   gfx_rect_t rect;               /**< Rectangular blit area */
-  int stride;                    /**< RGB/Y stride of surface buffer (bytes) */
+  int stride;                    /**< RGB/Y stride of surface buffer in bytes (max 262,143 bytes; 16B aligned recommended) */
   int width;                     /**< Surface width in pixel unit */
   int height;                    /**< Surface height in pixel unit */
   enum gfx_blend_func blendfunc; /**< Alpha blend mode */
@@ -266,22 +292,30 @@ typedef enum gfx_pattern_type {
 /**
  * @brief gfx_pattern structure
  * Describes an 8x8 repeating pattern brush for PatBlt and patterned lines.
+ *
+ * Alignment Limitations:
+ * - paddr: Physical DDR address for 8x8 color pattern MUST be 8-byte (64-bit) aligned (addr & 7 == 0).
+ * - origin_x, origin_y: Brush origin phase offsets MUST be clamped to 3-bit values [0, 7] (origin & 7).
  */
 typedef struct gfx_pattern {
   enum gfx_pattern_type type; /**< Pattern type */
   enum gfx_format format;     /**< Color format for 8x8 color pattern */
-  uint32_t paddr;             /**< Physical DDR address for 8x8 color pattern (64 pixels) */
+  uint32_t paddr;             /**< Physical DDR address for 8x8 color pattern (64 pixels, MUST be 8-byte aligned) */
   uint32_t mask_low;          /**< Low 32 bits of 8x8 mono mask (Rows 0..3) */
   uint32_t mask_high;         /**< High 32 bits of 8x8 mono mask (Rows 4..7) */
   uint32_t fg_color;          /**< Foreground color (for mono mask or solid) */
   uint32_t bg_color;          /**< Background color (for mono mask) */
-  uint8_t origin_x;           /**< Pattern X origin phase offset (0..7) */
-  uint8_t origin_y;           /**< Pattern Y origin phase offset (0..7) */
+  uint8_t origin_x;           /**< Pattern X origin phase offset (0..7, 3-bit clamped) */
+  uint8_t origin_y;           /**< Pattern Y origin phase offset (0..7, 3-bit clamped) */
 } gfx_pattern_t;
 
 /**
  * @brief gfx_glyph structure
  * Describes a 1-bit monochrome font character glyph.
+ *
+ * Alignment Limitations:
+ * - stride: Stride in bytes per scanline (0 for auto); staged into 16-byte aligned DMA bounce buffers.
+ * - width, height: Arbitrary non-byte-aligned glyph widths are scissored by hardware window without buffer shearing.
  */
 typedef struct gfx_glyph {
   const uint8_t *mask;       /**< 1-bit MSB-first packed monochrome mask data */
@@ -341,11 +375,14 @@ typedef struct gfx_multi_blt_cfg {
 /**
  * @brief gfx_buf structure
  * Describes the buffer used as GFX interfaces.
+ *
+ * Alignment Limitations:
+ * - buf_vaddr, buf_paddr: Guaranteed 64-byte hardware cache-line aligned (GFX_ALIGNMENT_BYTES = 64).
  */
 typedef struct gfx_buf {
   void *buf_handle; /**< The handle associated with buffer */
-  void *buf_vaddr;  /**< Virtual address of the buffer */
-  int buf_paddr;    /**< Physical address of the buffer */
+  void *buf_vaddr;  /**< Virtual address of the buffer (64-byte cache-line aligned) */
+  int buf_paddr;    /**< Physical address of the buffer (64-byte cache-line aligned) */
   int buf_size;     /**< The actual size of the buffer */
 } gfx_buf_t;
 
@@ -368,8 +405,13 @@ typedef struct gfx_surface_pair {
  * Description: Initialize GFX hardware engine, clocks, command buffer,
  * and configure caller-provided memory pool for gfx_alloc/gfx_free.
  *
- * @param pool_buf  [in] Pointer / base address of memory pool buffer provided by application (must not be NULL).
- * @param pool_size [in] Total size in bytes of pool_buf (must be > 0).
+ * Alignment Limitations:
+ * - Pool Base Address: `pool_buf` MUST adhere to 64-byte hardware cache-line
+ *   alignment (GFX_ALIGNMENT_BYTES = 64) matching Cortex-A35 cache architecture.
+ * - Pool Size: `pool_size` should be a multiple of 64 bytes.
+ *
+ * @param pool_buf  [in] Pointer / base address of memory pool buffer provided by application (must not be NULL, 64-byte aligned).
+ * @param pool_size [in] Total size in bytes of pool_buf (must be > 0, 64-byte aligned).
  * @return Success with 0, fail with -1.
  */
 int libgfx_init(void *pool_buf, unsigned int pool_size);
@@ -377,6 +419,9 @@ int libgfx_init(void *pool_buf, unsigned int pool_size);
 /**
  * @brief libgfx_deinit
  * Description: De-initialize GFX hardware and reset driver state.
+ *
+ * Alignment Limitations:
+ * - Resets driver state and clears the 64-byte aligned uncached memory pool.
  *
  * @return Success with 0, fail with -1.
  */
@@ -386,6 +431,10 @@ int libgfx_deinit(void);
  * @brief gfx_open
  * Description: Open a GFX device and return a handle.
  *
+ * Alignment Limitations:
+ * - Allocates and initializes context control blocks and command buffer structures
+ *   maintaining 64-bit (8-byte) alignment required by MA35 Family GFX Engine FE.
+ *
  * @param handle [out] Pointer to receive GFX device handle.
  * @return Success with 0, fail with -1.
  */
@@ -394,6 +443,9 @@ int gfx_open(void **handle);
 /**
  * @brief gfx_close
  * Description: Close GFX device with the handle.
+ *
+ * Alignment Limitations:
+ * - Releases context resources and internal 64-bit aligned command buffer structures.
  *
  * @param handle [in] GFX device handle.
  * @return Success with 0, fail with -1.
@@ -415,6 +467,19 @@ int gfx_close(void *handle);
  *   area->global_alpha > 0 or area->blendfunc != 0, renders a translucent filled
  *   rectangle blended over existing destination content using PE 2.0 alpha blending.
  *
+ * Alignment Limitations:
+ * - Surface Base Address: Destination buffer physical address
+ *   (area->planes[0]) must satisfy format alignment:
+ *   - 32-bpp RGB (ARGB8888, XRGB8888, RGBA8888): Minimum 4-byte (DWORD) address alignment (`addr & 3 == 0`).
+ *   - 16-bpp RGB (RGB565, BGR565): Minimum 2-byte (WORD) address alignment (`addr & 1 == 0`).
+ *   - 8-bpp (A8, INDEX8): 1-byte alignment.
+ *   - Full LCD Framebuffer: Minimum 128-byte hardware cache-line alignment
+ *     (`__attribute__((aligned(128)))`) to avoid AXI DRAM bank-conflict penalties.
+ * - Scanline Stride: Maximum stride is 262,143 bytes (< 256KB); 16-byte aligned
+ *   stride is recommended for optimal AXI burst throughput.
+ * - Geometric Dimensions & Tiling: Coordinates must fall within
+ *   [-32768, +32767]. High-speed clear requires 64x64 Super Tile alignment.
+ *
  * @param handle [in] GFX device handle.
  * @param area   [in] Pointer to gfx_surface specifying the area to be filled, clrcolor,
  *                    and optional global_alpha / blendfunc for translucent blending.
@@ -427,6 +492,38 @@ int gfx_fill(void *handle, struct gfx_surface *area);
  * Description: GFX BLT from source to destination with alternative operation
  * (Blend, Dither, etc.).
  *
+ * Alignment Limitations:
+ * - Surface Base Address Alignment (Per-Format):
+ *   - 32-bpp RGB (ARGB8888, XRGB8888, RGBA8888, ABGR8888, BGRA8888, RGBX8888, BGRX8888, XBGR8888):
+ *     Minimum 4-byte (DWORD) address alignment (`addr & 3 == 0`).
+ *   - 16-bpp RGB (RGB565, BGR565): Minimum 2-byte (WORD) address alignment (`addr & 1 == 0`).
+ *   - 8-bpp (A8, INDEX8): 1-byte alignment (no address alignment restriction).
+ *   - 24-bpp packed RGB: Minimum 16-byte address alignment (`addr & 15 == 0`).
+ *   - Planar YUV (YV12, I420): All Y (planes[0]), U (planes[1]), and V (planes[2])
+ *     plane addresses MUST be 64-byte aligned (`addr & 63 == 0`).
+ *   - Semi-Planar YUV (NV12, NV21, NV16, NV61): Both Y (planes[0]) and UV (planes[1])
+ *     plane addresses MUST be 64-byte aligned (`addr & 63 == 0`).
+ *   - Packed YUV (YUY2, UYVY, YVYU, VYUY): Source address MUST be 64-byte aligned
+ *     for filter blit; destination address MUST be 4-byte aligned (`addr & 3 == 0`).
+ *   - Full LCD Framebuffer: Minimum 128-byte hardware cache-line alignment
+ *     (`__attribute__((aligned(128)))`) to avoid AXI DRAM bank-conflict penalties.
+ * - Scanline Stride & Hardware DMA Staging:
+ *   - Destination Stride: Maximum stride is 262,143 bytes (< 256KB, 18-bit register field);
+ *     16-byte aligned stride is recommended for optimal AXI burst throughput.
+ *   - Source Stride: MA35 Family GFX Engine AXI DMA read engine requires 16-byte aligned stride.
+ *     When an input surface has an unaligned stride (`(stride & 0x0F) != 0`, e.g., 14x14
+ *     ARGB8888 = 56 bytes), the driver allocates a 16-byte aligned bounce buffer
+ *     (`aligned_stride = (stride + 15) & ~15`), copies/pads source rows, cleans D-cache,
+ *     and blits from the staged buffer to avoid DMA bus transfer faults.
+ *   - Maximum Scanline Stride: 262,143 bytes (< 256KB, 18-bit register field).
+ *   - YUV Linear Output: Y plane stride MUST be 64-byte aligned; U/V plane strides
+ *     MUST be 32-byte (planar) or 64-byte (semi-planar) aligned.
+ * - Geometric Dimensions & Coordinates:
+ *   - Coordinate range: [-32768, +32767] (32K x 32K); surface width/height up to 65,535.
+ * - Cache Coherency:
+ *   - CPU-modified source buffers must be cleaned before GPU blit.
+ *   - GPU-modified destination buffers must be invalidated before CPU reads.
+ *
  * @param handle [in] GFX device handle.
  * @param src    [in] Pointer to source surface configuration.
  * @param dst    [in] Pointer to destination surface configuration.
@@ -438,9 +535,16 @@ int gfx_blt(void *handle, struct gfx_surface *src, struct gfx_surface *dst);
  * @brief gfx_memcpy
  * Description: GFX memory copy with specified size.
  *
- * Limitations:
- * If the destination buffer is cacheable, it must be invalidated before
- * gfx_memcpy due to the alignment limitation of GFX driver.
+ * Alignment Limitations:
+ * - Buffer Addresses: Both source (`s->buf_paddr`) and destination (`d->buf_paddr`)
+ *   physical addresses should be 64-byte cache-line aligned (GFX_ALIGNMENT_BYTES = 64)
+ *   for optimal AXI burst and D-cache line coherency; minimum 4-byte (DWORD) word-aligned
+ *   for hardware 2D DMA transfer.
+ * - Chunking & Stride: Scanline chunk width is 256 words (1024 bytes); residual tail words
+ *   are padded to at least 16-byte stride (`(stride & 0x0F) == 0`). Byte remainders under
+ *   4 bytes are copied via CPU.
+ * - Cache Maintenance: If the destination buffer is cacheable, it must be
+ *   invalidated before/after gfx_memcpy due to hardware DMA cache coherency.
  *
  * @param handle [in] GFX device handle.
  * @param d      [in] Destination buffer pointer (struct gfx_buf).
@@ -454,6 +558,10 @@ int gfx_memcpy(void *handle, struct gfx_buf *d, struct gfx_buf *s, int size);
  * @brief gfx_enable
  * Description: Enable GFX capability with the specific mode.
  *
+ * Alignment Limitations:
+ * - None directly on capability flags. Bound surfaces during subsequent BLTs
+ *   must comply with hardware address and stride alignment rules.
+ *
  * @param handle [in] GFX device handle.
  * @param cap    [in] GFX capability to enable (enum gfx_cap_mode).
  * @return Success with 0, fail with -1.
@@ -463,6 +571,9 @@ int gfx_enable(void *handle, enum gfx_cap_mode cap);
 /**
  * @brief gfx_disable
  * Description: Disable GFX capability with the specific mode.
+ *
+ * Alignment Limitations:
+ * - None directly on capability flags.
  *
  * @param handle [in] GFX device handle.
  * @param cap    [in] GFX capability to disable (enum gfx_cap_mode).
@@ -475,7 +586,12 @@ int gfx_disable(void *handle, enum gfx_cap_mode cap);
  * Description: Perform cache operations for the cacheable buffer allocated
  * through the GFX driver.
  *
- * @param buf [in] Pointer to gfx_buf to be handled with cache operations.
+ * Alignment Limitations:
+ * - Cortex-A35 Cache-Line Granularity: Operates on 64-byte hardware cache-line
+ *   boundaries (GFX_ALIGNMENT_BYTES = 64). Buffer base address and size should
+ *   align with 64-byte cache lines to avoid unintentional false-sharing invalidation.
+ *
+ * @param buf [in] Pointer to gfx_buf to be handled with cache operations (64-byte aligned).
  * @param op  [in] Cache operation type (enum gfx_cache_mode).
  * @return Success with 0, fail with -1.
  */
@@ -484,6 +600,15 @@ int gfx_cache_op(struct gfx_buf *buf, enum gfx_cache_mode op);
 /**
  * @brief gfx_alloc
  * Description: Allocate a contiguous/cacheable buffer through GFX device.
+ *
+ * Alignment Limitations:
+ * - Cache-Line Alignment: All buffers returned by gfx_alloc are guaranteed
+ *   strictly 64-byte cache-line aligned (GFX_ALIGNMENT_BYTES = 64) for both
+ *   virtual address (`buf_vaddr`) and physical address (`buf_paddr`), matching
+ *   Cortex-A35 L1/L2 cache-line architecture.
+ * - LCD Framebuffer Note: Dedicated full-screen LCD framebuffers should be
+ *   allocated with 128-byte alignment (`__attribute__((aligned(128)))`) to avoid
+ *   AXI DRAM bank-conflict penalties.
  *
  * @param size      [in] Allocated size in bytes.
  * @param cacheable [in] 0: non-cacheable, 1: cacheable attribute defined by system.
@@ -495,6 +620,10 @@ struct gfx_buf *gfx_alloc(int size, int cacheable);
  * @brief gfx_free
  * Description: Free the buffer through GFX device.
  *
+ * Alignment Limitations:
+ * - Buffer pointer must have been allocated via gfx_alloc from the 64-byte aligned
+ *   memory pool.
+ *
  * @param buf [in] GFX buffer pointer to free.
  * @return Success with 0, fail with -1.
  */
@@ -503,6 +632,13 @@ int gfx_free(struct gfx_buf *buf);
 /**
  * @brief gfx_flush
  * Description: Flush GFX command and return without completing pipeline.
+ *
+ * Alignment Limitations:
+ * - Command Stream Buffer (`AQCmdBufferAddr`, MMIO 0x00654): Physical base address
+ *   MUST be 64-bit (8-byte) aligned (`paddr % 8 == 0`).
+ * - Command Stream Control (`AQCmdBufferCtrl`, MMIO 0x00658): Command stream is
+ *   automatically padded with `FE_OPCODE_NOP` (0x03 << 27) to an even number of
+ *   32-bit words (64-bit boundary) before execution trigger.
  *
  * @param handle [in] GFX device handle.
  * @return Success with 0, fail with -1.
@@ -513,6 +649,14 @@ int gfx_flush(void *handle);
  * @brief gfx_finish
  * Description: Flush GFX command and then return when pipeline is finished
  * (synchronous).
+ *
+ * Alignment Limitations:
+ * - Command Stream Buffer (`AQCmdBufferAddr`, MMIO 0x00654): Physical base address
+ *   MUST be 64-bit (8-byte) aligned (`paddr % 8 == 0`).
+ * - Double-Word Padding: Command stream is automatically padded with `FE_OPCODE_NOP`
+ *   to an even number of 32-bit words (64-bit boundary) before submission.
+ * - Cache Invalidation: Destination cacheable surfaces must be
+ *   invalidated after gfx_finish returns to ensure CPU reads updated pixel data.
  *
  * @param handle [in] GFX device handle.
  * @return Success with 0, fail with -1.
@@ -528,6 +672,22 @@ int gfx_finish(void *handle);
  * - Per-layer independent rotation and flipping via sp[i]->s.rot
  * - Destination surface rotation via sp[0]->d.rot
  * - Custom hardware block dimensions and memory traversal walking direction via cfg
+ *
+ * Alignment Limitations:
+ * - Surface Base Address: Each source layer (`sp[i]->s.planes[]`) and
+ *   destination (`sp[0]->d.planes[0]`) must satisfy format alignment:
+ *   - 32-bpp: Minimum 4-byte (DWORD) address alignment (`addr & 3 == 0`).
+ *   - 16-bpp: Minimum 2-byte (WORD) address alignment (`addr & 1 == 0`).
+ *   - 24-bpp packed: Minimum 16-byte address alignment (`addr & 15 == 0`).
+ *   - Planar/Semi-Planar YUV: All plane addresses MUST be 64-byte aligned (`addr & 63 == 0`).
+ *   - Full LCD Framebuffer: Minimum 128-byte alignment (`__attribute__((aligned(128)))`).
+ * - Scanline Stride: Source strides are automatically staged into 16-byte aligned
+ *   bounce buffers if unaligned; destination supports arbitrary stride up to 262,143 bytes (< 256KB),
+ *   with 16-byte aligned stride recommended for optimal AXI burst throughput.
+ * - Block Dimension Tuning: Horizontal block widths (`cfg->block_w`:
+ *   16, 32, 64, 128, 256, 512 pixels) align with AXI burst lengths to maximize DRAM
+ *   page-hit efficiency.
+ * - Geometric Coordinates: All coordinates must fall within [-32768, +32767].
  *
  * @param handle [in] GFX device handle.
  * @param sp     [in] Array of pointers to struct gfx_surface_pair (up to 8 pairs).
@@ -551,6 +711,14 @@ int gfx_multi_blt_ex(void *handle, struct gfx_surface_pair *sp[], int layers, co
  *   it only supports one destination surface (many-to-one).
  * - Per-layer destination rectangles may be offset; the engine uses the union.
  *
+ * Alignment Limitations:
+ * - Surface Base Address: All source and destination surface addresses
+ *   must adhere to format alignment (32bpp >= 4B, 16bpp >= 2B, YUV planes >= 64B;
+ *   LCD FB >= 128B).
+ * - Scanline Stride: Unaligned source strides are automatically staged into 16-byte
+ *   aligned bounce buffers; destination stride up to 262,143 bytes (< 256KB).
+ * - Coordinates: Range [-32768, +32767].
+ *
  * @param handle [in] GFX device handle.
  * @param sp     [in] Array of pointers to struct gfx_surface_pair.
  * @param layers [in] Number of the source layers to blit.
@@ -561,6 +729,14 @@ int gfx_multi_blt(void *handle, struct gfx_surface_pair *sp[], int layers);
 /**
  * @brief gfx_line
  * Description: Draw a hardware 2D vector line using COMMAND_LINE.
+ *
+ * Alignment Limitations:
+ * - Destination Base Address: Destination buffer (`dst->planes[0]`)
+ *   must satisfy format alignment (32-bpp >= 4B, 16-bpp >= 2B; LCD FB >= 128B).
+ * - Destination Stride: Maximum stride is 262,143 bytes (< 256KB);
+ *   16-byte aligned stride is recommended for optimal AXI burst throughput.
+ * - Geometric Coordinates: Line endpoints (`p0`, `p1`) must fall
+ *   within [-32768, +32767].
  *
  * @param handle [in] GFX device handle.
  * @param dst    [in] Destination surface.
@@ -573,6 +749,13 @@ int gfx_line(void *handle, struct gfx_surface *dst, const struct gfx_line *line,
 /**
  * @brief gfx_draw_lines
  * Description: Draw multiple hardware 2D vector lines using COMMAND_LINE.
+ *
+ * Alignment Limitations:
+ * - Destination Base Address: Destination buffer (`dst->planes[0]`)
+ *   must satisfy format alignment (32-bpp >= 4B, 16-bpp >= 2B; LCD FB >= 128B).
+ * - Destination Stride: Maximum stride is 262,143 bytes (< 256KB);
+ *   16-byte aligned stride is recommended for optimal AXI burst throughput.
+ * - Geometric Coordinates: All line endpoints must fall within [-32768, +32767].
  *
  * @param handle [in] GFX device handle.
  * @param dst    [in] Destination surface.
@@ -587,6 +770,10 @@ int gfx_draw_lines(void *handle, struct gfx_surface *dst, const struct gfx_line 
  * @brief gfx_set_colorkey
  * Description: Configure color key transparency for a surface.
  *
+ * Alignment Limitations:
+ * - Helper function configuring surface attributes; the target surface buffer
+ *   must satisfy format base address and 16-byte stride alignment when submitted to BLT.
+ *
  * @param surf   [in,out] Target surface pointer.
  * @param key_lo [in] Color key lower match value (ARGB/RGB).
  * @param key_hi [in] Color key upper match value (ARGB/RGB, 0 for exact match with key_lo).
@@ -599,6 +786,10 @@ int gfx_set_colorkey(struct gfx_surface *surf, uint32_t key_lo, uint32_t key_hi)
  * Description: Set RGB channel order (DE_SWIZZLE) on a surface format word.
  * High 16 bits of gfx_format carry the swizzle; low 16 bits stay DE_FORMAT.
  *
+ * Alignment Limitations:
+ * - Helper function configuring channel order; surface buffer must satisfy format
+ *   address alignment and 16-byte stride alignment when submitted to BLT.
+ *
  * @param surf [in,out] Target surface pointer.
  * @param swz  [in] GFX_SWIZZLE_ARGB / RGBA / ABGR / BGRA.
  * @return Success with 0, fail with -1.
@@ -609,6 +800,14 @@ int gfx_set_swizzle(struct gfx_surface *surf, enum gfx_swizzle swz);
  * @brief gfx_blt_colorkey
  * Description: Perform hardware BitBLT with Source Color Key transparency.
  * Pixels matching colorkey in the source surface will be discarded by PE.
+ *
+ * Alignment Limitations:
+ * - Surface Base Address: Source and destination surface base
+ *   addresses must satisfy format alignment (32-bpp >= 4B, 16-bpp >= 2B; LCD FB >= 128B).
+ * - Scanline Stride: If source stride is unaligned, driver stages rows into
+ *   a 16-byte aligned bounce buffer automatically; destination stride supports up
+ *   to 262,143 bytes (< 256KB), with 16-byte aligned stride recommended.
+ * - Coordinates: Range [-32768, +32767].
  *
  * @param handle   [in] GFX device handle.
  * @param src      [in] Source surface with colorkey background.
@@ -622,6 +821,16 @@ int gfx_blt_colorkey(void *handle, struct gfx_surface *src, struct gfx_surface *
  * @brief gfx_patblt
  * Description: Perform hardware Pattern Brush Blit (PatBlt) with ROP3/ROP4.
  *
+ * Alignment Limitations:
+ * - Pattern Physical Address: For 8x8 color patterns, `pat->paddr`
+ *   MUST be 8-byte (64-bit) aligned (`paddr & 7 == 0`).
+ * - Pattern Origin Offsets: `pat->origin_x` and `pat->origin_y`
+ *   MUST be clamped to 3-bit values [0, 7] (`origin & 7`).
+ * - Destination Surface: Base address must satisfy format
+ *   alignment (32-bpp >= 4B, 16-bpp >= 2B; LCD FB >= 128B). Destination stride
+ *   supports up to 262,143 bytes (< 256KB), with 16-byte aligned stride recommended.
+ * - Coordinates: Destination blit rectangle within [-32768, +32767].
+ *
  * @param handle   [in] GFX device handle.
  * @param dst      [in] Destination surface.
  * @param pat      [in] 8x8 Color/Mono Pattern Brush.
@@ -633,6 +842,16 @@ int gfx_patblt(void *handle, struct gfx_surface *dst, const struct gfx_pattern *
 /**
  * @brief gfx_draw_lines_pattern
  * Description: Draw hardware vector lines with 8x8 Pattern Brush texturing.
+ *
+ * Alignment Limitations:
+ * - Pattern Physical Address: 8x8 color pattern `pat->paddr`
+ *   MUST be 8-byte (64-bit) aligned (`paddr & 7 == 0`).
+ * - Pattern Origin Offsets: `pat->origin_x` and `pat->origin_y`
+ *   clamped to 3-bit values [0, 7].
+ * - Destination Surface: Base address format alignment
+ *   (32-bpp >= 4B, 16-bpp >= 2B; LCD FB >= 128B); stride supports up to
+ *   262,143 bytes (< 256KB), with 16-byte aligned stride recommended.
+ * - Coordinates: Line endpoints within [-32768, +32767].
  *
  * @param handle [in] GFX device handle.
  * @param dst    [in] Destination surface.
@@ -647,6 +866,17 @@ int gfx_draw_lines_pattern(void *handle, struct gfx_surface *dst, const struct g
  * @brief gfx_draw_glyph
  * Description: Render a 1-bit monochrome font glyph using hardware ROP4.
  *
+ * Alignment Limitations:
+ * - Glyph Staging & Stride: Source 1-bit monochrome glyph bitmask
+ *   rows are staged into a 16-byte aligned stride DMA bounce buffer before GPU ROP4 mono
+ *   expansion (`aligned_stride = (render_w * 4 + 15) & ~15` or 16-byte aligned mono mask stride).
+ * - Non-Byte-Aligned Widths: Arbitrary non-byte-aligned glyph widths
+ *   (e.g., 11-pixel width) are clipped by hardware destination scissor/window without buffer shearing.
+ * - Destination Surface: Base address format alignment (32-bpp >= 4B,
+ *   16-bpp >= 2B; LCD FB >= 128B); destination stride supports up to 262,143 bytes (< 256KB),
+ *   with 16-byte aligned stride recommended.
+ * - Coordinates: Destination position within [-32768, +32767].
+ *
  * @param handle [in] GFX device handle.
  * @param dst    [in] Destination surface.
  * @param x      [in] Destination top-left X coordinate.
@@ -659,6 +889,14 @@ int gfx_draw_glyph(void *handle, struct gfx_surface *dst, int x, int y, const st
 /**
  * @brief gfx_draw_glyphs
  * Description: Render an array of 1-bit monochrome glyphs in a single submission.
+ *
+ * Alignment Limitations:
+ * - Glyph Staging & Stride: Staged into 16-byte aligned stride DMA
+ *   bounce buffers before hardware ROP4 expansion.
+ * - Destination Surface: Base address format alignment (32-bpp >= 4B,
+ *   16-bpp >= 2B; LCD FB >= 128B); destination stride supports up to 262,143 bytes (< 256KB),
+ *   with 16-byte aligned stride recommended.
+ * - Coordinates: All positions within [-32768, +32767].
  *
  * @param handle    [in] GFX device handle.
  * @param dst       [in] Destination surface.
@@ -676,6 +914,10 @@ int gfx_draw_glyphs(void *handle, struct gfx_surface *dst, const struct gfx_glyp
  * PE_TRANSPARENCY programming for the given handle. Not a production blit API;
  * applications should use gfx_set_colorkey / gfx_blt_colorkey instead.
  *
+ * Alignment Limitations:
+ * - Internal test surface buffer allocations adhere to 64-byte alignment
+ *   (GFX_ALIGNMENT_BYTES = 64).
+ *
  * @param handle [in] GFX device handle.
  * @return Success with 0, fail with -1.
  */
@@ -684,6 +926,9 @@ int gfx_diag_colorkey(void *handle);
 /**
  * @brief gfx_query_feature
  * Description: Query if specific features are available in GFX BLT.
+ *
+ * Alignment Limitations:
+ * - None.
  *
  * @param handle    [in]  GFX device handle.
  * @param feature   [in]  GFX feature to query (enum gfx_feature).
@@ -695,6 +940,9 @@ int gfx_query_feature(void *handle, enum gfx_feature feature, int *available);
 /**
  * @brief gfx_get_build_date
  * Description: Get the build date and time of the libgfx library.
+ *
+ * Alignment Limitations:
+ * - None.
  *
  * @return Constant string representing build date and time (e.g., "Aug 25 2026 15:50:00").
  */
@@ -769,6 +1017,10 @@ typedef struct gfx_osal_ops {
  * gfx_flush) automatically acquire and release the corresponding OS
  * mutex/semaphore to ensure thread safety.
  *
+ * Alignment Limitations:
+ * - Synchronizes multi-task access to 64-bit aligned GPU command streams
+ *   and 64-byte cache-line aligned memory allocation pools.
+ *
  * @param ops [in] Pointer to gfx_osal_ops_t table, or NULL to reset to baremetal/fallback mode.
  * @return 0 on success, -1 on error.
  */
@@ -778,6 +1030,9 @@ int gfx_osal_register_ops(const struct gfx_osal_ops *ops);
  * @brief gfx_osal_lock
  * Description: Explicitly acquire GPU lock for atomic multi-operation batch drawing.
  *
+ * Alignment Limitations:
+ * - Serializes multi-step rendering batches to prevent interleaved command stream corruption.
+ *
  * @param timeout_ms [in] Timeout in milliseconds (or GFX_OSAL_WAIT_FOREVER).
  * @return 0 on success, -1 on error.
  */
@@ -786,6 +1041,9 @@ int gfx_osal_lock(unsigned int timeout_ms);
 /**
  * @brief gfx_osal_unlock
  * Description: Explicitly release GPU lock.
+ *
+ * Alignment Limitations:
+ * - Releases GPU lock after atomic batch submission.
  *
  * @return 0 on success, -1 on error.
  */
