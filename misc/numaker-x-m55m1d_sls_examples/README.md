@@ -1,4 +1,4 @@
-# **NuMaker-HMI-M55M1-SLS-Examples**
+# **NuMaker-X-M55M1D-SLS-Examples**
 
 | Major Folder | Description |
 |-|-|

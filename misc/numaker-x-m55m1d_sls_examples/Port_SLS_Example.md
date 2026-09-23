@@ -19,7 +19,7 @@ To click the “Caffe Machine” item and click “CREATE” button to import th
 To click the “File” and ”Project Settings” items to select the target board. Finally, to click “APPLY CHANGE”.
 
 - **Board Group**: Nuvoton
-- **Board**: NuMaker-HMI-M55M1
+- **Board**: NuMaker-X-M55M1D
 
 ![Setting](images/img3.png)
 
@@ -34,7 +34,7 @@ To click the “Export” and ”Create Template Project” items to export C so
 ## Step 5
 
 Found the SLS examples exported source folder as below.
-   **<SLSPrj>/board/numaker-hmi-m55m1/sls_files**.
+   **<SLSPrj>/board/numaker-x-m55m1d/sls_files**.
 
 ![C files](images/img6.png)
 

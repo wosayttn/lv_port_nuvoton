@@ -1,4 +1,4 @@
-# **NuMaker-HMI-M55M1_JPEGD**
+# **NuMaker-X-M55M1D_JPEGD**
 
 | Major Folder | Description |
 |-|-|

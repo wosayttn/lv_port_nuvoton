@@ -2,7 +2,7 @@
  * @file     disp_sync_ebi.c
  * @brief    Use EBI-16 with PDMA-M2M to simulate sync-type LCD timing.
  *
- * Note: Just only test with NuMaker-HMI-M55M1ES board.
+ * Note: Just only test with NuMaker-X-M55M1D board.
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/

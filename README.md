@@ -43,7 +43,7 @@ git clone --recurse-submodules https://github.com/OpenNuvoton/lv_port_nuvoton
 | **NuMaker-HMI-M3351** | [LVGL SimpleUI](./board/numaker-hmi-m3351) |
 | **NuMaker-HMI-M487** | [LVGL Widget](./board/numaker-hmi-m487) |
 | **NuMaker-HMI-M467** | [LVGL Widget](./board/numaker-hmi-m467) |
-| **NuMaker-HMI-M55M1** | [LVGL Widget](./board/numaker-hmi-m55m1)<br>[JPEG Decoder](./misc/numaker-hmi-m55m1_jpegd)<br>[SquareLine Studio Examples](./misc/numaker-hmi-m55m1_sls_examples) |
+| **NuMaker-X-M55M1D** | [LVGL Widget](./board/numaker-x-m55m1d)<br>[JPEG Decoder](./misc/numaker-x-m55m1d_jpegd)<br>[SquareLine Studio Examples](./misc/numaker-x-m55m1d_sls_examples) |
 | **NuMaker-HMI-M5531** | [LVGL Widget](./board/numaker-hmi-m5531) |
 | **NuMaker-HMI-MA35D1** | [LVGL Widget](./board/numaker-hmi-ma35d1) |
 | **NuMaker-HMI-MA35H0** | [LVGL Widget](./board/numaker-hmi-ma35h0)<br>[JPEG Decoder](./misc/numaker-hmi-ma35h0_jpegd)  |

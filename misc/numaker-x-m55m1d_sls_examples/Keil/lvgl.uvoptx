@@ -821,7 +821,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\components\task_lv.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\components\task_lv.c</PathWithFileName>
       <FilenameWithoutPath>task_lv.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -949,7 +949,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram\hyperram_code.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\spim_hyperram\hyperram_code.c</PathWithFileName>
       <FilenameWithoutPath>hyperram_code.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -985,7 +985,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma\dma350_ch_drv.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\gdma\dma350_ch_drv.c</PathWithFileName>
       <FilenameWithoutPath>dma350_ch_drv.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -997,7 +997,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma\dma350_drv.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\gdma\dma350_drv.c</PathWithFileName>
       <FilenameWithoutPath>dma350_drv.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -1009,7 +1009,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma\dma350_lib.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\gdma\dma350_lib.c</PathWithFileName>
       <FilenameWithoutPath>dma350_lib.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -1045,7 +1045,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_norflash\norflash_code.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\spim_norflash\norflash_code.c</PathWithFileName>
       <FilenameWithoutPath>norflash_code.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -1057,7 +1057,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_norflash\cmdcode.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\spim_norflash\cmdcode.c</PathWithFileName>
       <FilenameWithoutPath>cmdcode.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4133,7 +4133,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\diskio.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\diskio.c</PathWithFileName>
       <FilenameWithoutPath>diskio.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4145,7 +4145,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\sdreader.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\sdreader.c</PathWithFileName>
       <FilenameWithoutPath>sdreader.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4193,7 +4193,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\drv_pdma.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\drv_pdma.c</PathWithFileName>
       <FilenameWithoutPath>drv_pdma.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4229,7 +4229,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\touch_glue.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\touch_glue.c</PathWithFileName>
       <FilenameWithoutPath>touch_glue.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4241,7 +4241,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\disp_glue.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\disp_glue.c</PathWithFileName>
       <FilenameWithoutPath>disp_glue.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -4417,7 +4417,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\board\numaker-hmi-m55m1\plat_driver\lv_port_disp_sync.c</PathWithFileName>
+      <PathWithFileName>..\..\..\board\numaker-x-m55m1d\plat_driver\lv_port_disp_sync.c</PathWithFileName>
       <FilenameWithoutPath>lv_port_disp_sync.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>

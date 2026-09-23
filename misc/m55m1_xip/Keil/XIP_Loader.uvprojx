@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>DEF_USE_SPIM_NORFLASH=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperflash;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc</IncludePath>
+              <IncludePath>..\;..\..\..\board\numaker-x-m55m1d\plat_driver\spim_hyperram;..\..\..\board\numaker-x-m55m1d\plat_driver\spim_hyperflash;..\..\..\board\numaker-x-m55m1d\plat_driver\gdma;..\..\..\board\numaker-x-m55m1d\plat_driver\;..\..\..\board\numaker-x-m55m1d;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -503,12 +503,12 @@
             <File>
               <FileName>cmdcode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_norflash\cmdcode.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\spim_norflash\cmdcode.c</FilePath>
             </File>
             <File>
               <FileName>norflash_code.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_norflash\norflash_code.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\spim_norflash\norflash_code.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -518,7 +518,7 @@
             <File>
               <FileName>hyperflash_code.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperflash\hyperflash_code.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\spim_hyperflash\hyperflash_code.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -858,7 +858,7 @@
               <MiscControls></MiscControls>
               <Define>DEF_USE_SPIM_HYPERFLASH=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc</IncludePath>
+              <IncludePath>..\;..\..\..\board\numaker-x-m55m1d\plat_driver\spim_hyperram;..\..\..\board\numaker-x-m55m1d\plat_driver\gdma;..\..\..\board\numaker-x-m55m1d\plat_driver\;..\..\..\board\numaker-x-m55m1d;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1021,12 +1021,12 @@
             <File>
               <FileName>cmdcode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_norflash\cmdcode.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\spim_norflash\cmdcode.c</FilePath>
             </File>
             <File>
               <FileName>norflash_code.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_norflash\norflash_code.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\spim_norflash\norflash_code.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1036,7 +1036,7 @@
             <File>
               <FileName>hyperflash_code.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperflash\hyperflash_code.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\spim_hyperflash\hyperflash_code.c</FilePath>
             </File>
           </Files>
         </Group>

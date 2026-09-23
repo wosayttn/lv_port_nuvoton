@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>LV_CONF_INCLUDE_SIMPLE NVT_DCACHE_ON __FREERTOS__=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\</IncludePath>
+              <IncludePath>..\;..\..\..\board\numaker-x-m55m1d\plat_driver\spim_hyperram;..\..\..\board\numaker-x-m55m1d\plat_driver\gdma;..\..\..\board\numaker-x-m55m1d\plat_driver\;..\..\..\board\numaker-x-m55m1d;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -443,7 +443,7 @@
             <File>
               <FileName>task_lv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\components\task_lv.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\components\task_lv.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -488,17 +488,17 @@
             <File>
               <FileName>dma350_ch_drv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma\dma350_ch_drv.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\gdma\dma350_ch_drv.c</FilePath>
             </File>
             <File>
               <FileName>dma350_drv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma\dma350_drv.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\gdma\dma350_drv.c</FilePath>
             </File>
             <File>
               <FileName>dma350_lib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma\dma350_lib.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\gdma\dma350_lib.c</FilePath>
             </File>
             <File>
               <FileName>system_M55M1.c</FileName>
@@ -1867,7 +1867,7 @@
             <File>
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\drv_pdma.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\drv_pdma.c</FilePath>
             </File>
             <File>
               <FileName>nu_misc.c</FileName>
@@ -2397,7 +2397,7 @@
               <MiscControls></MiscControls>
               <Define>LV_CONF_INCLUDE_SIMPLE NVT_DCACHE_ON __FREERTOS__=1 RUN_ON_SPIM=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\..\..\board\numaker-hmi-m55m1\plat_driver\spim_hyperram;..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma;..\..\..\board\numaker-hmi-m55m1\plat_driver\;..\..\..\board\numaker-hmi-m55m1;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\</IncludePath>
+              <IncludePath>..\;..\..\..\board\numaker-x-m55m1d\plat_driver\spim_hyperram;..\..\..\board\numaker-x-m55m1d\plat_driver\gdma;..\..\..\board\numaker-x-m55m1d\plat_driver\;..\..\..\board\numaker-x-m55m1d;..\..\..\bsp\m55m1\Library\CMSIS\DSP\Include;..\..\..\bsp\M55M1\Library\CMSIS\Core\Include;..\..\..\bsp\M55M1\Library\Device\Nuvoton\M55M1\Include;..\..\..\bsp\M55M1\Library\StdDriver\inc;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\common;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM55_NTZ\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2500,7 +2500,7 @@
             <File>
               <FileName>task_lv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\components\task_lv.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\components\task_lv.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2545,17 +2545,17 @@
             <File>
               <FileName>dma350_ch_drv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma\dma350_ch_drv.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\gdma\dma350_ch_drv.c</FilePath>
             </File>
             <File>
               <FileName>dma350_drv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma\dma350_drv.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\gdma\dma350_drv.c</FilePath>
             </File>
             <File>
               <FileName>dma350_lib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\gdma\dma350_lib.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\gdma\dma350_lib.c</FilePath>
             </File>
             <File>
               <FileName>system_M55M1.c</FileName>
@@ -3924,7 +3924,7 @@
             <File>
               <FileName>drv_pdma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-m55m1\plat_driver\drv_pdma.c</FilePath>
+              <FilePath>..\..\..\board\numaker-x-m55m1d\plat_driver\drv_pdma.c</FilePath>
             </File>
             <File>
               <FileName>nu_misc.c</FileName>
