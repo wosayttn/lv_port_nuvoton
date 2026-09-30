@@ -1,6 +1,6 @@
 {
   "project_name": "lv_port_nuvoton",
-  "generated_date": "2026-09-23",
+  "generated_date": "2026-09-30",
   "supplier": "Nuvoton Technology",
   "total_components": 21,
   "vulnerability_summary": {
@@ -210,30 +210,21 @@
       "fix_state": "unknown"
     },
     {
-      "vuln_id": "CVE-2026-6683",
-      "severity": "Medium",
-      "package_name": "thirdparty/FatFs",
-      "package_version": "0.16",
-      "purl": "pkg:generic/FatFs@0.16",
-      "description": "FatFs R0.16 and earlier contains a divide-by-zero in exFAT sync logic bug when crafted metadata causes n_fatent - 2 to be zero during write/sync operations. This maps to CWE-369 (Divide By Zero). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H (4.6, Medium). Network-delivered update media can make this remote in some pipelines. The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Partial.",
-      "fix_state": "unknown"
-    },
-    {
-      "vuln_id": "CVE-2026-6686",
-      "severity": "Medium",
-      "package_name": "thirdparty/FatFs",
-      "package_version": "0.16",
-      "purl": "pkg:generic/FatFs@0.16",
-      "description": "FatFs R0.16 and earlier contains an uninitialized cluster exposure when f_lseek() extends files beyond EOF without zero-filling newly allocated clusters. This maps to CWE-908 (Use of Uninitialized Resource). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N (4.6, Medium). The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Partial.",
-      "fix_state": "unknown"
-    },
-    {
       "vuln_id": "CVE-2026-77234",
       "severity": "Critical",
       "package_name": "thirdparty/FreeRTOS",
       "package_version": "11.3.0",
       "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0",
       "description": "Improper input validation in FreeRTOS-Kernel before 11.3.1 might allow an unprivileged task on MPU-enabled ports to execute code in privileged kernel context. To remediate this issue, users should upgrade to version\u00a011.3.1 or later.",
+      "fix_state": "unknown"
+    },
+    {
+      "vuln_id": "CVE-2026-6683",
+      "severity": "Medium",
+      "package_name": "thirdparty/FatFs",
+      "package_version": "0.16",
+      "purl": "pkg:generic/FatFs@0.16",
+      "description": "FatFs R0.16 and earlier contains a divide-by-zero in exFAT sync logic bug when crafted metadata causes n_fatent - 2 to be zero during write/sync operations. This maps to CWE-369 (Divide By Zero). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H (4.6, Medium). Network-delivered update media can make this remote in some pipelines. The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Partial.",
       "fix_state": "unknown"
     },
     {
@@ -252,6 +243,15 @@
       "package_version": "11.3.0",
       "purl": "pkg:github/FreeRTOS/FreeRTOS-Kernel@11.3.0",
       "description": "Missing minimum size validation in secure context allocation in FreeRTOS-Kernel before 11.3.1 might allow local users to corrupt secure-world heap metadata via an out-of-bounds write with an undersized stack size parameter.\u00a0To remediate this issue, users should upgrade to version\u00a011.3.1 or later.",
+      "fix_state": "unknown"
+    },
+    {
+      "vuln_id": "CVE-2026-6686",
+      "severity": "Medium",
+      "package_name": "thirdparty/FatFs",
+      "package_version": "0.16",
+      "purl": "pkg:generic/FatFs@0.16",
+      "description": "FatFs R0.16 and earlier contains an uninitialized cluster exposure when f_lseek() extends files beyond EOF without zero-filling newly allocated clusters. This maps to CWE-908 (Use of Uninitialized Resource). Estimated CVSS v3.1 vector: CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N (4.6, Medium). The estimated CISA SSVC vectors are Exploitation: PoC, Technical Impact: Partial.",
       "fix_state": "unknown"
     },
     {
