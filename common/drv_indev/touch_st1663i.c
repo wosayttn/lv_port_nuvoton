@@ -10,11 +10,11 @@
 #include "numaker_touch.h"
 #include "plat_touch.h"
 
-#define ST1663I_REGITER_LEN  1
-#define ST1663I_MAX_TOUCH    5
-#define ST1663I_ADDRESS      0x55
+#define ST1663I_REGISTER_LEN  1
+#define ST1663I_MAX_TOUCH     5
+#define ST1663I_ADDRESS       0x55
 
-#define CONFIG_MAX_TOUCH     1
+#define CONFIG_MAX_TOUCH      1
 
 typedef struct
 {
@@ -128,6 +128,11 @@ static int st1663i_read_reg(uint8_t reg, uint8_t data[], uint32_t len)
 
 static void st1663i_touch_up(numaker_indev_data_t *buf, int16_t id)
 {
+    if (id < 0 || id >= CONFIG_MAX_TOUCH)
+    {
+        return;
+    }
+
     s_tp_dowm[id] = 0;
 
     buf[id].state = NUMAKER_INDEV_STATE_RELEASED;
@@ -141,6 +146,11 @@ static void st1663i_touch_up(numaker_indev_data_t *buf, int16_t id)
 
 static void st1663i_touch_down(numaker_indev_data_t *buf, int8_t id, int16_t x, int16_t y, int16_t w)
 {
+    if (id < 0 || id >= CONFIG_MAX_TOUCH)
+    {
+        return;
+    }
+
     s_tp_dowm[id] = 1;
 
     buf[id].point.x = x;
@@ -156,35 +166,44 @@ int indev_touch_get_data(numaker_indev_data_t *psInDevData)
 {
     int i, error = 0;
 
+    if (psInDevData == NULL)
+    {
+        return 0;
+    }
+
     memset(&sStRegMap, 0, sizeof(S_ST_REGMAP));
 
     error = st1663i_read_reg(0x10, (uint8_t *)&sStRegMap, sizeof(sStRegMap));
     if (error)
     {
-        printf("Get touch data failed, err:");
         goto exit_indev_touch_get_data;
     }
 
     if (sStRegMap.u8Fingers > CONFIG_MAX_TOUCH)
     {
-        printf("FW report max point:%d > panel info. max:%d", sStRegMap.u8Fingers, CONFIG_MAX_TOUCH);
         goto exit_indev_touch_get_data;
     }
 
-    if (pre_touch > sStRegMap.u8Fingers)               /* point up */
+    if (pre_touch > sStRegMap.u8Fingers)                /* point up */
     {
         for (i = 0; i < CONFIG_MAX_TOUCH; i++)
         {
             uint8_t j;
-            for (j = 0; j < sStRegMap.u8Fingers; j++)  /* this time touch num */
+            if (pre_id[i] == -1)
             {
-                if (pre_id[i] == i)                /* this id is not free */
-                    break;
+                continue;
             }
 
-            if ((j == sStRegMap.u8Fingers) && (pre_id[i] != -1))         /* free this node */
+            for (j = 0; j < sStRegMap.u8Fingers; j++)   /* this time touch num */
             {
-                // printf("free %d tid=%d\n", i, pre_id[i]);
+                if (pre_id[i] == j)                     /* this id is still active */
+                {
+                    break;
+                }
+            }
+
+            if (j == sStRegMap.u8Fingers)               /* free this node */
+            {
                 st1663i_touch_up(psInDevData, pre_id[i]);
                 pre_id[i] = -1;
             }
@@ -197,13 +216,12 @@ int indev_touch_get_data(numaker_indev_data_t *psInDevData)
 
         if (sStRegMap.m_sTP[i].u8Valid)
         {
-            uint16_t  x, y, w;
+            uint16_t x, y, w;
 
-            x = ((uint16_t)sStRegMap.m_sTP[i].u8X0_H << 8) |  sStRegMap.m_sTP[i].m_u8X0_L;
-            y = ((uint16_t)sStRegMap.m_sTP[i].u8Y0_H << 8) |  sStRegMap.m_sTP[i].m_u8Y0_L;
+            x = ((uint16_t)sStRegMap.m_sTP[i].u8X0_H << 8) | sStRegMap.m_sTP[i].m_u8X0_L;
+            y = ((uint16_t)sStRegMap.m_sTP[i].u8Y0_H << 8) | sStRegMap.m_sTP[i].m_u8Y0_L;
             w = sStRegMap.m_sTP[i].m_u8Z;
 
-            //printf("[%d] (%d %d %d %d)", sStRegMap.m_sTP[i].u8Valid, i, x, y, w);
             if (x >= DISP_HOR_RES_MAX || y >= DISP_VER_RES_MAX)
             {
                 continue;
@@ -215,15 +233,14 @@ int indev_touch_get_data(numaker_indev_data_t *psInDevData)
         {
             // Up
             st1663i_touch_up(psInDevData, i);
+            pre_id[i] = -1;
         }
 
-    } // for (i = 0; i < sStRegMap.u8TDStatus; i++)
+    } // for (i = 0; i < sStRegMap.u8Fingers; i++)
 
     pre_touch = sStRegMap.u8Fingers;
 
-    //printf("%s (%d, %d)", psInDevData->state ? "Press" : "Release", psInDevData->point.x, psInDevData->point.y);
-
-    return (psInDevData->state == NUMAKER_INDEV_STATE_PRESSED) ? 1 : 0;
+    return (psInDevData[0].state == NUMAKER_INDEV_STATE_PRESSED) ? 1 : 0;
 
 exit_indev_touch_get_data:
 
@@ -236,11 +253,11 @@ int indev_touch_init(void)
 {
     uint8_t data = 0;
 
-    memset(&pre_x[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
-    memset(&pre_y[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
-    memset(&pre_w[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
-    memset(&s_tp_dowm[0], 0,  CONFIG_MAX_TOUCH * sizeof(int16_t));
-    memset(&pre_id[0], 0xff,  CONFIG_MAX_TOUCH * sizeof(int16_t));
+    memset(&pre_x[0], 0xff,    CONFIG_MAX_TOUCH * sizeof(int16_t));
+    memset(&pre_y[0], 0xff,    CONFIG_MAX_TOUCH * sizeof(int16_t));
+    memset(&pre_w[0], 0xff,    CONFIG_MAX_TOUCH * sizeof(int16_t));
+    memset(&s_tp_dowm[0], 0,   CONFIG_MAX_TOUCH * sizeof(int16_t));
+    memset(&pre_id[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
 
     /* Hardware reset */
     INDEV_TOUCH_SET_RST;

@@ -1,6 +1,6 @@
 /**************************************************************************//**
- * @file     touch_ft5316.c
- * @brief    ft5316 touch driver
+ * @file   touch_ft5316.c
+ * @brief  ft5316 touch driver
  *
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2024 Nuvoton Technology Corp. All rights reserved.
@@ -9,11 +9,11 @@
 #include <string.h>
 #include "numaker_touch.h"
 
-#define FT5316_REGITER_LEN   1
-#define FT5316_MAX_TOUCH     5
-#define FT5316_ADDRESS       0x38
+#define FT5316_REGISTER_LEN   1
+#define FT5316_MAX_TOUCH      5
+#define FT5316_ADDRESS        0x38
 
-#define CONFIG_MAX_TOUCH     1
+#define CONFIG_MAX_TOUCH      1
 
 typedef struct
 {
@@ -98,13 +98,13 @@ typedef struct
     };
 
     uint8_t m_u8Guesture;
-#define FT_GESTURE_ID_MOVE_UP       0x10
-#define FT_GESTURE_ID_MOVE_RIGHT    0x14
-#define FT_GESTURE_ID_MOVE_DOWN     0x18
-#define FT_GESTURE_ID_MOVE_LEFT     0x1C
-#define FT_GESTURE_ID_MOVE_IN       0x48
-#define FT_GESTURE_ID_MOVE_OUT      0x49
-#define FT_GESTURE_ID_MOVE_NONE     0x00
+#define FT_GESTURE_ID_MOVE_UP        0x10
+#define FT_GESTURE_ID_MOVE_RIGHT     0x14
+#define FT_GESTURE_ID_MOVE_DOWN      0x18
+#define FT_GESTURE_ID_MOVE_LEFT      0x1C
+#define FT_GESTURE_ID_MOVE_IN        0x48
+#define FT_GESTURE_ID_MOVE_OUT       0x49
+#define FT_GESTURE_ID_MOVE_NONE      0x00
 
     union
     {
@@ -151,10 +151,10 @@ static int ft5316_write_reg(uint8_t reg, uint8_t data[], uint32_t len)
      * Sets up I2C parameters and writes data to FT5316 register.
      * FT5316 uses 1-byte register addressing.
      *
-     * @param reg[in]   Register address (8-bit)
-     * @param data[in]  Data array to write
-     * @param len[in]   Length of data in bytes
-     * @return          0 on success, error code otherwise
+     * @param reg[in]    Register address (8-bit)
+     * @param data[in]   Data array to write
+     * @param len[in]    Length of data in bytes
+     * @return           0 on success, error code otherwise
      */
 
     psIfCtx->m_pu8Reg = &reg;
@@ -174,10 +174,10 @@ static int ft5316_read_reg(uint8_t reg, uint8_t data[], uint32_t len)
      *
      * Sets up I2C parameters and reads data from FT5316 register.
      *
-     * @param reg[in]    Register address (8-bit)
-     * @param data[out]  Buffer to receive register data
-     * @param len[in]    Number of bytes to read
-     * @return           0 on success, error code otherwise
+     * @param reg[in]     Register address (8-bit)
+     * @param data[out]   Buffer to receive register data
+     * @param len[in]     Number of bytes to read
+     * @return            0 on success, error code otherwise
      */
 
     psIfCtx->m_pu8Reg = &reg;
@@ -190,6 +190,11 @@ static int ft5316_read_reg(uint8_t reg, uint8_t data[], uint32_t len)
 
 static void ft5316_touch_up(numaker_indev_data_t *buf, int16_t id)
 {
+    if (id < 0 || id >= CONFIG_MAX_TOUCH)
+    {
+        return;
+    }
+
     s_tp_dowm[id] = 0;
 
     buf[id].state = NUMAKER_INDEV_STATE_RELEASED;
@@ -203,6 +208,11 @@ static void ft5316_touch_up(numaker_indev_data_t *buf, int16_t id)
 
 static void ft5316_touch_down(numaker_indev_data_t *buf, int8_t id, int16_t x, int16_t y, int16_t w)
 {
+    if (id < 0 || id >= CONFIG_MAX_TOUCH)
+    {
+        return;
+    }
+
     s_tp_dowm[id] = 1;
 
     buf[id].point.x = x;
@@ -217,7 +227,12 @@ static void ft5316_touch_down(numaker_indev_data_t *buf, int8_t id, int16_t x, i
 int indev_touch_get_data(numaker_indev_data_t *psInDevData)
 {
     int i, error = 0;
-    int32_t   touch_event, touchid;
+    int32_t touch_event, touchid;
+
+    if (psInDevData == NULL)
+    {
+        return 0;
+    }
 
     memset(&sFtRegMap, 0, sizeof(S_FT_REGMAP));
 
@@ -232,18 +247,25 @@ int indev_touch_get_data(numaker_indev_data_t *psInDevData)
         goto exit_indev_touch_get_data;
     }
 
-    if (pre_touch > sFtRegMap.u8TDStatus)               /* point up */
+    if (pre_touch > sFtRegMap.u8TDStatus)                /* point up */
     {
         for (i = 0; i < CONFIG_MAX_TOUCH; i++)
         {
             uint8_t j;
-            for (j = 0; j < sFtRegMap.u8TDStatus; j++)  /* this time touch num */
+            if (pre_id[i] == -1)
             {
-                if (pre_id[i] == i)                /* this id is not free */
-                    break;
+                continue;
             }
 
-            if ((j == sFtRegMap.u8TDStatus) && (pre_id[i] != -1))         /* free this node */
+            for (j = 0; j < sFtRegMap.u8TDStatus; j++)   /* this time touch num */
+            {
+                if (sFtRegMap.m_sTP[j].u8TouchID == pre_id[i])
+                {
+                    break;
+                }
+            }
+
+            if (j == sFtRegMap.u8TDStatus)               /* free this node */
             {
                 ft5316_touch_up(psInDevData, pre_id[i]);
                 pre_id[i] = -1;
@@ -256,17 +278,19 @@ int indev_touch_get_data(numaker_indev_data_t *psInDevData)
         touch_event = sFtRegMap.m_sTP[i].u8EvtFlag;
         touchid = sFtRegMap.m_sTP[i].u8TouchID;
 
-        if (touchid >= 0x0f)
+        if (touchid >= 0x0F || touchid >= CONFIG_MAX_TOUCH)
+        {
             continue;
+        }
 
         pre_id[i] = touchid;
 
         if ((touch_event == FT_EVENTFLAG_PRESS_DOWN) || (touch_event == FT_EVENTFLAG_CONTACT))
         {
-            uint16_t  x, y, w;
+            uint16_t x, y, w;
 
-            x = ((uint16_t)sFtRegMap.m_sTP[i].u8X_11_8 << 8) |  sFtRegMap.m_sTP[i].u8X_7_0;
-            y = ((uint16_t)sFtRegMap.m_sTP[i].u8Y_11_8 << 8) |  sFtRegMap.m_sTP[i].u8Y_7_0;
+            x = ((uint16_t)sFtRegMap.m_sTP[i].u8X_11_8 << 8) | sFtRegMap.m_sTP[i].u8X_7_0;
+            y = ((uint16_t)sFtRegMap.m_sTP[i].u8Y_11_8 << 8) | sFtRegMap.m_sTP[i].u8Y_7_0;
             w = sFtRegMap.m_sTP[i].m_u8Weight;
 
             if (x >= DISP_HOR_RES_MAX || y >= DISP_VER_RES_MAX)
@@ -280,13 +304,14 @@ int indev_touch_get_data(numaker_indev_data_t *psInDevData)
         {
             // Up
             ft5316_touch_up(psInDevData, touchid);
+            pre_id[i] = -1;
         }
 
     } // for (i = 0; i < sFtRegMap.u8TDStatus; i++)
 
     pre_touch = sFtRegMap.u8TDStatus;
 
-    return (psInDevData->state == NUMAKER_INDEV_STATE_PRESSED) ? 1 : 0;
+    return (psInDevData[0].state == NUMAKER_INDEV_STATE_PRESSED) ? 1 : 0;
 
 exit_indev_touch_get_data:
 
@@ -299,11 +324,11 @@ int indev_touch_init(void)
 {
     uint8_t data = 0;
 
-    memset(&pre_x[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
-    memset(&pre_y[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
-    memset(&pre_w[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
-    memset(&s_tp_dowm[0], 0,  CONFIG_MAX_TOUCH * sizeof(int16_t));
-    memset(&pre_id[0], 0xff,  CONFIG_MAX_TOUCH * sizeof(int16_t));
+    memset(&pre_x[0], 0xff,    CONFIG_MAX_TOUCH * sizeof(int16_t));
+    memset(&pre_y[0], 0xff,    CONFIG_MAX_TOUCH * sizeof(int16_t));
+    memset(&pre_w[0], 0xff,    CONFIG_MAX_TOUCH * sizeof(int16_t));
+    memset(&s_tp_dowm[0], 0,   CONFIG_MAX_TOUCH * sizeof(int16_t));
+    memset(&pre_id[0], 0xff,   CONFIG_MAX_TOUCH * sizeof(int16_t));
 
     /* Hardware reset */
     INDEV_TOUCH_SET_RST;

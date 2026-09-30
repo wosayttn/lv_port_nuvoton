@@ -265,6 +265,11 @@ static int gt911_soft_reset(void)
 
 static void gt911_touch_up(numaker_indev_data_t *buf, int16_t id)
 {
+    if (id < 0 || id >= CONFIG_MAX_TOUCH)
+    {
+        return;
+    }
+
     s_tp_dowm[id] = 0;
 
     if (id == 0)
@@ -281,6 +286,11 @@ static void gt911_touch_up(numaker_indev_data_t *buf, int16_t id)
 
 static void gt911_touch_down(numaker_indev_data_t *buf, int8_t id, int16_t x, int16_t y, int16_t w)
 {
+    if (id < 0 || id >= CONFIG_MAX_TOUCH)
+    {
+        return;
+    }
+
     s_tp_dowm[id] = 1;
 
     if (id == 0)
@@ -298,10 +308,15 @@ static void gt911_touch_down(numaker_indev_data_t *buf, int8_t id, int16_t x, in
 int indev_touch_get_data(numaker_indev_data_t *psInDevData)
 {
     int i, error = 0;
-    int32_t touch_event, touchid;
+    int32_t touchid;
     uint8_t point_status = 0;
     uint8_t touch_num = 0;
     uint8_t read_buf[8 * GT911_MAX_TOUCH] = {0};
+
+    if (psInDevData == NULL)
+    {
+        return 0;
+    }
 
     /* point status register */
     error = gt911_read_reg(GT911_READ_STATUS, &point_status, 1);
@@ -334,15 +349,22 @@ int indev_touch_get_data(numaker_indev_data_t *psInDevData)
         {
             uint8_t j;
 
+            if (pre_id[i] == -1)
+            {
+                continue;
+            }
+
             for (j = 0; j < touch_num; j++)  /* this time touch num */
             {
                 touchid = read_buf[j * 8] & 0x0F;
 
-                if (pre_id[i] == touchid)    /* this id is not free */
+                if (pre_id[i] == touchid)    /* this id is still active */
+                {
                     break;
+                }
             }
 
-            if ((j == touch_num) && (pre_id[i] != -1))         /* free this node */
+            if (j == touch_num)              /* free this node */
             {
                 gt911_touch_up(psInDevData, pre_id[i]);
                 pre_id[i] = -1;
@@ -356,7 +378,14 @@ int indev_touch_get_data(numaker_indev_data_t *psInDevData)
         {
             uint16_t  x, y, w;
             uint8_t off_set = i * 8;
-            pre_id[i] = touchid = read_buf[off_set] & 0x0f;
+            
+            touchid = read_buf[off_set] & 0x0F;
+            if (touchid >= CONFIG_MAX_TOUCH)
+            {
+                continue;
+            }
+
+            pre_id[i] = touchid;
 
             x = read_buf[off_set + 1] | (read_buf[off_set + 2] << 8); /* x */
             y = read_buf[off_set + 3] | (read_buf[off_set + 4] << 8); /* y */
