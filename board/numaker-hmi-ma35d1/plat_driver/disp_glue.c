@@ -31,6 +31,43 @@ static uint8_t s_au8GfxPoolBuf[CONFIG_GFX_POOL_SIZE] __attribute__((aligned(128)
 static SemaphoreHandle_t s_gfx_gpu_mutex = NULL;
 static SemaphoreHandle_t s_gfx_mem_mutex = NULL;
 static SemaphoreHandle_t s_gfx_ctx_mutex = NULL;
+static SemaphoreHandle_t s_gfx_sem_idle = NULL;
+
+static void _gfx_osal_drain_sem_idle(void) {
+  if (s_gfx_sem_idle != NULL) {
+    (void)xSemaphoreTake(s_gfx_sem_idle, 0);
+  }
+}
+
+static int _gfx_osal_wait_gpu_idle(unsigned int timeout_ms) {
+  if (s_gfx_sem_idle == NULL) {
+    return -1;
+  }
+  if (xTaskGetSchedulerState() != taskSCHEDULER_RUNNING) {
+    return 0;
+  }
+
+  /* Quick non-blocking attempt: if semaphore is already signaled, consume and return */
+  if (xSemaphoreTake(s_gfx_sem_idle, 0) == pdTRUE) {
+    return 0;
+  }
+
+  if (timeout_ms == 0U) {
+    return -1;
+  }
+
+  TickType_t ticks;
+  if (timeout_ms == GFX_OSAL_WAIT_FOREVER) {
+    ticks = portMAX_DELAY;
+  } else {
+    ticks = pdMS_TO_TICKS(timeout_ms);
+    if (ticks == 0) {
+      ticks = 1;
+    }
+  }
+
+  return (xSemaphoreTake(s_gfx_sem_idle, ticks) == pdTRUE) ? 0 : -1;
+}
 
 static int _gfx_lock_gpu(unsigned int timeout_ms) {
   if (s_gfx_gpu_mutex == NULL)
@@ -43,6 +80,7 @@ static int _gfx_lock_gpu(unsigned int timeout_ms) {
     sysprintf("[GFX_LOCK] lock_gpu timeout (%u ms)!\n", timeout_ms);
     return -1;
   }
+  _gfx_osal_drain_sem_idle();
   return 0;
 }
 
@@ -51,7 +89,11 @@ static int _gfx_unlock_gpu(void) {
     return 0;
   BaseType_t res = xSemaphoreGiveRecursive(s_gfx_gpu_mutex);
   if (res != pdTRUE) {
-    sysprintf("[GFX_LOCK] unlock_gpu failed!\n");
+    TaskHandle_t cur = xTaskGetCurrentTaskHandle();
+    TaskHandle_t holder = xSemaphoreGetMutexHolder(s_gfx_gpu_mutex);
+    sysprintf("[GFX_LOCK] unlock_gpu failed! cur=%s holder=%s\n",
+              cur ? pcTaskGetName(cur) : "none",
+              holder ? pcTaskGetName(holder) : "none");
     return -1;
   }
   return 0;
@@ -107,6 +149,22 @@ static int _gfx_unlock_ctx(void) {
   return 0;
 }
 
+static void GFX_IRQHandler(void) {
+#define GFX_HI_CLOCK_CTRL_REG_ADDR 0x40280000UL
+#define GFX_AXI_CONFIG_REG_ADDR 0x40280008UL
+#define GFX_INTR_ACK_REG_ADDR 0x40280010UL
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+  /* Reading this register acknowledges and clears the pending interrupt. */
+  (void)*(volatile uint32_t *)GFX_INTR_ACK_REG_ADDR;
+
+  if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING) {
+    if (s_gfx_sem_idle != NULL) {
+      (void)xSemaphoreGiveFromISR(s_gfx_sem_idle, &xHigherPriorityTaskWoken);
+    }
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+  }
+}
+
 static const gfx_osal_ops_t s_gfx_freertos_ops = {
     .lock_gpu = _gfx_lock_gpu,
     .unlock_gpu = _gfx_unlock_gpu,
@@ -114,6 +172,7 @@ static const gfx_osal_ops_t s_gfx_freertos_ops = {
     .unlock_mem = _gfx_unlock_mem,
     .lock_ctx = _gfx_lock_ctx,
     .unlock_ctx = _gfx_unlock_ctx,
+    .wait_gpu_idle = _gfx_osal_wait_gpu_idle,
 };
 #endif
 #endif
@@ -183,13 +242,15 @@ int lcd_device_initialize(void) {
   DISPLIB_LCDInit(LcdPanelInfo);
 
 #if defined(LV_USE_DRAW_GFX) && (LV_USE_DRAW_GFX == 1)
-#if defined(__FREERTOS__)
+#if 1  && defined(__FREERTOS__)
   if (s_gfx_gpu_mutex == NULL)
     s_gfx_gpu_mutex = xSemaphoreCreateRecursiveMutex();
   if (s_gfx_mem_mutex == NULL)
     s_gfx_mem_mutex = xSemaphoreCreateRecursiveMutex();
   if (s_gfx_ctx_mutex == NULL)
     s_gfx_ctx_mutex = xSemaphoreCreateRecursiveMutex();
+  if (s_gfx_sem_idle == NULL)
+    s_gfx_sem_idle = xSemaphoreCreateBinary();
 
   gfx_osal_register_ops(&s_gfx_freertos_ops);
 #endif
@@ -204,6 +265,16 @@ int lcd_device_initialize(void) {
     while (1) {
     }
   }
+
+  if (s_gfx_sem_idle != NULL)
+  {
+	  /* Note: libgfx uses hardware polling for completion.
+	   * GFX IRQ is only enabled when wait_gpu_idle OSAL op is active. */
+	  IRQ_SetPriority(GFX_IRQn, portLOWEST_USABLE_INTERRUPT_PRIORITY << portPRIORITY_SHIFT);
+	  IRQ_SetHandler(GFX_IRQn, GFX_IRQHandler);
+	  IRQ_Enable(GFX_IRQn);
+  }
+
 #endif
 
   /* Configure DISP Framebuffer settings  */
@@ -229,7 +300,8 @@ int lcd_device_initialize(void) {
     goto fail;
   }
 
-  sysprintf("GFX disp handle initialized: 0x%p (libgfx)!!\n", g_gfx_disp_handle);
+  sysprintf("GFX disp handle initialized: 0x%016llX (libgfx)!!\n", (unsigned long long)g_gfx_disp_handle);
+
 #endif
 
   return 0;

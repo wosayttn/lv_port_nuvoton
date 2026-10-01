@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel <DEVELOPMENT BRANCH>
- * Copyright (C) 2021 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V11.3.0
+ * Copyright (C) 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -40,6 +40,7 @@
     .extern ullICCEOIR
     .extern ullICCIAR
     .extern _freertos_vector_table
+    .extern FreeRTOS_Abort_Dump
 
     .global FreeRTOS_IRQ_Handler
     .global FreeRTOS_SWI_Handler
@@ -245,6 +246,15 @@ FreeRTOS_SWI_Handler:
 
 FreeRTOS_Abort:
     /* Full ESR is in X0, exception class code is in X1. */
+#if defined( GUEST )
+    MRS     X2, ELR_EL1
+    MRS     X3, FAR_EL1
+#else
+    MRS     X2, ELR_EL3
+    MRS     X3, FAR_EL3
+#endif
+    MOV     X4, SP
+    BL      FreeRTOS_Abort_Dump
     B       .
 
 /******************************************************************************

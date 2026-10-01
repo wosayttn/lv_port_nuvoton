@@ -70,7 +70,7 @@ Configure the macro switch in [lv_conf.h](lv_conf.h):
 
 > **Note on Benchmark & FPS:**
 > With the implementation of hardware-accelerated **solid fill with global alpha blending (Fill + Global Alpha Blending)**, GFX acceleration reaches **approx. 55 FPS** in synthetic benchmarks such as `LV_USE_DEMO_BENCHMARK`, outperforming CPU software rendering (approx. 54 FPS with Cortex-A35 NEON SIMD).
-> Small UI elements (e.g., text, anti-aliased arcs, small icons, and borders) continue to be processed in CPU L1 cache with NEON instructions to avoid GPU/cache synchronization overhead, while GFX accelerates heavy operations (such as surface fills with/without global alpha blending, and image scaling). Beyond raw FPS, the primary benefit of GFX is offloading CPU utilization, allowing concurrent application and background processing without degrading UI responsiveness.
+> Small UI elements (e.g., text, anti-aliased arcs, small icons, and borders) continue to be processed in CPU L1 cache with NEON instructions to avoid GPU/cache synchronization overhead, while GFX accelerates heavy operations (such as large surface fills with/without global alpha blending, and image scaling). Beyond raw FPS, the primary benefit of GFX is offloading CPU utilization, allowing concurrent application and background processing without degrading UI responsiveness.
 
 ## **Purchase**
 

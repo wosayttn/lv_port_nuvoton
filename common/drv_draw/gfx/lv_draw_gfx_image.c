@@ -132,6 +132,13 @@ void lv_draw_gfx_image(lv_draw_task_t *t)
     dst_surface.rect.br.x = blend_area.x1 + dest_w;
     dst_surface.rect.br.y = blend_area.y1 + dest_h;
 
+    /* Source or destination can still belong to an earlier GFX submission. */
+    if (gfx_osal_lock(GFX_OSAL_WAIT_FOREVER) != 0)
+    {
+        sysprintf("[GFX_IMAGE] lock failed\n");
+        return;
+    }
+
     /*
      * Cache Maintenance:
      * 1. Flush source image buffer (bounding box or full image if scaled).
@@ -158,8 +165,6 @@ void lv_draw_gfx_image(lv_draw_task_t *t)
             }
         }
     }
-
-    gfx_osal_lock(GFX_OSAL_WAIT_FOREVER);
 
     /*
      * 2. Flush destination buffer dirty lines for blend_area so GPU reads updated pixels from DDR.
@@ -214,11 +219,16 @@ void lv_draw_gfx_image(lv_draw_task_t *t)
     }
 
     /* Wait for GPU pipeline completion before cache maintenance */
-    gfx_finish(g_gfx_handle);
+    int finish_ret = gfx_finish(g_gfx_handle);
+    if (ret != 0 || finish_ret != 0)
+    {
+        sysprintf("[GFX_IMAGE] draw failed submit=%d finish=%d\n", ret, finish_ret);
+        gfx_osal_unlock();
+        return;
+    }
 
-    /*
-     * 3. Clean & Invalidate destination buffer dirty lines for blend_area so CPU fetches GPU-rendered pixels from DDR.
-     */
+    /* Destination cache lines were cleaned before submission. Do not clean
+     * them again after the GPU writes, or stale CPU pixels can overwrite DDR. */
     if (dest_line_bytes == (uint32_t)dest_stride)
     {
         dcache_clean_invalidate_by_mva(dst_start, (uint32_t)dest_h * dest_stride);

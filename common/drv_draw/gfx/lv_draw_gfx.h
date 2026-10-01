@@ -73,6 +73,23 @@ void lv_draw_gfx_image(lv_draw_task_t *t);
  */
 void lv_draw_gfx_layer(lv_draw_task_t *t);
 
+/**
+ * Draw a label with GFX render. Handles A8 glyph batching.
+ * @param t             pointer to a draw task
+ */
+void lv_draw_gfx_label(lv_draw_task_t *t);
+
+/**
+ * Draw a single letter with GFX render. Handles A8 glyph.
+ * @param t             pointer to a draw task
+ */
+void lv_draw_gfx_letter(lv_draw_task_t *t);
+
+/**
+ * Deinitialize label drawing resources (e.g. glyph atlas).
+ */
+void lv_draw_gfx_label_deinit(void);
+
 /***********************
  * GLOBAL VARIABLES
  ***********************/

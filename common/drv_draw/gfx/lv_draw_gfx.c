@@ -16,6 +16,9 @@
 #include "lv_draw_gfx.h"
 
 #if LV_USE_DRAW_GFX
+#include "../../draw/lv_draw_label_private.h"
+#include "../../font/lv_font.h"
+#include "../../misc/lv_text_private.h"
 #include "../lv_draw_buf_private.h"
 #include "cache.h"
 
@@ -91,13 +94,13 @@ void lv_draw_gfx_init(void)
     }
     else
     {
-        sysprintf("[GFX_RENDER] GFX render handle initialized: 0x%p (libgfx)!\n", g_gfx_handle);
+        sysprintf("[GFX_RENDER] GFX render handle initialized: 0x%016llX  (libgfx)!\n",(unsigned long long)g_gfx_handle);
     }
 
     lv_draw_buf_handlers_t *handlers = lv_draw_buf_get_handlers();
 
     handlers->invalidate_cache_cb = _gfx_invalidate_cache;
-    handlers->buf_copy_cb = _gfx_buf_copy_cb;
+    //debug handlers->buf_copy_cb = _gfx_buf_copy_cb;
 
     lv_draw_gfx_unit_t *draw_gfx_unit =
         lv_draw_create_unit(sizeof(lv_draw_gfx_unit_t));
@@ -120,6 +123,8 @@ void lv_draw_gfx_init(void)
 
 void lv_draw_gfx_deinit(void)
 {
+    lv_draw_gfx_label_deinit();
+
     if (g_gfx_handle)
     {
         gfx_close(g_gfx_handle);
@@ -232,6 +237,7 @@ static int32_t _gfx_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
 
     switch (task->type)
     {
+#if 1
     case LV_DRAW_TASK_TYPE_FILL:
     {
         const lv_draw_fill_dsc_t *draw_dsc = (lv_draw_fill_dsc_t *)task->draw_dsc;
@@ -258,6 +264,7 @@ static int32_t _gfx_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
             goto _gfx_evaluate_not_ok;
     }
     break;
+
     case LV_DRAW_TASK_TYPE_LAYER:
     {
         const lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
@@ -285,6 +292,7 @@ static int32_t _gfx_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
             goto _gfx_evaluate_not_ok;
     }
     break;
+
     case LV_DRAW_TASK_TYPE_IMAGE:
     {
         lv_draw_image_dsc_t *draw_dsc = (lv_draw_image_dsc_t *) task->draw_dsc;
@@ -318,6 +326,96 @@ static int32_t _gfx_evaluate(lv_draw_unit_t *u, lv_draw_task_t *task)
             goto _gfx_evaluate_not_ok;
 
         if (!_gfx_draw_img_supported(draw_dsc))
+            goto _gfx_evaluate_not_ok;
+    }
+    break;
+#endif
+    case LV_DRAW_TASK_TYPE_LABEL:
+    {
+        const lv_draw_label_dsc_t *draw_dsc =
+            (const lv_draw_label_dsc_t *)task->draw_dsc;
+
+        if (draw_dsc == NULL || draw_dsc->font == NULL || draw_dsc->text == NULL ||
+                draw_dsc->text[0] == '\0' || draw_dsc->opa <= LV_OPA_MIN ||
+                draw_dsc->rotation != 0)
+            goto _gfx_evaluate_not_ok;
+
+        if (!lv_font_has_static_bitmap(draw_dsc->font))
+            goto _gfx_evaluate_not_ok;
+
+        /* Probe glyph format and stride */
+        uint32_t probe_letter = 0;
+        if (draw_dsc->text)
+        {
+            uint32_t ofs = 0;
+            while (draw_dsc->text[ofs] != '\0')
+            {
+                uint32_t ch = lv_text_encoded_next(draw_dsc->text, &ofs);
+                if (ch > ' ')
+                {
+                    probe_letter = ch;
+                    break;
+                }
+            }
+        }
+        if (probe_letter == 0)
+            probe_letter = 'A';
+
+        lv_font_glyph_dsc_t g_dsc;
+        if (!lv_font_get_glyph_dsc(draw_dsc->font, &g_dsc, probe_letter, 0))
+        {
+            if (!lv_font_get_glyph_dsc(draw_dsc->font, &g_dsc, 'A', 0))
+                goto _gfx_evaluate_not_ok;
+        }
+
+        if (g_dsc.format != LV_FONT_GLYPH_FORMAT_A8 || (g_dsc.stride & 15u) != 0 ||
+                g_dsc.stride == 0)
+            goto _gfx_evaluate_not_ok;
+
+        /* Probe static bitmap pointer to verify 64-byte alignment */
+        const void *bitmap = lv_font_get_glyph_static_bitmap(&g_dsc);
+        if (bitmap == NULL || ((uintptr_t)bitmap & 63u) != 0)
+            goto _gfx_evaluate_not_ok;
+    }
+    break;
+
+    case LV_DRAW_TASK_TYPE_LETTER:
+    {
+        const lv_draw_letter_dsc_t *draw_dsc =
+            (const lv_draw_letter_dsc_t *)task->draw_dsc;
+
+        if (draw_dsc == NULL || draw_dsc->font == NULL ||
+                draw_dsc->opa <= LV_OPA_MIN || draw_dsc->rotation != 0)
+            goto _gfx_evaluate_not_ok;
+
+        if (draw_dsc->scale_x != LV_SCALE_NONE ||
+                draw_dsc->scale_y != LV_SCALE_NONE)
+            goto _gfx_evaluate_not_ok;
+
+        if (!lv_font_has_static_bitmap(draw_dsc->font))
+            goto _gfx_evaluate_not_ok;
+
+        uint32_t probe_letter = draw_dsc->unicode;
+        lv_font_glyph_dsc_t g_dsc;
+        if (!lv_font_get_glyph_dsc(draw_dsc->font, &g_dsc, probe_letter, 0))
+        {
+            if (!lv_font_get_glyph_dsc(draw_dsc->font, &g_dsc, 'A', 0))
+                goto _gfx_evaluate_not_ok;
+        }
+
+        if (g_dsc.box_w == 0 || g_dsc.box_h == 0)
+        {
+            if (!lv_font_get_glyph_dsc(draw_dsc->font, &g_dsc, 'A', 0))
+                goto _gfx_evaluate_not_ok;
+        }
+
+        if (g_dsc.format != LV_FONT_GLYPH_FORMAT_A8 || (g_dsc.stride & 15u) != 0 ||
+                g_dsc.stride == 0)
+            goto _gfx_evaluate_not_ok;
+
+        /* Probe static bitmap pointer to verify 64-byte alignment */
+        const void *bitmap = lv_font_get_glyph_static_bitmap(&g_dsc);
+        if (bitmap == NULL || ((uintptr_t)bitmap & 63u) != 0)
             goto _gfx_evaluate_not_ok;
     }
     break;
@@ -449,6 +547,12 @@ static void _gfx_execute_drawing(lv_draw_task_t *t)
     case LV_DRAW_TASK_TYPE_IMAGE:
         lv_draw_gfx_image(t);
         break;
+    case LV_DRAW_TASK_TYPE_LABEL:
+        lv_draw_gfx_label(t);
+        break;
+    case LV_DRAW_TASK_TYPE_LETTER:
+        lv_draw_gfx_letter(t);
+        break;
     default:
         break;
     }
@@ -469,7 +573,7 @@ static void _gfx_render_thread_cb(void *ptr)
         }
         else
         {
-            sysprintf("[GFX_RENDER] GFX render handle initialized in thread: 0x%p\n", g_gfx_handle);
+            sysprintf("[GFX_RENDER] GFX render handle initialized: 0x%016llX  (libgfx)!\n",(unsigned long long)g_gfx_handle);
         }
     }
 

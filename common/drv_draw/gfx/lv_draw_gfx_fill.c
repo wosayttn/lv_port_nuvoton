@@ -135,6 +135,13 @@ void lv_draw_gfx_fill(lv_draw_task_t *t)
     uint32_t line_bytes = fill_w * bpp;
     uint8_t *dst_start = dest_buf + (blend_area.y1 * dest_stride) + (blend_area.x1 * bpp);
 
+    /* The previous GFX submission must finish before touching these cache lines. */
+    if (gfx_osal_lock(GFX_OSAL_WAIT_FOREVER) != 0)
+    {
+        sysprintf("[GFX_FILL] lock failed opa=%u\n", (unsigned int)dsc->opa);
+        return;
+    }
+
     /*
      * Cache Maintenance:
      * 1. Before GPU writes:
@@ -162,8 +169,6 @@ void lv_draw_gfx_fill(lv_draw_task_t *t)
      * Use gfx_osal_lock/unlock to hold the GPU hardware mutex continuously across
      * submission and gfx_finish(), preventing other tasks from clobbering the GPU engine!
      */
-    gfx_osal_lock(GFX_OSAL_WAIT_FOREVER);
-
     if (dsc->opa < LV_OPA_MAX)
     {
         gfx_enable(g_gfx_handle, GFX_BLEND);
@@ -183,7 +188,16 @@ void lv_draw_gfx_fill(lv_draw_task_t *t)
     }
 
     /* Wait for GPU pipeline completion before cache maintenance */
-    gfx_finish(g_gfx_handle);
+    int finish_ret = gfx_finish(g_gfx_handle);
+    if (ret != 0 || finish_ret != 0)
+    {
+        sysprintf("[GFX_FILL] draw failed submit=%d finish=%d opa=%u rect=(%d,%d,%d,%d)\n",
+                  ret, finish_ret, (unsigned int)dsc->opa,
+                  (int)blend_area.x1, (int)blend_area.y1,
+                  (int)blend_area.x2, (int)blend_area.y2);
+        gfx_osal_unlock();
+        return;
+    }
 
     /*
      * 2. After GPU writes:
@@ -192,15 +206,13 @@ void lv_draw_gfx_fill(lv_draw_task_t *t)
      */
     if (line_bytes == (uint32_t)dest_stride)
     {
-        //dcache_clean_invalidate_by_mva(dst_start, fill_h * dest_stride);
-        dcache_invalidate_by_mva(dst_start, fill_h * dest_stride);
+        dcache_clean_invalidate_by_mva(dst_start, fill_h * dest_stride);
     }
     else
     {
         for (int32_t y = 0; y < fill_h; y++)
         {
-            //dcache_clean_invalidate_by_mva(dst_start + y * dest_stride, line_bytes);
-            dcache_invalidate_by_mva(dst_start + y * dest_stride, line_bytes);
+            dcache_clean_invalidate_by_mva(dst_start + y * dest_stride, line_bytes);
         }
     }
 

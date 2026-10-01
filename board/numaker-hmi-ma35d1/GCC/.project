@@ -277,37 +277,37 @@
 		<link>
 			<name>lv_demo/lv_font_benchmark_montserrat_12_aligned.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_12_aligned.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/benchmark_assets_font_stride_64/lv_font_benchmark_montserrat_12_aligned.c</locationURI>
 		</link>
 		<link>
 			<name>lv_demo/lv_font_benchmark_montserrat_14_aligned.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_14_aligned.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/benchmark_assets_font_stride_64/lv_font_benchmark_montserrat_14_aligned.c</locationURI>
 		</link>
 		<link>
 			<name>lv_demo/lv_font_benchmark_montserrat_16_aligned.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_16_aligned.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/benchmark_assets_font_stride_64/lv_font_benchmark_montserrat_16_aligned.c</locationURI>
 		</link>
 		<link>
 			<name>lv_demo/lv_font_benchmark_montserrat_18_aligned.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_18_aligned.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/benchmark_assets_font_stride_64/lv_font_benchmark_montserrat_18_aligned.c</locationURI>
 		</link>
 		<link>
 			<name>lv_demo/lv_font_benchmark_montserrat_20_aligned.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_20_aligned.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/benchmark_assets_font_stride_64/lv_font_benchmark_montserrat_20_aligned.c</locationURI>
 		</link>
 		<link>
 			<name>lv_demo/lv_font_benchmark_montserrat_24_aligned.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_24_aligned.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/benchmark_assets_font_stride_64/lv_font_benchmark_montserrat_24_aligned.c</locationURI>
 		</link>
 		<link>
 			<name>lv_demo/lv_font_benchmark_montserrat_26_aligned.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/demos/benchmark/assets/lv_font_benchmark_montserrat_26_aligned.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/misc/benchmark_assets_font_stride_64/lv_font_benchmark_montserrat_26_aligned.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/gif.c</name>
@@ -1593,6 +1593,11 @@
 			<name>plat_driver/lv_draw_gfx_image.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gfx/lv_draw_gfx_image.c</locationURI>
+		</link>
+		<link>
+			<name>plat_driver/lv_draw_gfx_label.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/drv_draw/gfx/lv_draw_gfx_label.c</locationURI>
 		</link>
 		<link>
 			<name>plat_driver/lv_draw_gfx_layer.c</name>
