@@ -70,4 +70,4 @@ User can select listed **Target Name** to build target execution using uVision M
 
 ## **Resources**
 
-- Technical Q&A: [QA.md](misc/numaker-hmi-m3334_gif/QA.md)
+- Technical Q&A: [QA.md](./QA.md)
