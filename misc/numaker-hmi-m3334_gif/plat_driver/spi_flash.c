@@ -9,6 +9,23 @@
 #include <stdio.h>
 #include "NuMicro.h"
 #include "spi_flash.h"
+#include "drv_qspi.h"
+
+static struct nu_qspi s_NuQSPI =
+{
+    .base           = SPI_FLASH_PORT,
+    .ss_pin         = -1,
+#if defined(CONFIG_QSPI_USE_PDMA)
+    .pdma_perp_tx   = PDMA_QSPI0_TX,
+    .pdma_chanid_tx = -1,
+    .pdma_perp_rx   = PDMA_QSPI0_RX,
+    .pdma_chanid_rx = -1,
+#if defined(__FREERTOS__)
+    .m_psSemBus     = NULL,
+#endif
+    .m_u32Done      = 0,
+#endif
+};
 
 static uint32_t s_u32FlashCapacity = 4 * 1024 * 1024; /* Default 4MB (W25Q32) */
 static bool s_bInitialized = false;
@@ -184,8 +201,8 @@ int32_t SpiFlash_WaitReady(void)
 
 void SpiFlash_Read(uint32_t u32Addr, uint8_t *pu8Buf, uint32_t u32Len)
 {
-    uint32_t u32TxCnt = 0;
-    uint32_t u32RxCnt = 0;
+    if (u32Len == 0 || pu8Buf == NULL)
+        return;
 
     QSPI_SET_DATA_WIDTH(SPI_FLASH_PORT, 8);
     QSPI_ClearRxFIFO(SPI_FLASH_PORT);
@@ -201,25 +218,8 @@ void SpiFlash_Read(uint32_t u32Addr, uint8_t *pu8Buf, uint32_t u32Len)
     spi_flash_wait_busy();
     QSPI_ClearRxFIFO(SPI_FLASH_PORT);
 
-    /* Read stream pipelined using FIFO */
-    while (u32RxCnt < u32Len)
-    {
-        while (u32RxCnt < u32Len)
-        {
-					  if ((u32TxCnt - u32RxCnt < 8) && 
-							  !QSPI_GET_TX_FIFO_FULL_FLAG(SPI_FLASH_PORT) && 
-						    (u32TxCnt < u32Len))
-						{
-                QSPI_WRITE_TX(SPI_FLASH_PORT, 0x00);
-                u32TxCnt++;
-						}
-
-            if (!QSPI_GET_RX_FIFO_EMPTY_FLAG(SPI_FLASH_PORT))
-            {
-                pu8Buf[u32RxCnt++] = (uint8_t)QSPI_READ_RX(SPI_FLASH_PORT);
-            }
-        }
-    }
+    /* Read stream using QSPI PDMA */
+    nu_qspi_read_pdma(&s_NuQSPI, pu8Buf, u32Len);
 
     spi_flash_wait_busy();
     QSPI_SET_SS_HIGH(SPI_FLASH_PORT);
@@ -228,9 +228,6 @@ void SpiFlash_Read(uint32_t u32Addr, uint8_t *pu8Buf, uint32_t u32Len)
 
 void SpiFlash_QPI_FastRead(uint32_t u32Addr, uint8_t *pu8Buf, uint32_t u32Len)
 {
-    uint32_t u32TxCnt = 0;
-    uint32_t u32RxCnt = 0;
-
     if (u32Len == 0 || pu8Buf == NULL)
         return;
 
@@ -263,22 +260,8 @@ void SpiFlash_QPI_FastRead(uint32_t u32Addr, uint8_t *pu8Buf, uint32_t u32Len)
     QSPI_ENABLE_QUAD_INPUT_MODE(SPI_FLASH_PORT);
     QSPI_ClearRxFIFO(SPI_FLASH_PORT);
 
-		/* Read stream pipelined using FIFO (Safe & High-throughput) */
-		while (u32RxCnt < u32Len)
-		{
-				if ((u32TxCnt - u32RxCnt < 8) && 
-						!QSPI_GET_TX_FIFO_FULL_FLAG(SPI_FLASH_PORT) && 
-						(u32TxCnt < u32Len))
-				{
-						QSPI_WRITE_TX(SPI_FLASH_PORT, 0x00);
-						u32TxCnt++;
-				}
-
-				if (!QSPI_GET_RX_FIFO_EMPTY_FLAG(SPI_FLASH_PORT))
-				{
-						pu8Buf[u32RxCnt++] = (uint8_t)QSPI_READ_RX(SPI_FLASH_PORT);
-				}
-		}
+    /* Read stream using QSPI PDMA in Quad Mode */
+    nu_qspi_read_pdma(&s_NuQSPI, pu8Buf, u32Len);
 
     spi_flash_wait_busy();
 
@@ -315,7 +298,8 @@ void SpiFlash_SectorErase(uint32_t u32SectorAddr)
 
 void SpiFlash_PageProgram(uint32_t u32Addr, const uint8_t *pu8Buf, uint32_t u32Len)
 {
-    uint32_t i;
+    if (u32Len == 0 || pu8Buf == NULL)
+        return;
 
     SpiFlash_WriteEnable();
 
@@ -330,11 +314,11 @@ void SpiFlash_PageProgram(uint32_t u32Addr, const uint8_t *pu8Buf, uint32_t u32L
     QSPI_WRITE_TX(SPI_FLASH_PORT, (u32Addr >> 8) & 0xFF);
     QSPI_WRITE_TX(SPI_FLASH_PORT, u32Addr & 0xFF);
 
-    for (i = 0; i < u32Len; i++)
-    {
-        while (QSPI_GET_TX_FIFO_FULL_FLAG(SPI_FLASH_PORT));
-        QSPI_WRITE_TX(SPI_FLASH_PORT, pu8Buf[i]);
-    }
+    spi_flash_wait_busy();
+    QSPI_ClearRxFIFO(SPI_FLASH_PORT);
+
+    /* Write data using QSPI PDMA */
+    nu_qspi_write_pdma(&s_NuQSPI, pu8Buf, u32Len);
 
     spi_flash_wait_busy();
 
@@ -405,8 +389,11 @@ int SpiFlash_Init(void)
     /* Open QSPI0 as Master at 60 MHz */
     QSPI_Open(SPI_FLASH_PORT, QSPI_MASTER, QSPI_MODE_0, 8, 60000000);
     QSPI_SET_MSB_FIRST(SPI_FLASH_PORT);
-		QSPI_DisableAutoSS(SPI_FLASH_PORT);
+    QSPI_DisableAutoSS(SPI_FLASH_PORT);
     QSPI_SET_SS_HIGH(SPI_FLASH_PORT);
+
+    /* Initialize QSPI PDMA channels */
+    nu_qspi_init_pdma(&s_NuQSPI);
 
     /* Read JEDEC ID to identify flash */
     uint32_t u32Id = SpiFlash_ReadJedecID();

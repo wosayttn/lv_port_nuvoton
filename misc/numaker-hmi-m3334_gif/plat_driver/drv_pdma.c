@@ -125,11 +125,13 @@ static const nu_pdma_periph_ctl_t g_nu_pdma_peripheral_ctl_pool[ ] =
     { PDMA_SPI0_TX,  eMemCtl_SrcInc_DstFix },
     { PDMA_SPI1_TX,  eMemCtl_SrcInc_DstFix },
     { PDMA_SPI2_TX,  eMemCtl_SrcInc_DstFix },
+    { PDMA_QSPI0_TX,  eMemCtl_SrcInc_DstFix },
 
     // P2M
     { PDMA_SPI0_RX, eMemCtl_SrcFix_DstInc },
     { PDMA_SPI1_RX, eMemCtl_SrcFix_DstInc },
     { PDMA_SPI2_RX, eMemCtl_SrcFix_DstInc },
+    { PDMA_QSPI0_RX, eMemCtl_SrcFix_DstInc },
 };
 #define NU_PERIPHERAL_SIZE ( sizeof(g_nu_pdma_peripheral_ctl_pool) / sizeof(g_nu_pdma_peripheral_ctl_pool[0]) )
 

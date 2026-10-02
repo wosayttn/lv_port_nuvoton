@@ -46,6 +46,7 @@
 /* Stack and heap */
 #define configMINIMAL_STACK_SIZE                        (uint16_t)128
 #define configMINIMAL_SECURE_STACK_SIZE                 1024
+/* Unified with C runtime heap (heap_3.c uses malloc/free from ARM_LIB_HEAP defined in scatter file) */
 #define configTOTAL_HEAP_SIZE                           (size_t)(32 * 1024)
 #define configMAX_TASK_NAME_LEN                         12
 /* OS features */

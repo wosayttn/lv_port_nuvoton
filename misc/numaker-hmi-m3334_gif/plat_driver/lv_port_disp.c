@@ -22,10 +22,6 @@
 
 #define BUFFER_SIZE     (DISP_HOR_RES_MAX * CONFIG_DISP_LINE_BUFFER_NUMBER * (DISP_COLOR_DEPTH / 8))
 
-/* Two display buffers for concurrent rendering and flushing */
-static uint8_t s_au8FrameBuf1[BUFFER_SIZE] __attribute__((aligned(4)));
-static uint8_t s_au8FrameBuf2[BUFFER_SIZE] __attribute__((aligned(4)));
-
 #if defined(__FREERTOS__)
     static SemaphoreHandle_t s_xSemFlushDone = NULL;
 #endif
@@ -86,6 +82,13 @@ void lv_port_disp_init(void)
 {
     lv_display_t *disp;
 
+    /* Two display buffers for concurrent rendering and flushing */
+    uint8_t* pu8FrameBuf1 = (uint8_t *)nvt_malloc_align(BUFFER_SIZE, 4);
+    LV_ASSERT(pu8FrameBuf1 != NULL);
+
+    uint8_t* pu8FrameBuf2 = (uint8_t *)nvt_malloc_align(BUFFER_SIZE, 4);
+    LV_ASSERT(pu8FrameBuf2 != NULL);
+
     /* Initialize display controller and hardware */
     LV_ASSERT(lcd_device_initialize() == 0);
     LV_ASSERT(lcd_device_open() == 0);
@@ -106,8 +109,8 @@ void lv_port_disp_init(void)
     lv_display_set_flush_wait_cb(disp, lv_port_disp_flush_wait_cb);
 
     /* Set two buffers for concurrent rendering and flushing */
-    lv_display_set_buffers(disp, s_au8FrameBuf1, s_au8FrameBuf2, BUFFER_SIZE, LV_DISPLAY_RENDER_MODE_PARTIAL);
+    lv_display_set_buffers(disp, pu8FrameBuf1, pu8FrameBuf2, BUFFER_SIZE, LV_DISPLAY_RENDER_MODE_PARTIAL);
 
     LV_LOG_INFO("Dual display buffers initialized: Buf1=0x%08X, Buf2=0x%08X, Size=%u",
-                (uint32_t)s_au8FrameBuf1, (uint32_t)s_au8FrameBuf2, BUFFER_SIZE);
+                (uint32_t)pu8FrameBuf1, (uint32_t)pu8FrameBuf2, BUFFER_SIZE);
 }
