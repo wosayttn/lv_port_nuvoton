@@ -18,7 +18,7 @@
     #include "semphr.h"
 #endif
 
-#define CONFIG_LV_TASK_STACKSIZE     4096
+#define CONFIG_LV_TASK_STACKSIZE     2048
 #define CONFIG_LV_TASK_PRIORITY      (configMAX_PRIORITIES-1)
 
 extern uint32_t Image$$ARM_LIB_HEAP$$ZI$$Base[];
@@ -87,6 +87,48 @@ static void query_heap_high_water_mark(void)
            peak_pct_x10 / 10, peak_pct_x10 % 10);
 }
 
+#if defined(__FREERTOS__)
+static const char * task_state_to_str(eTaskState state)
+{
+    switch (state)
+    {
+        case eRunning:   return "Running";
+        case eReady:     return "Ready";
+        case eBlocked:   return "Blocked";
+        case eSuspended: return "Suspended";
+        case eDeleted:   return "Deleted";
+        default:         return "Unknown";
+    }
+}
+
+static void query_task_stack_high_water_mark(void)
+{
+#define MAX_TRACK_TASKS 16
+    TaskStatus_t asTaskStatus[MAX_TRACK_TASKS];
+    UBaseType_t uxArraySize = MAX_TRACK_TASKS;
+
+    UBaseType_t uxTaskCount = uxTaskGetSystemState(asTaskStatus, uxArraySize, NULL);
+
+    printf("\n[Task Stack Monitor - 10s] Total Tasks: %u\n", (unsigned int)uxTaskCount);
+    printf("  %-16s %-10s %-6s %-16s %-16s\n", "Task Name", "State", "Prio", "Min Free(Words)", "Min Free(Bytes)");
+    printf("  --------------------------------------------------------------------\n");
+
+    for (UBaseType_t i = 0; i < uxTaskCount; i++)
+    {
+        uint32_t u32FreeWords = (uint32_t)asTaskStatus[i].usStackHighWaterMark;
+        uint32_t u32FreeBytes = u32FreeWords * (uint32_t)sizeof(StackType_t);
+
+        printf("  %-16s %-10s %-6u %-16u %-16u\n",
+               asTaskStatus[i].pcTaskName,
+               task_state_to_str(asTaskStatus[i].eCurrentState),
+               (unsigned int)asTaskStatus[i].uxCurrentPriority,
+               (unsigned int)u32FreeWords,
+               (unsigned int)u32FreeBytes);
+    }
+    printf("  --------------------------------------------------------------------\n\n");
+}
+#endif /* defined(__FREERTOS__) */
+
 #if LV_USE_LOG
 static void lv_nuvoton_log(lv_log_level_t level, const char *buf)
 {
@@ -123,25 +165,36 @@ void lv_nuvoton_task(void *pdata)
     extern void ui_init(void);
     ui_init();
 
-    TickType_t xLastMonitorTime = xTaskGetTickCount();
+#if defined(__FREERTOS__)
+    TickType_t xLastHeapMonitorTime = xTaskGetTickCount();
+    TickType_t xLastStackMonitorTime = xTaskGetTickCount();
+#endif
 
     while (1)
     {
         lv_task_handler();
         vTaskDelay(pdMS_TO_TICKS(1));
 
-        if ((xTaskGetTickCount() - xLastMonitorTime) >= pdMS_TO_TICKS(5000))
+#if defined(__FREERTOS__)
+        if ((xTaskGetTickCount() - xLastHeapMonitorTime) >= pdMS_TO_TICKS(5000))
         {
-            xLastMonitorTime = xTaskGetTickCount();
+            xLastHeapMonitorTime = xTaskGetTickCount();
             query_heap_high_water_mark();
         }
+
+        if ((xTaskGetTickCount() - xLastStackMonitorTime) >= pdMS_TO_TICKS(10000))
+        {
+            xLastStackMonitorTime = xTaskGetTickCount();
+            query_task_stack_high_water_mark();
+        }
+#endif
     }
 }
 
 
 int task_lv_init(void)
 {
-    xTaskCreate(lv_tick_task, "lv_tick", 1024, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
+    xTaskCreate(lv_tick_task, "lv_tick", 256, NULL, CONFIG_LV_TASK_PRIORITY - 1, NULL);
     xTaskCreate(lv_nuvoton_task, "lv_hdler", CONFIG_LV_TASK_STACKSIZE, NULL, CONFIG_LV_TASK_PRIORITY, NULL);
     return 0;
 }

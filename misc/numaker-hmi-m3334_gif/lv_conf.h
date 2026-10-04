@@ -10,6 +10,7 @@
 #define LV_CONF_H
 
 #define LV_USE_OS   LV_OS_FREERTOS
+#define LV_DRAW_THREAD_STACK_SIZE       (2 * 1024)
 
 #if defined(__320x240__)
     #define LV_HOR_RES_MAX                  320

@@ -69,3 +69,51 @@ static inline void gif_blend_to_rgb565(GIFDRAW * pDraw, lv_draw_buf_t * draw_buf
 | **標準 LVGL GIF (`lv_gif`)** | **必須 (153.6 KB)** | 否 (需經過物件畫布) | 動畫前後幀疊加、透明色穿透、交錯式掃描、LVGL UI 管線架構需求。 |
 | **裸機/特定 GIF 直刷 LCD** | 可不需要 (僅需單行緩衝區) | 可以 (限特定條件) | 需滿足：<br>1. 非交錯式<br>2. 每一影格皆為 320x240 無透明疊加<br>3. 直接調用 SPI 寫入 ILI9341 內部 GRAM (跳過 LVGL UI 物件系統)。 |
 | **MJPEG / JPEG 播放** | **不需要** | **完全支援** | JPEG 每一影格都是獨立的完整影像，天然支援 16x16 MCU block / 逐行解碼，可以用兩個局部緩衝區 (如 30 行) 邊解邊送。 |
+
+---
+
+### **Q3: 能依據 bss_end 和 SRAM 邊界自動計算 HEAP SIZE 嗎？**
+
+**答案：完全可以，且本專案已在 Keil 散列加載文件 (`m3331.sct`) 實作自動計算！**
+
+#### 1. 傳統硬編碼 (Hardcoded) 的痛點
+在傳統的 Keil Scatter File (`.sct`) 中，通常手動固定一個尺寸：
+```sct
+#define __HEAP_SIZE  0x00048000  /* 固定 288 KB */
+#define __RW_SIZE    (__RAM_SIZE - __STACK_SIZE - __HEAP_SIZE) /* 剩餘僅 28 KB 給靜態變數 */
+```
+- **缺點 A（浪費內存）**：若全域變數只用 8 KB，未使用的 20 KB 空間將無法被 Heap 使用。
+- **缺點 B（維護不易）**：若全域變數增加超過 28 KB，編譯器立即報錯 `Region RW_RAM has overflowed`，必須手動微調算術。
+
+#### 2. 本專案採用的動態自動計算架構 (`m3331.sct`)
+利用 Armlink 的符號計算引擎與 `ImageLimit(RW_RAM)`（即 `bss_end`，全域靜態變數的結束位址）：
+```sct
+#define __RAM_BASE      0x20000000
+#define __RAM_SIZE      0x00050000
+#define __RAM_END       (__RAM_BASE + __RAM_SIZE)   /* 0x20050000 (SRAM 頂部) */
+
+#define __STACK_SIZE    0x00001000
+#define __HEAP_SIZE     (__RAM_END - AlignExpr(ImageLimit(RW_RAM), 8)) /* 自動延伸至 SRAM 頂部 */
+
+LR_ROM __RO_BASE __RO_SIZE {
+  ...
+  ARM_LIB_STACK (__STACK_TOP) EMPTY -(__STACK_SIZE) {   ; 4 KB 堆疊位於 SRAM 底部
+  }
+
+  RW_RAM __RW_BASE (__RAM_SIZE - __STACK_SIZE) {        ; 靜態變數區 (RW + ZI / BSS)
+   .ANY (+RW +ZI)
+  }
+
+  ARM_LIB_HEAP (AlignExpr(+0, 8)) EMPTY __HEAP_SIZE {   ; Heap 起點為 bss_end，終點為 SRAM_END
+  }
+}
+```
+
+#### 3. 自動計算效果與實測數據
+- **`RW_RAM` 彈性成長**：全域/靜態變數不再受限於 28 KB，最多可靈活使用達 316 KB。
+- **`ARM_LIB_HEAP` 最大化**：
+  - 起始位址 `Base`：自動緊接在 `RW_RAM` 之後（`0x20002F30`，即 `bss_end` 8位元組對齊處）。
+  - 終止位址 `Limit`：精確對齊至 `0x20050000`（`__RAM_END`）。
+  - **實際可用 Heap 大小**：由原先死板的 288 KB 自動擴展至 **308.2 KB (315,600 Bytes)**，靜態變數越少，Heap 自動獲得越多！
+- **C 語言運行時完全同步**：
+  `task_lv.c` 中的 Heap 監控函式可直接透過 Arm C Runtime 的 `Image$$ARM_LIB_HEAP$$ZI$$Base` 與 `Image$$ARM_LIB_HEAP$$ZI$$Limit` 自動讀出當前編譯後的精確全幅大小，無需任何手動常數設定。
