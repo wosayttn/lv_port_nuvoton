@@ -8,9 +8,11 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "NuMicro.h"
 #include "lvgl.h"
 #include "ui.h"
 #include "fatfs_spinor.h"
+#include "msc_spinor.h"
 
 #define MAX_GIF_FILES    16
 
@@ -122,12 +124,67 @@ static void gif_watchdog_cb(lv_timer_t *timer)
 
 void ui_init(void)
 {
-    /* 1. Initialize SPI NOR Flash and mount FatFs drive A: */
-    int ret = fatfs_spinor_init();
-
-    /* 2. Configure screen background */
+    /* Configure screen background */
     lv_obj_t *scr = lv_screen_active();
     lv_obj_set_style_bg_color(scr, lv_color_hex(0x000000), 0);
+
+#if defined(NUFUN) && (NUFUN == 1)
+    /* NuFun: Read PH.4 input pin (0 = Enable CherryUSB MSC export mode, 1 = Normal operation) */
+    SET_GPIO_PH4();
+    GPIO_SetMode(PH, BIT4, GPIO_MODE_INPUT);
+    GPIO_SetPullCtl(PH, BIT4, GPIO_PUSEL_PULL_UP);
+    GPIO_ENABLE_DIGITAL_PATH(PH, BIT4);
+    for (volatile int i = 0; i < 0x2000; i++);
+
+    int ph4_val = PH4;
+    printf("[UI] NuFun: Reading PH4 input = %d\n", ph4_val);
+
+    if (ph4_val == 0)
+    {
+        /* Header title */
+        lv_obj_t *title = lv_label_create(scr);
+        lv_label_set_text(title, "LVGL GIF Animation");
+        lv_obj_set_style_text_color(title, lv_color_hex(0xFFFFFF), 0);
+        lv_obj_set_style_text_font(title, &lv_font_montserrat_16, 0);
+        lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 16);
+
+        /* Subtitle indicating USB MSC Export */
+        lv_obj_t *sub = lv_label_create(scr);
+        lv_label_set_text(sub, "USB MSC Export Active (HSUSBD)");
+        lv_obj_set_style_text_color(sub, lv_color_hex(0x20D890), 0);
+        lv_obj_set_style_text_font(sub, &lv_font_montserrat_12, 0);
+        lv_obj_align(sub, LV_ALIGN_TOP_MID, 0, 38);
+
+        /* Card showing MSC mode */
+        lv_obj_t *msc_card = lv_obj_create(scr);
+        lv_obj_set_size(msc_card, 220, 80);
+        lv_obj_align(msc_card, LV_ALIGN_CENTER, 0, 10);
+        lv_obj_set_style_bg_color(msc_card, lv_color_hex(0x20303B), 0);
+        lv_obj_set_style_border_color(msc_card, lv_color_hex(0x40A0E0), 0);
+        lv_obj_set_style_border_width(msc_card, 2, 0);
+        lv_obj_set_style_radius(msc_card, 10, 0);
+
+        lv_obj_t *msg = lv_label_create(msc_card);
+        lv_label_set_text(msg, "USB MSC Mode");
+        lv_obj_set_style_text_color(msg, lv_color_hex(0x55FF55), 0);
+        lv_obj_set_style_text_font(msg, &lv_font_montserrat_20, 0);
+        lv_obj_center(msg);
+
+        lv_obj_t *info = lv_label_create(scr);
+        lv_label_set_text(info, "PH4=0: Exporting SPI NOR flash to PC");
+        lv_obj_set_style_text_color(info, lv_color_hex(0xA0A0A0), 0);
+        lv_obj_set_style_text_font(info, &lv_font_montserrat_12, 0);
+        lv_obj_align(info, LV_ALIGN_BOTTOM_MID, 0, -10);
+
+        /* Start CherryUSB MSC to export SPI NOR flash storage to host */
+        printf("[UI] PH4 == 0: Starting CherryUSB MSC storage export...\n");
+        msc_spinor_init();
+        return;
+    }
+#endif
+
+    /* 1. Initialize SPI NOR Flash and mount FatFs drive A: */
+    int ret = fatfs_spinor_init();
 
     if (ret != 0)
     {
@@ -138,20 +195,16 @@ void ui_init(void)
         lv_obj_set_style_text_font(title, &lv_font_montserrat_16, 0);
         lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 16);
 
-        /* Subtitle indicating flash source and 2-buf concurrent pipeline */
+        /* Subtitle indicating USB MSC Export */
         lv_obj_t *sub = lv_label_create(scr);
-#if defined(NUFUN) && (NUFUN==1)
-        lv_label_set_text(sub, "QSPI0 Flash (PC0~5) | 2 Buf // Flush(PDMA)");
-#else
-        lv_label_set_text(sub, "QSPI0 Flash (PA0~5) | 2 Buf // Flush(PDMA)");
-#endif
+        lv_label_set_text(sub, "USB MSC Export Active (HSUSBD)");
         lv_obj_set_style_text_color(sub, lv_color_hex(0x20D890), 0);
         lv_obj_set_style_text_font(sub, &lv_font_montserrat_12, 0);
         lv_obj_align(sub, LV_ALIGN_TOP_MID, 0, 38);
 
         /* Mount or file open failed - show Mount Fail! message */
         lv_obj_t *err_card = lv_obj_create(scr);
-        lv_obj_set_size(err_card, 200, 80);
+        lv_obj_set_size(err_card, 220, 80);
         lv_obj_align(err_card, LV_ALIGN_CENTER, 0, 10);
         lv_obj_set_style_bg_color(err_card, lv_color_hex(0x3B2020), 0);
         lv_obj_set_style_border_color(err_card, lv_color_hex(0xE04040), 0);
@@ -165,10 +218,14 @@ void ui_init(void)
         lv_obj_center(msg);
 
         lv_obj_t *info = lv_label_create(scr);
-        lv_label_set_text(info, "Check QSPI0 NOR Flash or FAT filesystem");
+        lv_label_set_text(info, "USB MSC: Connect USB to PC to write disk");
         lv_obj_set_style_text_color(info, lv_color_hex(0xA0A0A0), 0);
         lv_obj_set_style_text_font(info, &lv_font_montserrat_12, 0);
         lv_obj_align(info, LV_ALIGN_BOTTOM_MID, 0, -10);
+
+        /* Start CherryUSB MSC to export SPI NOR flash storage to host */
+        printf("[UI] Mount failed (%d)! Starting CherryUSB MSC storage export...\n", ret);
+        msc_spinor_init();
         return;
     }
 

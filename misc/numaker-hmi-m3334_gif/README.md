@@ -36,8 +36,13 @@ This application demonstrates LVGL GIF animation playback from an on-board SPI N
    - Logical drive `A:` mounted directly on SPI NOR Flash.
    - Automatically scans and carousels (輪播) all GIF animations found on drive `A:`.
    - Plays each GIF animation completely to its final frame before smoothly transitioning to the next GIF.
-   - If mounting fails or no GIF file is found, the UI displays a `"Mount Fail!"` message.
+   - If mounting fails or no GIF file is found, the UI displays a `"Mount Fail!"` message and activates CherryUSB MSC export.
    - Use [fat/make_fat_image.bat](fat/make_fat_image.bat) to build `fat_root.bin` from files in [fat/root/](fat/root/).
+4. **CherryUSB MSC Storage Export (Manual Trigger & Auto Mount Failure)**:
+   - Integrated CherryUSB device stack ([thirdparty/CherryUSB](../../thirdparty/CherryUSB)) with Nuvoton M3331 HSUSBD driver ([misc/CherryUSB-port](../CherryUSB-port)).
+   - **NuFun PH4 Manual Trigger**: On boot, reads GPIO pin `PH.4`. If `PH4 == 0` (e.g. user button pressed / active-low), forces entry into CherryUSB MSC mode to export the SPI NOR Flash as a High-Speed USB drive. If `PH4 == 1`, normal GIF playback execution proceeds.
+   - **Auto Mount Failure Export**: When SPI NOR Flash mounting fails (`fatfs_spinor_init() != 0`), CherryUSB MSC is automatically initialized to export the SPI NOR Flash as a USB Mass Storage drive (High-Speed 480 Mbps) to the host PC.
+   - The user can connect the board's High-Speed USB port to a PC to format the drive or directly write GIF files without external flash programmers.
 
 ## **KEIL project**
 

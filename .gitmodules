@@ -71,3 +71,6 @@
 	path = thirdparty/FatFs
 	url = https://github.com/abbrev/fatfs
 	branch = refs/tags/R0.16
+[submodule "thirdparty/CherryUSB"]
+	path = thirdparty/CherryUSB
+	url = https://github.com/cherry-embedded/CherryUSB

@@ -184,15 +184,74 @@ void SpiFlash_EnableQE(void)
     s_bQEEnabled = true;
 }
 
+void SpiFlash_Unprotect(void)
+{
+    uint8_t u8Status1 = SpiFlash_ReadStatusReg();
+    uint8_t u8Status2 = SpiFlash_ReadStatusReg2();
+
+    /* Block protection bits in Status Register 1: BP0, BP1, BP2, BP3/TB, BP4/SEC (bits 2..6, mask 0x7C)
+     * Complement protection bit in Status Register 2: CMP (bit 6, mask 0x40) */
+    if ((u8Status1 & 0x7C) != 0 || (u8Status2 & 0x40) != 0)
+    {
+        printf("[SPI_FLASH] Block protection active (SR1=0x%02X, SR2=0x%02X). Unprotecting...\n",
+               u8Status1, u8Status2);
+
+        /* Clear BP bits in SR1; clear CMP in SR2 while preserving/enabling QE (bit 1) */
+        uint8_t u8NewStatus1 = u8Status1 & ~0x7C;
+        uint8_t u8NewStatus2 = (u8Status2 & ~0x40) | 0x02;
+
+        SpiFlash_WriteStatusReg(u8NewStatus1, u8NewStatus2);
+
+        u8Status1 = SpiFlash_ReadStatusReg();
+        u8Status2 = SpiFlash_ReadStatusReg2();
+        printf("[SPI_FLASH] Unprotected status: SR1=0x%02X, SR2=0x%02X\n", u8Status1, u8Status2);
+    }
+    else
+    {
+        printf("[SPI_FLASH] Block protection: None (SR1=0x%02X, SR2=0x%02X)\n",
+               u8Status1, u8Status2);
+    }
+
+    /* Command 0x98: Global Block/Sector Unlock (ULBPR) for chips supporting Individual Block Lock (WPS) */
+    SpiFlash_WriteEnable();
+
+    QSPI_SET_DATA_WIDTH(SPI_FLASH_PORT, 8);
+    QSPI_ClearRxFIFO(SPI_FLASH_PORT);
+
+    QSPI_SET_SS_LOW(SPI_FLASH_PORT);
+
+    QSPI_WRITE_TX(SPI_FLASH_PORT, 0x98);
+
+    spi_flash_wait_busy();
+
+    QSPI_SET_SS_HIGH(SPI_FLASH_PORT);
+    QSPI_ClearRxFIFO(SPI_FLASH_PORT);
+
+    SpiFlash_WaitReady();
+}
+
 int32_t SpiFlash_WaitReady(void)
 {
-    uint32_t u32Timeout = SystemCoreClock / 2;
+    uint32_t u32Timeout = 5000;
 
     while (u32Timeout--)
     {
         uint8_t status = SpiFlash_ReadStatusReg();
         if ((status & 0x01) == 0) /* BUSY bit is 0 */
             return 0;
+
+#if defined(__FREERTOS__)
+        if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED)
+        {
+            vTaskDelay(pdMS_TO_TICKS(1));
+        }
+        else
+        {
+            for (volatile int i = 0; i < 0x2000; i++);
+        }
+#else
+        for (volatile int i = 0; i < 0x2000; i++);
+#endif
     }
 
     printf("[SPI_FLASH] Timeout waiting for flash ready\n");
@@ -395,6 +454,9 @@ int SpiFlash_Init(void)
     /* Initialize QSPI PDMA channels */
     nu_qspi_init_pdma(&s_NuQSPI);
 
+    /* Wait for any previous in-progress flash write/erase operation to complete safely */
+    SpiFlash_WaitReady();
+
     /* Read JEDEC ID to identify flash */
     uint32_t u32Id = SpiFlash_ReadJedecID();
     printf("[SPI_FLASH] JEDEC ID = 0x%06X\n", u32Id);
@@ -419,6 +481,9 @@ int SpiFlash_Init(void)
 
     /* Ensure Quad Enable bit (QE) is set in flash status register */
     SpiFlash_EnableQE();
+
+    /* Unprotect block protection to ensure all sectors are writable and erasable */
+    SpiFlash_Unprotect();
 
     s_bInitialized = true;
     return 0;

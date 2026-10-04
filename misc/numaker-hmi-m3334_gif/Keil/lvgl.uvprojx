@@ -338,9 +338,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-include ../ffconf.h</MiscControls>
-              <Define>__320x240__ CPU_CORTEX_M33 LV_CONF_INCLUDE_SIMPLE CONFIG_DISP_ILI9341=1 __FREERTOS__=1 NUFUN=1</Define>
+              <Define>__320x240__ CPU_CORTEX_M33 LV_CONF_INCLUDE_SIMPLE CONFIG_DISP_ILI9341=1 __FREERTOS__=1 NUFUN=1 BSP_USING_HSUSBD=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\components;..\fat;..\plat_driver;..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Include;..\..\..\bsp\m3331\Library\CMSIS\Core\Include;..\..\..\bsp\m3331\Library\StdDriver\inc;..\..\..\thirdparty\FatFs\source;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM33\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\</IncludePath>
+              <IncludePath>..\;..\components;..\fat;..\plat_driver;..\..\CherryUSB-port;..\..\..\thirdparty\CherryUSB\common;..\..\..\thirdparty\CherryUSB\core;..\..\..\thirdparty\CherryUSB\class\msc;..\..\..\thirdparty\CherryUSB\osal;..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Include;..\..\..\bsp\m3331\Library\CMSIS\Core\Include;..\..\..\bsp\m3331\Library\StdDriver\inc;..\..\..\thirdparty\FatFs\source;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM33\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1263,6 +1263,46 @@
               <FileName>multithread.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\multithread.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>CherryUSB</GroupName>
+          <Files>
+            <File>
+              <FileName>msc_spinor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\msc_spinor.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\CherryUSB\core\usbd_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\CherryUSB\class\msc\usbd_msc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_osal_freertos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\CherryUSB\osal\usb_osal_freertos.c</FilePath>
+            </File>
+            <File>
+              <FileName>glue_nuvoton.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\CherryUSB-port\glue_nuvoton.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_dc_hs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\CherryUSB-port\usb_dc_hs.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_glue_m3331.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\CherryUSB-port\usb_glue_m3331.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1600,9 +1640,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-include ../ffconf.h</MiscControls>
-              <Define>__320x240__ CPU_CORTEX_M33 LV_CONF_INCLUDE_SIMPLE CONFIG_DISP_ILI9341=1 __FREERTOS__=1</Define>
+              <Define>__320x240__ CPU_CORTEX_M33 LV_CONF_INCLUDE_SIMPLE CONFIG_DISP_ILI9341=1 __FREERTOS__=1 BSP_USING_HSUSBD=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\components;..\fat;..\plat_driver;..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Include;..\..\..\bsp\m3331\Library\CMSIS\Core\Include;..\..\..\bsp\m3331\Library\StdDriver\inc;..\..\..\thirdparty\FatFs\source;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM33\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\</IncludePath>
+              <IncludePath>..\;..\components;..\fat;..\plat_driver;..\..\CherryUSB-port;..\..\..\thirdparty\CherryUSB\common;..\..\..\thirdparty\CherryUSB\core;..\..\..\thirdparty\CherryUSB\class\msc;..\..\..\thirdparty\CherryUSB\osal;..\..\..\bsp\m3331\Library\Device\Nuvoton\m3331\Include;..\..\..\bsp\m3331\Library\CMSIS\Core\Include;..\..\..\bsp\m3331\Library\StdDriver\inc;..\..\..\thirdparty\FatFs\source;..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM33\non_secure;..\..\..\thirdparty\FreeRTOS\include;..\..\..\common;..\..\..\common\drv_disp;..\..\..\common\drv_indev;..\..\..\lvgl\src;..\..\..\lvgl\src\core;..\..\..\lvgl\src\draw;..\..\..\lvgl\src\draw\sw;..\..\..\lvgl\src\font;..\..\..\lvgl\src\misc;..\..\..\lvgl\src\widgets;..\..\..\lvgl\demos\;..\..\..\lvgl\demos\benchmark;..\..\..\lvgl\demos\music;..\..\..\lvgl\demos\stress;..\..\..\lvgl\demos\widgets;..\..\..\lvgl\demos\music\assets;..\..\..\lvgl\demos\keypad_encoder;..\..\..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2525,6 +2565,46 @@
               <FileName>multithread.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\multithread.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>CherryUSB</GroupName>
+          <Files>
+            <File>
+              <FileName>msc_spinor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\msc_spinor.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\CherryUSB\core\usbd_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\CherryUSB\class\msc\usbd_msc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_osal_freertos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\thirdparty\CherryUSB\osal\usb_osal_freertos.c</FilePath>
+            </File>
+            <File>
+              <FileName>glue_nuvoton.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\CherryUSB-port\glue_nuvoton.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_dc_hs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\CherryUSB-port\usb_dc_hs.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_glue_m3331.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\CherryUSB-port\usb_glue_m3331.c</FilePath>
             </File>
           </Files>
         </Group>

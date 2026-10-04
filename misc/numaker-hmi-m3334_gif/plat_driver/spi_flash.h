@@ -23,6 +23,7 @@ uint8_t  SpiFlash_ReadStatusReg(void);
 uint8_t  SpiFlash_ReadStatusReg2(void);
 void     SpiFlash_WriteStatusReg(uint8_t u8Value1, uint8_t u8Value2);
 void     SpiFlash_EnableQE(void);
+void     SpiFlash_Unprotect(void);
 void     SpiFlash_Read(uint32_t u32Addr, uint8_t *pu8Buf, uint32_t u32Len);
 void     SpiFlash_QPI_FastRead(uint32_t u32Addr, uint8_t *pu8Buf, uint32_t u32Len);
 void     SpiFlash_WriteSector(uint32_t u32SectorAddr, const uint8_t *pu8Buf);

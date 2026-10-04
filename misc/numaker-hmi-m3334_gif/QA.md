@@ -117,3 +117,23 @@ LR_ROM __RO_BASE __RO_SIZE {
   - **實際可用 Heap 大小**：由原先死板的 288 KB 自動擴展至 **308.2 KB (315,600 Bytes)**，靜態變數越少，Heap 自動獲得越多！
 - **C 語言運行時完全同步**：
   `task_lv.c` 中的 Heap 監控函式可直接透過 Arm C Runtime 的 `Image$$ARM_LIB_HEAP$$ZI$$Base` 與 `Image$$ARM_LIB_HEAP$$ZI$$Limit` 自動讀出當前編譯後的精確全幅大小，無需任何手動常數設定。
+
+---
+
+### **Q4: 當 SPI NOR Flash 掛載失敗時，如何透過 CherryUSB MSC 匯出成隨身碟給 PC 存取？**
+
+**答案：本專案已整合 CherryUSB 裝置端堆疊與 M3331 HSUSBD 高速驅動，在掛載失敗時自動啟動 MSC 隨身碟功能。**
+
+#### 1. 架構與觸發機制
+- **條件觸發**：在 `ui_init()` 呼叫 `fatfs_spinor_init()` 時，若 SPI NOR Flash 尚未格式化或未找到有效 FAT 檔案系統（回傳非 0）：
+  1. 螢幕顯示 `"Mount Fail!"` 與指示訊息 `"USB MSC: Connect USB to PC to write disk"`。
+  2. 自動呼叫 `msc_spinor_init()`，啟動 CherryUSB Mass Storage Class 裝置。
+- **硬體層 (`misc/CherryUSB-port`)**：
+  - `usb_glue_m3331.c`：配置 M3331 專屬 High-Speed PHY（`SYS->USBPHY`）、重置與致能 `HSUSBD_MODULE` 時鐘。
+  - `usb_dc_hs.c`：控制 M3331 HSUSBD 引擎，處理 `USBD20_IRQHandler` 中斷。
+  - `glue_nuvoton.c`：轉接 CherryUSB Device 核心與底層控制器回呼。
+- **儲存層 (`components/msc_spinor.c`)**：
+  - 區塊大小 (`scsi_blk_size`) 設為 4096 位元組，與 SPI NOR Flash 物理抹除區塊及 FAT 檔案系統完美 1:1 對齊。
+  - 讀取回呼：調用 `SpiFlash_QPI_FastRead()` 透過 QSPI 快速讀出。
+  - 寫入回呼：調用 `SpiFlash_WriteSector()` 抹除並寫入對應 4KB 區塊。
+  - 啟用 `CONFIG_USBDEV_MSC_THREAD`：將讀寫操作自中斷移至 FreeRTOS 任務中執行，確保 QSPI PDMA 等待信號量合法且不阻塞中斷。
