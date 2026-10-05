@@ -97,6 +97,10 @@
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1
+#define LV_USE_MEM_MONITOR              1
+#if LV_USE_MEM_MONITOR
+    #define LV_USE_MEM_MONITOR_POS          LV_ALIGN_TOP_RIGHT
+#endif
 #define LV_USE_LOG                      0
 
 /* Memory manager: use standard C library malloc/free/realloc to unify with C Runtime & FreeRTOS Heap */

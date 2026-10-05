@@ -4,25 +4,24 @@ This application demonstrates LVGL GIF animation playback from an on-board SPI N
 
 ## **Architecture Overview**
 
-```
-+-------------------------------------------------------------+
-|                      FreeRTOS / LVGL Task                   |
-|                                                             |
-|  Frame N+1:                                                 |
-|  [ GIF Decode / Software Rendering ] ---> Write to Buffer 2 |
-+-------------------------------------------------------------+
-                              || (Concurrent Execution)
-+-------------------------------------------------------------+
-|                      Hardware SPI1 + PDMA                   |
-|                                                             |
-|  Frame N:                                                   |
-|  Buffer 1 ---> SPI1 TX PDMA ---> ILI9341 LCD Panel          |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TB
+    subgraph SW["CPU: FreeRTOS / LVGL Task"]
+        direction LR
+        GIF["GIF Decoder / Software Rendering<br/>(Frame N+1)"] -->|"Write Pixels"| B2["Display Buffer 2<br/>(pu8FrameBuf2)"]
+    end
+
+    subgraph HW["Hardware: SPI PDMA Controller (SPI1 / SPI2)"]
+        direction LR
+        B1["Display Buffer 1<br/>(pu8FrameBuf1)"] -->|"Non-blocking DMA Transfer"| SPI["Hardware SPI TX PDMA"] -->|"Flush Frame N"| LCD["ILI9341 LCD Panel<br/>(320 x 240)"]
+    end
+
+    SW <===>|"Parallel Concurrent Execution<br/>(Ping-Pong Buffer Swapping)"| HW
 ```
 
 1. **Dual Display Buffer (`LV_DISPLAY_RENDER_MODE_PARTIAL`)**:
-   - `s_au8FrameBuf1` (38,400 bytes, 60 lines)
-   - `s_au8FrameBuf2` (38,400 bytes, 60 lines)
+   - `pu8FrameBuf1` (25,600 bytes, 40 lines, heap-allocated)
+   - `pu8FrameBuf2` (25,600 bytes, 40 lines, heap-allocated)
    - Registered via `lv_display_set_buffers()` and `lv_display_set_flush_wait_cb()`.
 2. **Non-blocking SPI PDMA Flush**:
    - `lv_port_disp_flush_cb()` initiates hardware SPI PDMA transfer and immediately yields control back to LVGL.
@@ -72,6 +71,23 @@ User can select listed **Target Name** to build target execution using uVision M
 - **SPI NOR Flash (QSPI0)**:
   - Controller: QSPI0 (PA0..PA5)
   - MOSI0: PA0, MISO0: PA1, CLK: PA2, CS: PA3, MOSI1: PA4, MISO1: PA5
+  - Footprint: U1 on NuTFT LCM panel module (supports SOIC-8, e.g. Winbond W25Q32JV / 4MB, identical to NuFUN).
+  - **Hardware Modification Requirement**:
+    - **Remove Damping Resistors**: Remove the damping resistors located on the D1/D2 signal lines.
+    - **Bridge Solder Pads**: Bridge the resistor solder pads with 0 $\Omega$ jumpers or solder bridges to directly connect the MCU QSPI signals (PA4 / PA5) to the flash `/WP` (Pin 3) and `/HOLD` (Pin 7) pins.
+    - **Why this is critical**: The damping resistors cause signal level degradation and keep `/WP` at a floating/low level, which activates Winbond hardware write protection (`SR1 = 0xFC`). When write protection is active, Windows cannot format the flash drive in USB MSC mode. Bridging the pads and applying firmware unprotect allows complete write/erase access (`SR1 = 0x00`).
+
+### **Blank Flash Setup Workflow (NuTFT / NuFUN)**
+
+When replacing or soldering a new, unformatted SPI NOR Flash on the board:
+1. Solder the flash chip on the U1 footprint and complete the NuTFT hardware pad bridge modification above.
+2. Build and flash the `M3334KI_NUTFT` firmware target.
+3. On first boot, the blank flash contains no filesystem, so FatFs mount fails (`res = 13: FR_NO_FILESYSTEM`), displaying `"Mount Fail!"` on screen.
+4. The system automatically launches CherryUSB Mass Storage mode (HSUSBD 480 Mbps).
+5. Connect the board's High-Speed USB port to a Windows PC. The PC detects the `NuMaker M3334 Flash Disk`.
+6. Right-click the drive in Windows and format it as **FAT** or **FAT32** (4096-byte allocation unit).
+7. Copy your desired `.gif` animation files into the root directory of the USB drive.
+8. Press the Reset button on the board. The system mounts the filesystem and begins playing the GIF carousel automatically.
 
 ## **Resources**
 

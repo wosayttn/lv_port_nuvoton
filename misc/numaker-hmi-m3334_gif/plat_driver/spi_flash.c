@@ -146,8 +146,36 @@ uint8_t SpiFlash_ReadStatusReg2(void)
     return u8Val;
 }
 
+static void spi_flash_drive_wp_high(void)
+{
+#if defined(NUFUN) && (NUFUN==1)
+    /* NuFUN: PC4 is QSPI0_MOSI1 / WP */
+    SET_GPIO_PC4();
+    GPIO_SetMode(PC, BIT4, GPIO_MODE_OUTPUT);
+    PC4 = 1;
+#else
+    /* NuTFT: PA4 is QSPI0_MOSI1 / WP */
+    SET_GPIO_PA4();
+    GPIO_SetMode(PA, BIT4, GPIO_MODE_OUTPUT);
+    PA4 = 1;
+#endif
+}
+
+static void spi_flash_restore_qspi_pins(void)
+{
+#if defined(NUFUN) && (NUFUN==1)
+    SET_QSPI0_MOSI1_PC4();
+#else
+    SET_QSPI0_MOSI1_PA4();
+#endif
+}
+
 void SpiFlash_WriteStatusReg(uint8_t u8Value1, uint8_t u8Value2)
 {
+    /* Actively drive /WP (PA4/PC4) HIGH so hardware protection does not block write */
+    spi_flash_drive_wp_high();
+
+    /* Method 1: Non-Volatile Write Enable (0x06) + 2-byte Write Status Register (0x01) */
     SpiFlash_WriteEnable();
 
     QSPI_SET_DATA_WIDTH(SPI_FLASH_PORT, 8);
@@ -166,6 +194,59 @@ void SpiFlash_WriteStatusReg(uint8_t u8Value1, uint8_t u8Value2)
     QSPI_ClearRxFIFO(SPI_FLASH_PORT);
 
     SpiFlash_WaitReady();
+
+    /* If SR1 or SR2 did not match, try individual write commands (0x01 for SR1, 0x31 for SR2) */
+    uint8_t cur1 = SpiFlash_ReadStatusReg();
+    uint8_t cur2 = SpiFlash_ReadStatusReg2();
+    if ((cur1 & 0x7C) != (u8Value1 & 0x7C) || (cur2 & 0x02) != (u8Value2 & 0x02))
+    {
+        /* Write SR1 individually via 0x01 */
+        SpiFlash_WriteEnable();
+        QSPI_SET_SS_LOW(SPI_FLASH_PORT);
+        QSPI_WRITE_TX(SPI_FLASH_PORT, 0x01);
+        QSPI_WRITE_TX(SPI_FLASH_PORT, u8Value1);
+        spi_flash_wait_busy();
+        QSPI_SET_SS_HIGH(SPI_FLASH_PORT);
+        QSPI_ClearRxFIFO(SPI_FLASH_PORT);
+        SpiFlash_WaitReady();
+
+        /* Write SR2 individually via 0x31 */
+        SpiFlash_WriteEnable();
+        QSPI_SET_SS_LOW(SPI_FLASH_PORT);
+        QSPI_WRITE_TX(SPI_FLASH_PORT, 0x31);
+        QSPI_WRITE_TX(SPI_FLASH_PORT, u8Value2);
+        spi_flash_wait_busy();
+        QSPI_SET_SS_HIGH(SPI_FLASH_PORT);
+        QSPI_ClearRxFIFO(SPI_FLASH_PORT);
+        SpiFlash_WaitReady();
+    }
+
+    /* Method 2: If BP bits still active, try Volatile Status Register Write Enable (0x50) */
+    cur1 = SpiFlash_ReadStatusReg();
+    if ((cur1 & 0x7C) != (u8Value1 & 0x7C))
+    {
+        /* Command 0x50: Write Enable for Volatile Status Register */
+        QSPI_SET_DATA_WIDTH(SPI_FLASH_PORT, 8);
+        QSPI_ClearRxFIFO(SPI_FLASH_PORT);
+        QSPI_SET_SS_LOW(SPI_FLASH_PORT);
+        QSPI_WRITE_TX(SPI_FLASH_PORT, 0x50);
+        spi_flash_wait_busy();
+        QSPI_SET_SS_HIGH(SPI_FLASH_PORT);
+        QSPI_ClearRxFIFO(SPI_FLASH_PORT);
+
+        /* Write Volatile Status Register (0x01) */
+        QSPI_SET_SS_LOW(SPI_FLASH_PORT);
+        QSPI_WRITE_TX(SPI_FLASH_PORT, 0x01);
+        QSPI_WRITE_TX(SPI_FLASH_PORT, u8Value1);
+        QSPI_WRITE_TX(SPI_FLASH_PORT, u8Value2);
+        spi_flash_wait_busy();
+        QSPI_SET_SS_HIGH(SPI_FLASH_PORT);
+        QSPI_ClearRxFIFO(SPI_FLASH_PORT);
+        SpiFlash_WaitReady();
+    }
+
+    /* Restore QSPI multi-function pin */
+    spi_flash_restore_qspi_pins();
 }
 
 static bool s_bQEEnabled = false;
@@ -190,14 +271,15 @@ void SpiFlash_Unprotect(void)
     uint8_t u8Status2 = SpiFlash_ReadStatusReg2();
 
     /* Block protection bits in Status Register 1: BP0, BP1, BP2, BP3/TB, BP4/SEC (bits 2..6, mask 0x7C)
+     * Status Register Protect bit in Status Register 1: SRP0 (bit 7, mask 0x80)
      * Complement protection bit in Status Register 2: CMP (bit 6, mask 0x40) */
-    if ((u8Status1 & 0x7C) != 0 || (u8Status2 & 0x40) != 0)
+    if ((u8Status1 & 0xFC) != 0 || (u8Status2 & 0x40) != 0)
     {
         printf("[SPI_FLASH] Block protection active (SR1=0x%02X, SR2=0x%02X). Unprotecting...\n",
                u8Status1, u8Status2);
 
-        /* Clear BP bits in SR1; clear CMP in SR2 while preserving/enabling QE (bit 1) */
-        uint8_t u8NewStatus1 = u8Status1 & ~0x7C;
+        /* Clear all BP bits and SRP0 in SR1 (0x00); clear CMP in SR2 while preserving/enabling QE (bit 1) */
+        uint8_t u8NewStatus1 = 0x00;
         uint8_t u8NewStatus2 = (u8Status2 & ~0x40) | 0x02;
 
         SpiFlash_WriteStatusReg(u8NewStatus1, u8NewStatus2);
@@ -205,6 +287,15 @@ void SpiFlash_Unprotect(void)
         u8Status1 = SpiFlash_ReadStatusReg();
         u8Status2 = SpiFlash_ReadStatusReg2();
         printf("[SPI_FLASH] Unprotected status: SR1=0x%02X, SR2=0x%02X\n", u8Status1, u8Status2);
+
+        if ((u8Status1 & 0x7C) != 0)
+        {
+            printf("[SPI_FLASH] WARNING: Block protection still active (SR1=0x%02X)! Writes may fail.\n", u8Status1);
+        }
+        else
+        {
+            printf("[SPI_FLASH] Success: All flash blocks unprotected!\n");
+        }
     }
     else
     {
@@ -424,6 +515,9 @@ int SpiFlash_Init(void)
     SET_QSPI0_MOSI1_PC4();
     SET_QSPI0_MISO1_PC5();
 
+    /* Enable pull-up on QSPI lines, especially MOSI1 (/WP) and MISO1 (/HOLD) */
+    GPIO_SetPullCtl(PC, BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5, GPIO_PUSEL_PULL_UP);
+
     /* Enable Schmitt trigger on PC2 (CLK) */
     PC->SMTEN |= GPIO_SMTEN_SMTEN2_Msk;
 
@@ -437,6 +531,9 @@ int SpiFlash_Init(void)
     SET_QSPI0_SS_PA3();
     SET_QSPI0_MOSI1_PA4();
     SET_QSPI0_MISO1_PA5();
+
+    /* Enable pull-up on QSPI lines, especially MOSI1 (/WP) and MISO1 (/HOLD) */
+    GPIO_SetPullCtl(PA, BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5, GPIO_PUSEL_PULL_UP);
 
     /* Enable Schmitt trigger on PA2 (CLK) */
     PA->SMTEN |= GPIO_SMTEN_SMTEN2_Msk;

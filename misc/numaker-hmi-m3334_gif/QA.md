@@ -137,3 +137,49 @@ LR_ROM __RO_BASE __RO_SIZE {
   - 讀取回呼：調用 `SpiFlash_QPI_FastRead()` 透過 QSPI 快速讀出。
   - 寫入回呼：調用 `SpiFlash_WriteSector()` 抹除並寫入對應 4KB 區塊。
   - 啟用 `CONFIG_USBDEV_MSC_THREAD`：將讀寫操作自中斷移至 FreeRTOS 任務中執行，確保 QSPI PDMA 等待信號量合法且不阻塞中斷。
+
+---
+
+### **Q5: 在 NuTFT 目標板更換 SPI NOR Flash 後，為什麼 Mount 失敗進入 MSC 模式後，Windows 無法進行格式化 (Format Fail / 磁碟有防寫保護)？如何處理硬體阻尼電阻與軟體防寫設定？**
+
+**答案：主要原因為 NuTFT 子板上 D1/D2 腳位的阻尼電阻造成訊號衰減並觸發硬體防寫，以及 Flash 狀態暫存器處於保護狀態 (`SR1=0xFC`)。需移除阻尼電阻短接焊盤，並由韌體清除狀態保護。**
+
+#### 1. 硬體原因與電路修改 (NuTFT Board Modification)
+- **NuFUN vs NuTFT 的硬體差異**：
+  - **NuFUN 主板**：QSPI0 介面配置於 PC0~PC5，板端在 `/WP` (PC4) 與 `/HOLD` (PC5) 腳位預設有 10k$\Omega$ 上拉電阻至 3.3V，訊號直通且 `/WP` 始終為 High。
+  - **NuTFT 子板**：QSPI0 介面配置於 PA0~PA5。在 NuTFT 模組的 D1/D2 (對應 QSPI 的 `/WP` 與 `/HOLD` 腳位) 線路上預先焊接了阻尼電阻 (Damping Resistors)。
+- **阻尼電阻造成的影響**：
+  1. **硬體防寫被觸發 (Hardware Write Protection Locked)**：阻尼電阻的分壓與延遲使得 Flash Pin 3 (`/WP` / D2) 處於低電平或浮接。當 Flash 內部 `SRP0 = 1` 時，晶片判定進入硬體鎖定模式，**完全拒絕接收任何修改狀態暫存器 (01h) 或抹除/寫入 (20h / 02h) 的指令**。
+  2. **高速 QSPI 訊號失真**：阻尼電阻造成高頻方波邊緣嚴重緩慢與衰減，導致 Windows MSC 傳送 SCSI 寫入請求時數據校驗錯誤。
+- **必須進行的硬體改動**：
+  - **移除 D1/D2 腳位上的阻尼電阻 (Remove damping resistors on D1/D2 pins)**。
+  - **將該焊盤短接 (Bridge the pads with 0 $\Omega$ resistors or solder bridge)**，讓 MCU 的 QSPI0 訊號（PA4 / PA5）直接無損導通至 SPI NOR Flash 的 `/WP` 與 `/HOLD` 腳位。
+
+#### 2. Flash 狀態暫存器防寫分析 (`SR1 = 0xFC`)
+若更換的 Flash 晶片曾啟用過保護或出廠未解除，開機讀出的狀態暫存器值通常為：
+- `SR1 = 0xFC`（二進制 `1111 1100b`）：
+  - **Bit 7 (`SRP0` = 1)**：硬體保護模式啟用。若 `/WP` 為 Low，狀態暫存器無法被軟體寫入。
+  - **Bit 6~2 (`SEC`, `TB`, `BP2`, `BP1`, `BP0` = 11111b)**：**整顆 Flash 全容量處於 100% 寫入保護**。
+- 此時若 `/WP` 腳位未被拉高，執行 `SpiFlash_Unprotect()` 時發送 `Write Status Register (0x01)` 會被晶片硬體直接忽視，無法清除 `BP0~BP4`，導致 Windows 格式化時提示「磁碟有防寫保護」或「無法完成格式化」。
+
+#### 3. 韌體端的強化解鎖機制 ([plat_driver/spi_flash.c](plat_driver/spi_flash.c))
+專案已在 [plat_driver/spi_flash.c](plat_driver/spi_flash.c) 實作多重保險解鎖流程：
+1. **動態強拉 `/WP` 腳位為 High**：
+   在執行 `SpiFlash_WriteStatusReg()` 時，暫時將 PA4（NuTFT）或 PC4（NuFUN）切換為 GPIO Output 並拉高為 1 (3.3V)，主動擊破硬體鎖，寫入完成後再切回 QSPI 多功能引腳。
+2. **啟用 MCU 內部上拉 (`GPIO_PUSEL_PULL_UP`)**：
+   在 [main.c](main.c) 與 `SpiFlash_Init()` 中，對 QSPI 全部接腳啟用內部弱上拉，避免在 1-bit SPI 命令階段接腳懸空。
+3. **支援 Winbond 揮發性寫入指令 (`0x50`) 與單獨寫入指令 (`0x01` / `0x31`)**：
+   若非揮發性寫入暫存器受限，自動使用 `0x50` 指令解除揮發性保護位元。
+4. **徹底歸零保護位元**：
+   將寫入數值明確設定為 `SR1 = 0x00`，確保 `SRP0` 與 `BP0~BP4` 全部清除，解除後狀態顯示：
+   ```
+   [SPI_FLASH] Unprotected status: SR1=0x00, SR2=0x02
+   [SPI_FLASH] Success: All flash blocks unprotected!
+   ```
+
+#### 4. 空白 Flash 首次使用標準作業流程
+1. **硬體改裝**：焊接 SPI NOR Flash (如 W25Q32JV)，**移除 D1/D2 上的阻尼電阻並短接焊盤 (Bridge pads)**。
+2. **開機啟動**：由於空白 Flash 尚未寫入 FAT 檔案系統，開機後 `f_mount()` 回傳 `res = 13 (FR_NO_FILESYSTEM)`，螢幕顯示 `"Mount Fail!"` 並自動進入 High-Speed CherryUSB MSC 模式。
+3. **格式化磁碟**：將開發板的 High-Speed USB 接口連接至 Windows PC，電腦識別出 `NuMaker M3334 Flash Disk` 隨身碟後，右鍵進行 **FAT / FAT32 格式化**。
+4. **載入動畫檔**：格式化完成後，直接將 `.gif` 動畫檔案複製到該隨身碟根目錄中。
+5. **重開機播放**：按 Reset 鍵重新啟動開發板，系統將自動掛載磁區並開始雙緩衝輪播 GIF 動畫。

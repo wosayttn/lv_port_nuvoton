@@ -18,11 +18,19 @@
     #include "semphr.h"
 #endif
 
+#include "core/lv_global.h"
+#include "display/lv_display_private.h"
+#include "debugging/sysmon/lv_sysmon_private.h"
+
 #define CONFIG_LV_TASK_STACKSIZE     2048
 #define CONFIG_LV_TASK_PRIORITY      (configMAX_PRIORITIES-1)
 
 extern uint32_t Image$$ARM_LIB_HEAP$$ZI$$Base[];
 extern uint32_t Image$$ARM_LIB_HEAP$$ZI$$Limit[];
+extern uint32_t Load$$LR$$LR_ROM$$Length[];
+extern uint32_t Image$$ER_ROM$$Length[];
+extern uint32_t Image$$RW_RAM$$Length[];
+extern uint32_t Image$$ARM_LIB_STACK$$ZI$$Length[];
 
 typedef struct {
     size_t total_bytes;
@@ -78,13 +86,13 @@ static void query_heap_high_water_mark(void)
     unsigned int peak_pct_x10 = (s_heap_mon.total_bytes > 0) ?
                                 (unsigned int)(((uint64_t)s_heap_mon.peak_used_bytes * 1000ULL) / s_heap_mon.total_bytes) : 0;
 
-    printf("[Heap Monitor] Total: %u KB | Used: %u KB (%u.%u%%) | Free: %u KB | Peak: %u KB (%u.%u%%)\n",
-           (unsigned int)(s_heap_mon.total_bytes / 1024),
-           (unsigned int)(cur_used_bytes / 1024),
-           cur_pct_x10 / 10, cur_pct_x10 % 10,
-           (unsigned int)(s_heap_mon.current_free_bytes / 1024),
-           (unsigned int)(s_heap_mon.peak_used_bytes / 1024),
-           peak_pct_x10 / 10, peak_pct_x10 % 10);
+//    printf("[Heap Monitor] Total: %u KB | Used: %u KB (%u.%u%%) | Free: %u KB | Peak: %u KB (%u.%u%%)\n",
+//           (unsigned int)(s_heap_mon.total_bytes / 1024),
+//           (unsigned int)(cur_used_bytes / 1024),
+//           cur_pct_x10 / 10, cur_pct_x10 % 10,
+//           (unsigned int)(s_heap_mon.current_free_bytes / 1024),
+//           (unsigned int)(s_heap_mon.peak_used_bytes / 1024),
+//           peak_pct_x10 / 10, peak_pct_x10 % 10);
 }
 
 #if defined(__FREERTOS__)
@@ -145,6 +153,52 @@ void lv_tick_task(void *pdata)
     }
 }
 
+void $Sub$$lv_mem_monitor_core(lv_mem_monitor_t * mon_p)
+{
+    query_heap_high_water_mark();
+
+    mon_p->total_size = s_heap_mon.total_bytes;
+    mon_p->free_size = s_heap_mon.current_free_bytes;
+    mon_p->max_used = s_heap_mon.peak_used_bytes;
+    if(mon_p->total_size > 0) {
+        size_t used = (mon_p->total_size >= mon_p->free_size) ? (mon_p->total_size - mon_p->free_size) : 0;
+        mon_p->used_pct = (uint8_t)(((uint64_t)used * 100) / mon_p->total_size);
+    }
+}
+
+#if LV_USE_MEM_MONITOR
+static void custom_rom_ram_observer_cb(lv_observer_t * observer, lv_subject_t * subject)
+{
+    LV_UNUSED(subject);
+    lv_obj_t * label = lv_observer_get_target(observer);
+    if(label == NULL) return;
+
+    /* 1. ROM usage */
+    uint32_t rom_used_bytes = (uint32_t)Load$$LR$$LR_ROM$$Length;
+    uint32_t rom_total_bytes = 512 * 1024;
+    uint32_t rom_used_kb = (rom_used_bytes + 1023) / 1024;
+    uint32_t rom_pct = (rom_used_bytes * 100) / rom_total_bytes;
+
+    /* 2. RAM usage (Static Data + Stack + Heap Used) */
+    uint32_t ram_base = 0x20000000;
+    uint32_t ram_limit = (uint32_t)Image$$ARM_LIB_HEAP$$ZI$$Limit;
+    uint32_t ram_total_bytes = (ram_limit > ram_base) ? (ram_limit - ram_base) : (320 * 1024);
+    uint32_t static_ram_bytes = (uint32_t)Image$$ARM_LIB_HEAP$$ZI$$Base - ram_base;
+
+    size_t heap_used_bytes = (s_heap_mon.total_bytes >= s_heap_mon.current_free_bytes) ?
+                             (s_heap_mon.total_bytes - s_heap_mon.current_free_bytes) : 0;
+    uint32_t ram_used_bytes = static_ram_bytes + (uint32_t)heap_used_bytes;
+    uint32_t ram_used_kb = (ram_used_bytes + 1023) / 1024;
+    uint32_t ram_pct = (ram_total_bytes > 0) ? ((ram_used_bytes * 100) / ram_total_bytes) : 0;
+
+    lv_label_set_text_fmt(label,
+                          "ROM: %u KB (%u%%)\n"
+                          "RAM: %u KB (%u%%)",
+                          (unsigned int)rom_used_kb, (unsigned int)rom_pct,
+                          (unsigned int)ram_used_kb, (unsigned int)ram_pct);
+}
+#endif
+
 void lv_nuvoton_task(void *pdata)
 {
     lv_init();
@@ -161,6 +215,17 @@ void lv_nuvoton_task(void *pdata)
 
     extern void lv_port_indev_init(void);
     lv_port_indev_init();
+
+#if LV_USE_MEM_MONITOR
+    lv_display_t * disp = lv_display_get_default();
+    if(disp && disp->mem_label) {
+        lv_obj_remove_from_subject(disp->mem_label, NULL);
+        lv_subject_add_observer_obj(&LV_GLOBAL_DEFAULT()->sysmon_mem.subject,
+                                    custom_rom_ram_observer_cb, disp->mem_label, NULL);
+        lv_obj_set_style_text_font(disp->mem_label, &lv_font_montserrat_12, 0);
+        lv_obj_align(disp->mem_label, LV_USE_MEM_MONITOR_POS, 0, 0);
+    }
+#endif
 
     extern void ui_init(void);
     ui_init();
@@ -190,7 +255,6 @@ void lv_nuvoton_task(void *pdata)
 #endif
     }
 }
-
 
 int task_lv_init(void)
 {

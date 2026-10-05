@@ -66,6 +66,7 @@ static void sys_init(void)
     SET_QSPI0_MOSI1_PC4();
     SET_QSPI0_MISO1_PC5();
     PC->SMTEN |= GPIO_SMTEN_SMTEN2_Msk;
+    GPIO_SetPullCtl(PC, BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5, GPIO_PUSEL_PULL_UP);
     GPIO_SetSlewCtl(PC, BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5, GPIO_SLEWCTL_FAST);
 
     /* SPI1 */
@@ -93,8 +94,9 @@ static void sys_init(void)
     SET_QSPI0_SS_PA3();
     SET_QSPI0_MOSI1_PA4();
     SET_QSPI0_MISO1_PA5();
-    //PA->SMTEN |= GPIO_SMTEN_SMTEN2_Msk;
-    //GPIO_SetSlewCtl(PA, BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5, GPIO_SLEWCTL_FAST);
+    PA->SMTEN |= GPIO_SMTEN_SMTEN2_Msk;
+    GPIO_SetPullCtl(PA, BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5, GPIO_PUSEL_PULL_UP);
+    GPIO_SetSlewCtl(PA, BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5, GPIO_SLEWCTL_FAST);
 
     /* SPI2 */
     CLK_EnableModuleClock(SPI2_MODULE);

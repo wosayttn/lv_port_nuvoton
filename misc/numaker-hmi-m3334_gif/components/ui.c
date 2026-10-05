@@ -136,10 +136,21 @@ void ui_init(void)
     GPIO_ENABLE_DIGITAL_PATH(PH, BIT4);
     for (volatile int i = 0; i < 0x2000; i++);
 
-    int ph4_val = PH4;
-    printf("[UI] NuFun: Reading PH4 input = %d\n", ph4_val);
+    int msc_val = PH4;
+    printf("[UI] NuFun: Reading PH4 input = %d\n", msc_val);
+#else
+    /* NuTFT: Read PB.0 input pin (0 = Enable CherryUSB MSC export mode, 1 = Normal operation) */
+    SET_GPIO_PB0();
+    GPIO_SetMode(PB, BIT0, GPIO_MODE_INPUT);
+    GPIO_SetPullCtl(PB, BIT0, GPIO_PUSEL_PULL_UP);
+    GPIO_ENABLE_DIGITAL_PATH(PB, BIT0);
+    for (volatile int i = 0; i < 0x2000; i++);
 
-    if (ph4_val == 0)
+    int msc_val = PB0;
+    printf("[UI] NuTFT: Reading PB0 input = %d\n", msc_val);
+#endif
+
+    if (msc_val == 0)
     {
         /* Header title */
         lv_obj_t *title = lv_label_create(scr);
@@ -171,17 +182,16 @@ void ui_init(void)
         lv_obj_center(msg);
 
         lv_obj_t *info = lv_label_create(scr);
-        lv_label_set_text(info, "PH4=0: Exporting SPI NOR flash to PC");
+        lv_label_set_text(info, "Exporting SPI NOR flash to PC");
         lv_obj_set_style_text_color(info, lv_color_hex(0xA0A0A0), 0);
         lv_obj_set_style_text_font(info, &lv_font_montserrat_12, 0);
         lv_obj_align(info, LV_ALIGN_BOTTOM_MID, 0, -10);
 
         /* Start CherryUSB MSC to export SPI NOR flash storage to host */
-        printf("[UI] PH4 == 0: Starting CherryUSB MSC storage export...\n");
+        printf("[UI] Starting CherryUSB MSC storage export...\n");
         msc_spinor_init();
         return;
     }
-#endif
 
     /* 1. Initialize SPI NOR Flash and mount FatFs drive A: */
     int ret = fatfs_spinor_init();
