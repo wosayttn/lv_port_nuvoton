@@ -16,7 +16,7 @@
         <TargetCommonOption>
           <Device>M3334KIGAE</Device>
           <Vendor>Nuvoton</Vendor>
-          <PackID>Nuvoton.NuMicroM33_DFP.1.0.2</PackID>
+          <PackID>Nuvoton.NuMicroM33_DFP.1.0.4</PackID>
           <PackURL>https://github.com/OpenNuvoton/cmsis-packs/raw/master/Nuvoton_DFP/</PackURL>
           <Cpu>IRAM(0x20000000,0x60000) IROM(0x00000000,0x80000) CPUTYPE("Cortex-M33") FPU3(SFPU) DSP TZ CLOCK(12000000) ESEL ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -450,6 +450,7 @@
               <FileType>5</FileType>
               <FilePath>..\FreeRTOSConfig.h</FilePath>
             </File>
+
           </Files>
         </Group>
         <Group>
@@ -1470,9 +1471,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_builtin.c</FileName>
+              <FileName>lv_mem_core_clib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>
@@ -1852,7 +1853,7 @@
             <File>
               <FileName>lv_port_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\common\lv_port_disp.c</FilePath>
+              <FilePath>..\plat_driver\lv_port_disp.c</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.c</FileName>
@@ -1915,6 +1916,11 @@
           <GroupName>FreeRTOS</GroupName>
           <Files>
             <File>
+              <FileName>multithread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\multithread.c</FilePath>
+            </File>
+            <File>
               <FileName>list.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\FreeRTOS\list.c</FilePath>
@@ -1935,9 +1941,9 @@
               <FilePath>..\..\..\thirdparty\FreeRTOS\timers.c</FilePath>
             </File>
             <File>
-              <FileName>heap_4.c</FileName>
+              <FileName>heap_3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_3.c</FilePath>
             </File>
             <File>
               <FileName>port.c</FileName>

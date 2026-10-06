@@ -521,6 +521,11 @@
           <GroupName>FreeRTOS</GroupName>
           <Files>
             <File>
+              <FileName>multithread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\multithread.c</FilePath>
+            </File>
+            <File>
               <FileName>list.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\FreeRTOS\list.c</FilePath>
@@ -541,9 +546,9 @@
               <FilePath>..\..\..\thirdparty\FreeRTOS\timers.c</FilePath>
             </File>
             <File>
-              <FileName>heap_4.c</FileName>
+              <FileName>heap_3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_3.c</FilePath>
             </File>
             <File>
               <FileName>port.c</FileName>
@@ -1491,9 +1496,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_builtin.c</FileName>
+              <FileName>lv_mem_core_clib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>
@@ -2705,6 +2710,11 @@
           <GroupName>FreeRTOS</GroupName>
           <Files>
             <File>
+              <FileName>multithread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\multithread.c</FilePath>
+            </File>
+            <File>
               <FileName>list.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\FreeRTOS\list.c</FilePath>
@@ -2725,9 +2735,9 @@
               <FilePath>..\..\..\thirdparty\FreeRTOS\timers.c</FilePath>
             </File>
             <File>
-              <FileName>heap_4.c</FileName>
+              <FileName>heap_3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_3.c</FilePath>
             </File>
             <File>
               <FileName>port.c</FileName>
@@ -3675,9 +3685,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_builtin.c</FileName>
+              <FileName>lv_mem_core_clib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>
@@ -4889,6 +4899,11 @@
           <GroupName>FreeRTOS</GroupName>
           <Files>
             <File>
+              <FileName>multithread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\multithread.c</FilePath>
+            </File>
+            <File>
               <FileName>list.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\FreeRTOS\list.c</FilePath>
@@ -4909,9 +4924,9 @@
               <FilePath>..\..\..\thirdparty\FreeRTOS\timers.c</FilePath>
             </File>
             <File>
-              <FileName>heap_4.c</FileName>
+              <FileName>heap_3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_3.c</FilePath>
             </File>
             <File>
               <FileName>port.c</FileName>
@@ -5859,9 +5874,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_builtin.c</FileName>
+              <FileName>lv_mem_core_clib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>

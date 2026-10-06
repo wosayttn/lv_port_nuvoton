@@ -55,10 +55,6 @@ int lcd_device_initialize(void)
 
     /* Set CS pin to HIGH */
     USPI_SET_SS_HIGH(CONFIG_DISP_SPI);
-
-    /* Set sequence to MSB first */
-    USPI_SET_MSB_FIRST(CONFIG_DISP_SPI);
-
 #endif
 
     return disp_init();

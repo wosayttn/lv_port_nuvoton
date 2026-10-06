@@ -39,7 +39,9 @@ define region ROM_region  = mem:[ from __ICFEDIT_region_ROM_start__ to __ICFEDIT
 define region RAM_region  = mem:[ from __ICFEDIT_region_RAM_start__ to __ICFEDIT_region_RAM_end__ ];
 
 define block CSTACK with alignment = 8, size = __ICFEDIT_size_cstack__ { };
-define block HEAP   with alignment = 8, size = __ICFEDIT_size_heap__   { };
+define block HEAP   with alignment = 8 { };
+define symbol __iar_heap_region_end = __ICFEDIT_region_RAM_end__ + 1 - __ICFEDIT_size_cstack__;
+export symbol __iar_heap_region_end;
 
 initialize by copy { readwrite };
 do not initialize  { section .noinit };

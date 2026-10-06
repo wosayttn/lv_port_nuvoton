@@ -46,7 +46,7 @@
    #else
     /* ILI9341 SPI */
     #define CONFIG_DISP_SPI              SPI2
-    #define CONFIG_DISP_SPI_CLOCK        45000000
+    #define CONFIG_DISP_SPI_CLOCK        60000000
     #define CONFIG_DISP_USE_PDMA         1
     #if defined(CONFIG_DISP_USE_PDMA)
         #define CONFIG_PDMA_SPI_TX       PDMA_SPI2_TX
@@ -67,7 +67,9 @@
 
 #endif
 
-#define CONFIG_DISP_LINE_BUFFER_NUMBER      (DISP_VER_RES_MAX/2)
+#if !defined(CONFIG_DISP_LINE_BUFFER_NUMBER)
+    #define CONFIG_DISP_LINE_BUFFER_NUMBER      (DISP_VER_RES_MAX/2)
+#endif
 
 #define DISP_SET_RST               GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_RESET),     NU_GET_PIN(CONFIG_DISP_PIN_RESET)) = 1
 #define DISP_CLR_RST               GPIO_PIN_DATA(NU_GET_PORT(CONFIG_DISP_PIN_RESET),     NU_GET_PIN(CONFIG_DISP_PIN_RESET)) = 0

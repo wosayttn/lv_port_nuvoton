@@ -10,6 +10,12 @@
 #if defined(__FREERTOS__)
 #include "FreeRTOS.h"
 #include "task.h"
+#define USB_OS_DELAY_MS(ms)   vTaskDelay(pdMS_TO_TICKS(ms))
+#elif defined(__RTTHREAD__) || defined(RT_USING_COMPONENTS_INIT)
+#include <rtthread.h>
+#define USB_OS_DELAY_MS(ms)   rt_thread_mdelay(ms)
+#else
+#define USB_OS_DELAY_MS(ms)   do { for (volatile int _i = 0; _i < (ms) * 0x2000; _i++); } while(0)
 #endif
 
 #include "glue_nuvoton.h"
@@ -30,20 +36,12 @@ void usb_dc_low_level_init(uint8_t busid)
         HSUSBD->PHYCTL &= ~HSUSBD_PHYCTL_DPPUEN_Msk;
         SYS->USBPHY &= ~(SYS_USBPHY_HSUSBACT_Msk | SYS_USBPHY_HSUSBEN_Msk);
 
-#if defined(__FREERTOS__)
-        vTaskDelay(pdMS_TO_TICKS(200));
-#else
-        for (volatile int i = 0; i < 0x200000; i++);
-#endif
+        USB_OS_DELAY_MS(200);
 
         /* 2. Set PHY to Device role and enable PHY */
         SYS->USBPHY = (SYS->USBPHY & ~(SYS_USBPHY_HSUSBROLE_Msk | SYS_USBPHY_HSUSBACT_Msk)) | SYS_USBPHY_HSUSBEN_Msk;
 
-#if defined(__FREERTOS__)
-        vTaskDelay(pdMS_TO_TICKS(20));
-#else
-        for (volatile int i = 0; i < 0x20000; i++);
-#endif
+        USB_OS_DELAY_MS(20);
 
         SYS->USBPHY |= SYS_USBPHY_HSUSBACT_Msk;
 

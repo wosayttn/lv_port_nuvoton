@@ -64,6 +64,14 @@ int main(void)
 
     sys_init();
 
+#if defined(__GNUC__) && !defined(__CC_ARM)
+    {
+        extern int _write(int descriptor, char *buffer, int length);
+        char boot_message[] = "NUC980 GCC: main\n";
+        (void)_write(1, boot_message, sizeof(boot_message) - 1);
+    }
+#endif
+
     task_lv_init();
 
     /* Start scheduling. */

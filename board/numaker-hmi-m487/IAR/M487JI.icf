@@ -155,8 +155,10 @@ if (!isempty(IRAM_region))
 {
   define block CSTACK     with alignment = 8, size = __ICFEDIT_size_cstack__     { };
   define block PROC_STACK with alignment = 8, size = __ICFEDIT_size_proc_stack__ { };
-  define block HEAP       with alignment = 8, size = __ICFEDIT_size_heap__       { };
-  place in IRAM_region  { readwrite, block CSTACK, block PROC_STACK, block HEAP };
+  define block HEAP       with alignment = 8 { };
+  define symbol __iar_heap_region_end = __ICFEDIT_region_IRAM1_end__ + 1;
+  export symbol __iar_heap_region_end;
+  place in IRAM_region  { block CSTACK, block PROC_STACK, readwrite, block HEAP };
 }
 
 if (!isempty(ERAM_region))

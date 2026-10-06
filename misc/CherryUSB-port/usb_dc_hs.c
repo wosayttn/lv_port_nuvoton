@@ -154,52 +154,193 @@ static void USBD_EndpointConfigureBuffer(uint8_t busid)
     }
 }
 
+// Write data into the USB endpoint buffer (IN transaction)
 void USBD_WriteEpBuffer(uint32_t u32EpDat[], uint8_t u8Src[], uint32_t num)
 {
+    if (num == 0) return;
+
     uint32_t i = 0;
-#if 0
 
-    if (((uint32_t)u8Src & 0x3) != 0)
+    // 1. Align src to 4-byte boundary (Head)
+    for (; ((uint32_t)(uintptr_t)u8Src & 3u) && (i < num); i++)
     {
-        uint32_t misalign = 4 - ((uintptr_t)u8Src & 0x3);
-
-        if (misalign > num) misalign = num;
-
-        for (; i < misalign; i++)
-            outpb(u32EpDat, *u8Src++);
+        outpb(u32EpDat, *u8Src++);
     }
 
+    // 2. Word write (Body): DMA if > 128 bytes, else CPU-feed
+    uint32_t u32Words = (num - i) / 4u;
+    if (u32Words > 0)
+    {
+        uint32_t u32Bytes = u32Words * 4u;
+        bool bDmaDone = false;
+
+        if (u32Bytes > 128)
+        {
+            USBD_t *husbd = USBD_HW(DEF_DC_USBID_HS);
+            if (!husbd)
+            {
+                husbd = (USBD_t *)((uintptr_t)u32EpDat & ~0x0FFFu);
+            }
+
+            if (husbd != NULL)
+            {
+                uintptr_t ptr = (uintptr_t)u32EpDat;
+                uintptr_t ep_start = (uintptr_t)&husbd->EP[0];
+                uintptr_t ep_end   = (uintptr_t)&husbd->EP[PERIPH_MAX_EP - 1];
+
+                if (ptr >= ep_start && ptr <= ep_end && (((ptr - ep_start) % sizeof(USBD_EP_t)) == 0))
+                {
+                    USBD_EP_t *periph_ep = (USBD_EP_t *)ptr;
+                    if (periph_ep->EPCFG & HSUSBD_EPCFG_EPEN_Msk)
+                    {
+                        uint32_t ep_num = (periph_ep->EPCFG & HSUSBD_EPCFG_EPNUM_Msk) >> HSUSBD_EPCFG_EPNUM_Pos;
+                        if (ep_num >= 1 && ep_num <= 15)
+                        {
+#ifdef CONFIG_USB_DCACHE_ENABLE
+                            usb_dcache_clean((uintptr_t)u8Src, u32Bytes);
 #endif
+                            /* Clear any pending DMADONE flag */
+                            husbd->BUSINTSTS = HSUSBD_BUSINTSTS_DMADONEIF_Msk;
 
-    for (; i + 4 <= num; i += 4, u8Src += 4)
-        outpw(u32EpDat, *((uint32_t *)u8Src));
+                            /* Bulk IN: DMA read from memory into USB buffer */
+                            husbd->DMACTL = (husbd->DMACTL & ~HSUSBD_DMACTL_EPNUM_Msk) | HSUSBD_DMACTL_DMARD_Msk | ep_num | HSUSBD_DMACTL_SVINEP_Msk;
+                            husbd->DMAADDR = (uint32_t)u8Src;
+                            husbd->DMACNT  = u32Bytes;
+                            husbd->DMACTL |= HSUSBD_DMACTL_DMAEN_Msk;
 
+                            uint32_t u32Timeout = SystemCoreClock >> 4;
+                            while (!(husbd->BUSINTSTS & HSUSBD_BUSINTSTS_DMADONEIF_Msk))
+                            {
+                                if (!(husbd->PHYCTL & HSUSBD_PHYCTL_VBUSDET_Msk))
+                                    break;
+                                if (--u32Timeout == 0)
+                                    break;
+                            }
+                            husbd->BUSINTSTS = HSUSBD_BUSINTSTS_DMADONEIF_Msk;
+                            bDmaDone = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (bDmaDone)
+        {
+            i     += u32Bytes;
+            u8Src += u32Bytes;
+        }
+        else
+        {
+            uint32_t *pu32Src = (uint32_t *)u8Src;
+            for (uint32_t j = 0; j < u32Words; j++)
+            {
+                outpw(u32EpDat, pu32Src[j]);
+            }
+            i     += u32Bytes;
+            u8Src += u32Bytes;
+        }
+    }
+
+    // 3. Tail
     for (; i < num; i++)
+    {
         outpb(u32EpDat, *u8Src++);
+    }
 }
 
+// Read data from the USB endpoint buffer (OUT transaction)
 void USBD_ReadEpBuffer(uint8_t u8Dst[], uint32_t u32EpDat[], uint32_t num)
 {
+    if (num == 0) return;
+
     uint32_t i = 0;
-#if 0
 
-    if (((uint32_t)u8Dst & 0x3) != 0)
+    // 1. Align dst to 4-byte boundary (Head)
+    for (; ((uint32_t)(uintptr_t)u8Dst & 3u) && (i < num); i++)
     {
-        uint32_t misalign = 4 - ((uintptr_t)u8Dst & 0x3);
-
-        if (misalign > num) misalign = num;
-
-        for (; i < misalign; i++)
-            *u8Dst++ = inpb(u32EpDat);
+        *u8Dst++ = inpb(u32EpDat);
     }
 
+    // 2. Word read (Body): DMA if > 128 bytes, else CPU-feed
+    uint32_t u32Words = (num - i) / 4u;
+    if (u32Words > 0)
+    {
+        uint32_t u32Bytes = u32Words * 4u;
+        bool bDmaDone = false;
+
+        if (u32Bytes > 128)
+        {
+            USBD_t *husbd = USBD_HW(DEF_DC_USBID_HS);
+            if (!husbd)
+            {
+                husbd = (USBD_t *)((uintptr_t)u32EpDat & ~0x0FFFu);
+            }
+
+            if (husbd != NULL)
+            {
+                uintptr_t ptr = (uintptr_t)u32EpDat;
+                uintptr_t ep_start = (uintptr_t)&husbd->EP[0];
+                uintptr_t ep_end   = (uintptr_t)&husbd->EP[PERIPH_MAX_EP - 1];
+
+                if (ptr >= ep_start && ptr <= ep_end && (((ptr - ep_start) % sizeof(USBD_EP_t)) == 0))
+                {
+                    USBD_EP_t *periph_ep = (USBD_EP_t *)ptr;
+                    if (periph_ep->EPCFG & HSUSBD_EPCFG_EPEN_Msk)
+                    {
+                        uint32_t ep_num = (periph_ep->EPCFG & HSUSBD_EPCFG_EPNUM_Msk) >> HSUSBD_EPCFG_EPNUM_Pos;
+                        if (ep_num >= 1 && ep_num <= 15)
+                        {
+                            /* Clear any pending DMADONE flag */
+                            husbd->BUSINTSTS = HSUSBD_BUSINTSTS_DMADONEIF_Msk;
+
+                            /* Bulk OUT: DMA write from USB buffer into memory */
+                            husbd->DMACTL = (husbd->DMACTL & ~(HSUSBD_DMACTL_EPNUM_Msk | HSUSBD_DMACTL_DMARD_Msk | HSUSBD_DMACTL_SVINEP_Msk)) | ep_num;
+                            husbd->DMAADDR = (uint32_t)u8Dst;
+                            husbd->DMACNT  = u32Bytes;
+                            husbd->DMACTL |= HSUSBD_DMACTL_DMAEN_Msk;
+
+  													uint32_t u32Timeout = SystemCoreClock >> 4;
+                            while (!(husbd->BUSINTSTS & HSUSBD_BUSINTSTS_DMADONEIF_Msk))
+                            {
+                                if (!(husbd->PHYCTL & HSUSBD_PHYCTL_VBUSDET_Msk))
+                                    break;
+                                if (--u32Timeout == 0)
+                                    break;
+                            }
+                            husbd->BUSINTSTS = HSUSBD_BUSINTSTS_DMADONEIF_Msk;
+
+#ifdef CONFIG_USB_DCACHE_ENABLE
+                            usb_dcache_invalidate((uintptr_t)u8Dst, u32Bytes);
 #endif
+                            bDmaDone = true;
+                        }
+                    }
+                }
+            }
+        }
 
-    for (; i + 4 <= num; i += 4, u8Dst += 4)
-        * ((uint32_t *)u8Dst) = inpw(u32EpDat);
+        if (bDmaDone)
+        {
+            i     += u32Bytes;
+            u8Dst += u32Bytes;
+        }
+        else
+        {
+            uint32_t *pu32Dst = (uint32_t *)u8Dst;
+            for (uint32_t j = 0; j < u32Words; j++)
+            {
+                pu32Dst[j] = inpw(u32EpDat);
+            }
+            i     += u32Bytes;
+            u8Dst += u32Bytes;
+        }
+    }
 
+    // 3. Tail
     for (; i < num; i++)
+    {
         *u8Dst++ = inpb(u32EpDat);
+    }
 }
 
 

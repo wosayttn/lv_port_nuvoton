@@ -6,10 +6,9 @@
  * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
-#include <string.h>
-#include <stdio.h>
-#include "nu_misc.h"
 #include "drv_pdma.h"
+#include <string.h>
+#include "nu_misc.h"
 
 #if defined(__FREERTOS__)
     #include "FreeRTOS.h"
@@ -189,14 +188,14 @@ static void nu_pdma_init(void)
 
     for (i = (PDMA_START + 1); i < PDMA_CNT; i++)
     {
-        PDMA_T *psPDMA = (PDMA_T *)nu_pdma_arr[i].m_pvBase;
+        PDMA_T *pdma = (PDMA_T *)nu_pdma_arr[i].m_pvBase;
         nu_pdma_chn_mask_arr[i] = ~(NU_PDMA_CH_Msk);
 
         SYS_ResetModule(nu_pdma_arr[i].u32RstId);
 
         /* Initialize PDMA setting */
-        PDMA_Open(psPDMA, PDMA_CH_Msk);
-        PDMA_Close(psPDMA);
+        PDMA_Open(pdma, PDMA_CH_Msk);
+        PDMA_Close(pdma);
 
 #if defined(__FREERTOS__)
         NVIC_SetPriority(nu_pdma_arr[i].eIRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
@@ -206,7 +205,7 @@ static void nu_pdma_init(void)
         NVIC_EnableIRQ(nu_pdma_arr[i].eIRQn);
 
         /* Assign first SG table address as PDMA SG table base address */
-        psPDMA->SCATBA = (uint32_t)&nu_pdma_sgtbl_arr[0];
+        pdma->SCATBA = (uint32_t)&nu_pdma_sgtbl_arr[0];
     }
 
     /* Initialize token pool. */
@@ -610,7 +609,7 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
             dma_desc->CTL |= (PDMA_REQ_BURST | PDMA_BURST_1);
             break;
         default:
-            dma_desc->CTL |= (PDMA_REQ_BURST | PDMA_BURST_32);
+            dma_desc->CTL |= (PDMA_REQ_BURST | PDMA_BURST_16);
             break;
         }
     }
@@ -622,10 +621,10 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
 
     if (next)
     {
-        PDMA_T *PDMA = NU_PDMA_GET_BASE(i32ChannID);
+        PDMA_T *pdma = NU_PDMA_GET_BASE(i32ChannID);
         /* Link to Next and modify to scatter-gather DMA mode. */
         dma_desc->CTL = (dma_desc->CTL & ~PDMA_DSCT_CTL_OPMODE_Msk) | PDMA_OP_SCATTER;
-        dma_desc->NEXT = (uint32_t)next - (PDMA->SCATBA);
+        dma_desc->NEXT = (uint32_t)next - (pdma->SCATBA);
     }
 
     /* Be silent */
@@ -638,6 +637,59 @@ exit_nu_pdma_desc_setup:
 
     return -(ret);
 }
+
+/* This is for M2M Scatter-gather descriptor. */
+int nu_pdma_m2m_desc_setup(nu_pdma_desc_t dma_desc, uint32_t u32DataWidth, uint32_t u32AddrSrc,
+                           uint32_t u32AddrDst, int32_t i32TransferCnt, nu_pdma_memctrl_t evMemCtrl, nu_pdma_desc_t next, uint32_t u32BeSilent)
+{
+    uint32_t u32SrcCtl = 0;
+    uint32_t u32DstCtl = 0;
+
+    int ret = 1;
+
+    if (!dma_desc)
+        goto exit_nu_pdma_desc_setup;
+    else if (!(u32DataWidth == 8 || u32DataWidth == 16 || u32DataWidth == 32))
+        goto exit_nu_pdma_desc_setup;
+    else if ((u32AddrSrc % (u32DataWidth / 8)) || (u32AddrDst % (u32DataWidth / 8)))
+        goto exit_nu_pdma_desc_setup;
+    else if (i32TransferCnt > NU_PDMA_MAX_TXCNT)
+        goto exit_nu_pdma_desc_setup;
+
+
+    nu_pdma_channel_memctrl_fill(evMemCtrl, &u32SrcCtl, &u32DstCtl);
+
+    dma_desc->CTL = ((i32TransferCnt - 1) << PDMA_DSCT_CTL_TXCNT_Pos) |
+                    ((u32DataWidth == 8) ? PDMA_WIDTH_8 : (u32DataWidth == 16) ? PDMA_WIDTH_16 : PDMA_WIDTH_32) |
+                    u32SrcCtl |
+                    u32DstCtl |
+                    PDMA_OP_BASIC;
+
+    dma_desc->SA = u32AddrSrc;
+    dma_desc->DA = u32AddrDst;
+    dma_desc->NEXT = 0;  /* Terminating node by default. */
+
+    /* For M2M transfer */
+    dma_desc->CTL |= (PDMA_REQ_BURST | PDMA_BURST_32);
+
+    if (next)
+    {
+        /* Link to Next and modify to scatter-gather DMA mode. */
+        dma_desc->CTL = (dma_desc->CTL & ~PDMA_DSCT_CTL_OPMODE_Msk) | PDMA_OP_SCATTER;
+        dma_desc->NEXT = (uint32_t)next;
+    }
+
+    /* Be silent */
+    if (u32BeSilent)
+        dma_desc->CTL |= PDMA_DSCT_CTL_TBINTDIS_Msk;
+
+    ret = 0;
+
+exit_nu_pdma_desc_setup:
+
+    return -(ret);
+}
+
 
 static int nu_pdma_sgtbls_token_allocate(void)
 {
@@ -754,7 +806,7 @@ static void _nu_pdma_transfer(int i32ChannID, uint32_t u32Peripheral, nu_pdma_de
                          u32Peripheral,
                          (head->NEXT != 0) ? 1 : 0,
                          (uint32_t)head);
-
+    __DSB();
     /* If peripheral is M2M, trigger it. */
     if (u32Peripheral == PDMA_MEM)
     {
@@ -940,7 +992,7 @@ void PDMA_IRQHandler(PDMA_T *pdma)
     // Find the position of first '1' in allch_sts.
     while ((i = nu_ctz(allch_sts)) < PDMA_CH_MAX)
     {
-        int module_id = ((uint32_t)pdma - PDMA0_BASE) / 0x10000UL;
+        int module_id = ((uint32_t)pdma - PDMA0_BASE) / (PDMA1_BASE - PDMA0_BASE);
         int j = i + (module_id * PDMA_CH_MAX);
         int ch_mask = (1 << i);
 

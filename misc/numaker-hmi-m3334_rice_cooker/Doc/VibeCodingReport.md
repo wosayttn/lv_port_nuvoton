@@ -189,7 +189,8 @@ ui_files/
 | `UI_FONT_CJK_AVAILABLE` | 1 | 啟用 CJK 字型 |
 | `LV_USE_SYSMON` | 1 | 系統監控 |
 | `LV_USE_PERF_MONITOR` | 1 | FPS/CPU 監控 (runtime 可切換) |
-| `CONFIG_LV_MEM_SIZE` | 128KB | LVGL 記憶體池 |
+| `/* Memory manager: use standard C library malloc/free/realloc to unify with C Runtime & FreeRTOS Heap */
+#define LV_USE_STDLIB_MALLOC            LV_STDLIB_CLIB` | 128KB | LVGL 記憶體池 |
 
 ---
 

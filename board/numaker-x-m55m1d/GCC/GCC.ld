@@ -65,7 +65,6 @@
  */
 
 __STACK_SIZE = 0x00001000;
-__HEAP_SIZE  = 0x00001000;
 
 /* System memory brief */
 MEMORY
@@ -313,8 +312,7 @@ SECTIONS
     . = ALIGN(8);
     __end__ = .;
     PROVIDE(end = .);
-    . = . + __HEAP_SIZE;
-    . = ALIGN(8);
+    . = ORIGIN(SRAM) + LENGTH(SRAM);
     __HeapLimit = .;
   } > SRAM
 
@@ -328,6 +326,5 @@ SECTIONS
   } > DTCM
   PROVIDE(__stack = __StackTop);
 
-  /* Because stack placed in DTCM, cannot check if data + heap + stack exceeds SRAM limit */
-  /*ASSERT(__StackLimit >= __HeapLimit, "region SRAM overflowed with stack")*/
+  ASSERT(__end__ <= __HeapLimit, "region SRAM overflowed before heap")
 }

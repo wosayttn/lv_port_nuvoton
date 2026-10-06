@@ -116,6 +116,12 @@ void disp_send_pixels(uint16_t *pixels, int byte_len)
     nu_spi_transfer(&s_NuSPI, (const void *)pixels, NULL, byte_len);
 }
 
+void disp_send_pixels_async(uint16_t *pixels, int byte_len, void (*cb)(void *), void *pvUserData)
+{
+    SPI_SET_DATA_WIDTH(CONFIG_DISP_SPI, 16);
+    nu_spi_transfer_async(&s_NuSPI, (const void *)pixels, NULL, byte_len, cb, pvUserData);
+}
+
 static int ili9341_spi_send_then_recv(struct nu_spi *psNuSPI, const uint8_t *tx, int tx_len, uint8_t *rx, int rx_len, int dw)
 {
     SPI_SET_DATA_WIDTH(psNuSPI->base, dw * 8);

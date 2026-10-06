@@ -111,7 +111,7 @@
                 </option>
                 <option>
                     <name>GRuntimeLibThreads</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CoreVariant</name>
@@ -1140,7 +1140,13 @@
             <name>$PROJ_DIR$\..\..\..\thirdparty\FreeRTOS\event_groups.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</name>
+            <name>$PROJ_DIR$\..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_3.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\iar_dlib_lock.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\common\iar_dlib_heap.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\thirdparty\FreeRTOS\list.c</name>
@@ -1830,7 +1836,7 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\others\translation\lv_translation.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\builtin\lv_sprintf_builtin.c</name>

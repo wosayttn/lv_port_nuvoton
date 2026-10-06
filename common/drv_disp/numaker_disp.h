@@ -119,8 +119,10 @@ void disp_write_reg(uint16_t reg, uint16_t data);
 void disp_set_column(uint16_t StartCol, uint16_t EndCol);
 void disp_set_page(uint16_t StartPage, uint16_t EndPage);
 void disp_send_pixels(uint16_t *pixels, int byte_len);
+void disp_send_pixels_async(uint16_t *pixels, int byte_len, void (*cb)(void *), void *pvUserData);
 void disp_receive_pixels(uint16_t *pixels, int byte_len);
 void disp_fillrect(uint16_t *pixels, const disp_area_t *area);
+void disp_fillrect_async(uint16_t *pixels, const disp_area_t *area, void (*cb)(void *), void *pvUserData);
 void disp_readrect(uint16_t *pixels, const disp_area_t *area);
 int  disp_init(void);
 

@@ -6,59 +6,79 @@
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 #include "drv_spi.h"
+
 #define SPI_TRIGGER_TX_RX_PDMA(spi)   ((spi)->PDMACTL |= (SPI_PDMACTL_TXPDMAEN_Msk | SPI_PDMACTL_RXPDMAEN_Msk))
 #define SPI_DISABLE_TX_RX_PDMA(spi)   ((spi)->PDMACTL &= ~(SPI_PDMACTL_TXPDMAEN_Msk | SPI_PDMACTL_RXPDMAEN_Msk))
+/**
+ * @brief Perform SPI transmission using polling method.
+ *
+ * Transmits and/or receives data over SPI interface using polling (no DMA).
+ * Supports three modes: write-only, read-only (with dummy writes), or full-duplex.
+ * Blocks until all data is transferred and SPI is idle.
+ *
+ * @param psNuSPI[in]   Pointer to SPI control structure
+ * @param tx[in]        Pointer to transmit buffer (NULL for read-only)
+ * @param rx[out]       Pointer to receive buffer (NULL for write-only)
+ * @param length[in]    Number of data units to transfer
+ * @param dw[in]        Data width per unit (bytes)
+ *
+ * @return Remaining bytes to transfer (0 on success)
+ */
 static int nu_spi_transmit_poll(struct nu_spi *psNuSPI, const uint8_t *tx, uint8_t *rx, int length, int dw)
 {
     SPI_T *base = psNuSPI->base;
-    // Write-only
+
+    /* ===== Write-only mode ===== */
     if ((tx != NULL) && (rx == NULL))
     {
         while (length > 0)
         {
+            /* Write data to SPI TX FIFO */
             tx += nu_spi_write(base, tx, dw);
             length -= dw;
         }
-    } // if (tx != NULL && rx == NULL)
-    // Read-only
+    }
+    /* ===== Read-only mode ===== */
     else if ((tx == NULL) && (rx != NULL))
     {
         psNuSPI->dummy = 0;
         while (length > 0)
         {
-            /* Input data to SPI TX FIFO */
+            /* Send dummy data to SPI TX FIFO to clock in RX data */
             length -= nu_spi_write(base, (const uint8_t *)&psNuSPI->dummy, dw);
 
-            /* Read data from RX FIFO */
+            /* Read received data from RX FIFO */
             rx += nu_spi_read(base, rx, dw);
         }
-    } // else if (tx == NULL && rx != NULL)
-    // Read&Write
+    }
+    /* ===== Full-duplex mode (simultaneous read/write) ===== */
     else
     {
         while (length > 0)
         {
-            /* Input data to SPI TX FIFO */
+            /* Write data to SPI TX FIFO */
             tx += nu_spi_write(base, tx, dw);
             length -= dw;
 
             /* Read data from RX FIFO */
             rx += nu_spi_read(base, rx, dw);
         }
-    } // else
+    }
 
-    /* Wait RX or drain RX-FIFO */
+    /* ===== Wait for transmission completion ===== */
     if (rx)
     {
-        // Wait SPI transmission done
+        /* Wait for SPI to complete transmission */
         while (SPI_IS_BUSY(base))
         {
+            /* Drain any remaining data in RX FIFO while SPI is busy */
             while (!SPI_GET_RX_FIFO_EMPTY_FLAG(base))
             {
                 rx += nu_spi_read(base, rx, dw);
             }
         }
 
+        /* Read any final data remaining in RX FIFO after SPI goes idle */
         while (!SPI_GET_RX_FIFO_EMPTY_FLAG(base))
         {
             rx += nu_spi_read(base, rx, dw);
@@ -66,38 +86,61 @@ static int nu_spi_transmit_poll(struct nu_spi *psNuSPI, const uint8_t *tx, uint8
     }
     else
     {
-        /* Clear SPI RX FIFO */
+        /* If no receive buffer, just drain/clear the RX FIFO */
         nu_spi_drain_rxfifo(base);
     }
 
     return length;
 }
 
+/**
+ * @brief Perform SPI send-then-receive operation.
+ *
+ * Transmits data first, then receives response data in separate phases.
+ * Useful for command-response protocols where you send a command followed
+ * by receiving the response without the SPI chip select being released.
+ *
+ * @param psNuSPI[in]   Pointer to SPI control structure
+ * @param tx[in]        Pointer to transmit buffer (command data)
+ * @param tx_len[in]    Number of bytes to transmit
+ * @param rx[out]       Pointer to receive buffer (response data)
+ * @param rx_len[in]    Number of bytes to receive
+ * @param dw[in]        Data width per unit (bytes)
+ *
+ * @return Number of bytes received, or negative on error
+ */
 int nu_spi_send_then_recv(struct nu_spi *psNuSPI, const uint8_t *tx, int tx_len, uint8_t *rx, int rx_len, int dw)
 {
+    /* Get actual data width from SPI controller */
     dw = SPI_GET_DATA_WIDTH(psNuSPI->base) / 8;
 
+    /* Drive chip select low (either GPIO or SPI hardware CS) */
     if (psNuSPI->ss_pin > 0)
     {
+        /* Use GPIO for chip select */
         GPIO_PIN_DATA(NU_GET_PORT(psNuSPI->ss_pin), NU_GET_PIN(psNuSPI->ss_pin)) = 0;
     }
     else
     {
+        /* Use SPI hardware chip select */
         SPI_SET_SS_LOW(psNuSPI->base);
     }
 
+    /* ===== Transmission phase ===== */
     if (tx)
     {
         while (tx_len > 0)
         {
+            /* Write command/data to SPI TX FIFO */
             tx += nu_spi_write(psNuSPI->base, tx, dw);
             tx_len -= dw;
         }
     }
 
-    /* Clear SPI RX FIFO */
+    /* Clear SPI RX FIFO to discard any received data during transmission phase */
     nu_spi_drain_rxfifo(psNuSPI->base);
 
+    /* ===== Reception phase ===== */
     if (rx)
     {
         uint32_t dummy = 0xffffffff;
@@ -137,15 +180,38 @@ static void nu_pdma_spi_rx_cb_event(void *pvUserData, uint32_t u32EventFilter)
 
     SPI_ASSERT(psNuSPI);
 
+    while (SPI_IS_BUSY(psNuSPI->base));
+
+    if (psNuSPI->pfnTransferDoneCb)
+    {
+        void (*cb)(void *) = psNuSPI->pfnTransferDoneCb;
+        void *pvData = psNuSPI->pvUserData;
+        psNuSPI->pfnTransferDoneCb = NULL;
+        psNuSPI->bAsyncBusy = 0;
+
+        if (psNuSPI->ss_pin > 0)
+        {
+            GPIO_PIN_DATA(NU_GET_PORT(psNuSPI->ss_pin), NU_GET_PIN(psNuSPI->ss_pin)) = 1;
+        }
+        else
+        {
+            SPI_SET_SS_HIGH(psNuSPI->base);
+        }
+
+        cb(pvData);
+    }
+    else
+    {
 #if defined(__FREERTOS__)
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
-    xSemaphoreGiveFromISR(psNuSPI->m_psSemBus, &xHigherPriorityTaskWoken);
+        xSemaphoreGiveFromISR(psNuSPI->m_psSemBus, &xHigherPriorityTaskWoken);
 
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 #else
-    psNuSPI->m_psSemBus = 1;
+        psNuSPI->m_psSemBus = 1;
 #endif
+    }
 }
 
 static void nu_pdma_spi_tx_cb_trigger(void *pvUserData, uint32_t u32UserData)
@@ -312,9 +378,24 @@ static int nu_spi_transmit_pdma(struct nu_spi *psNuSPI, const void *tx, void *rx
 }
 #endif
 
+void nu_spi_transfer_wait(struct nu_spi *psNuSPI)
+{
+    while (psNuSPI->bAsyncBusy)
+    {
+#if defined(__FREERTOS__)
+        vTaskDelay(pdMS_TO_TICKS(1));
+#endif
+    }
+}
+
 int nu_spi_transfer(struct nu_spi *psNuSPI, const void *tx, void *rx, int length)
 {
     int ret, dw;
+
+    if (psNuSPI->bAsyncBusy)
+    {
+        nu_spi_transfer_wait(psNuSPI);
+    }
 
 #if defined(CONFIG_SPI_USE_PDMA)
     if ((psNuSPI->pdma_perp_tx > 0) && (psNuSPI->pdma_chanid_tx < 0))
@@ -364,4 +445,75 @@ int nu_spi_transfer(struct nu_spi *psNuSPI, const void *tx, void *rx, int length
     }
 
     return ret;
+}
+
+int nu_spi_transfer_async(struct nu_spi *psNuSPI, const void *tx, void *rx, int length, void (*cb)(void *), void *pvUserData)
+{
+    int ret, dw;
+
+    if (psNuSPI->bAsyncBusy)
+    {
+        nu_spi_transfer_wait(psNuSPI);
+    }
+
+#if defined(CONFIG_SPI_USE_PDMA)
+    if ((psNuSPI->pdma_perp_tx > 0) && (psNuSPI->pdma_chanid_tx < 0))
+        psNuSPI->pdma_chanid_tx = nu_pdma_channel_allocate(psNuSPI->pdma_perp_tx);
+
+    if ((psNuSPI->pdma_perp_rx > 0) && (psNuSPI->pdma_chanid_rx < 0))
+        psNuSPI->pdma_chanid_rx = nu_pdma_channel_allocate(psNuSPI->pdma_perp_rx);
+#endif
+
+    dw = SPI_GET_DATA_WIDTH(psNuSPI->base) / 8;
+
+    if (psNuSPI->ss_pin > 0)
+    {
+        GPIO_PIN_DATA(NU_GET_PORT(psNuSPI->ss_pin), NU_GET_PIN(psNuSPI->ss_pin)) = 0;
+    }
+    else
+    {
+        SPI_SET_SS_LOW(psNuSPI->base);
+    }
+
+#if defined(CONFIG_SPI_USE_PDMA)
+    if ((psNuSPI->pdma_chanid_tx != -1) &&
+            (psNuSPI->pdma_chanid_rx != -1) &&
+            !((uint32_t)tx % dw) &&
+            !((uint32_t)rx % dw) &&
+            (dw != 3) &&
+            (length >= CONFIG_SPI_USE_PDMA_MIN_THRESHOLD))
+    {
+        psNuSPI->pfnTransferDoneCb = cb;
+        psNuSPI->pvUserData = pvUserData;
+        psNuSPI->bAsyncBusy = 1;
+
+        ret = nu_pdma_spi_rx_config(psNuSPI, rx, length, dw);
+        SPI_ASSERT(ret == 0);
+
+        ret = nu_pdma_spi_tx_config(psNuSPI, tx, length, dw);
+        SPI_ASSERT(ret == 0);
+
+        return length;
+    }
+    else
+#endif
+    {
+        ret = nu_spi_transmit_poll(psNuSPI, tx, rx, length, dw);
+
+        if (psNuSPI->ss_pin > 0)
+        {
+            GPIO_PIN_DATA(NU_GET_PORT(psNuSPI->ss_pin), NU_GET_PIN(psNuSPI->ss_pin)) = 1;
+        }
+        else
+        {
+            SPI_SET_SS_HIGH(psNuSPI->base);
+        }
+
+        if (cb)
+        {
+            cb(pvUserData);
+        }
+
+        return ret;
+    }
 }

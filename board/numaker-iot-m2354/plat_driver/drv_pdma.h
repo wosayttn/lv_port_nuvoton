@@ -3,7 +3,7 @@
  * @brief    PDMA high level driver
  *
  * SPDX-License-Identifier: Apache-2.0
- * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
+ * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
 #ifndef __DRV_PDMA_H__
@@ -76,9 +76,12 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
 int nu_pdma_sg_transfer(int i32ChannID, nu_pdma_desc_t head, uint32_t u32IdleTimeout_us);
 int nu_pdma_sgtbls_allocate(nu_pdma_desc_t *ppsSgtbls, int num);
 void nu_pdma_sgtbls_free(nu_pdma_desc_t *ppsSgtbls, int num);
+int nu_pdma_m2m_desc_setup(nu_pdma_desc_t dma_desc, uint32_t u32DataWidth, uint32_t u32AddrSrc,
+                           uint32_t u32AddrDst, int32_t i32TransferCnt, nu_pdma_memctrl_t evMemCtrl, nu_pdma_desc_t next, uint32_t u32BeSilent);
 
 // For memory actor
 void *nu_pdma_memcpy(void *dest, void *src, unsigned int count);
 int nu_pdma_mempush(void *dest, void *src, uint32_t data_width, unsigned int transfer_count);
+int nu_pdma_mempull(void *dest, void *src, uint32_t data_width, unsigned int transfer_count);
 
 #endif // __DRV_PDMA_H___

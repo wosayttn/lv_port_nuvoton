@@ -410,7 +410,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0xF8002000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\n9h30\Script\N9H30.sct</ScatterFile>
+            <ScatterFile>..\..\..\board\numaker-hmi-n9h30\Keil\SYSTEM_HEAP.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--entry 0x0</Misc>
@@ -485,9 +485,9 @@
               <FilePath>..\..\..\board\numaker-hmi-n9h30\components\task_lv.c</FilePath>
             </File>
             <File>
-              <FileName>multithread.c</FileName>
+              <FileName>arm9_heap.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-n9h30\multithread.c</FilePath>
+              <FilePath>..\..\..\common\arm9_heap.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3359,7 +3359,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0xF8002000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\n9h30\Script\N9H30.sct</ScatterFile>
+            <ScatterFile>..\..\..\board\numaker-hmi-n9h30\Keil\SYSTEM_HEAP.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--entry 0x0</Misc>
@@ -3434,9 +3434,9 @@
               <FilePath>..\..\..\board\numaker-hmi-n9h30\components\task_lv.c</FilePath>
             </File>
             <File>
-              <FileName>multithread.c</FileName>
+              <FileName>arm9_heap.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-n9h30\multithread.c</FilePath>
+              <FilePath>..\..\..\common\arm9_heap.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -6377,7 +6377,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0xF8002000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\n9h30\Script\N9H30.sct</ScatterFile>
+            <ScatterFile>..\..\..\board\numaker-hmi-n9h30\Keil\SYSTEM_HEAP.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--entry 0x0</Misc>
@@ -6452,9 +6452,9 @@
               <FilePath>..\..\..\board\numaker-hmi-n9h30\components\task_lv.c</FilePath>
             </File>
             <File>
-              <FileName>multithread.c</FileName>
+              <FileName>arm9_heap.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-n9h30\multithread.c</FilePath>
+              <FilePath>..\..\..\common\arm9_heap.c</FilePath>
             </File>
           </Files>
         </Group>

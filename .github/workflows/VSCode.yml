@@ -1,6 +1,7 @@
 name: VSCode
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
@@ -24,33 +25,56 @@ jobs:
       - name: Activate & Build each csolution
         shell: bash
         run: |
-
+          log_dir="$GITHUB_WORKSPACE/build-logs/vscode"
+          mkdir -p "$log_dir"
+          build_failed=0
           mapfile -t solutions < <(find ./board ./misc -name '*.csolution.yml')
 
           set +e
           for sol in "${solutions[@]}"; do
             proj_dir=$(dirname "$sol")
             proj=$(basename "$sol")
-            cd "$proj_dir"
-            echo "current -> ${pwd}"
+            log_file="$log_dir/${sol#./}.log"
+            mkdir -p "$(dirname "$log_file")"
+            echo "Building: $sol (log: $log_file)"
 
-            echo "Building: $sol"
+            (
+              set -e
+              cd "$proj_dir"
+              echo "Building: $sol"
+              echo "current -> $PWD"
 
-            vcpkg activate --downloads-root="${{ github.workspace }}/.vcpkg/downloads" --json=env.json
-            echo "Preserving vcpkg PATH ..."
-            jq '.paths.PATH[]' env.json | tr -d '\"' | tee -a $GITHUB_PATH
-            echo "Preserving vcpkg ENV ..."
-            jq '.tools | to_entries | map("\(.key)=\(.value)")[]' env.json | tr -d '\"' | tee -a $GITHUB_ENV
+              vcpkg activate --downloads-root="$GITHUB_WORKSPACE/.vcpkg/downloads" --json=env.json
+              trap 'vcpkg deactivate || true' EXIT
+              echo "Preserving vcpkg PATH ..."
+              jq '.paths.PATH[]' env.json | tr -d '\"' | tee -a "$GITHUB_PATH"
+              echo "Preserving vcpkg ENV ..."
+              jq '.tools | to_entries | map("\(.key)=\(.value)")[]' env.json | tr -d '\"' | tee -a "$GITHUB_ENV"
 
-            cbuild "$proj" --update-rte --packs
-            #cbuild "$proj" --update-rte --clean
+              cbuild "$proj" --update-rte --packs
+            ) > "$log_file" 2>&1
+            build_status=$?
 
-            vcpkg deactivate
-
-            cd - > /dev/null
-
+            if [ "$build_status" -ne 0 ]; then
+              build_failed=1
+              echo "::error::Build failed: $sol (exit code: $build_status)"
+              echo "::group::Failed build log: $sol"
+              cat "$log_file"
+              echo "::endgroup::"
+            else
+              echo "Build succeeded: $sol"
+            fi
           done
           set -e
+          exit "$build_failed"
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: lv_port_nuvoton-vscode-logs
+          path: ${{ github.workspace }}/build-logs/vscode/
+          if-no-files-found: ignore
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4.4.3

@@ -136,15 +136,38 @@ static void nu_pdma_spi_rx_cb_event(void *pvUserData, uint32_t u32EventFilter)
 
     SPI_ASSERT(psNuSPI);
 
+    while (SPI_IS_BUSY(psNuSPI->base));
+
+    if (psNuSPI->pfnTransferDoneCb)
+    {
+        void (*cb)(void *) = psNuSPI->pfnTransferDoneCb;
+        void *pvData = psNuSPI->pvUserData;
+        psNuSPI->pfnTransferDoneCb = NULL;
+        psNuSPI->bAsyncBusy = 0;
+
+        if (psNuSPI->ss_pin > 0)
+        {
+            GPIO_PIN_DATA(NU_GET_PORT(psNuSPI->ss_pin), NU_GET_PIN(psNuSPI->ss_pin)) = 1;
+        }
+        else
+        {
+            SPI_SET_SS_HIGH(psNuSPI->base);
+        }
+
+        cb(pvData);
+    }
+    else
+    {
 #if defined(__FREERTOS__)
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
-    xSemaphoreGiveFromISR(psNuSPI->m_psSemBus, &xHigherPriorityTaskWoken);
+        xSemaphoreGiveFromISR(psNuSPI->m_psSemBus, &xHigherPriorityTaskWoken);
 
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 #else
-    psNuSPI->m_psSemBus = 1;
+        psNuSPI->m_psSemBus = 1;
 #endif
+    }
 }
 
 static void nu_pdma_spi_tx_cb_trigger(void *pvUserData, uint32_t u32UserData)
@@ -311,9 +334,24 @@ static int nu_spi_transmit_pdma(struct nu_spi *psNuSPI, const void *tx, void *rx
 }
 #endif
 
+void nu_spi_transfer_wait(struct nu_spi *psNuSPI)
+{
+    while (psNuSPI->bAsyncBusy)
+    {
+#if defined(__FREERTOS__)
+        vTaskDelay(pdMS_TO_TICKS(1));
+#endif
+    }
+}
+
 int nu_spi_transfer(struct nu_spi *psNuSPI, const void *tx, void *rx, int length)
 {
     int ret, dw;
+
+    if (psNuSPI->bAsyncBusy)
+    {
+        nu_spi_transfer_wait(psNuSPI);
+    }
 
 #if defined(CONFIG_SPI_USE_PDMA)
     if ((psNuSPI->pdma_perp_tx > 0) && (psNuSPI->pdma_chanid_tx < 0))
@@ -363,4 +401,75 @@ int nu_spi_transfer(struct nu_spi *psNuSPI, const void *tx, void *rx, int length
     }
 
     return ret;
+}
+
+int nu_spi_transfer_async(struct nu_spi *psNuSPI, const void *tx, void *rx, int length, void (*cb)(void *), void *pvUserData)
+{
+    int ret, dw;
+
+    if (psNuSPI->bAsyncBusy)
+    {
+        nu_spi_transfer_wait(psNuSPI);
+    }
+
+#if defined(CONFIG_SPI_USE_PDMA)
+    if ((psNuSPI->pdma_perp_tx > 0) && (psNuSPI->pdma_chanid_tx < 0))
+        psNuSPI->pdma_chanid_tx = nu_pdma_channel_allocate(psNuSPI->pdma_perp_tx);
+
+    if ((psNuSPI->pdma_perp_rx > 0) && (psNuSPI->pdma_chanid_rx < 0))
+        psNuSPI->pdma_chanid_rx = nu_pdma_channel_allocate(psNuSPI->pdma_perp_rx);
+#endif
+
+    dw = SPI_GET_DATA_WIDTH(psNuSPI->base) / 8;
+
+    if (psNuSPI->ss_pin > 0)
+    {
+        GPIO_PIN_DATA(NU_GET_PORT(psNuSPI->ss_pin), NU_GET_PIN(psNuSPI->ss_pin)) = 0;
+    }
+    else
+    {
+        SPI_SET_SS_LOW(psNuSPI->base);
+    }
+
+#if defined(CONFIG_SPI_USE_PDMA)
+    if ((psNuSPI->pdma_chanid_tx != -1) &&
+            (psNuSPI->pdma_chanid_rx != -1) &&
+            !((uint32_t)tx % dw) &&
+            !((uint32_t)rx % dw) &&
+            (dw != 3) &&
+            (length >= CONFIG_SPI_USE_PDMA_MIN_THRESHOLD))
+    {
+        psNuSPI->pfnTransferDoneCb = cb;
+        psNuSPI->pvUserData = pvUserData;
+        psNuSPI->bAsyncBusy = 1;
+
+        ret = nu_pdma_spi_rx_config(psNuSPI, rx, length, dw);
+        SPI_ASSERT(ret == 0);
+
+        ret = nu_pdma_spi_tx_config(psNuSPI, tx, length, dw);
+        SPI_ASSERT(ret == 0);
+
+        return length;
+    }
+    else
+#endif
+    {
+        ret = nu_spi_transmit_poll(psNuSPI, tx, rx, length, dw);
+
+        if (psNuSPI->ss_pin > 0)
+        {
+            GPIO_PIN_DATA(NU_GET_PORT(psNuSPI->ss_pin), NU_GET_PIN(psNuSPI->ss_pin)) = 1;
+        }
+        else
+        {
+            SPI_SET_SS_HIGH(psNuSPI->base);
+        }
+
+        if (cb)
+        {
+            cb(pvUserData);
+        }
+
+        return ret;
+    }
 }

@@ -49,7 +49,6 @@ SECTIONS
 		KEEP(*(.vectors))
 		__Vectors_End = .;
 		__Vectors_Size = __Vectors_End - __Vectors;
-		__end__ = .;
 
 		*(.text*)
 
@@ -183,15 +182,16 @@ SECTIONS
 		__bss_end__ = .;
 	} > RAM
 
-	.heap (COPY):
+	.heap (NOLOAD):
 	{
+		. = ALIGN(8);
 		__HeapBase = .;
 		__end__ = .;
 		end = __end__;
 		KEEP(*(.heap*))
+		. = ORIGIN(RAM) + LENGTH(RAM);
 		__HeapLimit = .;
 	} > RAM
 
-	/* Check if data + heap + stack exceeds RAM limit */
-	/*ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")*/
+	ASSERT(__end__ <= __HeapLimit, "region RAM overflowed before heap")
 }

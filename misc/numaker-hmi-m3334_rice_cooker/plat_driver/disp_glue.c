@@ -15,8 +15,6 @@
     #include "semphr.h"
 #endif
 
-static uint8_t s_au8FrameBuf[CONFIG_VRAM_TOTAL_ALLOCATED_SIZE] __attribute__((aligned(4)));
-
 void sysDelay(uint32_t ms)
 {
 #if defined(__FREERTOS__)
@@ -55,9 +53,6 @@ int lcd_device_initialize(void)
 
     /* Set CS pin to HIGH */
     SPI_SET_SS_HIGH(CONFIG_DISP_SPI);
-
-    /* Set sequence to MSB first */
-    SPI_SET_MSB_FIRST(CONFIG_DISP_SPI);
 #endif
 
     return disp_init();
@@ -76,8 +71,8 @@ int lcd_device_control(int cmd, void *argv)
     {
         S_LCD_INFO *psLCDInfo = (S_LCD_INFO *)argv;
 
-        psLCDInfo->pvVramStartAddr = (void *)s_au8FrameBuf;
-        psLCDInfo->u32VramSize = CONFIG_VRAM_TOTAL_ALLOCATED_SIZE;
+        psLCDInfo->pvVramStartAddr = NULL;
+        psLCDInfo->u32VramSize = 0;
         psLCDInfo->u32ResWidth = DISP_HOR_RES_MAX;
         psLCDInfo->u32ResHeight = DISP_VER_RES_MAX;
         psLCDInfo->u32BytePerPixel = (DISP_COLOR_DEPTH / 8);
@@ -87,13 +82,13 @@ int lcd_device_control(int cmd, void *argv)
 
     case evLCD_CTRL_RECT_UPDATE:
     {
-        disp_fillrect((uint16_t *)s_au8FrameBuf, (const disp_area_t *)argv);
+        break;
     }
     break;
 
     case evLCD_CTRL_RECT_READ:
     {
-        disp_readrect((uint16_t *)s_au8FrameBuf, (const disp_area_t *)argv);
+        break;
     }
     break;
 

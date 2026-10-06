@@ -1,0 +1,23 @@
+LR_IROM1 0x00008000
+{
+    EXE_IROM2 +0
+    {
+        startup.o (NUC_INIT, +First)
+        *(InRoot$$Sections)
+        .ANY (+RO)
+    }
+    RW_RAM1 +0
+    {
+        .ANY (+RW +ZI)
+    }
+    ARM_LIB_HEAP +0 ALIGN 32 EMPTY (0x07FE7C00 - AlignExpr(ImageLimit(RW_RAM1), 32))
+    {
+    }
+    ARM_LIB_STACK 0x07FF7C00 EMPTY -0x10000
+    {
+    }
+    VEC_ROM0 0x00000000 0x8000
+    {
+        vector.o (VECTOR, +First)
+    }
+}

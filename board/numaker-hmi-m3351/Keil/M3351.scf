@@ -40,7 +40,9 @@
 #endif
 
 #define SRAM_START          0x20000000
-#define SRAM_SIZE           ( 0x00020000 + (ENABLE_SRAM2 * 0x8000) )
+#define SRAM_TOTAL_SIZE     ( 0x00020000 + (ENABLE_SRAM2 * 0x8000) )
+/* Heap and RW data share SRAM below the stack (and optional stack seal). */
+#define SRAM_SIZE           ( SRAM_TOTAL_SIZE - STACK_SIZE - __STACKSEAL_SIZE )
 
 /* Validate ENABLE_SRAM2 value - must be 0 or 1 */
 #if (ENABLE_SRAM2 != 0) && (ENABLE_SRAM2 != 1)
@@ -51,16 +53,10 @@
 ; <h> Stack / Heap Configuration
 ;   <o0> Stack Size (in Bytes)  <0x0-0xFFFFFFFF:8>
 ;   <i> Or overridden by adding --pd="-DSTACK_SIZE=0x800" in Options -> Linker -> Misc controls
-;   <o1> Heap Size (in Bytes)   <0x0-0xFFFFFFFF:8>
-;   <i> Or overridden by adding --pd="-DHEAP_SIZE=0x800" in Options -> Linker -> Misc controls
 ; </h>
  *----------------------------------------------------------------------------*/
 #ifndef STACK_SIZE
 	#define STACK_SIZE      0x00000400
-#endif
-
-#ifndef HEAP_SIZE
-	#define HEAP_SIZE       0x00000400
 #endif
 
 /*--------------------- CMSE Veneer Configuration ---------------------------
@@ -84,8 +80,11 @@
 /*----------------------------------------------------------------------------
   User Stack & Heap boundary definition
  *----------------------------------------------------------------------------*/
-#define __STACK_TOP    ( SRAM_START + SRAM_SIZE - __STACKSEAL_SIZE )    /* starts at end of RAM - 8 byte stack seal */
-#define __HEAP_BASE    ( AlignExpr(+0, 8))                              /* starts after RW_RAM section, 8 byte aligned */
+#define __STACK_TOP    ( SRAM_START + SRAM_TOTAL_SIZE - __STACKSEAL_SIZE )  /* starts at end of RAM - 8 byte stack seal */
+/* RW_RAM ends with ZI (BSS); the heap fills the remaining SRAM below the stack. */
+#define BSS_END        ( AlignExpr(ImageLimit(RW_RAM), 8) - SRAM_START )
+#define HEAP_SIZE       ( SRAM_SIZE - BSS_END )
+#define __HEAP_BASE    ( AlignExpr(ImageLimit(RW_RAM), 8) )
 
 /* ----------------------------------------------------------------------------
   Stack seal size definition
@@ -110,7 +109,7 @@
 #define __RO_SIZE           ( FLASH_SIZE - TZ_NSC_SIZE )
 
 #define __RW_BASE           ( SRAM_START )
-#define __RW_SIZE           ( SRAM_SIZE - STACK_SIZE - HEAP_SIZE )
+#define __RW_SIZE           ( SRAM_SIZE )
 
 /*----------------------------------------------------------------------------
   Scatter Region definition
@@ -134,9 +133,7 @@ LR_ROM __RO_BASE __RO_SIZE  {                       ; load region size_region
         .ANY (+RW +ZI)
     }
 
-#if HEAP_SIZE > 0
-    ARM_LIB_HEAP  __HEAP_BASE EMPTY  HEAP_SIZE {}		; Reserve empty region for heap
-#endif
+    ScatterAssert(BSS_END <= SRAM_SIZE)           ; RW data and BSS must leave room for stack
 
     ARM_LIB_STACK __STACK_TOP EMPTY - STACK_SIZE {}     ; Reserve empty region for stack
 
@@ -145,6 +142,8 @@ STACKSEAL +0 EMPTY __STACKSEAL_SIZE {
         ; Reserve empty region for stack seal immediately after stack
     }
 #endif
+
+    ARM_LIB_HEAP __HEAP_BASE EMPTY HEAP_SIZE {}    ; Heap ends where stack begins
 }
 
 LR_LDROM LDROM_START LDROM_SIZE

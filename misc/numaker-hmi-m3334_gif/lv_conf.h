@@ -25,7 +25,7 @@
 #define LV_FONT_MONTSERRAT_20           1
 #define LV_FONT_MONTSERRAT_24           0
 
-#define LV_FONT_DEFAULT                 &lv_font_montserrat_16
+#define LV_FONT_DEFAULT                 &lv_font_montserrat_12
 
 #define UI_FONT_CJK_AVAILABLE            0
 
@@ -99,7 +99,7 @@
 #define LV_USE_PERF_MONITOR             1
 #define LV_USE_MEM_MONITOR              1
 #if LV_USE_MEM_MONITOR
-    #define LV_USE_MEM_MONITOR_POS          LV_ALIGN_TOP_RIGHT
+    #define LV_USE_MEM_MONITOR_POS          LV_ALIGN_BOTTOM_LEFT
 #endif
 #define LV_USE_LOG                      0
 

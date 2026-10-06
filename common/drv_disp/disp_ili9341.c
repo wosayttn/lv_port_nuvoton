@@ -181,6 +181,18 @@ void disp_fillrect(uint16_t *pixels, const disp_area_t *area)
     disp_send_pixels(pixels, h * w * sizeof(uint16_t));
 }
 
+void disp_fillrect_async(uint16_t *pixels, const disp_area_t *area, void (*cb)(void *), void *pvUserData)
+{
+    int32_t w = (int32_t)(area->x2 - area->x1 + 1);
+    int32_t h = (int32_t)(area->y2 - area->y1 + 1);
+
+    disp_set_column(area->x1, area->x2);
+    disp_set_page(area->y1, area->y2);
+    DISP_WRITE_REG(0x2C);
+
+    disp_send_pixels_async(pixels, h * w * sizeof(uint16_t), cb, pvUserData);
+}
+
 /**
  * @brief Read a rectangular display area from VRAM (ILI9341).
  *
@@ -202,3 +214,4 @@ void disp_readrect(uint16_t *pixels, const disp_area_t *area)
     /* Read pixel data from display memory */
     disp_receive_pixels(pixels, h * w * sizeof(uint16_t));
 }
+

@@ -1,0 +1,20 @@
+LR_IROM1 0x00000000 0x04000000
+{
+    ER_IROM1 0x00000000 0x04000000
+    {
+        *.o (NUC_INIT, +First)
+        *(InRoot$$Sections)
+        .ANY (+RO)
+    }
+    RW_RAM1 +0
+    {
+        .ANY (+RW +ZI)
+    }
+    ARM_LIB_HEAP +0 ALIGN 32 EMPTY (0x03FE7C00 - AlignExpr(ImageLimit(RW_RAM1), 32))
+    {
+    }
+    ARM_LIB_STACK 0x03FF7C00 EMPTY -0x10000
+    {
+    }
+    ScatterAssert(AlignExpr(ImageLimit(RW_RAM1), 32) <= 0x03FE7C00)
+}

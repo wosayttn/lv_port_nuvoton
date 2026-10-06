@@ -37,6 +37,8 @@ enum
 };
 
 #define PDMA_CH_Msk                 ((1ul<<PDMA_CH_MAX)-1)
+#define PDMA_INTSTS_REQTOFn_Pos     (8)
+#define PDMA_INTSTS_REQTOFn_Msk     (PDMA_CH_Msk << PDMA_INTSTS_REQTOFn_Pos)
 
 #define NU_PDMA_SG_TBL_MAXSIZE      (NU_PDMA_SG_LIMITED_DISTANCE/sizeof(DSCT_T))
 #define NU_PDMA_CH_MAX              (PDMA_CNT*PDMA_CH_MAX)     /* Specify maximum channels of PDMA */
@@ -203,7 +205,7 @@ static void nu_pdma_init(void)
 
     for (i = (PDMA_START + 1); i < PDMA_CNT; i++)
     {
-        PDMA_T *psPDMA = (PDMA_T *)nu_pdma_arr[i].m_pvBase;
+        PDMA_T *pdma = (PDMA_T *)nu_pdma_arr[i].m_pvBase;
         nu_pdma_chn_mask_arr[i] = ~(NU_PDMA_CH_Msk);
 
         nu_sys_ipclk_enable((E_SYS_IPCLK)nu_pdma_arr[i].u32ClkEnId);
@@ -211,14 +213,14 @@ static void nu_pdma_init(void)
         nu_sys_ip_reset((E_SYS_IPRST)nu_pdma_arr[i].u32RstId);
 
         /* Initialize PDMA setting */
-        PDMA_Open(psPDMA, PDMA_CH_Msk);
-        PDMA_Close(psPDMA);
+        PDMA_Open(pdma, PDMA_CH_Msk);
+        PDMA_Close(pdma);
 
         /* Enable the interrupt. */
         sysEnableInterrupt((IRQn_Type)nu_pdma_arr[i].eIRQn);
 
         /* Assign 0 */
-        psPDMA->SCATBA = 0;
+        pdma->SCATBA = 0;
     }
 
     /* Initialize token pool. */
@@ -234,31 +236,31 @@ static void nu_pdma_init(void)
 
 static inline void nu_pdma_channel_enable(int i32ChannID)
 {
-    PDMA_T *PDMA = NU_PDMA_GET_BASE(i32ChannID);
+    PDMA_T *pdma = NU_PDMA_GET_BASE(i32ChannID);
     int u32ModChannId = NU_PDMA_GET_MOD_CHIDX(i32ChannID);
 
     /* Clean descriptor table control register. */
-    PDMA->DSCT[u32ModChannId].CTL = 0UL;
+    pdma->DSCT[u32ModChannId].CTL = 0UL;
 
     /* Enable the channel */
-    PDMA->CHCTL |= (1 << u32ModChannId);
+    pdma->CHCTL |= (1 << u32ModChannId);
 }
 
 static inline void nu_pdma_channel_disable(int i32ChannID)
 {
-    PDMA_T *PDMA = NU_PDMA_GET_BASE(i32ChannID);
-    PDMA->CHCTL &= ~(1 << NU_PDMA_GET_MOD_CHIDX(i32ChannID));
+    PDMA_T *pdma = NU_PDMA_GET_BASE(i32ChannID);
+    pdma->CHCTL &= ~(1 << NU_PDMA_GET_MOD_CHIDX(i32ChannID));
 }
 
 static inline void nu_pdma_channel_reset(int i32ChannID)
 {
-    PDMA_T *PDMA = NU_PDMA_GET_BASE(i32ChannID);
+    PDMA_T *pdma = NU_PDMA_GET_BASE(i32ChannID);
     int u32ModChannId = NU_PDMA_GET_MOD_CHIDX(i32ChannID);
 
-    PDMA->CHRST = (1 << u32ModChannId);
+    pdma->CHRST = (1 << u32ModChannId);
 
     /* Wait for cleared channel CHCTL. */
-    while ((PDMA->CHCTL & (1 << u32ModChannId)));
+    while ((pdma->CHCTL & (1 << u32ModChannId)));
 }
 
 void nu_pdma_channel_terminate(int i32ChannID)
@@ -280,13 +282,13 @@ exit_pdma_channel_terminate:
 static int nu_pdma_timeout_set(int i32ChannID, int i32Timeout_us)
 {
     int ret = 1;
-    PDMA_T *PDMA = NULL;
+    PDMA_T *pdma = NULL;
     uint32_t u32ModChannId;
 
     if (nu_pdma_check_is_nonallocated(i32ChannID))
         goto exit_nu_pdma_timeout_set;
 
-    PDMA = NU_PDMA_GET_BASE(i32ChannID);
+    pdma = NU_PDMA_GET_BASE(i32ChannID);
 
     u32ModChannId = NU_PDMA_GET_MOD_CHIDX(i32ChannID);
 
@@ -300,23 +302,23 @@ static int nu_pdma_timeout_set(int i32ChannID, int i32Timeout_us)
         uint32_t u32Divider     = ((i32Timeout_us * u32ToClk_Max) / 1000000) / (1 << 16);
         uint32_t u32TOutCnt     = ((i32Timeout_us * u32ToClk_Max) / 1000000) % (1 << 16);
 
-        PDMA_DisableTimeout(PDMA,  1 << u32ModChannId);
-        PDMA_EnableInt(PDMA, u32ModChannId, PDMA_INT_TIMEOUT);    // Interrupt type
+        PDMA_DisableTimeout(pdma,  1 << u32ModChannId);
+        PDMA_EnableInt(pdma, u32ModChannId, PDMA_INT_TIMEOUT);    // Interrupt type
 
         if (u32Divider > 7)
         {
             u32Divider = 7;
             u32TOutCnt = (1 << 16);
         }
-        PDMA->TOUTPSC |= (u32Divider << (PDMA_TOUTPSC_TOUTPSC1_Pos * NU_PDMA_GET_MOD_CHIDX(i32ChannID)));
-        PDMA_SetTimeOut(PDMA,  u32ModChannId, 1, u32TOutCnt);
+        pdma->TOUTPSC |= (u32Divider << (PDMA_TOUTPSC_TOUTPSC1_Pos * NU_PDMA_GET_MOD_CHIDX(i32ChannID)));
+        PDMA_SetTimeOut(pdma,  u32ModChannId, 1, u32TOutCnt);
 
         ret = 0;
     }
     else
     {
-        PDMA_DisableInt(PDMA, u32ModChannId, PDMA_INT_TIMEOUT);    // Interrupt type
-        PDMA_DisableTimeout(PDMA,  1 << u32ModChannId);
+        PDMA_DisableInt(pdma, u32ModChannId, PDMA_INT_TIMEOUT);    // Interrupt type
+        PDMA_DisableTimeout(pdma,  1 << u32ModChannId);
     }
 
 exit_nu_pdma_timeout_set:
@@ -488,22 +490,22 @@ exit_nu_pdma_callback_hijack:
 
 static int nu_pdma_non_transfer_count_get(int32_t i32ChannID)
 {
-    PDMA_T *PDMA = NU_PDMA_GET_BASE(i32ChannID);
-    return ((PDMA->DSCT[NU_PDMA_GET_MOD_CHIDX(i32ChannID)].CTL & PDMA_DSCT_CTL_TXCNT_Msk) >> PDMA_DSCT_CTL_TXCNT_Pos) + 1;
+    PDMA_T *pdma = NU_PDMA_GET_BASE(i32ChannID);
+    return ((pdma->DSCT[NU_PDMA_GET_MOD_CHIDX(i32ChannID)].CTL & PDMA_DSCT_CTL_TXCNT_Msk) >> PDMA_DSCT_CTL_TXCNT_Pos) + 1;
 }
 
 int nu_pdma_transferred_byte_get(int32_t i32ChannID, int32_t i32TriggerByteLen)
 {
     int i32BitWidth = 0;
     int cur_txcnt = 0;
-    PDMA_T *PDMA;
+    PDMA_T *pdma;
 
     if (nu_pdma_check_is_nonallocated(i32ChannID))
         goto exit_nu_pdma_transferred_byte_get;
 
-    PDMA = NU_PDMA_GET_BASE(i32ChannID);
+    pdma = NU_PDMA_GET_BASE(i32ChannID);
 
-    i32BitWidth = PDMA->DSCT[NU_PDMA_GET_MOD_CHIDX(i32ChannID)].CTL & PDMA_DSCT_CTL_TXWIDTH_Msk;
+    i32BitWidth = pdma->DSCT[NU_PDMA_GET_MOD_CHIDX(i32ChannID)].CTL & PDMA_DSCT_CTL_TXWIDTH_Msk;
     i32BitWidth = (i32BitWidth == PDMA_WIDTH_8) ? 1 : (i32BitWidth == PDMA_WIDTH_16) ? 2 : (i32BitWidth == PDMA_WIDTH_32) ? 4 : 0;
 
     cur_txcnt = nu_pdma_non_transfer_count_get(i32ChannID);
@@ -604,6 +606,7 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
     psPeriphCtl = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_spPeripCtl;
 
     nu_pdma_channel_memctrl_fill(psPeriphCtl->m_eMemCtl, &u32SrcCtl, &u32DstCtl);
+
     dma_desc->CTL = ((i32TransferCnt - 1) << PDMA_DSCT_CTL_TXCNT_Pos) |
                     ((u32DataWidth == 8) ? PDMA_WIDTH_8 : (u32DataWidth == 16) ? PDMA_WIDTH_16 : PDMA_WIDTH_32) |
                     u32SrcCtl |
@@ -624,7 +627,7 @@ int nu_pdma_desc_setup(int i32ChannID, nu_pdma_desc_t dma_desc, uint32_t u32Data
             dma_desc->CTL |= (PDMA_REQ_BURST | PDMA_BURST_1);
             break;
         default:
-            dma_desc->CTL |= (PDMA_REQ_BURST | PDMA_BURST_32);
+            dma_desc->CTL |= (PDMA_REQ_BURST | PDMA_BURST_16);
             break;
         }
     }
@@ -782,7 +785,7 @@ fail_nu_pdma_sgtbls_allocate:
 
 static void _nu_pdma_transfer(int i32ChannID, uint32_t u32Peripheral, nu_pdma_desc_t head, uint32_t u32IdleTimeout_us)
 {
-    PDMA_T *PDMA = NU_PDMA_GET_BASE(i32ChannID);
+    PDMA_T *pdma = NU_PDMA_GET_BASE(i32ChannID);
     nu_pdma_chn_t *psPdmaChann = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos];
 
 
@@ -832,15 +835,15 @@ static void _nu_pdma_transfer(int i32ChannID, uint32_t u32Peripheral, nu_pdma_de
         }
     }
 
-    PDMA_DisableTimeout(PDMA,  1 << NU_PDMA_GET_MOD_CHIDX(i32ChannID));
+    PDMA_DisableTimeout(pdma,  1 << NU_PDMA_GET_MOD_CHIDX(i32ChannID));
 
-    PDMA_EnableInt(PDMA, NU_PDMA_GET_MOD_CHIDX(i32ChannID), PDMA_INT_TRANS_DONE);
+    PDMA_EnableInt(pdma, NU_PDMA_GET_MOD_CHIDX(i32ChannID), PDMA_INT_TRANS_DONE);
 
     nu_pdma_timeout_set(i32ChannID, u32IdleTimeout_us);
 
     /* Set scatter-gather mode and head */
     /* Take care the head structure, you should make sure cache-coherence. */
-    PDMA_SetTransferMode(PDMA,
+    PDMA_SetTransferMode(pdma,
                          NU_PDMA_GET_MOD_CHIDX(i32ChannID),
                          u32Peripheral,
                          (head->NEXT != 0) ? 1 : 0,
@@ -849,7 +852,7 @@ static void _nu_pdma_transfer(int i32ChannID, uint32_t u32Peripheral, nu_pdma_de
     /* If peripheral is M2M, trigger it. */
     if (u32Peripheral == PDMA_MEM)
     {
-        PDMA_Trigger(PDMA, NU_PDMA_GET_MOD_CHIDX(i32ChannID));
+        PDMA_Trigger(pdma, NU_PDMA_GET_MOD_CHIDX(i32ChannID));
     }
     else if (psPdmaChann->m_sCB_Trigger.m_pfnCBHandler)
     {
@@ -934,7 +937,7 @@ exit__nu_pdma_transfer_chain:
 int nu_pdma_transfer(int i32ChannID, uint32_t u32DataWidth, uint32_t u32AddrSrc, uint32_t u32AddrDst, uint32_t u32TransferCnt, uint32_t u32IdleTimeout_us)
 {
     int ret = 1;
-    PDMA_T *PDMA = NU_PDMA_GET_BASE(i32ChannID);
+    PDMA_T *pdma = NU_PDMA_GET_BASE(i32ChannID);
     nu_pdma_desc_t head;
     nu_pdma_chn_t *psPdmaChann;
 
@@ -950,7 +953,7 @@ int nu_pdma_transfer(int i32ChannID, uint32_t u32DataWidth, uint32_t u32AddrSrc,
     psPdmaChann = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos];
     psPeriphCtl = &psPdmaChann->m_spPeripCtl;
 
-    head = &PDMA->DSCT[NU_PDMA_GET_MOD_CHIDX(i32ChannID)];
+    head = &pdma->DSCT[NU_PDMA_GET_MOD_CHIDX(i32ChannID)];
 
     ret = nu_pdma_desc_setup(i32ChannID,
                              head,
@@ -993,16 +996,16 @@ exit_nu_pdma_sg_transfer:
     return -(ret);
 }
 
-void PDMA_IRQHandler(PDMA_T *PDMA)
+void PDMA_IRQHandler(PDMA_T *pdma)
 {
     int i;
 
-    uint32_t intsts = PDMA_GET_INT_STATUS(PDMA);
-    uint32_t abtsts = PDMA_GET_ABORT_STS(PDMA);
-    uint32_t tdsts  = PDMA_GET_TD_STS(PDMA);
-    uint32_t unalignsts  = PDMA_GET_ALIGN_STS(PDMA);
-    uint32_t reqto  = intsts & (PDMA_INTSTS_REQTOF0_Msk | PDMA_INTSTS_REQTOF1_Msk);
-    uint32_t reqto_ch = ((reqto & PDMA_INTSTS_REQTOF0_Msk) ? (1 << 0) : 0x0) | ((reqto & PDMA_INTSTS_REQTOF1_Msk) ? (1 << 1) : 0x0);
+    uint32_t intsts = PDMA_GET_INT_STATUS(pdma);
+    uint32_t abtsts = PDMA_GET_ABORT_STS(pdma);
+    uint32_t tdsts  = PDMA_GET_TD_STS(pdma);
+    uint32_t unalignsts  = pdma->ALIGN;
+    uint32_t reqto  = intsts & PDMA_INTSTS_REQTOFn_Msk;
+    uint32_t reqto_ch = (reqto >> PDMA_INTSTS_REQTOFn_Pos);
 
     int allch_sts = (reqto_ch | tdsts | abtsts | unalignsts);
 
@@ -1010,34 +1013,34 @@ void PDMA_IRQHandler(PDMA_T *PDMA)
     if (intsts & PDMA_INTSTS_ABTIF_Msk)
     {
         // Clear all Abort flags
-        PDMA_CLR_ABORT_FLAG(PDMA, abtsts);
+        PDMA_CLR_ABORT_FLAG(pdma, abtsts);
     }
 
     // Transfer done
     if (intsts & PDMA_INTSTS_TDIF_Msk)
     {
         // Clear all transfer done flags
-        PDMA_CLR_TD_FLAG(PDMA, tdsts);
+        PDMA_CLR_TD_FLAG(pdma, tdsts);
     }
 
     // Unaligned
     if (intsts & PDMA_INTSTS_ALIGNF_Msk)
     {
         // Clear all Unaligned flags
-        PDMA_CLR_ALIGN_FLAG(PDMA, unalignsts);
+        PDMA_CLR_ALIGN_FLAG(pdma, unalignsts);
     }
 
     // Timeout
     if (reqto)
     {
         // Clear all Timeout flags
-        PDMA->INTSTS = reqto;
+        pdma->INTSTS = reqto;
     }
 
     // Find the position of first '1' in allch_sts.
     while ((i = nu_ctz(allch_sts)) < PDMA_CH_MAX)
     {
-        int module_id = ((uint32_t)PDMA - PDMA0_BA) / 0x1000UL;
+        int module_id = ((uint32_t)pdma - PDMA0_BA) / (PDMA1_BA-PDMA0_BA);
         int j = i + (module_id * PDMA_CH_MAX);
         int ch_mask = (1 << i);
 
@@ -1065,7 +1068,7 @@ void PDMA_IRQHandler(PDMA_T *PDMA)
 
                 if (reqto_ch & ch_mask)
                 {
-                    PDMA_DisableTimeout(PDMA,  ch_mask);
+                    PDMA_DisableTimeout(pdma,  ch_mask);
                     ch_event |= NU_PDMA_EVENT_TIMEOUT;
                 }
 

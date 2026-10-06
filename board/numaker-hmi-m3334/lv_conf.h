@@ -9,7 +9,7 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
-#define LV_USE_OS   LV_OS_FREERTOS
+#define LV_USE_OS                       LV_OS_FREERTOS
 
 #if defined(__320x240__)
     #define LV_HOR_RES_MAX                  320
@@ -86,7 +86,7 @@
     #define LV_USE_WIN                       0
     #define LV_DRAW_SW_SUPPORT_RGB565        1
     #define LV_DRAW_SW_SUPPORT_RGB565A8      0
-    #define LV_DRAW_SW_SUPPORT_RGB888          1
+    #define LV_DRAW_SW_SUPPORT_RGB888        1
     #define LV_DRAW_SW_SUPPORT_XRGB8888      0
     #define LV_DRAW_SW_SUPPORT_ARGB8888      1
     #define LV_DRAW_SW_SUPPORT_L8            0
@@ -97,7 +97,8 @@
 
 #endif
 
-#define CONFIG_LV_MEM_SIZE            (128*1024U)
+/* Memory manager: use standard C library malloc/free/realloc to unify with C Runtime & FreeRTOS Heap */
+#define LV_USE_STDLIB_MALLOC            LV_STDLIB_CLIB
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE

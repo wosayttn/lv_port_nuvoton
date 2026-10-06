@@ -44,14 +44,12 @@ __ROM_SIZE = 0x00080000;
 __RAM_BASE = 0x20000000;
 __RAM_SIZE = 0x00050000;
 
-/*--------------------- Stack / Heap Configuration ----------------------------
-  <h> Stack / Heap Configuration
+/*--------------------- Stack Configuration -----------------------------------
+  <h> Stack Configuration
     <o0> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
-    <o1> Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
   </h>
   -----------------------------------------------------------------------------*/
 __STACK_SIZE = 0x00001000;
-__HEAP_SIZE  = 0x00001000;
 
 /*
  *-------------------- <<< end of configuration section >>> -------------------
@@ -270,8 +268,8 @@ SECTIONS
     . = ALIGN(8);
     __end__ = .;
     PROVIDE(end = .);
-    . = . + __HEAP_SIZE;
-    . = ALIGN(8);
+    /* Reserve all remaining RAM after BSS for newlib malloc(). */
+    . = ORIGIN(RAM) + LENGTH(RAM);
     __HeapLimit = .;
   } > RAM
 
@@ -293,6 +291,6 @@ SECTIONS
   __zero_table_end__ = .;
 } > FLASH
 
-  /* Check if data + bss + heap + stack exceeds RAM limit */
-  ASSERT(__HeapLimit <= (ORIGIN(RAM) + LENGTH(RAM)), "region RAM overflowed")
+  /* Stack is at the beginning of RAM; BSS must fit before the heap starts. */
+  ASSERT(__end__ <= __HeapLimit, "region RAM overflowed before heap")
 }

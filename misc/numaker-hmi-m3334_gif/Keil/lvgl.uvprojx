@@ -445,6 +445,7 @@
               <FileType>1</FileType>
               <FilePath>..\components\task_lv.c</FilePath>
             </File>
+
             <File>
               <FileName>FreeRTOSConfig.h</FileName>
               <FileType>5</FileType>
@@ -1205,11 +1206,6 @@
               <FilePath>..\plat_driver\lv_port_disp.c</FilePath>
             </File>
             <File>
-              <FileName>disp_ili9341_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\plat_driver\disp_ili9341_spi.c</FilePath>
-            </File>
-            <File>
               <FileName>spi_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\plat_driver\spi_flash.c</FilePath>
@@ -1219,11 +1215,26 @@
               <FileType>1</FileType>
               <FilePath>..\plat_driver\diskio.c</FilePath>
             </File>
+            <File>
+              <FileName>disp_ili9341.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_disp\disp_ili9341.c</FilePath>
+            </File>
+            <File>
+              <FileName>ili9341_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_disp\ili9341_spi.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>FreeRTOS</GroupName>
           <Files>
+            <File>
+              <FileName>multithread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\multithread.c</FilePath>
+            </File>
             <File>
               <FileName>list.c</FileName>
               <FileType>1</FileType>
@@ -1259,11 +1270,7 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM33_NTZ\non_secure\portasm.c</FilePath>
             </File>
-            <File>
-              <FileName>multithread.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\multithread.c</FilePath>
-            </File>
+
           </Files>
         </Group>
         <Group>
@@ -1747,6 +1754,7 @@
               <FileType>1</FileType>
               <FilePath>..\components\task_lv.c</FilePath>
             </File>
+
             <File>
               <FileName>FreeRTOSConfig.h</FileName>
               <FileType>5</FileType>
@@ -2507,11 +2515,6 @@
               <FilePath>..\plat_driver\lv_port_disp.c</FilePath>
             </File>
             <File>
-              <FileName>disp_ili9341_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\plat_driver\disp_ili9341_spi.c</FilePath>
-            </File>
-            <File>
               <FileName>spi_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\plat_driver\spi_flash.c</FilePath>
@@ -2521,11 +2524,26 @@
               <FileType>1</FileType>
               <FilePath>..\plat_driver\diskio.c</FilePath>
             </File>
+            <File>
+              <FileName>disp_ili9341.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_disp\disp_ili9341.c</FilePath>
+            </File>
+            <File>
+              <FileName>ili9341_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\drv_disp\ili9341_spi.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>FreeRTOS</GroupName>
           <Files>
+            <File>
+              <FileName>multithread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\multithread.c</FilePath>
+            </File>
             <File>
               <FileName>list.c</FileName>
               <FileType>1</FileType>
@@ -2561,11 +2579,7 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\thirdparty\FreeRTOS\portable\GCC\ARM_CM33_NTZ\non_secure\portasm.c</FilePath>
             </File>
-            <File>
-              <FileName>multithread.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\multithread.c</FilePath>
-            </File>
+
           </Files>
         </Group>
         <Group>

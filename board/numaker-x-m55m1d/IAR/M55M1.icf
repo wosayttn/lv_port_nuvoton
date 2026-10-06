@@ -36,7 +36,9 @@ define region ITCM_region = mem:[from ITCM_start to ITCM_end];
 define region DTCM_region = mem:[from DTCM_start to DTCM_end];
 
 define block CSTACK with alignment = 8, size = __ICFEDIT_size_cstack__ { };
-define block HEAP   with alignment = 8, size = __ICFEDIT_size_heap__   { };
+define block HEAP   with alignment = 8 { };
+define symbol __iar_heap_region_end = __ICFEDIT_region_RAM_end__ + 1;
+export symbol __iar_heap_region_end;
 
 initialize by copy { readwrite, section DTCM.VTOR, section ITCM, section DTCM.Init, section NonCacheable.Init };
 
@@ -49,5 +51,5 @@ place in ITCM_region { section ITCM };
 place in ROM_region  { readonly };
 place in DTCM_region { section .bss.DTCM.ZeroInit, section DTCM.Init };
 place at end of DTCM_region { block CSTACK };
-place in RAM_region  { readwrite, block HEAP, section .bss.tensor_arena, section .bss.NoInit.activation_buf_sram };
+place in RAM_region  { readwrite, section .bss.tensor_arena, section .bss.NoInit.activation_buf_sram, block HEAP };
 place in NonCacheable_region { section .bss.NonCacheable.ZeroInit, section NonCacheable.Init };

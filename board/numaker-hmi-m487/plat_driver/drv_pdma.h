@@ -1,9 +1,9 @@
 /**************************************************************************//**
  * @file     drv_pdma.h
- * @brief    PDMA high level driver for M460 series
+ * @brief    PDMA high level driver
  *
  * SPDX-License-Identifier: Apache-2.0
- * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
+ * @copyright (C) 2026 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
 #ifndef __DRV_PDMA_H__

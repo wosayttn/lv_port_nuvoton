@@ -410,7 +410,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0xF8002000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\n9h20\BSP\Script\N9H20K5\N9H20K5.sct</ScatterFile>
+            <ScatterFile>..\..\..\board\numaker-hmi-n9h20\Keil\SYSTEM_HEAP.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--entry 0</Misc>
@@ -490,9 +490,9 @@
               <FilePath>..\..\..\board\numaker-hmi-n9h20\standalone.c</FilePath>
             </File>
             <File>
-              <FileName>multithread.c</FileName>
+              <FileName>arm9_heap.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\board\numaker-hmi-n9h20\multithread.c</FilePath>
+              <FilePath>..\..\..\common\arm9_heap.c</FilePath>
             </File>
             <File>
               <FileName>task_lv.c</FileName>

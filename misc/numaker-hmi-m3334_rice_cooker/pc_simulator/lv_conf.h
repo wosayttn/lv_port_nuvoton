@@ -36,7 +36,8 @@
 #define LV_SDL_FULLSCREEN       0
 
 /* Memory */
-#define CONFIG_LV_MEM_SIZE      (256*1024U)
+/* Memory manager: use standard C library malloc/free/realloc to unify with C Runtime & FreeRTOS Heap */
+#define LV_USE_STDLIB_MALLOC            LV_STDLIB_CLIB
 
 /* Unused demos */
 #define LV_USE_DEMO_WIDGETS     0

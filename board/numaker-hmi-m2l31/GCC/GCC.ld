@@ -50,7 +50,6 @@ SECTIONS
 		KEEP(*(.vectors))
 		__Vectors_End = .;
 		__Vectors_Size = __Vectors_End - __Vectors;
-		__end__ = .;
 
 		*(.text*)
 
@@ -177,15 +176,6 @@ SECTIONS
 		__bss_end__ = .;
 	} > RAM
 
-	.heap (COPY):
-	{
-		__HeapBase = .;
-		__end__ = .;
-		end = __end__;
-		KEEP(*(.heap*))
-		__HeapLimit = .;
-	} > RAM
-
 	/* .stack_dummy section doesn't contains any symbols. It is only
 	 * used for linker to calculate size of stack sections, and assign
 	 * values to stack symbols later */
@@ -200,6 +190,16 @@ SECTIONS
 	__StackLimit = __StackTop - SIZEOF(.stack_dummy);
 	PROVIDE(__stack = __StackTop);
 
-	/* Check if data + heap + stack exceeds RAM limit */
-	ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
+	.heap (NOLOAD):
+	{
+		. = ALIGN(8);
+		__HeapBase = .;
+		__end__ = .;
+		end = __end__;
+		KEEP(*(.heap*))
+		. = ORIGIN(RAM) + LENGTH(RAM) - SIZEOF(.stack_dummy);
+		__HeapLimit = .;
+	} > RAM
+
+	ASSERT(__end__ <= __HeapLimit, "region RAM overflowed before stack")
 }

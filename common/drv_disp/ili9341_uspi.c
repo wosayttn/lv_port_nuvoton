@@ -85,6 +85,12 @@ void disp_send_pixels(uint16_t *pixels, int byte_len)
     nu_uspi_transfer(&s_NuUSPI, (const void *)pixels, NULL, byte_len);
 }
 
+void disp_send_pixels_async(uint16_t *pixels, int byte_len, void (*cb)(void *), void *pvUserData)
+{
+    USPI_SET_DATA_WIDTH(CONFIG_DISP_SPI, 16);
+    nu_uspi_transfer_async(&s_NuUSPI, (const void *)pixels, NULL, byte_len, cb, pvUserData);
+}
+
 /**
  * @brief Set column address window for ILI9341 via USPI interface.
  *

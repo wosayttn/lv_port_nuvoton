@@ -349,6 +349,11 @@ int touchpad_device_control(int cmd, void *argv)
 
 void touchpad_device_close(void)
 {
+#if defined(CONFIG_INDEV_TOUCH_I2C)
+
+#elif defined(CONFIG_INDEV_TOUCH_AD)
+    EADC_Close(CONFIG_INDEV_TOUCH_AD);
+#endif
 }
 
 int touchpad_device_finalize(void)

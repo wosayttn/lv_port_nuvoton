@@ -1,6 +1,7 @@
 name: NuEclipse
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
@@ -32,18 +33,35 @@ jobs:
           mapfile -t solutions < <(find board misc -type f -name .cproject -exec dirname {} \;)
           set +e
 
+          log_dir="$GITHUB_WORKSPACE/build-logs/nueclipse"
+          mkdir -p "$log_dir"
+          build_failed=0
           mkdir -p "$GITHUB_WORKSPACE/artifacts"
           for dir in "${solutions[@]}"; do
 
             mkdir -p "$GITHUB_WORKSPACE/workspace"
+            log_file="$log_dir/$dir.log"
+            mkdir -p "$(dirname "$log_file")"
 
-            echo "🔨 Building $dir on $RUNNER_OS"
+            echo "🔨 Building $dir on $RUNNER_OS (log: $log_file)"
             timeout 5m eclipse \
               -nosplash \
               -application org.eclipse.cdt.managedbuilder.core.headlessbuild \
               -data "$GITHUB_WORKSPACE/workspace" \
               -import "$GITHUB_WORKSPACE/$dir" \
-              -build all
+              -build all > "$log_file" 2>&1
+            build_status=$?
+
+            if [ "$build_status" -ne 0 ]; then
+              build_failed=1
+              echo "::error::Build failed: $dir (exit code: $build_status)"
+              echo "::group::Failed build log: $dir"
+              cat "$log_file"
+              echo "::endgroup::"
+              rm -rf "$GITHUB_WORKSPACE/workspace"
+              continue
+            fi
+            echo "Build succeeded: $dir"
 
             echo "🧹 Collecting .bin files"
             bin_files=$(find "$dir" -type f -name "*.bin")
@@ -61,6 +79,15 @@ jobs:
             rm -rf "$GITHUB_WORKSPACE/workspace"
           done
           set -e
+          exit "$build_failed"
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: lv_port_nuvoton-nueclipse-logs
+          path: ${{ github.workspace }}/build-logs/nueclipse/
+          if-no-files-found: ignore
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4.4.3

@@ -130,6 +130,7 @@ int touchpad_device_control(int cmd, void *argv)
 
 void touchpad_device_close(void)
 {
+    EADC_Close(CONFIG_INDEV_TOUCH_AD);
 }
 
 int touchpad_device_finalize(void)

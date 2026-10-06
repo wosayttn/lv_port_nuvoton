@@ -43,7 +43,8 @@
 #define LV_FONT_MONTSERRAT_46           1
 #define LV_FONT_MONTSERRAT_48           1
 
-#define CONFIG_LV_MEM_SIZE              (4096*1024)
+/* Memory manager: use standard C library malloc/free/realloc to unify with C Runtime & FreeRTOS Heap */
+#define LV_USE_STDLIB_MALLOC            LV_STDLIB_CLIB
 #define CONFIG_LV_CACHE_DEF_SIZE        (2048*1024)
 
 #define LV_USE_DEMO_WIDGETS             1

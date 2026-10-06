@@ -26,6 +26,7 @@
 
 #define CONFIG_INDEV_TOUCH_AD        EADC0
 #define CONFIG_NG_MFP                1
+
 #define CONFIG_AD_PIN_XL             NU_GET_PININDEX(evGB, 6)
 #define CONFIG_AD_PIN_YU             NU_GET_PININDEX(evGB, 7)
 #define CONFIG_AD_PIN_XR             NU_GET_PININDEX(evGB, 4)

@@ -10,7 +10,7 @@
 #include "usbd_core.h"
 #include "NuMicro.h"
 
-#if defined(__M3331_H__)
+#if defined(__M3331_H__) || defined(__M460_H__) || defined(__M480_H__)
 #ifndef HSUSBD_IRQn
 #define HSUSBD_IRQn USBD20_IRQn
 #endif

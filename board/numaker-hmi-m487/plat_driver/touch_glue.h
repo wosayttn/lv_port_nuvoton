@@ -22,9 +22,7 @@
     #define GPIO_PIN_DATA              GPIO_PIN_DATA_S
 #endif
 
-#if !defined(CONFIG_DISP_USE_PDMA)
-    #define CONFIG_DISP_USE_PDMA       1
-#endif
+
 
 /* TouchPad over A/D converting */
 #define CONFIG_INDEV_TOUCH_AD         EADC0

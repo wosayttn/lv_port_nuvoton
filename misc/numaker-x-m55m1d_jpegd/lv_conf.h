@@ -60,7 +60,8 @@
 #define LV_USE_FS_MEMFS                 1
 #define LV_FS_MEMFS_LETTER              'Z'
 
-#define CONFIG_LV_MEM_SIZE              (256*1024U)
+/* Memory manager: use standard C library malloc/free/realloc to unify with C Runtime & FreeRTOS Heap */
+#define LV_USE_STDLIB_MALLOC            LV_STDLIB_CLIB
 
 #if LV_USE_LOG == 1
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE

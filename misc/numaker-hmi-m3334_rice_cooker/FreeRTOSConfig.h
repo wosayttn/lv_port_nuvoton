@@ -46,6 +46,7 @@
 /* Stack and heap */
 #define configMINIMAL_STACK_SIZE                        (uint16_t)128
 #define configMINIMAL_SECURE_STACK_SIZE                 1024
+/* Unified with C runtime heap (heap_3.c uses malloc/free from ARM_LIB_HEAP defined in scatter file) */
 #define configTOTAL_HEAP_SIZE                           (size_t)(32 * 1024)
 #define configMAX_TASK_NAME_LEN                         12
 /* OS features */
@@ -91,7 +92,7 @@
 #define INCLUDE_vTaskSuspend                            1
 #define INCLUDE_vTaskDelayUntil                         1
 #define INCLUDE_vTaskDelay                              1
-#define INCLUDE_uxTaskGetStackHighWaterMark             0
+#define INCLUDE_uxTaskGetStackHighWaterMark             1
 #define INCLUDE_xTaskGetIdleTaskHandle                  0
 #define INCLUDE_eTaskGetState                           1
 #define INCLUDE_xTaskResumeFromISR                      0

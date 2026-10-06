@@ -21,6 +21,10 @@
             "target": {
                 "port": "3333"
             },
+            "pyocdOptions": {
+                "probe_uid": "",
+                "frequency": 1000000
+            },
             "cmsis": {
                 "cbuildRunFile": "${command:cmsis-csolution.getCbuildRunFile}",
                 "updateConfiguration": "auto"
@@ -42,6 +46,10 @@
             ],
             "target": {
                 "port": "3333"
+            },
+            "pyocdOptions": {
+                "probe_uid": "",
+                "frequency": 1000000
             },
             "cmsis": {
                 "updateConfiguration": "auto"

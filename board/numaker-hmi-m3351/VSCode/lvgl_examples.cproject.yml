@@ -293,7 +293,7 @@ project:
     - file: ../../../lvgl/src/osal/lv_windows.c
     - file: ../../../lvgl/src/others/file_explorer/lv_file_explorer.c
     - file: ../../../lvgl/src/others/translation/lv_translation.c
-    - file: ../../../lvgl/src/stdlib/builtin/lv_mem_core_builtin.c
+    - file: ../../../lvgl/src/stdlib/clib/lv_mem_core_clib.c
     - file: ../../../lvgl/src/stdlib/builtin/lv_sprintf_builtin.c
     - file: ../../../lvgl/src/stdlib/builtin/lv_string_builtin.c
     - file: ../../../lvgl/src/stdlib/builtin/lv_tlsf.c
@@ -385,10 +385,11 @@ project:
     - file: ../plat_driver/touch_glue.c
   - group: FreeRTOS
     files:
+    - file: ../../../common/multithread.c
     - file: ../../../thirdparty/FreeRTOS/list.c
     - file: ../../../thirdparty/FreeRTOS/queue.c
     - file: ../../../thirdparty/FreeRTOS/tasks.c
     - file: ../../../thirdparty/FreeRTOS/timers.c
-    - file: ../../../thirdparty/FreeRTOS/portable/MemMang/heap_4.c
+    - file: ../../../thirdparty/FreeRTOS/portable/MemMang/heap_3.c
     - file: ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM33_NTZ/non_secure/port.c
     - file: ../../../thirdparty/FreeRTOS/portable/GCC/ARM_CM33_NTZ/non_secure/portasm.c

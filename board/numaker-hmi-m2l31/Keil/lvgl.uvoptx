@@ -2493,8 +2493,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</PathWithFileName>
-      <FilenameWithoutPath>lv_mem_core_builtin.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</PathWithFileName>
+      <FilenameWithoutPath>lv_mem_core_clib.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3613,8 +3613,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</PathWithFileName>
-      <FilenameWithoutPath>heap_4.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_3.c</PathWithFileName>
+      <FilenameWithoutPath>heap_3.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

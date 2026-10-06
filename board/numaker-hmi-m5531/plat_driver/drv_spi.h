@@ -1,5 +1,5 @@
 /**************************************************************************//**
- * @file     drv_spi.c
+ * @file     drv_spi.h
  * @brief    SPI helper function
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -37,6 +37,10 @@ struct nu_spi
 #else
     volatile uint32_t m_psSemBus;
 #endif
+
+    void (*pfnTransferDoneCb)(void *pvUserData);
+    void *pvUserData;
+    volatile uint8_t bAsyncBusy;
 
 #endif
 };
@@ -124,6 +128,8 @@ __STATIC_INLINE void nu_spi_drain_rxfifo(SPI_T *spi)
 }
 
 int nu_spi_transfer(struct nu_spi *psNuSPI, const void *tx, void *rx, int length);
+int nu_spi_transfer_async(struct nu_spi *psNuSPI, const void *tx, void *rx, int length, void (*cb)(void *), void *pvUserData);
+void nu_spi_transfer_wait(struct nu_spi *psNuSPI);
 int nu_spi_send_then_recv(struct nu_spi *psNuSPI, const uint8_t *tx, int tx_len, uint8_t *rx, int rx_len, int dw);
 
 #endif //__DRV_SPI_H__

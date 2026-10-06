@@ -7,6 +7,7 @@
  ******************************************************************************/
 
 #include "lvgl.h"
+#include <stdio.h>
 
 #if defined(__FREERTOS__)
     #include "FreeRTOS.h"

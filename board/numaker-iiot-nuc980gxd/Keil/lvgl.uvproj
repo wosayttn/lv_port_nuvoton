@@ -10,7 +10,7 @@
       <TargetName>G2D_NUC980DK_320x240</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -410,7 +410,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0xF8002000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\nuc980\Script\NUC980.sct</ScatterFile>
+            <ScatterFile>.\NUC980_G2D.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--entry 0x8000</Misc>
@@ -490,9 +490,9 @@
               <FilePath>..\FreeRTOSConfig.h</FilePath>
             </File>
             <File>
-              <FileName>multithread.c</FileName>
+              <FileName>arm9_heap.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\multithread.c</FilePath>
+              <FilePath>..\..\..\common\arm9_heap.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -532,7 +532,7 @@
             <File>
               <FileName>retarget.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\nuc980\Driver\Source\retarget.c</FilePath>
+              <FilePath>..\retarget.c</FilePath>
             </File>
             <File>
               <FileName>spi.c</FileName>
@@ -590,9 +590,9 @@
               <FilePath>..\..\..\misc\FreeRTOS-port\portable\RVDS\ARM9_NUC980\portASM.s</FilePath>
             </File>
             <File>
-              <FileName>heap_4.c</FileName>
+              <FileName>heap_3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_3.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1629,9 +1629,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_builtin.c</FileName>
+              <FileName>lv_mem_core_clib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>
@@ -2124,7 +2124,7 @@
       <TargetName>G1D_NUC980DK_320x240</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -2524,7 +2524,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0xF8002000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\nuc980\Script\NUC980.sct</ScatterFile>
+            <ScatterFile>.\NUC980_G1D.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--entry 0x8000</Misc>
@@ -2604,9 +2604,9 @@
               <FilePath>..\FreeRTOSConfig.h</FilePath>
             </File>
             <File>
-              <FileName>multithread.c</FileName>
+              <FileName>arm9_heap.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\multithread.c</FilePath>
+              <FilePath>..\..\..\common\arm9_heap.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2646,7 +2646,7 @@
             <File>
               <FileName>retarget.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\nuc980\Driver\Source\retarget.c</FilePath>
+              <FilePath>..\retarget.c</FilePath>
             </File>
             <File>
               <FileName>spi.c</FileName>
@@ -2704,9 +2704,9 @@
               <FilePath>..\..\..\misc\FreeRTOS-port\portable\RVDS\ARM9_NUC980\portASM.s</FilePath>
             </File>
             <File>
-              <FileName>heap_4.c</FileName>
+              <FileName>heap_3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
+              <FilePath>..\..\..\thirdparty\FreeRTOS\portable\MemMang\heap_3.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3743,9 +3743,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_builtin.c</FileName>
+              <FileName>lv_mem_core_clib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>

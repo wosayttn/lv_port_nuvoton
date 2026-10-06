@@ -410,7 +410,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0xF8002000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\n9h26\BSP\Script\N9H26\N9H26K6.sct</ScatterFile>
+            <ScatterFile>.\SYSTEM_HEAP.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--entry 0</Misc>
@@ -493,6 +493,11 @@
               <FileName>standalone.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\standalone.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm9_heap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\arm9_heap.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2528,7 +2533,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0xF8002000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\n9h26\BSP\Script\N9H26\N9H26K6.sct</ScatterFile>
+            <ScatterFile>.\SYSTEM_HEAP.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--entry 0</Misc>
@@ -2611,6 +2616,11 @@
               <FileName>standalone.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\standalone.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm9_heap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\common\arm9_heap.c</FilePath>
             </File>
           </Files>
         </Group>

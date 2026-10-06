@@ -1,6 +1,6 @@
 /**************************************************************************//**
- * @file     drv_uspi.c
- * @brief    USPI high level driver for M031 series
+ * @file     drv_uspi.h
+ * @brief    USPI helper function
  *
  * SPDX-License-Identifier: Apache-2.0
  * @copyright (C) 2020 Nuvoton Technology Corp. All rights reserved.
@@ -37,6 +37,10 @@ struct nu_uspi
 #else
     volatile uint32_t m_psSemBus;
 #endif
+
+    void (*pfnTransferDoneCb)(void *pvUserData);
+    void *pvUserData;
+    volatile uint8_t bAsyncBusy;
 
 #endif
 };
@@ -108,6 +112,8 @@ __STATIC_INLINE void nu_uspi_drain_rxfifo(USPI_T *uspi)
 }
 
 int nu_uspi_transfer(struct nu_uspi *psNuUSPI, const void *tx, void *rx, int length);
+int nu_uspi_transfer_async(struct nu_uspi *psNuUSPI, const void *tx, void *rx, int length, void (*cb)(void *), void *pvUserData);
+void nu_uspi_transfer_wait(struct nu_uspi *psNuUSPI);
 int nu_uspi_send_then_recv(struct nu_uspi *psNuUSPI, const uint8_t *tx, int tx_len, uint8_t *rx, int rx_len, int dw);
 
 #endif //__DRV_USPI_H__

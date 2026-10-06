@@ -82,6 +82,16 @@ void disp_send_pixels(uint16_t *pixels, int byte_len)
     }
 }
 
+void disp_send_pixels_async(uint16_t *pixels, int byte_len, void (*cb)(void *), void *pvUserData)
+{
+    (void*)pvUserData;
+    (void*)cb;
+
+    disp_send_pixels(pixels, byte_len);
+    // TODO
+}
+
+
 /* Static storage for display read area */
 static disp_area_t s_receive_area = {0};
 

@@ -150,9 +150,14 @@
 			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/event_groups.c</locationURI>
 		</link>
 		<link>
-			<name>FreeRTOS/heap_4.c</name>
+			<name>FreeRTOS/heap_3.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/MemMang/heap_4.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/FreeRTOS/portable/MemMang/heap_3.c</locationURI>
+		</link>
+		<link>
+			<name>FreeRTOS/newlib_heap.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/common/newlib_heap.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/list.c</name>
@@ -1165,9 +1170,9 @@
 			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/others/translation/lv_translation.c</locationURI>
 		</link>
 		<link>
-			<name>lvgl/lv_mem_core_builtin.c</name>
+			<name>lvgl/lv_mem_core_clib.c</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/stdlib/builtin/lv_mem_core_builtin.c</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/lvgl/src/stdlib/clib/lv_mem_core_clib.c</locationURI>
 		</link>
 		<link>
 			<name>lvgl/lv_sprintf_builtin.c</name>

@@ -22,10 +22,6 @@
     #define GPIO_PIN_DATA              GPIO_PIN_DATA_S
 #endif
 
-#if !defined(CONFIG_DISP_USE_PDMA)
-    #define CONFIG_DISP_USE_PDMA       1
-#endif
-
 #if defined(CONFIG_DISP_ILI9341) && (CONFIG_DISP_ILI9341==1)
     /* TouchPad over A/D converting */
     #define CONFIG_INDEV_TOUCH_AD         EADC0
