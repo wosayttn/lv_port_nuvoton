@@ -90,8 +90,11 @@ void lv_port_disp_init(void)
     LV_ASSERT(pu8FrameBuf2 != NULL);
 
     /* Initialize display controller and hardware */
-    LV_ASSERT(lcd_device_initialize() == 0);
-    LV_ASSERT(lcd_device_open() == 0);
+    int res = lcd_device_initialize();
+    LV_ASSERT(res == 0);
+    res = lcd_device_open();
+    LV_ASSERT(res == 0);
+    LV_UNUSED(res);
 
 #if defined(__FREERTOS__)
     if (s_xSemFlushDone == NULL)

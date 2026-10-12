@@ -17,8 +17,9 @@
 
 #define LV_USE_DRAW_GDMA                  1
 #if !defined(__ICCARM__)
-    #define LV_USE_NATIVE_HELIUM_ASM          1
+    #define LV_USE_NATIVE_HELIUM_ASM          0
     #define LV_USE_DRAW_SW_ASM                LV_DRAW_SW_ASM_HELIUM
+    #define LV_USE_DRAW_ARM2D_SYNC            1
 #endif
 //#define CONFIG_LV_DISP_FULL_REFRESH     1
 
@@ -38,6 +39,7 @@
 #endif
 
 #define LV_COLOR_DEPTH                  16
+#define LV_COLOR_FORMAT_DEFAULT         LV_COLOR_FORMAT_RGB565
 
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_16           1

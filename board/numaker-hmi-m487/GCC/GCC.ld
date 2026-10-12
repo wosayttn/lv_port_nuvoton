@@ -86,41 +86,17 @@ SECTIONS
 	} > FLASH
 	__exidx_end = .;
 
-	/* To copy multiple ROM to RAM sections,
-	 * uncomment .copy.table section and,
-	 * define __STARTUP_COPY_MULTIPLE in startup_ARMCMx.S */
-	/*
-	.copy.table :
-	{
-		. = ALIGN(4);
-		__copy_table_start__ = .;
-		LONG (__etext)
-		LONG (__data_start__)
-		LONG (__data_end__ - __data_start__)
-		LONG (__etext2)
-		LONG (__data2_start__)
-		LONG (__data2_end__ - __data2_start__)
-		__copy_table_end__ = .;
-	} > FLASH
-	*/
+	__etext = ALIGN(4);
 
-	/* To clear multiple BSS sections,
-	 * uncomment .zero.table section and,
-	 * define __STARTUP_CLEAR_BSS_MULTIPLE in startup_ARMCMx.S */
-	/*
-	.zero.table :
+	.stack (NOLOAD):
 	{
-		. = ALIGN(4);
-		__zero_table_start__ = .;
-		LONG (__bss_start__)
-		LONG (__bss_end__ - __bss_start__)
-		LONG (__bss2_start__)
-		LONG (__bss2_end__ - __bss2_start__)
-		__zero_table_end__ = .;
-	} > FLASH
-	*/
-
-	__etext = .;
+		. = ALIGN(8);
+		__StackLimit = .;
+		KEEP(*(.stack*))
+		. = ALIGN(8);
+		__StackTop = .;
+		PROVIDE(__stack = __StackTop);
+	} > RAM
 
 	.data : AT (__etext)
 	{
@@ -166,20 +142,6 @@ SECTIONS
 		__bss_end__ = .;
 	} > RAM
 
-	/* .stack_dummy section doesn't contains any symbols. It is only
-	 * used for linker to calculate size of stack sections, and assign
-	 * values to stack symbols later */
-	.stack_dummy (COPY):
-	{
-		KEEP(*(.stack*))
-	} > RAM
-
-	/* Set stack top to end of RAM, and stack limit move down by
-	 * size of stack_dummy section */
-	__StackTop = ORIGIN(RAM) + LENGTH(RAM);
-	__StackLimit = __StackTop - SIZEOF(.stack_dummy);
-	PROVIDE(__stack = __StackTop);
-
 	.heap (NOLOAD):
 	{
 		. = ALIGN(8);
@@ -187,9 +149,9 @@ SECTIONS
 		__end__ = .;
 		end = __end__;
 		KEEP(*(.heap*))
-		. = ORIGIN(RAM) + LENGTH(RAM) - SIZEOF(.stack_dummy);
+		. = ORIGIN(RAM) + LENGTH(RAM);
 		__HeapLimit = .;
 	} > RAM
 
-	ASSERT(__end__ <= __HeapLimit, "region RAM overflowed before stack")
+	ASSERT(__end__ <= __HeapLimit, "region RAM overflowed before heap")
 }

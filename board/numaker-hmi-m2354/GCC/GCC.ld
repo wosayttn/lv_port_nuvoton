@@ -86,61 +86,21 @@ SECTIONS
 	} > FLASH
 	__exidx_end = .;
 
-	/* To copy multiple ROM to RAM sections,
-	 * uncomment .copy.table section and,
-	 * define __STARTUP_COPY_MULTIPLE in startup_ARMCMx.S */
-	/*
-	.copy.table :
+	__etext = ALIGN(4);
+
+	.stack (NOLOAD):
 	{
-		. = ALIGN(4);
-		__copy_table_start__ = .;
-		LONG (__etext)
-		LONG (__data_start__)
-		LONG (__data_end__ - __data_start__)
-		LONG (__etext2)
-		LONG (__data2_start__)
-		LONG (__data2_end__ - __data2_start__)
-		__copy_table_end__ = .;
-	} > FLASH
-	*/
-
-	/* To clear multiple BSS sections,
-	 * uncomment .zero.table section and,
-	 * define __STARTUP_CLEAR_BSS_MULTIPLE in startup_ARMCMx.S */
-	/*
-	.zero.table :
-	{
-		. = ALIGN(4);
-		__zero_table_start__ = .;
-		LONG (__bss_start__)
-		LONG (__bss_end__ - __bss_start__)
-		LONG (__bss2_start__)
-		LONG (__bss2_end__ - __bss2_start__)
-		__zero_table_end__ = .;
-	} > FLASH
-	*/
-
-	__etext = .;
-
-	/* .stack_dummy section doesn't contains any symbols. It is only
-	 * used for linker to calculate size of stack sections, and assign
-	 * values to stack symbols later */
-
-	.stack_dummy (COPY):
-	{
+		. = ALIGN(8);
+		__StackLimit = .;
 		KEEP(*(.stack*))
+		. = ALIGN(8);
+		__StackTop = .;
+		PROVIDE(__stack = __StackTop);
 	} > RAM
-
-	/* Set stack top to size of stack_dummy section in RAM, and stack limit move down by
-	* size of stack_dummy section */
-	__StackTop = ORIGIN(RAM) + SIZEOF(.stack_dummy);
-	__StackLimit = ORIGIN(RAM);
-	PROVIDE(__stack = __StackTop);
 
 	.data : AT (__etext)
 	{
 		__data_start__ = .;
-		. = SIZEOF(.stack_dummy);
 		*(vtable)
 		*(.data*)
 

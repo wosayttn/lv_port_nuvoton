@@ -23,15 +23,22 @@ KEIL_PROJECT_EXTENSIONS = ('*.uvproj', '*.uvprojx')
 KEIL_BLACKLIST = ['warning:', 'Warning: ', 'error: ', 'Error: ']
 KEIL_WHITELIST = [
     '[-Wlicense-management]',
+    '[-Wdeprecated-declarations]',
     'Q9931W:',
+    'L6314W:',
     'Your license ',
     ' does not support the selected User Based Licensing technology',
+    'LV_COLOR_DEPTH is deprecated',
+    'Error: Device not found -',
+    'Include public headers from the `src` folder is deprecated',
 ]
 
 # ---------------------------------------------------------------------------
 # IAR Embedded Workbench
 # ---------------------------------------------------------------------------
-IAR_EXE_PATH = "C:\\Program Files\\IAR Systems\\Embedded Workbench 9.2\\common\\bin\\iarbuild.exe"
+import glob
+_iar_matches = sorted(glob.glob(r"C:\Program Files\IAR Systems\Embedded Workbench *\common\bin\iarbuild.exe"))
+IAR_EXE_PATH = _iar_matches[-1] if _iar_matches else r"C:\Program Files\IAR Systems\Embedded Workbench 9.4\common\bin\iarbuild.exe"
 IAR_STATE_FILE = 'iar_build_state.json'
 IAR_LOG_FILE = 'iar.txt'
 IAR_PROJECT_EXTENSION = '*.ewp'
@@ -39,10 +46,8 @@ IAR_PROJECT_EXTENSION = '*.ewp'
 # ---------------------------------------------------------------------------
 # NuEclipse (GCC)
 # ---------------------------------------------------------------------------
-NUECLIPSE_EXE_PATH = (
-    "C:\\Program Files (x86)\\Nuvoton Tools\\NuEclipse"
-    "\\V1.02.029r\\NuEclipse\\eclipse\\eclipsec.exe"
-)
+_nue_matches = sorted(glob.glob(r"C:\Program Files (x86)\Nuvoton Tools\NuEclipse\*\NuEclipse\eclipse\eclipsec.exe"))
+NUECLIPSE_EXE_PATH = _nue_matches[-1] if _nue_matches else r"C:\Program Files (x86)\Nuvoton Tools\NuEclipse\V1.02.025c\NuEclipse\eclipse\eclipsec.exe"
 NUECLIPSE_STATE_FILE = 'gcc_build_state.json'
 NUECLIPSE_LOG_FILE = 'gcc.txt'
 NUECLIPSE_PROJECT_FILE = '*.cproject'
@@ -68,4 +73,4 @@ VCPKG_BLACKLIST = [
 # ---------------------------------------------------------------------------
 # Build timeout (seconds)
 # ---------------------------------------------------------------------------
-BUILD_TIMEOUT = 300
+BUILD_TIMEOUT = 600

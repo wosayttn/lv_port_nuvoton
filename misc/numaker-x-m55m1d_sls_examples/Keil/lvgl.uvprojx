@@ -700,6 +700,16 @@
               <FilePath>..\..\..\lvgl\src\debugging\monkey\lv_monkey.c</FilePath>
             </File>
             <File>
+              <FileName>lv_profiler_builtin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_profiler_builtin_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin_posix.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_sysmon.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\debugging\sysmon\lv_sysmon.c</FilePath>
@@ -785,19 +795,24 @@
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_triangle.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\lv_draw_utils.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_vector.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_vector.c</FilePath>
             </File>
             <File>
-              <FileName>lv_image_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\lv_image_decoder.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_snapshot.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\snapshot\lv_snapshot.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_blend_arm2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\sw\blend\arm2d\lv_blend_arm2d.c</FilePath>
             </File>
             <File>
               <FileName>lv_blend_helium.S</FileName>
@@ -870,6 +885,11 @@
               <FilePath>..\..\..\lvgl\src\draw\sw\blend\riscv_v\lv_draw_sw_blend_riscv_v_to_rgb888.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_sw_blend_sve2_to_rgb888.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\sw\blend\sve2\lv_draw_sw_blend_sve2_to_rgb888.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_sw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw.c</FilePath>
@@ -938,11 +958,6 @@
               <FileName>lv_draw_sw_triangle.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw_triangle.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_sw_utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw_utils.c</FilePath>
             </File>
             <File>
               <FileName>lv_draw_sw_vector.c</FileName>
@@ -1120,6 +1135,91 @@
               <FilePath>..\..\..\lvgl\src\font\lv_font_unscii_8.c</FilePath>
             </File>
             <File>
+              <FileName>lv_fs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_fatfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_frogfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_frogfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_littlefs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_littlefs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_memfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_memfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_posix.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_stdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_stdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_uefi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_uefi.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_win32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_win32.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bin_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_bin_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bmp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_bmp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_image_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_image_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libjpeg_turbo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libjpeg_turbo.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libpng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libpng.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libwebp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libwebp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_lodepng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_lodepng.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_tjpgd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_tjpgd.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_gridnav.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\indev\lv_gridnav.c</FilePath>
@@ -1155,89 +1255,14 @@
               <FilePath>..\..\..\lvgl\src\layouts\lv_layout.c</FilePath>
             </File>
             <File>
-              <FileName>lv_bin_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\bin_decoder\lv_bin_decoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_bmp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\bmp\lv_bmp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_ffmpeg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\ffmpeg\lv_ffmpeg.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_cbfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_cbfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_fatfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_fatfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_frogfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_frogfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_littlefs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_littlefs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_memfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_memfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_posix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_posix.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_stdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_stdio.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_uefi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_uefi.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_win32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_win32.c</FilePath>
-            </File>
-            <File>
               <FileName>gif.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\gif\gif.c</FilePath>
             </File>
             <File>
-              <FileName>lv_libpng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\libpng\lv_libpng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_libwebp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\libwebp\lv_libwebp.c</FilePath>
-            </File>
-            <File>
               <FileName>lodepng.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\lodepng\lodepng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_lodepng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\lodepng\lv_lodepng.c</FilePath>
             </File>
             <File>
               <FileName>lz4.c</FileName>
@@ -1250,14 +1275,14 @@
               <FilePath>..\..\..\lvgl\src\libs\nanovg\nanovg.c</FilePath>
             </File>
             <File>
-              <FileName>lv_tjpgd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\tjpgd\lv_tjpgd.c</FilePath>
-            </File>
-            <File>
               <FileName>tjpgd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\tjpgd\tjpgd.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\logging\lv_log.c</FilePath>
             </File>
             <File>
               <FileName>lv_init.c</FileName>
@@ -1330,6 +1355,11 @@
               <FilePath>..\..\..\lvgl\src\misc\lv_bidi.c</FilePath>
             </File>
             <File>
+              <FileName>lv_bidi_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\misc\lv_bidi_common.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_circle_buf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_circle_buf.c</FilePath>
@@ -1350,11 +1380,6 @@
               <FilePath>..\..\..\lvgl\src\misc\lv_event.c</FilePath>
             </File>
             <File>
-              <FileName>lv_fs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_fs.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_grad.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_grad.c</FilePath>
@@ -1368,11 +1393,6 @@
               <FileName>lv_ll.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_ll.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_log.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_log.c</FilePath>
             </File>
             <File>
               <FileName>lv_lru.c</FileName>
@@ -1398,16 +1418,6 @@
               <FileName>lv_pending.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_pending.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_profiler_builtin.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_profiler_builtin.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_profiler_builtin_posix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_profiler_builtin_posix.c</FilePath>
             </File>
             <File>
               <FileName>lv_rb.c</FileName>
@@ -1515,9 +1525,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_clib.c</FileName>
+              <FileName>lv_mem_core_builtin.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>
@@ -1533,6 +1543,21 @@
               <FileName>lv_tlsf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_tlsf.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_mem_core_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_sprintf_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_sprintf_clib.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_string_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_string_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_mem.c</FileName>
@@ -4450,6 +4475,16 @@
               <FilePath>..\..\..\lvgl\src\debugging\monkey\lv_monkey.c</FilePath>
             </File>
             <File>
+              <FileName>lv_profiler_builtin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_profiler_builtin_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin_posix.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_sysmon.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\debugging\sysmon\lv_sysmon.c</FilePath>
@@ -4535,19 +4570,24 @@
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_triangle.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\lv_draw_utils.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_vector.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_vector.c</FilePath>
             </File>
             <File>
-              <FileName>lv_image_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\lv_image_decoder.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_snapshot.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\snapshot\lv_snapshot.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_blend_arm2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\sw\blend\arm2d\lv_blend_arm2d.c</FilePath>
             </File>
             <File>
               <FileName>lv_blend_helium.S</FileName>
@@ -4620,6 +4660,11 @@
               <FilePath>..\..\..\lvgl\src\draw\sw\blend\riscv_v\lv_draw_sw_blend_riscv_v_to_rgb888.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_sw_blend_sve2_to_rgb888.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\sw\blend\sve2\lv_draw_sw_blend_sve2_to_rgb888.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_sw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw.c</FilePath>
@@ -4688,11 +4733,6 @@
               <FileName>lv_draw_sw_triangle.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw_triangle.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_sw_utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw_utils.c</FilePath>
             </File>
             <File>
               <FileName>lv_draw_sw_vector.c</FileName>
@@ -4870,6 +4910,91 @@
               <FilePath>..\..\..\lvgl\src\font\lv_font_unscii_8.c</FilePath>
             </File>
             <File>
+              <FileName>lv_fs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_fatfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_frogfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_frogfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_littlefs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_littlefs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_memfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_memfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_posix.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_stdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_stdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_uefi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_uefi.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_win32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_win32.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bin_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_bin_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bmp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_bmp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_image_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_image_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libjpeg_turbo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libjpeg_turbo.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libpng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libpng.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libwebp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libwebp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_lodepng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_lodepng.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_tjpgd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_tjpgd.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_gridnav.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\indev\lv_gridnav.c</FilePath>
@@ -4905,89 +5030,14 @@
               <FilePath>..\..\..\lvgl\src\layouts\lv_layout.c</FilePath>
             </File>
             <File>
-              <FileName>lv_bin_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\bin_decoder\lv_bin_decoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_bmp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\bmp\lv_bmp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_ffmpeg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\ffmpeg\lv_ffmpeg.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_cbfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_cbfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_fatfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_fatfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_frogfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_frogfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_littlefs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_littlefs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_memfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_memfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_posix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_posix.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_stdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_stdio.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_uefi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_uefi.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_win32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_win32.c</FilePath>
-            </File>
-            <File>
               <FileName>gif.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\gif\gif.c</FilePath>
             </File>
             <File>
-              <FileName>lv_libpng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\libpng\lv_libpng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_libwebp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\libwebp\lv_libwebp.c</FilePath>
-            </File>
-            <File>
               <FileName>lodepng.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\lodepng\lodepng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_lodepng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\lodepng\lv_lodepng.c</FilePath>
             </File>
             <File>
               <FileName>lz4.c</FileName>
@@ -5000,14 +5050,14 @@
               <FilePath>..\..\..\lvgl\src\libs\nanovg\nanovg.c</FilePath>
             </File>
             <File>
-              <FileName>lv_tjpgd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\tjpgd\lv_tjpgd.c</FilePath>
-            </File>
-            <File>
               <FileName>tjpgd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\tjpgd\tjpgd.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\logging\lv_log.c</FilePath>
             </File>
             <File>
               <FileName>lv_init.c</FileName>
@@ -5080,6 +5130,11 @@
               <FilePath>..\..\..\lvgl\src\misc\lv_bidi.c</FilePath>
             </File>
             <File>
+              <FileName>lv_bidi_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\misc\lv_bidi_common.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_circle_buf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_circle_buf.c</FilePath>
@@ -5100,11 +5155,6 @@
               <FilePath>..\..\..\lvgl\src\misc\lv_event.c</FilePath>
             </File>
             <File>
-              <FileName>lv_fs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_fs.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_grad.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_grad.c</FilePath>
@@ -5118,11 +5168,6 @@
               <FileName>lv_ll.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_ll.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_log.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_log.c</FilePath>
             </File>
             <File>
               <FileName>lv_lru.c</FileName>
@@ -5148,16 +5193,6 @@
               <FileName>lv_pending.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_pending.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_profiler_builtin.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_profiler_builtin.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_profiler_builtin_posix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_profiler_builtin_posix.c</FilePath>
             </File>
             <File>
               <FileName>lv_rb.c</FileName>
@@ -5265,9 +5300,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_clib.c</FileName>
+              <FileName>lv_mem_core_builtin.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>
@@ -5283,6 +5318,21 @@
               <FileName>lv_tlsf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_tlsf.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_mem_core_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_sprintf_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_sprintf_clib.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_string_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_string_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_mem.c</FileName>
@@ -8659,6 +8709,16 @@
               <FilePath>..\..\..\lvgl\src\debugging\monkey\lv_monkey.c</FilePath>
             </File>
             <File>
+              <FileName>lv_profiler_builtin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_profiler_builtin_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin_posix.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_sysmon.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\debugging\sysmon\lv_sysmon.c</FilePath>
@@ -8744,19 +8804,24 @@
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_triangle.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\lv_draw_utils.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_vector.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_vector.c</FilePath>
             </File>
             <File>
-              <FileName>lv_image_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\lv_image_decoder.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_snapshot.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\snapshot\lv_snapshot.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_blend_arm2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\sw\blend\arm2d\lv_blend_arm2d.c</FilePath>
             </File>
             <File>
               <FileName>lv_blend_helium.S</FileName>
@@ -8829,6 +8894,11 @@
               <FilePath>..\..\..\lvgl\src\draw\sw\blend\riscv_v\lv_draw_sw_blend_riscv_v_to_rgb888.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_sw_blend_sve2_to_rgb888.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\sw\blend\sve2\lv_draw_sw_blend_sve2_to_rgb888.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_sw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw.c</FilePath>
@@ -8897,11 +8967,6 @@
               <FileName>lv_draw_sw_triangle.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw_triangle.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_sw_utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw_utils.c</FilePath>
             </File>
             <File>
               <FileName>lv_draw_sw_vector.c</FileName>
@@ -9079,6 +9144,91 @@
               <FilePath>..\..\..\lvgl\src\font\lv_font_unscii_8.c</FilePath>
             </File>
             <File>
+              <FileName>lv_fs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_fatfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_frogfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_frogfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_littlefs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_littlefs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_memfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_memfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_posix.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_stdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_stdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_uefi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_uefi.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_win32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_win32.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bin_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_bin_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bmp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_bmp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_image_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_image_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libjpeg_turbo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libjpeg_turbo.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libpng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libpng.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libwebp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libwebp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_lodepng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_lodepng.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_tjpgd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_tjpgd.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_gridnav.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\indev\lv_gridnav.c</FilePath>
@@ -9114,89 +9264,14 @@
               <FilePath>..\..\..\lvgl\src\layouts\lv_layout.c</FilePath>
             </File>
             <File>
-              <FileName>lv_bin_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\bin_decoder\lv_bin_decoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_bmp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\bmp\lv_bmp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_ffmpeg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\ffmpeg\lv_ffmpeg.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_cbfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_cbfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_fatfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_fatfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_frogfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_frogfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_littlefs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_littlefs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_memfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_memfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_posix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_posix.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_stdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_stdio.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_uefi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_uefi.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_win32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_win32.c</FilePath>
-            </File>
-            <File>
               <FileName>gif.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\gif\gif.c</FilePath>
             </File>
             <File>
-              <FileName>lv_libpng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\libpng\lv_libpng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_libwebp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\libwebp\lv_libwebp.c</FilePath>
-            </File>
-            <File>
               <FileName>lodepng.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\lodepng\lodepng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_lodepng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\lodepng\lv_lodepng.c</FilePath>
             </File>
             <File>
               <FileName>lz4.c</FileName>
@@ -9209,14 +9284,14 @@
               <FilePath>..\..\..\lvgl\src\libs\nanovg\nanovg.c</FilePath>
             </File>
             <File>
-              <FileName>lv_tjpgd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\tjpgd\lv_tjpgd.c</FilePath>
-            </File>
-            <File>
               <FileName>tjpgd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\tjpgd\tjpgd.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\logging\lv_log.c</FilePath>
             </File>
             <File>
               <FileName>lv_init.c</FileName>
@@ -9289,6 +9364,11 @@
               <FilePath>..\..\..\lvgl\src\misc\lv_bidi.c</FilePath>
             </File>
             <File>
+              <FileName>lv_bidi_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\misc\lv_bidi_common.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_circle_buf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_circle_buf.c</FilePath>
@@ -9309,11 +9389,6 @@
               <FilePath>..\..\..\lvgl\src\misc\lv_event.c</FilePath>
             </File>
             <File>
-              <FileName>lv_fs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_fs.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_grad.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_grad.c</FilePath>
@@ -9327,11 +9402,6 @@
               <FileName>lv_ll.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_ll.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_log.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_log.c</FilePath>
             </File>
             <File>
               <FileName>lv_lru.c</FileName>
@@ -9357,16 +9427,6 @@
               <FileName>lv_pending.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_pending.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_profiler_builtin.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_profiler_builtin.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_profiler_builtin_posix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_profiler_builtin_posix.c</FilePath>
             </File>
             <File>
               <FileName>lv_rb.c</FileName>
@@ -9474,9 +9534,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_clib.c</FileName>
+              <FileName>lv_mem_core_builtin.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>
@@ -9492,6 +9552,21 @@
               <FileName>lv_tlsf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_tlsf.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_mem_core_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_sprintf_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_sprintf_clib.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_string_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_string_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_mem.c</FileName>
@@ -12868,6 +12943,16 @@
               <FilePath>..\..\..\lvgl\src\debugging\monkey\lv_monkey.c</FilePath>
             </File>
             <File>
+              <FileName>lv_profiler_builtin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_profiler_builtin_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin_posix.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_sysmon.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\debugging\sysmon\lv_sysmon.c</FilePath>
@@ -12953,19 +13038,24 @@
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_triangle.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\lv_draw_utils.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_vector.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_vector.c</FilePath>
             </File>
             <File>
-              <FileName>lv_image_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\lv_image_decoder.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_snapshot.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\snapshot\lv_snapshot.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_blend_arm2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\sw\blend\arm2d\lv_blend_arm2d.c</FilePath>
             </File>
             <File>
               <FileName>lv_blend_helium.S</FileName>
@@ -13038,6 +13128,11 @@
               <FilePath>..\..\..\lvgl\src\draw\sw\blend\riscv_v\lv_draw_sw_blend_riscv_v_to_rgb888.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_sw_blend_sve2_to_rgb888.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\sw\blend\sve2\lv_draw_sw_blend_sve2_to_rgb888.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_sw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw.c</FilePath>
@@ -13106,11 +13201,6 @@
               <FileName>lv_draw_sw_triangle.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw_triangle.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_sw_utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw_utils.c</FilePath>
             </File>
             <File>
               <FileName>lv_draw_sw_vector.c</FileName>
@@ -13288,6 +13378,91 @@
               <FilePath>..\..\..\lvgl\src\font\lv_font_unscii_8.c</FilePath>
             </File>
             <File>
+              <FileName>lv_fs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_fatfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_frogfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_frogfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_littlefs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_littlefs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_memfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_memfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_posix.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_stdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_stdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_uefi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_uefi.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_win32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_win32.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bin_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_bin_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bmp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_bmp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_image_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_image_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libjpeg_turbo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libjpeg_turbo.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libpng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libpng.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libwebp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libwebp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_lodepng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_lodepng.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_tjpgd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_tjpgd.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_gridnav.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\indev\lv_gridnav.c</FilePath>
@@ -13323,89 +13498,14 @@
               <FilePath>..\..\..\lvgl\src\layouts\lv_layout.c</FilePath>
             </File>
             <File>
-              <FileName>lv_bin_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\bin_decoder\lv_bin_decoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_bmp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\bmp\lv_bmp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_ffmpeg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\ffmpeg\lv_ffmpeg.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_cbfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_cbfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_fatfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_fatfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_frogfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_frogfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_littlefs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_littlefs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_memfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_memfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_posix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_posix.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_stdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_stdio.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_uefi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_uefi.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_win32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_win32.c</FilePath>
-            </File>
-            <File>
               <FileName>gif.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\gif\gif.c</FilePath>
             </File>
             <File>
-              <FileName>lv_libpng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\libpng\lv_libpng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_libwebp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\libwebp\lv_libwebp.c</FilePath>
-            </File>
-            <File>
               <FileName>lodepng.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\lodepng\lodepng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_lodepng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\lodepng\lv_lodepng.c</FilePath>
             </File>
             <File>
               <FileName>lz4.c</FileName>
@@ -13418,14 +13518,14 @@
               <FilePath>..\..\..\lvgl\src\libs\nanovg\nanovg.c</FilePath>
             </File>
             <File>
-              <FileName>lv_tjpgd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\tjpgd\lv_tjpgd.c</FilePath>
-            </File>
-            <File>
               <FileName>tjpgd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\tjpgd\tjpgd.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\logging\lv_log.c</FilePath>
             </File>
             <File>
               <FileName>lv_init.c</FileName>
@@ -13498,6 +13598,11 @@
               <FilePath>..\..\..\lvgl\src\misc\lv_bidi.c</FilePath>
             </File>
             <File>
+              <FileName>lv_bidi_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\misc\lv_bidi_common.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_circle_buf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_circle_buf.c</FilePath>
@@ -13518,11 +13623,6 @@
               <FilePath>..\..\..\lvgl\src\misc\lv_event.c</FilePath>
             </File>
             <File>
-              <FileName>lv_fs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_fs.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_grad.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_grad.c</FilePath>
@@ -13536,11 +13636,6 @@
               <FileName>lv_ll.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_ll.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_log.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_log.c</FilePath>
             </File>
             <File>
               <FileName>lv_lru.c</FileName>
@@ -13566,16 +13661,6 @@
               <FileName>lv_pending.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_pending.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_profiler_builtin.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_profiler_builtin.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_profiler_builtin_posix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_profiler_builtin_posix.c</FilePath>
             </File>
             <File>
               <FileName>lv_rb.c</FileName>
@@ -13683,9 +13768,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_clib.c</FileName>
+              <FileName>lv_mem_core_builtin.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>
@@ -13701,6 +13786,21 @@
               <FileName>lv_tlsf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_tlsf.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_mem_core_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_sprintf_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_sprintf_clib.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_string_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_string_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_mem.c</FileName>
@@ -16618,6 +16718,16 @@
               <FilePath>..\..\..\lvgl\src\debugging\monkey\lv_monkey.c</FilePath>
             </File>
             <File>
+              <FileName>lv_profiler_builtin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_profiler_builtin_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin_posix.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_sysmon.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\debugging\sysmon\lv_sysmon.c</FilePath>
@@ -16703,19 +16813,24 @@
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_triangle.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\lv_draw_utils.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_vector.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\lv_draw_vector.c</FilePath>
             </File>
             <File>
-              <FileName>lv_image_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\lv_image_decoder.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_snapshot.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\snapshot\lv_snapshot.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_blend_arm2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\sw\blend\arm2d\lv_blend_arm2d.c</FilePath>
             </File>
             <File>
               <FileName>lv_blend_helium.S</FileName>
@@ -16788,6 +16903,11 @@
               <FilePath>..\..\..\lvgl\src\draw\sw\blend\riscv_v\lv_draw_sw_blend_riscv_v_to_rgb888.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_sw_blend_sve2_to_rgb888.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\draw\sw\blend\sve2\lv_draw_sw_blend_sve2_to_rgb888.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_sw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw.c</FilePath>
@@ -16856,11 +16976,6 @@
               <FileName>lv_draw_sw_triangle.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw_triangle.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_sw_utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\draw\sw\lv_draw_sw_utils.c</FilePath>
             </File>
             <File>
               <FileName>lv_draw_sw_vector.c</FileName>
@@ -17038,6 +17153,91 @@
               <FilePath>..\..\..\lvgl\src\font\lv_font_unscii_8.c</FilePath>
             </File>
             <File>
+              <FileName>lv_fs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_fatfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_frogfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_frogfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_littlefs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_littlefs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_memfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_memfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_posix.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_stdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_stdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_uefi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_uefi.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_win32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\fs\lv_fs_win32.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bin_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_bin_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bmp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_bmp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_image_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_image_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libjpeg_turbo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libjpeg_turbo.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libpng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libpng.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_libwebp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_libwebp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_lodepng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_lodepng.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_tjpgd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\image\lv_tjpgd.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_gridnav.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\indev\lv_gridnav.c</FilePath>
@@ -17073,89 +17273,14 @@
               <FilePath>..\..\..\lvgl\src\layouts\lv_layout.c</FilePath>
             </File>
             <File>
-              <FileName>lv_bin_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\bin_decoder\lv_bin_decoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_bmp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\bmp\lv_bmp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_ffmpeg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\ffmpeg\lv_ffmpeg.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_cbfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_cbfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_fatfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_fatfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_frogfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_frogfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_littlefs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_littlefs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_memfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_memfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_posix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_posix.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_stdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_stdio.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_uefi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_uefi.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_win32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\fsdrv\lv_fs_win32.c</FilePath>
-            </File>
-            <File>
               <FileName>gif.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\gif\gif.c</FilePath>
             </File>
             <File>
-              <FileName>lv_libpng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\libpng\lv_libpng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_libwebp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\libwebp\lv_libwebp.c</FilePath>
-            </File>
-            <File>
               <FileName>lodepng.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\lodepng\lodepng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_lodepng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\lodepng\lv_lodepng.c</FilePath>
             </File>
             <File>
               <FileName>lz4.c</FileName>
@@ -17168,14 +17293,14 @@
               <FilePath>..\..\..\lvgl\src\libs\nanovg\nanovg.c</FilePath>
             </File>
             <File>
-              <FileName>lv_tjpgd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\libs\tjpgd\lv_tjpgd.c</FilePath>
-            </File>
-            <File>
               <FileName>tjpgd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\libs\tjpgd\tjpgd.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\logging\lv_log.c</FilePath>
             </File>
             <File>
               <FileName>lv_init.c</FileName>
@@ -17248,6 +17373,11 @@
               <FilePath>..\..\..\lvgl\src\misc\lv_bidi.c</FilePath>
             </File>
             <File>
+              <FileName>lv_bidi_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\misc\lv_bidi_common.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_circle_buf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_circle_buf.c</FilePath>
@@ -17268,11 +17398,6 @@
               <FilePath>..\..\..\lvgl\src\misc\lv_event.c</FilePath>
             </File>
             <File>
-              <FileName>lv_fs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_fs.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_grad.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_grad.c</FilePath>
@@ -17286,11 +17411,6 @@
               <FileName>lv_ll.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_ll.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_log.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_log.c</FilePath>
             </File>
             <File>
               <FileName>lv_lru.c</FileName>
@@ -17316,16 +17436,6 @@
               <FileName>lv_pending.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\misc\lv_pending.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_profiler_builtin.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_profiler_builtin.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_profiler_builtin_posix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\misc\lv_profiler_builtin_posix.c</FilePath>
             </File>
             <File>
               <FileName>lv_rb.c</FileName>
@@ -17433,9 +17543,9 @@
               <FilePath>..\..\..\lvgl\src\others\translation\lv_translation.c</FilePath>
             </File>
             <File>
-              <FileName>lv_mem_core_clib.c</FileName>
+              <FileName>lv_mem_core_builtin.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
+              <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</FilePath>
             </File>
             <File>
               <FileName>lv_sprintf_builtin.c</FileName>
@@ -17451,6 +17561,21 @@
               <FileName>lv_tlsf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\lvgl\src\stdlib\builtin\lv_tlsf.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_mem_core_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_sprintf_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_sprintf_clib.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_string_clib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\lvgl\src\stdlib\clib\lv_string_clib.c</FilePath>
             </File>
             <File>
               <FileName>lv_mem.c</FileName>

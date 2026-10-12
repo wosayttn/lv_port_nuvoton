@@ -19,6 +19,7 @@
 #endif
 
 #define LV_COLOR_DEPTH                  16
+#define LV_COLOR_FORMAT_DEFAULT         LV_COLOR_FORMAT_RGB565
 
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_16           1
@@ -28,7 +29,7 @@
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_MEM_MONITOR              1
+#define LV_USE_MEM_MONITOR              0
 #if LV_USE_MEM_MONITOR
     #define LV_USE_MEM_MONITOR_POS          LV_ALIGN_BOTTOM_LEFT
 #endif

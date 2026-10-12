@@ -6,6 +6,7 @@
  * Copyright (C) 2024 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 
+#include <stdio.h>
 #include "lvgl.h"
 #include "NuMicro.h"
 

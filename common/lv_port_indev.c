@@ -22,8 +22,11 @@ void lv_port_indev_init(void)
 {
     static lv_indev_t *lv_indev_touch;
 
-    LV_ASSERT(touchpad_device_initialize() == 0);
-    LV_ASSERT(touchpad_device_open() == 0);
+    int res = touchpad_device_initialize();
+    LV_ASSERT(res == 0);
+    res = touchpad_device_open();
+    LV_ASSERT(res == 0);
+    LV_UNUSED(res);
 
     lv_indev_touch = lv_indev_create();
     lv_indev_set_type(lv_indev_touch, LV_INDEV_TYPE_POINTER);

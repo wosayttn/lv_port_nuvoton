@@ -137,7 +137,7 @@ void ui_screen_cooking_create(void)
     s_scr_cook = lv_obj_create(NULL);
     lv_obj_set_style_bg_color(s_scr_cook, UI_COLOR_BG, 0);
     lv_obj_set_style_bg_opa(s_scr_cook, LV_OPA_COVER, 0);
-    lv_obj_clear_flag(s_scr_cook, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scrollable(s_scr_cook, false);
 
     /* Status bar */
     ui_create_status_bar(s_scr_cook, ui_str(STR_COOKING));
@@ -148,7 +148,7 @@ void ui_screen_cooking_create(void)
     lv_obj_align(cont, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_bg_opa(cont, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(cont, 0, 0);
-    lv_obj_clear_flag(cont, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scrollable(cont, false);
 
     /* Mode name – top left */
     s_lbl_mode = lv_label_create(cont);

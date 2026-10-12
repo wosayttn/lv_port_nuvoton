@@ -9,6 +9,10 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
+#if defined(__CC_ARM)
+    #define LV_UNREACHABLE() while(1)
+#endif
+
 #define LV_NUVOTON_INCLUDE     "nuc980.h"
 #include LV_NUVOTON_INCLUDE
 
@@ -16,6 +20,7 @@
 #define LV_HOR_RES_MAX                  320
 #define LV_VER_RES_MAX                  240
 #define LV_COLOR_DEPTH                  16
+#define LV_COLOR_FORMAT_DEFAULT         LV_COLOR_FORMAT_RGB565
 #define CONFIG_LV_DEF_REFR_PERIOD       16
 
 #define CONFIG_LV_DISP_FULL_REFRESH     0

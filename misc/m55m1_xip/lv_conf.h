@@ -17,7 +17,7 @@
 
 //#define LV_USE_DRAW_GDMA                  1
 #if !defined(__ICCARM__)
-    #define LV_USE_NATIVE_HELIUM_ASM          1
+    #define LV_USE_NATIVE_HELIUM_ASM          0
     #define LV_USE_DRAW_SW_ASM                LV_DRAW_SW_ASM_HELIUM
 #endif
 //#define CONFIG_LV_DISP_FULL_REFRESH     1
@@ -28,6 +28,7 @@
 #define LV_HOR_RES_MAX              640
 #define LV_VER_RES_MAX              480
 #define LV_COLOR_DEPTH               16
+#define LV_COLOR_FORMAT_DEFAULT      LV_COLOR_FORMAT_RGB565
 
 #define CONFIG_LV_DEF_REFR_PERIOD       1
 

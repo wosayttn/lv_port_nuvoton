@@ -12,7 +12,9 @@
 static void lv_port_disp_partial(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map)
 {
     /* Update dirty region. */
-    LV_ASSERT(lcd_device_control(evLCD_CTRL_RECT_UPDATE, (void *)area) == 0);
+    int res = lcd_device_control(evLCD_CTRL_RECT_UPDATE, (void *)area);
+    LV_ASSERT(res == 0);
+    LV_UNUSED(res);
 
     lv_disp_flush_ready(disp);
 }
@@ -23,9 +25,13 @@ void lv_port_disp_init(void)
     static S_LCD_INFO sLcdInfo = {0};
 
     /* Initial display device */
-    LV_ASSERT(lcd_device_initialize() == 0);
-    LV_ASSERT(lcd_device_open() == 0);
-    LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
+    int res = lcd_device_initialize();
+    LV_ASSERT(res == 0);
+    res = lcd_device_open();
+    LV_ASSERT(res == 0);
+    res = lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo);
+    LV_ASSERT(res == 0);
+    LV_UNUSED(res);
 
     LV_LOG_INFO("Use one screen-size shadow buffer: 0x%08x", (uint32_t)sLcdInfo.pvVramStartAddr);
 

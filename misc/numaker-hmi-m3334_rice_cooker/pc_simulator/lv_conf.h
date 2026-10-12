@@ -16,6 +16,7 @@
 #define CONFIG_LV_DEF_REFR_PERIOD   16   /* ~30 FPS is fine for sim */
 
 #define LV_COLOR_DEPTH          16
+#define LV_COLOR_FORMAT_DEFAULT LV_COLOR_FORMAT_RGB565
 
 #define LV_FONT_MONTSERRAT_12   1
 #define LV_FONT_MONTSERRAT_16   1

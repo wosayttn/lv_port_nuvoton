@@ -21,7 +21,7 @@ void ui_create_status_bar(lv_obj_t *parent, const char *title)
     lv_obj_set_style_radius(bar, 0, 0);
     lv_obj_set_style_border_width(bar, 0, 0);
     lv_obj_set_style_pad_hor(bar, 8, 0);
-    lv_obj_clear_flag(bar, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scrollable(bar, false);
 
     /* Title label (left) */
     lv_obj_t *lbl_title = lv_label_create(bar);
@@ -53,7 +53,7 @@ void ui_create_softkey_bar(lv_obj_t *parent, const char *hint)
     lv_obj_set_style_bg_opa(bar, LV_OPA_COVER, 0);
     lv_obj_set_style_radius(bar, 0, 0);
     lv_obj_set_style_border_width(bar, 0, 0);
-    lv_obj_clear_flag(bar, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scrollable(bar, false);
 
     lv_obj_t *lbl = lv_label_create(bar);
     lv_label_set_text(lbl, hint);

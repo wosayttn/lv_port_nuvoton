@@ -19,6 +19,7 @@
 #endif
 
 #define LV_COLOR_DEPTH                  16
+#define LV_COLOR_FORMAT_DEFAULT         LV_COLOR_FORMAT_RGB565
 
 #define LV_FONT_MONTSERRAT_12           1
 #define LV_FONT_MONTSERRAT_16           1
@@ -97,7 +98,7 @@
 
 #define LV_USE_SYSMON                   1
 #define LV_USE_PERF_MONITOR             1
-#define LV_USE_MEM_MONITOR              1
+#define LV_USE_MEM_MONITOR              0
 #if LV_USE_MEM_MONITOR
     #define LV_USE_MEM_MONITOR_POS          LV_ALIGN_BOTTOM_LEFT
 #endif
@@ -107,8 +108,8 @@
 #define LV_USE_STDLIB_MALLOC            LV_STDLIB_CLIB
 
 #if LV_USE_LOG == 1
-    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
-    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
+    //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_INFO
+    #define LV_LOG_LEVEL                    LV_LOG_LEVEL_TRACE
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_WARN
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_ERROR
     //#define LV_LOG_LEVEL                    LV_LOG_LEVEL_USER

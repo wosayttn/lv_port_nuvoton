@@ -9,9 +9,9 @@
         <debug>0</debug>
         <settings>
             <name>C-STAT</name>
-            <archiveVersion>518</archiveVersion>
+            <archiveVersion>517</archiveVersion>
             <data>
-                <version>518</version>
+                <version>517</version>
                 <cstatargs>
                     <useExtraArgs>0</useExtraArgs>
                     <extraArgs></extraArgs>

@@ -90,6 +90,8 @@ void lv_draw_2dge_init(void)
     lv_draw_sw_thread_dsc_t *thread_dsc = &draw_2dge_unit->thread_dsc;
     thread_dsc->idx = 0;
     thread_dsc->draw_unit = (void *) draw_2dge_unit;
+    lv_thread_sync_init(&thread_dsc->new_task_sync);
+    lv_thread_sync_init(&thread_dsc->task_done_sync);
     lv_thread_init(&thread_dsc->thread, "2dge_draw", LV_DRAW_THREAD_PRIO, _2dge_render_thread_cb, LV_DRAW_THREAD_STACK_SIZE, thread_dsc);
 #endif
 }
@@ -299,8 +301,7 @@ static int32_t _2dge_dispatch(lv_draw_unit_t *draw_unit, lv_layer_t *layer)
     thread_dsc->task_act = t;
 
     /* Let the render thread work. */
-    if (thread_dsc->inited)
-        lv_thread_sync_signal(&thread_dsc->sync);
+    lv_thread_sync_signal(&thread_dsc->new_task_sync);
 #else
     _2dge_execute_drawing(t);
 
@@ -322,10 +323,12 @@ static int32_t _2dge_delete(lv_draw_unit_t *draw_unit)
     LV_LOG_INFO("Cancel 2DGE draw thread.");
     thread_dsc->exit_status = true;
 
-    if (thread_dsc->inited)
-        lv_thread_sync_signal(&thread_dsc->sync);
+    lv_thread_sync_signal(&thread_dsc->new_task_sync);
 
-    return lv_thread_delete(&thread_dsc->thread);
+    lv_thread_delete(&thread_dsc->thread);
+    lv_thread_sync_delete(&thread_dsc->new_task_sync);
+    lv_thread_sync_delete(&thread_dsc->task_done_sync);
+    return 0;
 #else
 
     LV_UNUSED(draw_unit);
@@ -362,8 +365,6 @@ static void _2dge_execute_drawing(lv_draw_task_t *t)
 static void _2dge_render_thread_cb(void *ptr)
 {
     lv_draw_sw_thread_dsc_t *thread_dsc = ptr;
-    lv_thread_sync_init(&thread_dsc->sync);
-    thread_dsc->inited = true;
 
     while (1)
     {
@@ -373,7 +374,7 @@ static void _2dge_render_thread_cb(void *ptr)
             if (thread_dsc->exit_status)
                 break;
 
-            lv_thread_sync_wait(&thread_dsc->sync);
+            lv_thread_sync_wait(&thread_dsc->new_task_sync);
         }
 
         if (thread_dsc->exit_status)
@@ -393,9 +394,6 @@ static void _2dge_render_thread_cb(void *ptr)
         /* The draw unit is free now. Request a new dispatching as it can get a new task. */
         lv_draw_dispatch_request();
     }
-
-    thread_dsc->inited = false;
-    lv_thread_sync_delete(&thread_dsc->sync);
 
     LV_LOG_INFO("Exit 2DGE draw thread.");
 }
