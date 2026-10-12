@@ -103,7 +103,7 @@ void ui_screen_menu_create(void)
     s_scr_menu = lv_obj_create(NULL);
     lv_obj_set_style_bg_color(s_scr_menu, UI_COLOR_BG, 0);
     lv_obj_set_style_bg_opa(s_scr_menu, LV_OPA_COVER, 0);
-    lv_obj_clear_flag(s_scr_menu, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scrollable(s_scr_menu, false);
 
     /* Status bar */
     ui_create_status_bar(s_scr_menu, ui_str(STR_SELECT_MODE));
@@ -127,8 +127,8 @@ void ui_screen_menu_create(void)
         lv_obj_set_style_radius(s_items[i], 4, 0);
         lv_obj_set_style_border_width(s_items[i], 0, 0);
         lv_obj_set_style_pad_left(s_items[i], 12, 0);
-        lv_obj_clear_flag(s_items[i], LV_OBJ_FLAG_SCROLLABLE);
-        lv_obj_add_flag(s_items[i], LV_OBJ_FLAG_CLICKABLE);
+        lv_obj_set_scrollable(s_items[i], false);
+        lv_obj_set_clickable(s_items[i], true);
         lv_obj_add_event_cb(s_items[i], menu_item_click_cb, LV_EVENT_CLICKED, (void *)(uintptr_t)i);
 
         lv_obj_t *lbl = lv_label_create(s_items[i]);

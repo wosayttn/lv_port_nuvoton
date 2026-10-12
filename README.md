@@ -4,7 +4,7 @@
 ![VSCode Build](https://github.com/wosayttn/lv_port_nuvoton/actions/workflows/VSCode.yml/badge.svg)
 [![SBOM](https://img.shields.io/badge/SBOM-SCA%20Report-blue)](https://wosayttn.github.io/lv_port_nuvoton/sbom/)
 
-Currently, the LVGL version is synchronized with **release/v9.5**.
+Currently, the LVGL version is synchronized with **release/v9.6.0**.
 
 This repository contains the LVGLv9 demo port for the NuMaker development board from Nuvoton.
 

@@ -43,7 +43,9 @@ static void lv_port_disp_direct(lv_display_t *disp, const lv_area_t *area,
         dcache_clean_by_mva((const void *)px_map, psLCDInfo->u32ResHeight * stride);
 
         /*Pan display to the newly rendered active framebuffer*/
-        LV_ASSERT(lcd_device_control(evLCD_CTRL_PAN_DISPLAY, (void *)px_map) == 0);
+        int res = lcd_device_control(evLCD_CTRL_PAN_DISPLAY, (void *)px_map);
+        LV_ASSERT(res == 0);
+        LV_UNUSED(res);
     }
 
     lv_display_flush_ready(disp);
@@ -171,9 +173,13 @@ void lv_port_disp_init(void)
     uint32_t u32FBSize;
 
     /* Initial display device */
-    LV_ASSERT(lcd_device_initialize() == 0);
-    LV_ASSERT(lcd_device_open() == 0);
-    LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
+    int res = lcd_device_initialize();
+    LV_ASSERT(res == 0);
+    res = lcd_device_open();
+    LV_ASSERT(res == 0);
+    res = lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo);
+    LV_ASSERT(res == 0);
+    LV_UNUSED(res);
 
     u32FBSize =
         sLcdInfo.u32ResHeight * sLcdInfo.u32ResWidth * sLcdInfo.u32BytePerPixel;

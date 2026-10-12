@@ -1338,6 +1338,12 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\debugging\monkey\lv_monkey.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\debugging\profiler\lv_profiler_builtin_posix.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\debugging\sysmon\lv_sysmon.c</name>
         </file>
         <file>
@@ -1389,13 +1395,16 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\lv_draw_triangle.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\lv_draw_utils.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\lv_draw_vector.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\lv_image_decoder.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\snapshot\lv_snapshot.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\snapshot\lv_snapshot.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\arm2d\lv_blend_arm2d.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\lv_draw_sw_blend.c</name>
@@ -1435,6 +1444,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\riscv_v\lv_draw_sw_blend_riscv_v_to_rgb888.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\blend\sve2\lv_draw_sw_blend_sve2_to_rgb888.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\lv_draw_sw.c</name>
@@ -1477,9 +1489,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\lv_draw_sw_triangle.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\lv_draw_sw_utils.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\draw\sw\lv_draw_sw_vector.c</name>
@@ -1587,6 +1596,57 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\font\lv_font_unscii_8.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\fs\lv_fs.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\fs\lv_fs_fatfs.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\fs\lv_fs_frogfs.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\fs\lv_fs_littlefs.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\fs\lv_fs_memfs.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\fs\lv_fs_posix.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\fs\lv_fs_stdio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\fs\lv_fs_uefi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\fs\lv_fs_win32.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\image\lv_bin_decoder.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\image\lv_bmp.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\image\lv_image_decoder.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\image\lv_libjpeg_turbo.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\image\lv_libpng.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\image\lv_libwebp.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\image\lv_lodepng.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\image\lv_tjpgd.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\indev\lv_gridnav.c</name>
         </file>
         <file>
@@ -1608,55 +1668,10 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\layouts\lv_layout.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\bin_decoder\lv_bin_decoder.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\bmp\lv_bmp.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\ffmpeg\lv_ffmpeg.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\fsdrv\lv_fs_cbfs.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\fsdrv\lv_fs_fatfs.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\fsdrv\lv_fs_frogfs.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\fsdrv\lv_fs_littlefs.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\fsdrv\lv_fs_memfs.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\fsdrv\lv_fs_posix.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\fsdrv\lv_fs_stdio.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\fsdrv\lv_fs_uefi.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\fsdrv\lv_fs_win32.c</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\gif\gif.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\libpng\lv_libpng.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\libwebp\lv_libwebp.c</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\lodepng\lodepng.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\lodepng\lv_lodepng.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\lz4\lz4.c</name>
@@ -1665,10 +1680,10 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\nanovg\nanovg.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\tjpgd\lv_tjpgd.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\tjpgd\tjpgd.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\libs\tjpgd\tjpgd.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\logging\lv_log.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\lv_init.c</name>
@@ -1713,6 +1728,9 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_bidi.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_bidi_common.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_circle_buf.c</name>
         </file>
         <file>
@@ -1725,9 +1743,6 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_event.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_fs.c</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_grad.c</name>
         </file>
         <file>
@@ -1735,9 +1750,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_ll.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_log.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_lru.c</name>
@@ -1753,12 +1765,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_pending.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_profiler_builtin.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_profiler_builtin_posix.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\misc\lv_rb.c</name>
@@ -1824,7 +1830,7 @@
             <name>$PROJ_DIR$\..\..\..\lvgl\src\others\translation\lv_translation.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</name>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\builtin\lv_mem_core_builtin.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\builtin\lv_sprintf_builtin.c</name>
@@ -1834,6 +1840,15 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\builtin\lv_tlsf.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\clib\lv_mem_core_clib.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\clib\lv_sprintf_clib.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\clib\lv_string_clib.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\lvgl\src\stdlib\lv_mem.c</name>

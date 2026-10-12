@@ -9,6 +9,10 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
+#if defined(__CC_ARM)
+    #define LV_UNREACHABLE() while(1)
+#endif
+
 #define LV_NUVOTON_INCLUDE     "NuMicro.h"
 #include LV_NUVOTON_INCLUDE
 
@@ -29,6 +33,8 @@
     #define LV_VER_RES_MAX              272
     #define LV_COLOR_DEPTH              16
 #endif
+
+#define LV_COLOR_FORMAT_DEFAULT         LV_COLOR_FORMAT_RGB565
 
 #define CONFIG_LV_DEF_REFR_PERIOD       25
 #define CONFIG_LV_DISP_FULL_REFRESH     0

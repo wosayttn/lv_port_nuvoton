@@ -93,6 +93,7 @@ void lv_draw_gdma_fill(lv_draw_task_t *t)
 
             lib_err = dma350_lib_set_des(dev, &dest_buf[0]);
             LV_ASSERT(lib_err == DMA350_LIB_ERR_NONE);
+            LV_UNUSED(lib_err);
 
             dma350_ch_set_xaddr_inc(dev, 1, 1);
             dma350_ch_set_xsize32(dev, 0, dest_w);

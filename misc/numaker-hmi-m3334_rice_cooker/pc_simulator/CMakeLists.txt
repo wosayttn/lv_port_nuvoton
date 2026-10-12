@@ -40,6 +40,7 @@ file(GLOB_RECURSE LVGL_SRCS "${LVGL_PATH}/src/*.c")
 add_library(lvgl STATIC ${LVGL_SRCS})
 target_include_directories(lvgl PUBLIC
     "${LVGL_PATH}"
+    "${LVGL_PATH}/include"
     "${CMAKE_SOURCE_DIR}"          # picks up lv_conf.h
 )
 target_compile_definitions(lvgl PUBLIC
@@ -66,6 +67,8 @@ target_include_directories(rice_cooker_sim PRIVATE
     "${CMAKE_SOURCE_DIR}"
     "${CMAKE_SOURCE_DIR}/.."
     "${UI_DIR}"
+    "${LVGL_PATH}"
+    "${LVGL_PATH}/include"
     ${SDL2_INCLUDE_DIRS}
 )
 

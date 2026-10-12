@@ -85,6 +85,6 @@ void ui_init(void)
     lv_led_set_brightness(led, 150);
     lv_led_set_color(led, lv_palette_main(LV_PALETTE_BLUE));
 
-    lv_obj_add_flag(scr, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_set_clickable(scr, true);
     lv_obj_add_event_cb(scr, screen_touch_event_cb, LV_EVENT_PRESSED, NULL);
 }

@@ -13,7 +13,7 @@
 #include LV_NUVOTON_INCLUDE
 
 #define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE 64
-#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN __attribute__((aligned(64)))
+#define LV_ATTRIBUTE_MEM_ALIGN __attribute__((aligned(64)))
 #define CONFIG_LV_DRAW_BUF_ALIGN 64
 
 #define LV_USE_DRAW_GFX 1
@@ -37,6 +37,8 @@
     #define LV_VER_RES_MAX 480
     #define LV_COLOR_DEPTH 32
 #endif
+
+#define LV_COLOR_FORMAT_DEFAULT         LV_COLOR_FORMAT_XRGB8888
 
 #define lv_snprintf snprintf
 #define lv_vsnprintf vsnprintf
@@ -68,8 +70,10 @@
 
 #define LV_USE_DEMO_WIDGETS 1
 //#define LV_USE_DEMO_BENCHMARK 1
-#define LV_DEMO_BENCHMARK_ALIGNED_FONTS 1
-#define LV_USE_FONT_PLACEHOLDER 0
+#if LV_USE_DEMO_BENCHMARK
+    #define LV_DEMO_BENCHMARK_ALIGNED_FONTS 1
+    #define LV_USE_FONT_PLACEHOLDER 0
+#endif
 
 #define LV_USE_SYSMON 1
 #define LV_USE_PERF_MONITOR 1

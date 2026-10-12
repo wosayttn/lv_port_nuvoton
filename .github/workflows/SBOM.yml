@@ -14,11 +14,11 @@ concurrency:
 
 jobs:
   security_scan:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4
 
       # =========================
       # Install tools
@@ -62,7 +62,7 @@ jobs:
       # Upload artifacts
       # =========================
       - name: Upload SCA Reports Bundle
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v4
         with:
           name: sca-reports
           path: sca-reports.zip

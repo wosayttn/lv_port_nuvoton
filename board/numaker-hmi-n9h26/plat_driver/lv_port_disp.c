@@ -16,10 +16,13 @@ static void lv_port_disp_full(lv_display_t *disp, const lv_area_t *area, uint8_t
     sysCleanDcache((UINT32)px_map, (UINT32)lv_area_get_size(area) * (LV_COLOR_DEPTH / 8));
 
     /* Use PANDISPLAY without H/W copying */
-    LV_ASSERT(lcd_device_control(evLCD_CTRL_PAN_DISPLAY, (void *)px_map) == 0);
+    int res = lcd_device_control(evLCD_CTRL_PAN_DISPLAY, (void *)px_map);
+    LV_ASSERT(res == 0);
 
     /* vsync-after: Use ping-pong screen-sized buffers only.*/
-    LV_ASSERT(lcd_device_control(evLCD_CTRL_WAIT_VSYNC, (void *)NULL) == 0);
+    res = lcd_device_control(evLCD_CTRL_WAIT_VSYNC, (void *)NULL);
+    LV_ASSERT(res == 0);
+    LV_UNUSED(res);
 
     lv_display_flush_ready(disp);
 }
@@ -80,9 +83,13 @@ void lv_port_disp_init(void)
     uint32_t u32FBSize;
 
     /* Initial display device */
-    LV_ASSERT(lcd_device_initialize() == 0);
-    LV_ASSERT(lcd_device_open() == 0);
-    LV_ASSERT(lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo) == 0);
+    int res = lcd_device_initialize();
+    LV_ASSERT(res == 0);
+    res = lcd_device_open();
+    LV_ASSERT(res == 0);
+    res = lcd_device_control(evLCD_CTRL_GET_INFO, (void *)&sLcdInfo);
+    LV_ASSERT(res == 0);
+    LV_UNUSED(res);
 
     u32FBSize = sLcdInfo.u32ResHeight * sLcdInfo.u32ResWidth * sLcdInfo.u32BytePerPixel;
     buf1 = (void *)((uint32_t)sLcdInfo.pvVramStartAddr);

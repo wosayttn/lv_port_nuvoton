@@ -6,12 +6,12 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "../../draw/lv_image_decoder_private.h"
+#include "../../image/lv_image_decoder_private.h"
 #include "../../../lvgl.h"
 
 #if LV_USE_HWJPGD
 
-#include "../../misc/lv_fs_private.h"
+#include "../../fs/lv_fs_private.h"
 #include <string.h>
 #include <stdio.h>
 #include "drv_hwjpgd.h"
