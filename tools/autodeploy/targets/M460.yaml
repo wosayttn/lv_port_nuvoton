@@ -1,0 +1,51 @@
+---
+name: M460
+variants:
+  - name: M460
+    cores:
+      - name: main
+        type: armv7em
+        core_access_options: !Arm
+          ap: !v1 0
+    memory_map:
+      - !Ram
+        range:
+          start: 0x20000000
+          end: 0x20040000
+        cores:
+          - main
+      - !Nvm
+        range:
+          start: 0x0
+          end: 0x100000
+        cores:
+          - main
+        access:
+          boot: true
+    flash_algorithms:
+      - M460_AP_1M
+flash_algorithms:
+  - name: M460_AP_1M
+    description: "M460 APROM 1MB"
+    default: true
+    instructions: QLpwR8C6cEdP6jAAcEcAAFkhiAfA+AARFiHA+AARiCHA+AAR0PgAEQEpFNHQ+AASQfAEAcD4ABLQ+AQSQfAEAcD4BBKXSQpoQvApAgpgCmgpIZFDAdABIHBHk0nA+EAS0PhQEkkH+9XQ+BASIfAHAYkcwPgQEtD4IBIh8A8BwPggEgAgcEeHSND4wBDJB/vRAWgh8AEBAWAAIHBHELWBS9P4wEDkB/vRHGhE8EAEHGBZYJpg2GABIBhhv/Nvj9P4wADAB/vRGGhBBgLVGGABIBC9ACAQvQELCQMAIiIg3efwtQAkDUYGRgIqDtIKsW9PDeAAJwvgVvgkADpGAQsJAyIgZBz/98r/CLEBIPC9rELx0wAg8L1wtWJLISTcYAElEuBYYBRonGAdYb/zb4/T+MBA5Af70RxoZgYC1RxgASBwvQAdCR8SHQAp6tEAIHC9LenwRwZGF0aABzfRyRxRSCHwAwHQ+MAg0gf70QJoQvBAAgJgcELA8wgEjEIA2QxGCBsg8A8FoOsFCjpGIUYwRv/3wf/QuSZEJ0RP9AB4DOAsRkVFANlERjpGIUYwRgDwOvhYuSZEJ0QtGwAt8NE6RlFGMEb/96f/ACgA0AEgvejwh3C1gwcb0ckcMksh8AMB0/jAQOQH+9EcaETwQAQcYAAk3GABJRPgWGAdYb/zb4/T+MBA5Af70RxoZgYB1RxgcL2caBZopkL60QAdCR8SHQAp6dFwvRC1HksnJNxgWGABysP4gAABysP4hABS+AgLw/iIAFL4BAzD+IwAASAYYRA5v/Nvjxbg0/jAABDwMA/60QHKw/iAAAHKw/iEANP4wAAQ8MAP+tEBysP4iAABysP4jAAQOQAp5tHT+MAAwAf70RhoQQYC1RhgASAQvQAgEL0AAADAAEAeQggAA6pVAAAAAAA=
+    pc_init: 0x10
+    pc_uninit: 0x86
+    pc_program_page: 0x150
+    pc_erase_sector: 0xd6
+    pc_erase_all: 0x9c
+    pc_verify: 0x1d2
+    data_section_offset: 0x2b0
+    flash_properties:
+      address_range:
+        start: 0x0
+        end: 0x100000
+      page_size: 0x1000
+      erased_byte_value: 0xff
+      program_page_timeout: 80
+      erase_sector_timeout: 180
+      sectors:
+        - size: 0x1000
+          address: 0x0
+      cores:
+        - main

@@ -1,0 +1,51 @@
+---
+name: M2354
+variants:
+  - name: M2354
+    cores:
+      - name: main
+        type: armv8m
+        core_access_options: !Arm
+          ap: !v1 0
+    memory_map:
+      - !Ram
+        range:
+          start: 0x20000000
+          end: 0x20040000
+        cores:
+          - main
+      - !Nvm
+        range:
+          start: 0x0
+          end: 0x100000
+        cores:
+          - main
+        access:
+          boot: true
+    flash_algorithms:
+      - M2354_AP_1M
+flash_algorithms:
+  - name: M2354_AP_1M
+    description: "M2354 APROM 1MB"
+    default: true
+    instructions: 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
+    pc_init: 0x0
+    pc_uninit: 0xf0
+    pc_program_page: 0x29c
+    pc_erase_sector: 0x1e8
+    pc_erase_all: 0x1a8
+    pc_verify: 0x588
+    data_section_offset: 0x668
+    flash_properties:
+      address_range:
+        start: 0x0
+        end: 0x100000
+      page_size: 0x800
+      erased_byte_value: 0xff
+      program_page_timeout: 50
+      erase_sector_timeout: 180
+      sectors:
+        - size: 0x800
+          address: 0x0
+      cores:
+        - main

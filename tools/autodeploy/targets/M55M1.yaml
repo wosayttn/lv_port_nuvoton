@@ -1,0 +1,51 @@
+---
+name: M55M1
+variants:
+  - name: M55M1
+    cores:
+      - name: main
+        type: armv8m
+        core_access_options: !Arm
+          ap: !v2 0x0
+    memory_map:
+      - !Ram
+        range:
+          start: 0x20100000
+          end: 0x20200000
+        cores:
+          - main
+      - !Nvm
+        range:
+          start: 0x100000
+          end: 0x300000
+        cores:
+          - main
+        access:
+          boot: true
+    flash_algorithms:
+      - M55M1_AP_2M
+flash_algorithms:
+  - name: M55M1_AP_2M
+    description: "M55M1 APROM 2MB"
+    default: true
+    instructions: QfIADE/yABHE8gAMWSLP9v9xTPgBIBYiTPgBIIgiTPgBIFz4ARABKV3RQfIEAcTyAAEKaBIHCNTc+AAgQvAIAsz4ACAKaBIH/NVP8AESaSPB+DgiRPIAAsTyBAITYBJoAvApAikqPtFC8hQDxPIAAxpokgdC8hACxPIAAgnVAL8QaAAo/NQBIBBgAL8YaAAo/NTR+PwDAPAHAAQoBL8AIMH4/APc+AAAIPBAAMz4AABI8itAwfIAAEhhAiCIYdz4AABA8EAAzPgAAAC/CGhABvzVBCDB+PwDT/LwQc/2/3EAIFBQcEcBIHBHRPIAAcTyBAEAvwhswAf80QhoIPABAgAgCmBwR0TyAAzE8gQMAL/c+EAw2wf70dz4ADBD8EADzPgAMMz4DAABIMz4BBDM+AggzPgQAL/zb48Av9z4QADAB/vR3PgAAEEGUr8AIMz4AAABIHBHTvIAAQAizvb/cQFAIiD/98+/8LWBsAEqG9hO8gAHFEYNRgZGzvb/dwAqHL9K9gMkwPJVBAC/dbFW+AQLIkYA6gcBIiD/97T/pfEBBQi5L/APwAEgAOAAIAGw8L0t6fBFgbAURoIHG9EDMUTyAAfE8gQHIfADBTlsyQf80SDwgFgiRkBCOWhv818gqEJB8EABUOo1hjlgQEYxRgDwZPgYsQEgAbC96PCFpesGDCzwDwoG6wgAuvEADwTrBgJJ0E/wJw5P8AEIx/gM4HhgE2i69QB/x/iAMFNox/iEMJNox/iIMFNG1GjH+IxAKL9P9ABzx/gQgLPxEAS/82+PHdAWRgC/1/jAUBXwMA/60TVGVfgQH8f4gBBpaMf4hBAAv9f4wBAR8MAP+tGxaRA8x/iIEPFpLkbH+IwQ49HX+MAQyQf70TxoYQYM1BhEuusDChpEudEM8A8BAPAG+AAoX+oPkJ/nPGCc5xC1RPIABE/wIQzE8gQExPgMwLmxT/ABDGBgE2ijYMT4EMC/82+PAL8jbNsH/NHU+ADgX+pOYwfUBDkA8QQAAvEEAunRACAQvQEgxPgA4BC9gwcYv3BHsLVE8gADAzHE8gQDAPCAXAC/HGzkB/zRHGgh8AMBRPBABCDwgFAcYAAk3GDJsU/wAQ5YYMP4EOC/82+PAL8cbOQH/NEcaGUGCtScaBVorEIH0QQ5APEEAALxBALp0QDgHGBA6gwAveiwQHBHAAAAAAAA
+    pc_init: 0x0
+    pc_uninit: 0xea
+    pc_program_page: 0x1b2
+    pc_erase_sector: 0x156
+    pc_erase_all: 0x106
+    pc_verify: 0x30c
+    data_section_offset: 0x380
+    flash_properties:
+      address_range:
+        start: 0x100000
+        end: 0x300000
+      page_size: 0x200
+      erased_byte_value: 0xff
+      program_page_timeout: 100
+      erase_sector_timeout: 200
+      sectors:
+        - size: 0x2000
+          address: 0x0
+      cores:
+        - main

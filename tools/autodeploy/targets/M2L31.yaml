@@ -1,0 +1,50 @@
+---
+name: M2L31
+variants:
+  - name: M2L31
+    cores:
+      - name: main
+        type: armv8m
+        core_access_options: !Arm
+          ap: !v1 0
+    memory_map:
+      - !Ram
+        range:
+          start: 0x20000000
+          end: 0x20010000
+        cores:
+          - main
+      - !Nvm
+        range:
+          start: 0x0
+          end: 0x80000
+        cores:
+          - main
+        access:
+          boot: true
+    flash_algorithms:
+      - M2L31_AP_512
+flash_algorithms:
+  - name: M2L31_AP_512
+    description: "M2L31 APROM 512kB"
+    default: true
+    instructions: hLACkAGRAJIwSFkhAWAWIQFgiCEBYABoASgD0P/nASADkFDgKkkIaCpKEEMIYCpJCGgEIhBDCGD/5yhIAGhQIQhAUCgB0P/n9+clSGkhAWAAaCkhCEApKAPQ/+cBIAOQMeAgSABoQPIAcQhAQPIAEYhCFtD/5//nGkgAaMAHCLH/5/nnGEkIaAEiEEMGIpBDCGD/5xNIAGjABwix/+f55//nEkkIaAYiEEMBIpBDCGAPSQhoDyKQQwhgDkkDIAhgACADkP/nA5gEsHBHAAEAQAACAEAEAAQABAIAQFACAEAAwABA/AEAQPgBAEAQAgBAIAIAQEzAAECBsACQ/+cHSABowAcIsf/n+ecFSQhoASKQQwhgACABsHBHwEZAwABAAMAAQIGwAJAAIAGwcEfARoOwAZD/5xpIAGjABwix/+f55xhJCGhAIhBDCGABmBZJCGAWSRZICGAWSSIgCGAWSQEgCGC/82+P/+cNSABowAcIsf/n+ecLSABoAJBoRgB4QAYAKAbV/+cAmAZJCGABIAKQAuAAIAKQ/+cCmAOwcEdAwABAAMAAQATAAEAIwABAA6pVAAzAAEAQwABAgLWIsAaQBZEEkgAgA5AEmAIoA9P/5wEgB5Ah4ASYGLn/5wAgB5Ab4P/nA5gFmYhCE9L/5waYA5mJAEBYApACmP/3mP8BkAGYGLH/5wGYB5AG4AOYQBwDkOfnACAHkP/nB5gIsIC9wEaFsAOQApEBkgOoAHiABxix/+cBIASQieACmMAcAyGIQwKQ/+dDSABowAcIsf/n+edBSQhoQCIQQwhg/+cCmAAocdD/5z1JACAIYD1JLyAIYDxJASAIYL/zb4//5zVIAGjABwix/+f55zNIAGgAkGhGAHhABgAoBtX/5wCYLkkIYAEgBJBS4AOYLEkIYAGYAGgtSQhgKkknIAhgKkkBIAhgv/Nvj//nI0gAaMAHCLH/5/nnIUgAaACQaEYAeEAGACgG1f/nAJgcSQhgASAEkC3gA5gaSQhgGkkhIAhgGUkBIAhgv/Nvj//nEkgAaMAHCLH/5/nnEEgAaACQaEYAeEAGACgG1f/nAJgLSQhgASAEkAzgA5gAHQOQAZgAHQGQApgAHwKQiucAIASQ/+cEmAWwcEfARkDAAEAAwABABMAAQAzAAEAQwABACMAAQIWwA5ACkQGSA6gAeIAHGLH/5wOYBJBI4AKYwBwDIYhDApD/5yJIAGjABwix/+f55yBJCGhAIhBDCGAfSQAgCGD/5wKYcLP/5wOYHEkIYBxJASAIYL/zb4//5xVIAGjABwix/+f55xNIAGgAkGhGAHhABgAoBNX/5wCYDkkIYBHgEEgAaAGZCWiIQgHQ/+cJ4AOYAB0DkAGYAB0BkAKYAB8CkM7nA5gEkP/nBJgFsHBHQMAAQADAAEAMwABABMAAQBDAAEAIwABAAAAAAA==
+    pc_init: 0x0
+    pc_uninit: 0xf8
+    pc_program_page: 0x224
+    pc_erase_sector: 0x124
+    pc_verify: 0x370
+    data_section_offset: 0x438
+    flash_properties:
+      address_range:
+        start: 0x0
+        end: 0x80000
+      page_size: 0x80
+      erased_byte_value: 0xff
+      program_page_timeout: 100
+      erase_sector_timeout: 180
+      sectors:
+        - size: 0x1000
+          address: 0x0
+      cores:
+        - main

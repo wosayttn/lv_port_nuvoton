@@ -1,0 +1,50 @@
+---
+name: M3351
+variants:
+  - name: M3351
+    cores:
+      - name: main
+        type: armv8m
+        core_access_options: !Arm
+          ap: !v1 0
+    memory_map:
+      - !Ram
+        range:
+          start: 0x20000000
+          end: 0x20020000
+        cores:
+          - main
+      - !Nvm
+        range:
+          start: 0x0
+          end: 0x80000
+        cores:
+          - main
+        access:
+          boot: true
+    flash_algorithms:
+      - M3351_AP_512
+flash_algorithms:
+  - name: M3351_AP_512
+    description: "M3351 APROM 512kB"
+    default: true
+    instructions: QPIAIG/w/wHE8gAAWSJCUBYiQlCIIkJQQVgBKU/RAW3JBgbUAWhB8AQBAWABbckG/NUBaQHwBwEHKQPQAWlB8AcBAWEAIQFiQWhE8gQCEUNBYEzyAADE8gAA6SEBYAFoAfCpAakpKtFP8gABxPIAAUkiCmAKaALwCQIJKh/RCmwSBRbVMyLKYE7yAALA9iFySmABIgphv/NvjwC/CmzSB/zRCmhTBgnU0fhAIbLx/z/63QIiwmQAIMpkcEcKYAEgcEdM8gAAxPIAAAC/AWzJB/zRT/IAAcTyAAEAvwps0gf80QAiAmAAIApgcEdP8gABxPIAAQtsQPIADMD2IXwbBQz1YEIg8IBTXL8AIsD2InKTQh3SY0Uk0k7yAAHO9v9xAUBM8gAAxPIAACIiwmBBYAAhgWABIQFhv/NvjwFsyQf80QFoSgZCvwFgASBwRyLgTvL/AcD2IXEAIItCiL8BIHBHTvIAAs72/3IC9YBSEEAiIspgSGAAIIhgASAIYb/zb48AvwhswAf80QhoQgZCvwhgASBwRwAgcEct6fBNASoC2QEgvejwjU/yAAPE8gADQPIADBxswPYhfAz1YE4kBVy/QPIADsD2In4AKhy/SvYDIsDyVQLhs07yAAhM8gAGACTO9v94T/AiCsTyAAZP8AELAL9Q+CRwJ/CAVXVFK9JlRRHSB+oIBcb4DKB1YLJgxvgQsL/zb481bO0H/NE1aG8GE9Ui4AC/CPWAVT1Aw/gMoF1gmmDD+BCwv/NvjwC/HWztB/zRHWhvBhHUATSMQtDRACC96PCNTvL/AcD2IXEAII1CiL8BIL3o8I01YJjnHWCW5/C1T/IAA8TyAAMAJR5swPYhdSDwgFwF9WBENgVYvwX1gDSkRWnShgccv2BG8L0DMaxFIfADDoDwyoBBQhHwBwNM8gABxPIAARrQAPAHAKzrAABhJRRozWBIYE/w/zDB+IAAASDB+IRACGG/82+PAL8IbMAH/NEIaEQGPNScRBpErusDDi7wBwPbsWElASQAv9LpAGDNYMH4BMDB+IBgwfiEAAxhv/NvjwhswAf80Q5ocAYA8bCADPEIDAg7AvEIAubRHvAHAADwoIAQaGEiymDB+ATAwfiAAE/w/zDB+IQAASAIYb/zb48IbMAH/NEIaEIGQPGKgAhgkOAF9WFGtEWA8IyAQEIQ8AMOHdAxIAEkdUYAvxZ4AL/T+EBxfwD71Nhgw/gEwJ5gHGG/82+PAL8ebPYH/NEeaHcGatQM8QEMAT0C8QEC5dGh6w4OLvADAeGxMiQBIAC/FWgAv9P4QGF2APvU3GDD+ATAnWAYYb/zb48Avx1s7Qf80R1obgZM1AzxBAwEOQLxBALl0R7wAwA70DEhASUAvxZ4AL/T+EBxfwD71Nlgw/gEwJ5gHWG/82+PAL8fbP8H/NEeaHcGKNQM8QEMATgC8QEC5dEd4L7xAA8a0CEhASQQaNlgw/gEwJhgHGG/82+PGGzAB/zRGGhFBgzUvvEEDk/wAAAM8QQMAvEEAgi/8L3m5wAg8L0YYATgHmAC4A5gAOAdYAEg8L1wtU/yAAPE8gADQPIADh1swPYhfoRGIPCAUA71YEQtBVi/DvWANKBCKNJf6ox0GL9wvQMxcEUh8AMBLdIAKUbQTPIAA0/wAA7E8gADASQAv8P4DOBYYBxhv/Nvjx1s7Qf80R1obgYx1J1oFmi1Qi7RBDAEOQLxBALq0SjgYEYxs2BGAL8DeBZ4s0Ig0QEwATkC8QEC9tEa4MmxT/AADgEkw/gM4FhgHGG/82+PHWztB/zRHWhuBgnUnWgWaLVCBtEEMAQ5AvEEAurRAOAdYAzwgFEIQ3C9AAAAAAAA
+    pc_init: 0x0
+    pc_uninit: 0xc2
+    pc_program_page: 0x274
+    pc_erase_sector: 0xec
+    pc_verify: 0x494
+    data_section_offset: 0x56c
+    flash_properties:
+      address_range:
+        start: 0x0
+        end: 0x80000
+      page_size: 0x2000
+      erased_byte_value: 0xff
+      program_page_timeout: 1000
+      erase_sector_timeout: 3000
+      sectors:
+        - size: 0x2000
+          address: 0x0
+      cores:
+        - main

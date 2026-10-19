@@ -1,0 +1,111 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["VSCode", "NuEclipse"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      workflow_source:
+        description: "Source workflow to deploy artifacts from"
+        required: true
+        default: "VSCode"
+        type: choice
+        options:
+          - VSCode
+          - NuEclipse
+      run_id:
+        description: "Specific Run ID (optional, leave empty for latest successful run)"
+        required: false
+        default: ""
+      observe_seconds:
+        description: "Seconds to observe MCU runtime health post-flash"
+        required: false
+        default: "3"
+
+permissions:
+  actions: read
+  contents: read
+
+# Concurrency group ensures only one job accesses physical USB debug probes at a time
+concurrency:
+  group: hardware-flash-banana
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: |
+      github.repository == 'wosayttn/lv_port_nuvoton' &&
+      (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
+    runs-on: [self-hosted, banana]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+
+      - name: Resolve Target Run & Artifact
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_run") {
+            $runId = "${{ github.event.workflow_run.id }}"
+            $wfName = "${{ github.event.workflow_run.name }}"
+            $artName = if ($wfName -eq "NuEclipse") { "lv_port_nuvoton-nueclipse" } else { "lv_port_nuvoton-vscode" }
+          } else {
+            $wfName = "${{ inputs.workflow_source }}"
+            $artName = if ($wfName -eq "NuEclipse") { "lv_port_nuvoton-nueclipse" } else { "lv_port_nuvoton-vscode" }
+            $inputRunId = "${{ inputs.run_id }}"
+            if ($inputRunId -and $inputRunId.Trim() -ne "") {
+              $runId = $inputRunId.Trim()
+            } else {
+              Write-Host "Querying latest successful run for workflow $wfName..."
+              $wfFile = if ($wfName -eq "NuEclipse") { "NuEclipse.yml" } else { "VSCode.yml" }
+              $headers = @{
+                "Authorization" = "Bearer $env:GITHUB_TOKEN"
+                "Accept" = "application/vnd.github+json"
+              }
+              $url = "https://api.github.com/repos/${{ github.repository }}/actions/workflows/$wfFile/runs?status=success&per_page=1"
+              $resp = Invoke-RestMethod -Uri $url -Headers $headers -Method Get
+              if ($resp.workflow_runs -and $resp.workflow_runs.Count -gt 0) {
+                $runId = $resp.workflow_runs[0].id
+              } else {
+                Write-Error "No successful run found for workflow $wfName"
+                exit 1
+              }
+            }
+          }
+          Write-Host "Target Run ID   : $runId"
+          Write-Host "Artifact Name   : $artName"
+          "TARGET_RUN_ID=$runId" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "ARTIFACT_NAME=$artName" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          run-id: ${{ env.TARGET_RUN_ID }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./artifacts
+
+      - name: Add probe-rs to PATH
+        shell: powershell
+        run: |
+          if (Test-Path "d:\probe-rs-tools") {
+            "d:\probe-rs-tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          } elseif (Test-Path "c:\probe-rs-tools") {
+            "c:\probe-rs-tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          }
+        continue-on-error: true
+
+      - name: List connected debug probes
+        run: |
+          python tools/autodeploy/deploy.py list-probes
+        continue-on-error: true
+
+      - name: Auto-deploy firmware and observe MCU runtime
+        shell: powershell
+        run: |
+          $observeSec = "${{ inputs.observe_seconds }}"
+          if (-not $observeSec -or $observeSec.Trim() -eq "") { $observeSec = "3" }
+          python tools/autodeploy/deploy.py auto-deploy --firmware-dir ./artifacts --observe $observeSec

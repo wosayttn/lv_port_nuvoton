@@ -6,11 +6,12 @@ on:
 
 jobs:
   build:
+    if: github.repository == 'wosayttn/lv_port_nuvoton'
     runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
@@ -70,14 +71,14 @@ jobs:
 
       - name: Upload build logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lv_port_nuvoton-vscode-logs
           path: ${{ github.workspace }}/build-logs/vscode/
           if-no-files-found: ignore
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lv_port_nuvoton-vscode
           path: |

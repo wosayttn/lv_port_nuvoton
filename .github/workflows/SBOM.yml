@@ -14,11 +14,12 @@ concurrency:
 
 jobs:
   security_scan:
+    if: github.repository == 'wosayttn/lv_port_nuvoton'
     runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # =========================
       # Install tools
@@ -62,7 +63,7 @@ jobs:
       # Upload artifacts
       # =========================
       - name: Upload SCA Reports Bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sca-reports
           path: sca-reports.zip
