@@ -193,8 +193,8 @@ static int tc009_init(void)
     SPIM_HYPER_ENABLE_CACHE(SPIM0);
     TC_PRINTF("\tSPIM_HYPER_ENABLE_CACHE ON!!\n");
 #else
-    SPIM_HYPER_DISABLE_CACHE(SPIM0);
-    TC_PRINTF("\tSPIM_HYPER_DISABLE_CACHE!!\n");
+    //SPIM_HYPER_DISABLE_CACHE(SPIM0);
+    //TC_PRINTF("\tSPIM_HYPER_DISABLE_CACHE!!\n");
 #endif
 
     /* Chip Select High between Transaction as 2 HCLK cycles */

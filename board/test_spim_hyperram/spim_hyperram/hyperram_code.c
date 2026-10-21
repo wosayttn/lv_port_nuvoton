@@ -219,7 +219,7 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
     uint8_t *pu8VerfiyBuf = (uint8_t *)au64VerifyBuf;
     uint32_t u32DMMAddr = SPIM_HYPER_GET_DMMADDR(spim);
 
-    SPIM_HYPER_DISABLE_CACHE(spim);
+    //SPIM_HYPER_DISABLE_CACHE(spim);
 
     /* Create Trim Pattern */
     for (u32k = 0; u32k < sizeof(au64TrimPattern); u32k++)
@@ -247,8 +247,8 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
 
             if (u32ReTrimCnt == 5)
             {
-                SPIM_HYPER_ENABLE_CACHE(spim);
-                SPIM_HYPER_INVALID_CACHE(spim);
+                //SPIM_HYPER_ENABLE_CACHE(spim);
+                //SPIM_HYPER_INVALID_CACHE(spim);
             }
 
 #if (NVT_DCACHE_ON == 1)
@@ -290,7 +290,7 @@ void HyperRAM_TrimDLLDelayNumber(SPIM_T *spim)
 
             u8RdDelayRes[u8RdDelay] += ((u32i == 0) ? 1 : 0);
 
-            SPIM_HYPER_DISABLE_CACHE(spim);
+            //SPIM_HYPER_DISABLE_CACHE(spim);
         }
     }
 
@@ -321,7 +321,7 @@ void HyperRAM_Init(SPIM_T *spim)
     SPIM_HYPER_DISABLE_CIPHER(spim);
 
     /* SPIM Def. Enable cache, First Disable the test. */
-    SPIM_HYPER_DISABLE_CACHE(spim);
+    //SPIM_HYPER_DISABLE_CACHE(spim);
 
     /* Set R/W Latency Number */
     SPIM_Hyper_DefaultConfig(spim, HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY, HYPERRAM_WR_LTCY);
@@ -342,7 +342,7 @@ void HyperRAM_Init_WithoutTrim(SPIM_T *spim, uint8_t u8RxDlyNum)
     SPIM_HYPER_DISABLE_CIPHER(spim);
 
     /* SPIM Def. Enable cache, First Disable the test. */
-    SPIM_HYPER_DISABLE_CACHE(spim);
+    //SPIM_HYPER_DISABLE_CACHE(spim);
 
     /* Set R/W Latency Number */
     SPIM_Hyper_DefaultConfig(spim, HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY, HYPERRAM_WR_LTCY);
