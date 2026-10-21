@@ -199,7 +199,7 @@ static int tc006_exec(void)
 
                     if (u32Count > 20480)
                     {
-                        TC_PRINTF("%04d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, status.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
+                        TC_PRINTF("%04d, status.w: 0x%08x, ERRINFO: 0x%08x\n", u32Count, status.w, GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO);
                     }
                 } while (dma350_ch_is_busy(GDMA_CH_DEV_S[1]));
 

@@ -1181,8 +1181,7 @@ static int nu_pdma_memfun(void *dest, void *src, uint32_t u32DataWidth, unsigned
     {
         if (i32Count > 10240)
         {
-            TC_PRINTF("[%d] u32DataWidth=%dB, u32TransferCnt=%dB, src=0x%08x, dst=0x%08x DMM_TIMEOUT_FLAG_STS:%08x\n", i32Count, u32DataWidth / 8, u32TransferCnt, (uint32_t)src, (uint32_t)dest,
-                      SPIM0->DMM_TIMEOUT_FLAG_STS);
+            TC_PRINTF("[%d] u32DataWidth=%dB, u32TransferCnt=%dB, src=0x%08x, dst=0x%08x\n", i32Count, u32DataWidth / 8, u32TransferCnt, (uint32_t)src, (uint32_t)dest);
         }
 
         i32Count++;

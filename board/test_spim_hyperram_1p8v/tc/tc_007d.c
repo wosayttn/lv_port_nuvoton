@@ -131,8 +131,8 @@ static int tc007d_exec(void)
 
                 if (u32Count > 20480)
                 {
-                    TC_PRINTF("!!!!!!!!!!!!!!!!!!! %04d, TS=%d, BS=%d, status.w: 0x%08x, ERRINFO: 0x%08x, DMM_TIMEOUT_FLAG_STS:%08x\n", u32Count, au32XferSize[i32TS], i32BS, status.w,
-                              GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO, SPIM0->DMM_TIMEOUT_FLAG_STS);
+                    TC_PRINTF("!!!!!!!!!!!!!!!!!!! %04d, TS=%d, BS=%d, status.w: 0x%08x, ERRINFO: 0x%08x\n", u32Count, au32XferSize[i32TS], i32BS, status.w,
+                              GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO);
                     break;
                 }
             } while (!g_bDone); // Wait

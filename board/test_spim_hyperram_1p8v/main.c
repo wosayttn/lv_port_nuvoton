@@ -130,7 +130,6 @@ void HardFault_Handler(void)
 {
     uint32_t u32IRQ = 0;
     struct StackFrame *psStackFrame = NULL;
-    TC_PRINTF("\n\nSPIM_DMM_TIMEOUT_FLAG_STS:%08x\n\n", SPIM0->DMM_TIMEOUT_FLAG_STS);
 
     (void)u32IRQ;
     __ASM volatile("mrs %0, ipsr            \n" // Read IPSR (Exception number)
