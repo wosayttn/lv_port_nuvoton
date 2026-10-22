@@ -98,9 +98,9 @@ void tc_prepare(uint8_t *pu8DstBuf, uint8_t *pu8SrcBuf, int i32BatchSize)
     for (i = 0; i < i32BatchSize; i++)
     {
         pu8DstBuf[i] = 0xA5;
-		    __DSB();
+        __DSB();
         pu8SrcBuf[i] = i % 256;
-		    __DSB();
+        __DSB();
     }
 }
 

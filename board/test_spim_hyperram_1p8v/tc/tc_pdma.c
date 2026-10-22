@@ -388,20 +388,20 @@ int nu_pdma_callback_register(int i32ChannID, nu_pdma_chn_cb_t psChnCb)
 
     switch (psChnCb->m_eCBType)
     {
-        case eCBType_Event:
-            psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Event;
-            break;
+    case eCBType_Event:
+        psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Event;
+        break;
 
-        case eCBType_Trigger:
-            psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Trigger;
-            break;
+    case eCBType_Trigger:
+        psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Trigger;
+        break;
 
-        case eCBType_Disable:
-            psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Disable;
-            break;
+    case eCBType_Disable:
+        psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Disable;
+        break;
 
-        default:
-            goto exit_nu_pdma_callback_register;
+    default:
+        goto exit_nu_pdma_callback_register;
     }
 
     psChnCb_Current->m_pfnCBHandler = psChnCb->m_pfnCBHandler;
@@ -428,20 +428,20 @@ nu_pdma_cb_handler_t nu_pdma_callback_hijack(int i32ChannID, nu_pdma_cbtype_t eC
 
     switch (eCBType)
     {
-        case eCBType_Event:
-            psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Event;
-            break;
+    case eCBType_Event:
+        psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Event;
+        break;
 
-        case eCBType_Trigger:
-            psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Trigger;
-            break;
+    case eCBType_Trigger:
+        psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Trigger;
+        break;
 
-        case eCBType_Disable:
-            psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Disable;
-            break;
+    case eCBType_Disable:
+        psChnCb_Current = &nu_pdma_chn_arr[i32ChannID - NU_PDMA_CH_Pos].m_sCB_Disable;
+        break;
 
-        default:
-            goto exit_nu_pdma_callback_hijack;
+    default:
+        goto exit_nu_pdma_callback_hijack;
     }
 
     /* Backup */
@@ -532,28 +532,28 @@ static void nu_pdma_channel_memctrl_fill(nu_pdma_memctrl_t eMemCtl, uint32_t *pu
 {
     switch ((int)eMemCtl)
     {
-        case eMemCtl_SrcFix_DstFix:
-            *pu32SrcCtl = PDMA_SAR_FIX;
-            *pu32DstCtl = PDMA_DAR_FIX;
-            break;
+    case eMemCtl_SrcFix_DstFix:
+        *pu32SrcCtl = PDMA_SAR_FIX;
+        *pu32DstCtl = PDMA_DAR_FIX;
+        break;
 
-        case eMemCtl_SrcFix_DstInc:
-            *pu32SrcCtl = PDMA_SAR_FIX;
-            *pu32DstCtl = PDMA_DAR_INC;
-            break;
+    case eMemCtl_SrcFix_DstInc:
+        *pu32SrcCtl = PDMA_SAR_FIX;
+        *pu32DstCtl = PDMA_DAR_INC;
+        break;
 
-        case eMemCtl_SrcInc_DstFix:
-            *pu32SrcCtl = PDMA_SAR_INC;
-            *pu32DstCtl = PDMA_DAR_FIX;
-            break;
+    case eMemCtl_SrcInc_DstFix:
+        *pu32SrcCtl = PDMA_SAR_INC;
+        *pu32DstCtl = PDMA_DAR_FIX;
+        break;
 
-        case eMemCtl_SrcInc_DstInc:
-            *pu32SrcCtl = PDMA_SAR_INC;
-            *pu32DstCtl = PDMA_DAR_INC;
-            break;
+    case eMemCtl_SrcInc_DstInc:
+        *pu32SrcCtl = PDMA_SAR_INC;
+        *pu32DstCtl = PDMA_DAR_INC;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 

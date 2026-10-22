@@ -135,7 +135,8 @@ static int tc007d_exec(void)
                               GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO);
                     break;
                 }
-            } while (!g_bDone); // Wait
+            }
+            while (!g_bDone);   // Wait
 
             if (tc_compare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), i32BS) < 0)
             {

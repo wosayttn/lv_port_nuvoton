@@ -639,48 +639,48 @@ void HyperRAM_Init(SPIM_T *spim)
 
     /* Trim DLL component delay stop number */
     HyperRAM_TrimDLLDelayNumber(spim);
-	  {
+    {
         HyperRAM_DumpConfig(spim);
 
-        sHRAMReg.CONFIG0.u32REG	= SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
+        sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
 
-				sHRAMReg.CONFIG0.u3DriveStrength = 0; // 34 ohms (default)
-				//sHRAMReg.CONFIG0.u3DriveStrength = 1; // 115 ohms
-				//sHRAMReg.CONFIG0.u3DriveStrength = 2; //67 ohms
-				//sHRAMReg.CONFIG0.u3DriveStrength = 3; //46 ohms
-  			//sHRAMReg.CONFIG0.u3DriveStrength   = 4; //34 ohms
-	  	  //sHRAMReg.CONFIG0.u3DriveStrength   = 5; //27 ohms
-  			//sHRAMReg.CONFIG0.u3DriveStrength   = 6; //22 ohms
-  			//sHRAMReg.CONFIG0.u3DriveStrength   = 7; //19 ohms
+        sHRAMReg.CONFIG0.u3DriveStrength = 0; // 34 ohms (default)
+        //sHRAMReg.CONFIG0.u3DriveStrength = 1; // 115 ohms
+        //sHRAMReg.CONFIG0.u3DriveStrength = 2; //67 ohms
+        //sHRAMReg.CONFIG0.u3DriveStrength = 3; //46 ohms
+        //sHRAMReg.CONFIG0.u3DriveStrength   = 4; //34 ohms
+        //sHRAMReg.CONFIG0.u3DriveStrength   = 5; //27 ohms
+        //sHRAMReg.CONFIG0.u3DriveStrength   = 6; //22 ohms
+        //sHRAMReg.CONFIG0.u3DriveStrength   = 7; //19 ohms
 
-				SPIM_HYPER_WriteHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0, sHRAMReg.CONFIG0.u32REG);
-				sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
-				TC_PRINTF("[%s] sHRAMReg.CONFIG0.u32REG: %08X\n", __func__, sHRAMReg.CONFIG0.u32REG);
+        SPIM_HYPER_WriteHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0, sHRAMReg.CONFIG0.u32REG);
+        sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
+        TC_PRINTF("[%s] sHRAMReg.CONFIG0.u32REG: %08X\n", __func__, sHRAMReg.CONFIG0.u32REG);
 
-			  if (CONFIG_SPIM_OPTIM)
-				{
-						//sHRAMReg.CONFIG0.u4InitialLatency = 0x0;  //  5 Clock Latency @ 133MHz Max Frequency
-						//sHRAMReg.CONFIG0.u4InitialLatency = 0x1;  //  6 Clock Latency @ 166MHz Max Frequency
-						//sHRAMReg.CONFIG0.u4InitialLatency = 0x2;  //  7 Clock Latency @ 200MHz Max Frequency (default)
-						//sHRAMReg.CONFIG0.u4InitialLatency = 0x2;  //  7 Clock Latency @ 250MHz Max Frequency
-						//sHRAMReg.CONFIG0.u4InitialLatency = 0xe;  //  3 Clock Latency for clock rate <= 85MHz
-						sHRAMReg.CONFIG0.u4InitialLatency = 0xf;    //  4 Clock Latency for clock rate <= 104MHz
+        if (CONFIG_SPIM_OPTIM)
+        {
+            //sHRAMReg.CONFIG0.u4InitialLatency = 0x0;  //  5 Clock Latency @ 133MHz Max Frequency
+            //sHRAMReg.CONFIG0.u4InitialLatency = 0x1;  //  6 Clock Latency @ 166MHz Max Frequency
+            //sHRAMReg.CONFIG0.u4InitialLatency = 0x2;  //  7 Clock Latency @ 200MHz Max Frequency (default)
+            //sHRAMReg.CONFIG0.u4InitialLatency = 0x2;  //  7 Clock Latency @ 250MHz Max Frequency
+            //sHRAMReg.CONFIG0.u4InitialLatency = 0xe;  //  3 Clock Latency for clock rate <= 85MHz
+            sHRAMReg.CONFIG0.u4InitialLatency = 0xf;    //  4 Clock Latency for clock rate <= 104MHz
 
-					  sHRAMReg.CONFIG0.u1FixedLatencyEanble = 0x0;    // 0: Variable Latency. 1 or 2 times Initial Latency depending on RWDS during CA cycles.
-					  //sHRAMReg.CONFIG0.u1FixedLatencyEanble = 0x1;  // 1: Fixed Latency. Fixed 2 times Initial Latency
+            sHRAMReg.CONFIG0.u1FixedLatencyEanble = 0x0;    // 0: Variable Latency. 1 or 2 times Initial Latency depending on RWDS during CA cycles.
+            //sHRAMReg.CONFIG0.u1FixedLatencyEanble = 0x1;  // 1: Fixed Latency. Fixed 2 times Initial Latency
 
-						SPIM_HYPER_WriteHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0, sHRAMReg.CONFIG0.u32REG);
-						sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
-						TC_PRINTF("[%s] sHRAMReg.CONFIG0.u32REG: %08X\n", __func__, sHRAMReg.CONFIG0.u32REG);
-			
-						#define HYPERRAM_RD_LTCY_OPTIM      4
-						#define HYPERRAM_WR_LTCY_OPTIM      4
-						TC_PRINTF("Applied CSM_Time:%d  RdLatency:%d, WrLatency:%d\n", HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY_OPTIM, HYPERRAM_WR_LTCY_OPTIM);
-						SPIM_Hyper_DefaultConfig(spim, HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY_OPTIM, HYPERRAM_WR_LTCY_OPTIM);
+            SPIM_HYPER_WriteHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0, sHRAMReg.CONFIG0.u32REG);
+            sHRAMReg.CONFIG0.u32REG = SPIM_HYPER_ReadHyperRAMReg(spim, SPIM_HYPER_HRAM_CONFIG_REG0);
+            TC_PRINTF("[%s] sHRAMReg.CONFIG0.u32REG: %08X\n", __func__, sHRAMReg.CONFIG0.u32REG);
 
-						/* Trim DLL component delay stop number */
-						HyperRAM_TrimDLLDelayNumber(spim);
-				}
+#define HYPERRAM_RD_LTCY_OPTIM      4
+#define HYPERRAM_WR_LTCY_OPTIM      4
+            TC_PRINTF("Applied CSM_Time:%d  RdLatency:%d, WrLatency:%d\n", HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY_OPTIM, HYPERRAM_WR_LTCY_OPTIM);
+            SPIM_Hyper_DefaultConfig(spim, HYPERRAM_CSM_TIME, HYPERRAM_RD_LTCY_OPTIM, HYPERRAM_WR_LTCY_OPTIM);
+
+            /* Trim DLL component delay stop number */
+            HyperRAM_TrimDLLDelayNumber(spim);
+        }
     }
 }
 

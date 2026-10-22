@@ -86,7 +86,7 @@ static int tc001_exec(void)
 
     const static uint32_t au32XferSize[] = {1, 2, 4, 8};
 
-	  //SPIM_HYPER_SET_CSMAXLT(SPIM0, 1);
+    //SPIM_HYPER_SET_CSMAXLT(SPIM0, 1);
     //TC_PRINTF("@@@ set i32CSM=1\n");
     //TC_PRINTF("@@@ get i32CSM=%lu\n", SPIM_HYPER_GET_CSMAXLT(SPIM0));
 
@@ -104,7 +104,7 @@ static int tc001_exec(void)
             tc001_gdma_dsc_init(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER, CONFIG_BASE_ADDRESS, i32BS, au32XferSize[i32TS]);
             //tc_gdma_dsc_dump(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER);
 
-            tc_prepare((uint8_t*)CONFIG_BASE_ADDRESS+i32BS, (uint8_t*)CONFIG_BASE_ADDRESS, i32BS);
+            tc_prepare((uint8_t *)CONFIG_BASE_ADDRESS + i32BS, (uint8_t *)CONFIG_BASE_ADDRESS, i32BS);
 
             /* Link to external command */
             dma350_ch_enable_linkaddr(GDMA_CH_DEV_S[1]);
@@ -133,9 +133,10 @@ static int tc001_exec(void)
                               GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO);
                     break;
                 }
-            } while (!g_bDone); // Wait
+            }
+            while (!g_bDone);   // Wait
 
-            if (tc_compare((uint8_t*)CONFIG_BASE_ADDRESS+i32BS, (uint8_t*)CONFIG_BASE_ADDRESS, i32BS) < 0)
+            if (tc_compare((uint8_t *)CONFIG_BASE_ADDRESS + i32BS, (uint8_t *)CONFIG_BASE_ADDRESS, i32BS) < 0)
             {
                 i32ErrCount++;
 #if (_DEBUG==0)

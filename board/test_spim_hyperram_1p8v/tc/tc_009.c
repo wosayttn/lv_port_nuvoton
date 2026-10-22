@@ -139,7 +139,8 @@ static int tc009_exec(void)
                     //break;
                 }
 
-            } while (dma350_ch_is_busy(GDMA_CH_DEV_S[0]) || dma350_ch_is_busy(GDMA_CH_DEV_S[1]));
+            }
+            while (dma350_ch_is_busy(GDMA_CH_DEV_S[0]) || dma350_ch_is_busy(GDMA_CH_DEV_S[1]));
 
             GDMA_CH_DEV_S[0]->cfg.ch_base->CH_STATUS = DMA350_CH_STAT_ALL;
             GDMA_CH_DEV_S[1]->cfg.ch_base->CH_STATUS = DMA350_CH_STAT_ALL;

@@ -99,15 +99,15 @@ static int tc007d_exec(void)
         int i32RunCount = 0;
         i32ErrCount = 0;
 
-			  i32BS = 2 * au32XferSize[i32TS];
+        i32BS = 2 * au32XferSize[i32TS];
 
         {
             memset(&s_sGDMADsc[0], 0, sizeof(s_sGDMADsc));
 
             /* Initial all Lines descriptor-link. */
-            tc_gdma_dsc_init(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER, CONFIG_DST_BUFFER_ADDRESS-au32XferSize[i32TS], CONFIG_SRC_BUFFER_ADDRESS, i32BS, au32XferSize[i32TS]);
+            tc_gdma_dsc_init(&s_sGDMADsc[0], CONFIG_GDMADESC_NUNBER, CONFIG_DST_BUFFER_ADDRESS - au32XferSize[i32TS], CONFIG_SRC_BUFFER_ADDRESS, i32BS, au32XferSize[i32TS]);
 
-            tc_prepare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS-au32XferSize[i32TS]), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), i32BS);
+            tc_prepare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS - au32XferSize[i32TS]), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), i32BS);
 
             /* Link to external command */
             dma350_ch_enable_linkaddr(GDMA_CH_DEV_S[1]);
@@ -136,9 +136,10 @@ static int tc007d_exec(void)
                               GDMA_CH_DEV_S[1]->cfg.ch_base->CH_ERRINFO);
                     break;
                 }
-            } while (!g_bDone); // Wait
+            }
+            while (!g_bDone);   // Wait
 
-            if (tc_compare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS-au32XferSize[i32TS]), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), i32BS) < 0)
+            if (tc_compare((uint8_t *)(CONFIG_DST_BUFFER_ADDRESS - au32XferSize[i32TS]), (uint8_t *)(CONFIG_SRC_BUFFER_ADDRESS), i32BS) < 0)
             {
                 i32ErrCount++;
 
