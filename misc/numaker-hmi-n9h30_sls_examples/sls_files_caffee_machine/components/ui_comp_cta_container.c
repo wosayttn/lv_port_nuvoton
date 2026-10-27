@@ -18,7 +18,8 @@ lv_obj_t * ui_Container_CTA_container_create(lv_obj_t * comp_parent)
     lv_obj_set_align(cui_Container_CTA_container, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(cui_Container_CTA_container, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(cui_Container_CTA_container, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Container_CTA_container, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_CTA_container, false);
+    lv_obj_set_scrollable(cui_Container_CTA_container, false);      /// Flags
     lv_obj_set_style_pad_left(cui_Container_CTA_container, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(cui_Container_CTA_container, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(cui_Container_CTA_container, 24, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -31,7 +32,7 @@ lv_obj_t * ui_Container_CTA_container_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_Panel_circle_panel, 120);
     lv_obj_set_height(cui_Panel_circle_panel, 120);
     lv_obj_set_align(cui_Panel_circle_panel, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Panel_circle_panel, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollable(cui_Panel_circle_panel, false);      /// Flags
     lv_obj_set_style_radius(cui_Panel_circle_panel, 200, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_Panel_circle_panel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(cui_Panel_circle_panel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -77,7 +78,7 @@ lv_obj_t * ui_Container_CTA_container_create(lv_obj_t * comp_parent)
     lv_obj_set_y(cui_Label_exclamation, 4);
     lv_obj_set_align(cui_Label_exclamation, LV_ALIGN_CENTER);
     lv_label_set_text(cui_Label_exclamation, "!");
-    lv_obj_add_flag(cui_Label_exclamation, LV_OBJ_FLAG_HIDDEN);     /// Flags
+    lv_obj_set_hidden(cui_Label_exclamation, true);     /// Flags
     ui_object_set_themeable_style_property(cui_Label_exclamation, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_fg_Primary);
     ui_object_set_themeable_style_property(cui_Label_exclamation, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,

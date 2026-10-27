@@ -16,7 +16,8 @@ lv_obj_t * ui_Container_progress_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_Container_progress, lv_pct(100));
     lv_obj_set_height(cui_Container_progress, lv_pct(100));
     lv_obj_set_align(cui_Container_progress, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Container_progress, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_progress, false);
+    lv_obj_set_scrollable(cui_Container_progress, false);      /// Flags
     lv_obj_set_style_pad_left(cui_Container_progress, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(cui_Container_progress, 33, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(cui_Container_progress, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -31,7 +32,8 @@ lv_obj_t * ui_Container_progress_create(lv_obj_t * comp_parent)
     lv_obj_set_x(cui_Panel_progressbar_bg, 0);
     lv_obj_set_y(cui_Panel_progressbar_bg, 30);
     lv_obj_set_align(cui_Panel_progressbar_bg, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Panel_progressbar_bg, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Panel_progressbar_bg, false);
+    lv_obj_set_scrollable(cui_Panel_progressbar_bg, false);      /// Flags
     lv_obj_set_style_radius(cui_Panel_progressbar_bg, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
     ui_object_set_themeable_style_property(cui_Panel_progressbar_bg, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
                                            _ui_theme_color_fg_Secondary);
@@ -56,7 +58,8 @@ lv_obj_t * ui_Container_progress_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_Container_progress_state, 267);
     lv_obj_set_height(cui_Container_progress_state, 87);
     lv_obj_set_align(cui_Container_progress_state, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Container_progress_state, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_progress_state, false);
+    lv_obj_set_scrollable(cui_Container_progress_state, false);      /// Flags
     lv_obj_set_style_pad_left(cui_Container_progress_state, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(cui_Container_progress_state, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(cui_Container_progress_state, 40, LV_PART_MAIN | LV_STATE_DEFAULT);

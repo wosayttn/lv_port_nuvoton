@@ -29,7 +29,7 @@ void ui_event_Screen_Ready(lv_event_t * e)
 void ui_Screen_Ready_screen_init(void)
 {
     ui_Screen_Ready = lv_obj_create(NULL);
-    lv_obj_remove_flag(ui_Screen_Ready, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollable(ui_Screen_Ready, false);      /// Flags
     lv_obj_set_style_bg_image_src(ui_Screen_Ready, &ui_img_bg_png, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_image_opa(ui_Screen_Ready, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(ui_Screen_Ready, 0, LV_PART_MAIN | LV_STATE_DEFAULT);

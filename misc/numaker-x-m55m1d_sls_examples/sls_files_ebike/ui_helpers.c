@@ -89,6 +89,10 @@ void _ui_keyboard_set_target(lv_obj_t * keyboard, lv_obj_t * textarea)
     lv_keyboard_set_textarea(keyboard, textarea);
 }
 
+#if defined(__clang__) || defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 void _ui_flag_modify(lv_obj_t * target, int32_t flag, int value)
 {
     if(value == _UI_MODIFY_FLAG_TOGGLE) {
@@ -98,6 +102,10 @@ void _ui_flag_modify(lv_obj_t * target, int32_t flag, int value)
     else if(value == _UI_MODIFY_FLAG_ADD) lv_obj_add_flag(target, flag);
     else lv_obj_remove_flag(target, flag);
 }
+#if defined(__clang__) || defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+
 void _ui_state_modify(lv_obj_t * target, int32_t state, int value)
 {
     if(value == _UI_MODIFY_STATE_TOGGLE) {

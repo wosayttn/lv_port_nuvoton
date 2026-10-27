@@ -54,7 +54,7 @@ void ui_event_Add_water_CTA_container_CTA_container6_Panel_circle_panel(lv_event
 void ui_Screen_Add_water_screen_init(void)
 {
     ui_Screen_Add_water = lv_obj_create(NULL);
-    lv_obj_remove_flag(ui_Screen_Add_water, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollable(ui_Screen_Add_water, false);      /// Flags
     lv_obj_set_flex_flow(ui_Screen_Add_water, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_Screen_Add_water, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     lv_obj_set_style_bg_color(ui_Screen_Add_water, lv_color_hex(0x303030), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -68,9 +68,8 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_add_state(ui_comp_get_child(ui_Add_water_header_header9,
                                        UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_CONTAINER_LEFT_CONTAINER_CONTAINER_BACK_BTN),
                      LV_STATE_DISABLED);      /// States
-    lv_obj_remove_flag(ui_comp_get_child(ui_Add_water_header_header9,
-                                         UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_CONTAINER_LEFT_CONTAINER_CONTAINER_BACK_BTN),
-                       LV_OBJ_FLAG_CLICKABLE);    /// Flags
+    lv_obj_set_clickable(ui_comp_get_child(ui_Add_water_header_header9,
+                                         UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_CONTAINER_LEFT_CONTAINER_CONTAINER_BACK_BTN), false);    /// Flags
     lv_obj_set_style_bg_image_opa(ui_comp_get_child(ui_Add_water_header_header9,
                                                     UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_CONTAINER_LEFT_CONTAINER_CONTAINER_BACK_BTN), 85,
                                   LV_PART_MAIN | LV_STATE_DISABLED);
@@ -84,16 +83,14 @@ void ui_Screen_Add_water_screen_init(void)
     lv_label_set_text(ui_comp_get_child(ui_Add_water_header_header9,
                                         UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_LABEL_TITLE), "Add water");
 
-    lv_obj_remove_flag(ui_comp_get_child(ui_Add_water_header_header9,
-                                         UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_CONTAINER_RIGHT_CONTAINER_CONTAINER_STATUS_ICONS_CONTAINER_ICONS_ROW_IMAGE_WIFI),
-                       LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_set_clickable(ui_comp_get_child(ui_Add_water_header_header9,
+                                         UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_CONTAINER_RIGHT_CONTAINER_CONTAINER_STATUS_ICONS_CONTAINER_ICONS_ROW_IMAGE_WIFI), false);     /// Flags
 
     lv_obj_add_state(ui_comp_get_child(ui_Add_water_header_header9,
                                        UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_CONTAINER_RIGHT_CONTAINER_CONTAINER_SETTINGS),
                      LV_STATE_DISABLED);      /// States
-    lv_obj_remove_flag(ui_comp_get_child(ui_Add_water_header_header9,
-                                         UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_CONTAINER_RIGHT_CONTAINER_CONTAINER_SETTINGS),
-                       LV_OBJ_FLAG_CLICKABLE);    /// Flags
+    lv_obj_set_clickable(ui_comp_get_child(ui_Add_water_header_header9,
+                                         UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_CONTAINER_RIGHT_CONTAINER_CONTAINER_SETTINGS), false);    /// Flags
     lv_obj_set_style_bg_image_opa(ui_comp_get_child(ui_Add_water_header_header9,
                                                     UI_COMP_CONTAINER_HEADER_CONTAINER_HEADER_PANEL_CONTAINER_RIGHT_CONTAINER_CONTAINER_SETTINGS), 85,
                                   LV_PART_MAIN | LV_STATE_DISABLED);
@@ -106,8 +103,8 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_set_flex_flow(ui_Add_water_Container_middle_content, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_Add_water_Container_middle_content, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START,
                           LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(ui_Add_water_Container_middle_content,
-                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(ui_Add_water_Container_middle_content, false);
+    lv_obj_set_scrollable(ui_Add_water_Container_middle_content, false);      /// Flags
     lv_obj_set_style_pad_left(ui_Add_water_Container_middle_content, 24, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_Add_water_Container_middle_content, 24, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_Add_water_Container_middle_content, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -120,8 +117,8 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_set_height(ui_Add_water_Container_exclamation_container, lv_pct(100));
     lv_obj_set_flex_grow(ui_Add_water_Container_exclamation_container, 3);
     lv_obj_set_align(ui_Add_water_Container_exclamation_container, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_Add_water_Container_exclamation_container,
-                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(ui_Add_water_Container_exclamation_container, false);
+    lv_obj_set_scrollable(ui_Add_water_Container_exclamation_container, false);      /// Flags
 
     ui_Add_water_CTA_container_CTA_container8 = ui_Container_CTA_container_create(
                                                     ui_Add_water_Container_exclamation_container);
@@ -140,8 +137,8 @@ void ui_Screen_Add_water_screen_init(void)
 
     lv_obj_add_state(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
                                        UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL), LV_STATE_PRESSED);      /// States
-    lv_obj_remove_flag(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
-                                         UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL), LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_set_clickable(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
+                                         UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL), false);     /// Flags
     lv_obj_set_style_bg_image_opa(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
                                                     UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL), 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
@@ -153,8 +150,8 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_set_style_border_width(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
                                                     UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL), 4, LV_PART_MAIN | LV_STATE_PRESSED);
 
-    lv_obj_remove_flag(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
-                                         UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL_LABEL_EXCLAMATION), LV_OBJ_FLAG_HIDDEN);     /// Flags
+    lv_obj_set_hidden(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
+                                         UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL_LABEL_EXCLAMATION), false);     /// Flags
     ui_object_set_themeable_style_property(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
                                                              UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL_LABEL_EXCLAMATION), LV_PART_MAIN | LV_STATE_DEFAULT,
                                            LV_STYLE_TEXT_COLOR, _ui_theme_color_fg_Primary);
@@ -162,23 +159,24 @@ void ui_Screen_Add_water_screen_init(void)
                                                              UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL_LABEL_EXCLAMATION), LV_PART_MAIN | LV_STATE_DEFAULT,
                                            LV_STYLE_TEXT_OPA, _ui_theme_alpha_fg_Primary);
 
-    lv_obj_add_flag(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
-                                      UI_COMP_CONTAINER_CTA_CONTAINER_LABEL_EXTRACT), LV_OBJ_FLAG_HIDDEN);    /// Flags
+    lv_obj_set_hidden(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container8,
+                                      UI_COMP_CONTAINER_CTA_CONTAINER_LABEL_EXTRACT), true);    /// Flags
 
     ui_Add_water_Container_mid_container = lv_obj_create(ui_Add_water_Container_middle_content);
     lv_obj_remove_style_all(ui_Add_water_Container_mid_container);
     lv_obj_set_width(ui_Add_water_Container_mid_container, 205);
     lv_obj_set_height(ui_Add_water_Container_mid_container, lv_pct(100));
     lv_obj_set_align(ui_Add_water_Container_mid_container, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_Add_water_Container_mid_container, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(ui_Add_water_Container_mid_container, false);
+    lv_obj_set_scrollable(ui_Add_water_Container_mid_container, false);      /// Flags
 
     ui_Add_water_Image_tank = lv_image_create(ui_Add_water_Container_mid_container);
     lv_image_set_src(ui_Add_water_Image_tank, &ui_img_tank_png);
     lv_obj_set_width(ui_Add_water_Image_tank, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Add_water_Image_tank, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_Add_water_Image_tank, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Add_water_Image_tank, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_remove_flag(ui_Add_water_Image_tank, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_adv_hittest(ui_Add_water_Image_tank, true);     /// Flags
+    lv_obj_set_scrollable(ui_Add_water_Image_tank, false);      /// Flags
 
     ui_Add_water_Container_waves_ = lv_obj_create(ui_Add_water_Image_tank);
     lv_obj_remove_style_all(ui_Add_water_Container_waves_);
@@ -187,7 +185,8 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_set_x(ui_Add_water_Container_waves_, 0);
     lv_obj_set_y(ui_Add_water_Container_waves_, 55);
     lv_obj_set_align(ui_Add_water_Container_waves_, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_Add_water_Container_waves_, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(ui_Add_water_Container_waves_, false);
+    lv_obj_set_scrollable(ui_Add_water_Container_waves_, false);      /// Flags
 
     ui_Add_water_Image_wave_bg = lv_image_create(ui_Add_water_Container_waves_);
     lv_image_set_src(ui_Add_water_Image_wave_bg, &ui_img_wave1_png);
@@ -196,8 +195,8 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_set_x(ui_Add_water_Image_wave_bg, -65);
     lv_obj_set_y(ui_Add_water_Image_wave_bg, -19);
     lv_obj_set_align(ui_Add_water_Image_wave_bg, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Add_water_Image_wave_bg, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_remove_flag(ui_Add_water_Image_wave_bg, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_adv_hittest(ui_Add_water_Image_wave_bg, true);     /// Flags
+    lv_obj_set_scrollable(ui_Add_water_Image_wave_bg, false);      /// Flags
     lv_image_set_inner_align(ui_Add_water_Image_wave_bg, LV_IMAGE_ALIGN_TILE);
     lv_obj_set_style_image_recolor(ui_Add_water_Image_wave_bg, lv_color_hex(0x5E6469), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_image_recolor_opa(ui_Add_water_Image_wave_bg, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -209,8 +208,8 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_set_x(ui_Add_water_Image_wave_fg, 1);
     lv_obj_set_y(ui_Add_water_Image_wave_fg, -19);
     lv_obj_set_align(ui_Add_water_Image_wave_fg, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Add_water_Image_wave_fg, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_remove_flag(ui_Add_water_Image_wave_fg, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_adv_hittest(ui_Add_water_Image_wave_fg, true);     /// Flags
+    lv_obj_set_scrollable(ui_Add_water_Image_wave_fg, false);      /// Flags
     lv_image_set_inner_align(ui_Add_water_Image_wave_fg, LV_IMAGE_ALIGN_TILE);
 
     ui_Add_water_Image_wave_bottom = lv_image_create(ui_Add_water_Container_waves_);
@@ -220,8 +219,8 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_set_x(ui_Add_water_Image_wave_bottom, 1);
     lv_obj_set_y(ui_Add_water_Image_wave_bottom, 8);
     lv_obj_set_align(ui_Add_water_Image_wave_bottom, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Add_water_Image_wave_bottom, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_remove_flag(ui_Add_water_Image_wave_bottom, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_adv_hittest(ui_Add_water_Image_wave_bottom, true);     /// Flags
+    lv_obj_set_scrollable(ui_Add_water_Image_wave_bottom, false);      /// Flags
 
     ui_Add_water_Label_min = lv_label_create(ui_Add_water_Container_mid_container);
     lv_obj_set_width(ui_Add_water_Label_min, LV_SIZE_CONTENT);   /// 1
@@ -241,8 +240,8 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_set_height(ui_Add_water_Container_Done_container, lv_pct(100));
     lv_obj_set_flex_grow(ui_Add_water_Container_Done_container, 3);
     lv_obj_set_align(ui_Add_water_Container_Done_container, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_Add_water_Container_Done_container,
-                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(ui_Add_water_Container_Done_container, false);
+    lv_obj_set_scrollable(ui_Add_water_Container_Done_container, false);      /// Flags
 
     ui_Add_water_CTA_container_CTA_container6 = ui_Container_CTA_container_create(ui_Add_water_Container_Done_container);
     lv_obj_set_width(ui_Add_water_CTA_container_CTA_container6, lv_pct(100));
@@ -254,8 +253,8 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_set_flex_align(ui_Add_water_CTA_container_CTA_container6, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER,
                           LV_FLEX_ALIGN_CENTER);
 
-    lv_obj_add_flag(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container6,
-                                      UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL), LV_OBJ_FLAG_CLICKABLE);    /// Flags
+    lv_obj_set_clickable(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container6,
+                                      UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL), true);    /// Flags
     lv_obj_set_style_bg_image_src(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container6,
                                                     UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL), &ui_img_done_60_png, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_image_opa(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container6,
@@ -265,20 +264,21 @@ void ui_Screen_Add_water_screen_init(void)
     lv_obj_set_style_bg_image_src(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container6,
                                                     UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL), &ui_img_done_60_png, LV_PART_MAIN | LV_STATE_PRESSED);
 
-    lv_obj_add_flag(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container6,
-                                      UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL_LABEL_EXCLAMATION), LV_OBJ_FLAG_HIDDEN);    /// Flags
+    lv_obj_set_hidden(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container6,
+                                      UI_COMP_CONTAINER_CTA_CONTAINER_PANEL_CIRCLE_PANEL_LABEL_EXCLAMATION), true);    /// Flags
 
     lv_label_set_text(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container6,
                                         UI_COMP_CONTAINER_CTA_CONTAINER_LABEL_EXTRACT), "Ready");
-    lv_obj_remove_flag(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container6,
-                                         UI_COMP_CONTAINER_CTA_CONTAINER_LABEL_EXTRACT), LV_OBJ_FLAG_HIDDEN);     /// Flags
+    lv_obj_set_hidden(ui_comp_get_child(ui_Add_water_CTA_container_CTA_container6,
+                                         UI_COMP_CONTAINER_CTA_CONTAINER_LABEL_EXTRACT), false);     /// Flags
 
     ui_Add_water_Container_footer = lv_obj_create(ui_Screen_Add_water);
     lv_obj_remove_style_all(ui_Add_water_Container_footer);
     lv_obj_set_height(ui_Add_water_Container_footer, 81);
     lv_obj_set_width(ui_Add_water_Container_footer, lv_pct(100));
     lv_obj_set_align(ui_Add_water_Container_footer, LV_ALIGN_BOTTOM_MID);
-    lv_obj_remove_flag(ui_Add_water_Container_footer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(ui_Add_water_Container_footer, false);
+    lv_obj_set_scrollable(ui_Add_water_Container_footer, false);      /// Flags
 
     ui_Add_water_Label_refill = lv_label_create(ui_Add_water_Container_footer);
     lv_obj_set_width(ui_Add_water_Label_refill, LV_SIZE_CONTENT);   /// 1

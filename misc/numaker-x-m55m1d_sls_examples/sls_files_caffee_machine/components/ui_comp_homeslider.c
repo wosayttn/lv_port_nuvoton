@@ -18,7 +18,8 @@ lv_obj_t * ui_Container_homeslider_create(lv_obj_t * comp_parent)
     lv_obj_set_align(cui_Container_homeslider, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(cui_Container_homeslider, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(cui_Container_homeslider, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(cui_Container_homeslider, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_homeslider, false);
+    lv_obj_set_scrollable(cui_Container_homeslider, false);      /// Flags
     lv_obj_set_style_pad_row(cui_Container_homeslider, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(cui_Container_homeslider, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 

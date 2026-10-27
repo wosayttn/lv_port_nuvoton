@@ -17,7 +17,8 @@ lv_obj_t * ui_Panel_ready_button_create(lv_obj_t * comp_parent)
     lv_obj_set_x(cui_Panel_ready_button, 0);
     lv_obj_set_y(cui_Panel_ready_button, -30);
     lv_obj_set_align(cui_Panel_ready_button, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Panel_ready_button, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Panel_ready_button, false);
+    lv_obj_set_scrollable(cui_Panel_ready_button, false);      /// Flags
     lv_obj_set_style_radius(cui_Panel_ready_button, 200, LV_PART_MAIN | LV_STATE_DEFAULT);
     ui_object_set_themeable_style_property(cui_Panel_ready_button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
                                            _ui_theme_color_Green);

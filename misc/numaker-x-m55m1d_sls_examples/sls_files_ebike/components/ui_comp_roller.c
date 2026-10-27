@@ -15,7 +15,7 @@ lv_obj_t * ui_Roller_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_Roller, 150);
     lv_obj_set_height(cui_Roller, 103);
     lv_obj_set_align(cui_Roller, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Roller, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollable(cui_Roller, false);      /// Flags
     lv_obj_set_style_bg_color(cui_Roller, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(cui_Roller, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(cui_Roller, lv_color_hex(0x293031), LV_PART_MAIN | LV_STATE_DEFAULT);

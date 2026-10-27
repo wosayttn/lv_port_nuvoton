@@ -32,7 +32,8 @@ lv_obj_t * ui_Container_home_sliders_create(lv_obj_t * comp_parent)
     lv_obj_set_align(cui_Container_home_sliders, LV_ALIGN_LEFT_MID);
     lv_obj_set_flex_flow(cui_Container_home_sliders, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(cui_Container_home_sliders, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(cui_Container_home_sliders, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_home_sliders, false);
+    lv_obj_set_scrollable(cui_Container_home_sliders, false);      /// Flags
     lv_obj_set_style_pad_row(cui_Container_home_sliders, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(cui_Container_home_sliders, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -42,7 +43,7 @@ lv_obj_t * ui_Container_home_sliders_create(lv_obj_t * comp_parent)
     lv_obj_set_height(cui_Label_length, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(cui_Label_length, LV_ALIGN_CENTER);
     lv_label_set_text(cui_Label_length, "Length 100 ml");
-    lv_obj_add_flag(cui_Label_length, LV_OBJ_FLAG_HIDDEN);     /// Flags
+    lv_obj_set_hidden(cui_Label_length, true);     /// Flags
     ui_object_set_themeable_style_property(cui_Label_length, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_fg_Primary);
     ui_object_set_themeable_style_property(cui_Label_length, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
@@ -69,7 +70,8 @@ lv_obj_t * ui_Container_home_sliders_create(lv_obj_t * comp_parent)
     lv_obj_set_align(cui_Container_strength_container, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(cui_Container_strength_container, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(cui_Container_strength_container, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(cui_Container_strength_container, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_strength_container, false);
+    lv_obj_set_scrollable(cui_Container_strength_container, false);      /// Flags
     lv_obj_set_style_pad_row(cui_Container_strength_container, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(cui_Container_strength_container, 9, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -79,8 +81,8 @@ lv_obj_t * ui_Container_home_sliders_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_Image_single_bean, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(cui_Image_single_bean, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(cui_Image_single_bean, LV_ALIGN_CENTER);
-    lv_obj_add_flag(cui_Image_single_bean, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_remove_flag(cui_Image_single_bean, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_adv_hittest(cui_Image_single_bean, true);     /// Flags
+    lv_obj_set_scrollable(cui_Image_single_bean, false);      /// Flags
     ui_object_set_themeable_style_property(cui_Image_single_bean, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_IMAGE_RECOLOR,
                                            _ui_theme_color_fg_Primary);
     ui_object_set_themeable_style_property(cui_Image_single_bean, LV_PART_MAIN | LV_STATE_DEFAULT,
@@ -127,8 +129,9 @@ lv_obj_t * ui_Container_home_sliders_create(lv_obj_t * comp_parent)
     lv_obj_set_align(cui_Container_length_container, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(cui_Container_length_container, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(cui_Container_length_container, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_add_flag(cui_Container_length_container, LV_OBJ_FLAG_HIDDEN);     /// Flags
-    lv_obj_remove_flag(cui_Container_length_container, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_hidden(cui_Container_length_container, true);     /// Flags
+    lv_obj_set_clickable(cui_Container_length_container, false);
+    lv_obj_set_scrollable(cui_Container_length_container, false);      /// Flags
     lv_obj_set_style_pad_row(cui_Container_length_container, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(cui_Container_length_container, 9, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -138,8 +141,8 @@ lv_obj_t * ui_Container_home_sliders_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_Image_single_cup, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(cui_Image_single_cup, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(cui_Image_single_cup, LV_ALIGN_CENTER);
-    lv_obj_add_flag(cui_Image_single_cup, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_remove_flag(cui_Image_single_cup, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_adv_hittest(cui_Image_single_cup, true);     /// Flags
+    lv_obj_set_scrollable(cui_Image_single_cup, false);      /// Flags
 
     lv_obj_t * cui_Slider_slider_length;
     cui_Slider_slider_length = lv_slider_create(cui_Container_length_container);

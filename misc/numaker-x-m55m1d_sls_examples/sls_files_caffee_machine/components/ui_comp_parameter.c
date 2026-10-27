@@ -16,7 +16,8 @@ lv_obj_t * ui_Container_parameter_create(lv_obj_t * comp_parent)
     lv_obj_set_height(cui_Container_parameter, lv_pct(100));
     lv_obj_set_width(cui_Container_parameter, LV_SIZE_CONTENT);   /// 100
     lv_obj_set_align(cui_Container_parameter, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Container_parameter, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_parameter, false);
+    lv_obj_set_scrollable(cui_Container_parameter, false);      /// Flags
     lv_obj_set_style_pad_left(cui_Container_parameter, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(cui_Container_parameter, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(cui_Container_parameter, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -30,7 +31,8 @@ lv_obj_t * ui_Container_parameter_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_Container_slider, 48);
     lv_obj_set_height(cui_Container_slider, 182);
     lv_obj_set_align(cui_Container_slider, LV_ALIGN_TOP_MID);
-    lv_obj_remove_flag(cui_Container_slider, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_slider, false);
+    lv_obj_set_scrollable(cui_Container_slider, false);      /// Flags
     lv_obj_set_style_pad_left(cui_Container_slider, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(cui_Container_slider, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(cui_Container_slider, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -71,8 +73,8 @@ lv_obj_t * ui_Container_parameter_create(lv_obj_t * comp_parent)
     lv_obj_set_x(cui_Image_slider_icon, 0);
     lv_obj_set_y(cui_Image_slider_icon, -4);
     lv_obj_set_align(cui_Image_slider_icon, LV_ALIGN_BOTTOM_MID);
-    lv_obj_add_flag(cui_Image_slider_icon, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_remove_flag(cui_Image_slider_icon, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_adv_hittest(cui_Image_slider_icon, true);     /// Flags
+    lv_obj_set_scrollable(cui_Image_slider_icon, false);      /// Flags
 
     lv_obj_t ** children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_CONTAINER_PARAMETER_NUM);
     children[UI_COMP_CONTAINER_PARAMETER_CONTAINER_PARAMETER] = cui_Container_parameter;

@@ -65,4 +65,4 @@ LR_ROM_2 SPIM0_START
 
 **Notice**:
 
-- The **lv_port_nuvoton** repository is already aligned with **LVGL v9.4.0**, which is different from the SLS alignment (**v9.3.0**). Therefore, users should copy the **sls_files** into the **lv_port_nuvoton** folder.
+- The **lv_port_nuvoton** repository is already aligned with **LVGL v9.6.0**, which is different from the SLS alignment (**v9.5.0**). Therefore, users should copy the **sls_files** into the **lv_port_nuvoton** folder.

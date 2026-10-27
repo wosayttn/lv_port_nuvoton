@@ -18,7 +18,8 @@ lv_obj_t * ui_Container_Slider3_create(lv_obj_t * comp_parent)
     lv_obj_set_x(cui_Container_Slider3, -18);
     lv_obj_set_y(cui_Container_Slider3, 129);
     lv_obj_set_align(cui_Container_Slider3, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Container_Slider3, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_Slider3, false);
+    lv_obj_set_scrollable(cui_Container_Slider3, false);      /// Flags
 
     lv_obj_t * cui_Slider_Slider2;
     cui_Slider_Slider2 = lv_slider_create(cui_Container_Slider3);

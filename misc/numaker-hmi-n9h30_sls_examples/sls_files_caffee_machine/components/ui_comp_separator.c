@@ -20,7 +20,8 @@ lv_obj_t * ui_Container_separator_create(lv_obj_t * comp_parent)
     lv_obj_set_align(cui_Container_separator, LV_ALIGN_RIGHT_MID);
     lv_obj_set_flex_flow(cui_Container_separator, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(cui_Container_separator, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(cui_Container_separator, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_separator, false);
+    lv_obj_set_scrollable(cui_Container_separator, false);      /// Flags
 
     lv_obj_t * cui_Panel_top_panel;
     cui_Panel_top_panel = lv_obj_create(cui_Container_separator);
@@ -29,7 +30,7 @@ lv_obj_t * ui_Container_separator_create(lv_obj_t * comp_parent)
     lv_obj_set_x(cui_Panel_top_panel, 0);
     lv_obj_set_y(cui_Panel_top_panel, 79);
     lv_obj_set_align(cui_Panel_top_panel, LV_ALIGN_TOP_MID);
-    lv_obj_remove_flag(cui_Panel_top_panel, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollable(cui_Panel_top_panel, false);      /// Flags
     lv_obj_set_style_bg_color(cui_Panel_top_panel, lv_color_hex(0x363C41), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(cui_Panel_top_panel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(cui_Panel_top_panel, lv_color_hex(0x797F82), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -44,7 +45,7 @@ lv_obj_t * ui_Container_separator_create(lv_obj_t * comp_parent)
     lv_obj_set_x(cui_Panel_bottom_panel, 0);
     lv_obj_set_y(cui_Panel_bottom_panel, 79);
     lv_obj_set_align(cui_Panel_bottom_panel, LV_ALIGN_TOP_MID);
-    lv_obj_remove_flag(cui_Panel_bottom_panel, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollable(cui_Panel_bottom_panel, false);      /// Flags
     lv_obj_set_style_bg_color(cui_Panel_bottom_panel, lv_color_hex(0x797F82), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(cui_Panel_bottom_panel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(cui_Panel_bottom_panel, lv_color_hex(0x363C41), LV_PART_MAIN | LV_STATE_DEFAULT);

@@ -20,7 +20,8 @@ lv_obj_t * ui_Container_steps_create(lv_obj_t * comp_parent)
     lv_obj_set_align(cui_Container_steps, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(cui_Container_steps, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(cui_Container_steps, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(cui_Container_steps, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(cui_Container_steps, false);
+    lv_obj_set_scrollable(cui_Container_steps, false);      /// Flags
     lv_obj_set_style_pad_row(cui_Container_steps, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(cui_Container_steps, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -29,7 +30,7 @@ lv_obj_t * ui_Container_steps_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_Panel_left_point, 20);
     lv_obj_set_height(cui_Panel_left_point, 20);
     lv_obj_set_align(cui_Panel_left_point, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Panel_left_point, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollable(cui_Panel_left_point, false);      /// Flags
     lv_obj_set_style_radius(cui_Panel_left_point, 50, LV_PART_MAIN | LV_STATE_DEFAULT);
     ui_object_set_themeable_style_property(cui_Panel_left_point, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
                                            _ui_theme_color_fg_Primary);
@@ -41,7 +42,7 @@ lv_obj_t * ui_Container_steps_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_Panel_right_point, 16);
     lv_obj_set_height(cui_Panel_right_point, 16);
     lv_obj_set_align(cui_Panel_right_point, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Panel_right_point, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollable(cui_Panel_right_point, false);      /// Flags
     lv_obj_set_style_radius(cui_Panel_right_point, 50, LV_PART_MAIN | LV_STATE_DEFAULT);
     ui_object_set_themeable_style_property(cui_Panel_right_point, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
                                            _ui_theme_color_fg_Disabled);

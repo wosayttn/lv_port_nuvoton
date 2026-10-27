@@ -17,7 +17,7 @@ lv_obj_t * ui_Dropdown_create(lv_obj_t * comp_parent)
     lv_obj_set_x(cui_Dropdown, 0);
     lv_obj_set_y(cui_Dropdown, 23);
     lv_obj_set_align(cui_Dropdown, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(cui_Dropdown, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollable(cui_Dropdown, false);      /// Flags
     lv_obj_set_style_bg_color(cui_Dropdown, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(cui_Dropdown, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(cui_Dropdown, lv_color_hex(0x293031), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -44,7 +44,7 @@ lv_obj_t * ui_Dropdown_create(lv_obj_t * comp_parent)
     lv_obj_set_height(cui_Dropdown2, 30);
     lv_obj_set_width(cui_Dropdown2, lv_pct(100));
     lv_obj_set_align(cui_Dropdown2, LV_ALIGN_BOTTOM_LEFT);
-    lv_obj_add_flag(cui_Dropdown2, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_set_scroll_on_focus(cui_Dropdown2, true);     /// Flags
     lv_obj_set_style_text_color(cui_Dropdown2, lv_color_hex(0xFFFAE6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(cui_Dropdown2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(cui_Dropdown2, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);

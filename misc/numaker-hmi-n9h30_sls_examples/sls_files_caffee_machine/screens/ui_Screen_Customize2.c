@@ -111,7 +111,7 @@ void ui_event_Customize2_CTA_container_CTA_container4_Panel_circle_panel(lv_even
 void ui_Screen_Customize2_screen_init(void)
 {
     ui_Screen_Customize2 = lv_obj_create(NULL);
-    lv_obj_remove_flag(ui_Screen_Customize2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollable(ui_Screen_Customize2, false);      /// Flags
     lv_obj_set_style_bg_color(ui_Screen_Customize2, lv_color_hex(0x303030), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Screen_Customize2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_image_src(ui_Screen_Customize2, &ui_img_bg_png, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -152,8 +152,8 @@ void ui_Screen_Customize2_screen_init(void)
     lv_obj_set_flex_flow(ui_Customize2_Container_full_content4, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_Customize2_Container_full_content4, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START,
                           LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(ui_Customize2_Container_full_content4,
-                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(ui_Customize2_Container_full_content4, false);
+    lv_obj_set_scrollable(ui_Customize2_Container_full_content4, false);      /// Flags
     lv_obj_set_style_pad_left(ui_Customize2_Container_full_content4, 24, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_Customize2_Container_full_content4, 24, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_Customize2_Container_full_content4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -165,11 +165,11 @@ void ui_Screen_Customize2_screen_init(void)
     lv_obj_set_x(ui_Customize2_selector_coffee_selector4, 0);
     lv_obj_set_y(ui_Customize2_selector_coffee_selector4, 0);
 
-    lv_obj_add_flag(ui_comp_get_child(ui_Customize2_selector_coffee_selector4,
-                                      UI_COMP_CONTAINER_SELECTOR_CONTAINER_SELECTOR__IMAGE_LEFT_CHEVRON), LV_OBJ_FLAG_HIDDEN);    /// Flags
+    lv_obj_set_hidden(ui_comp_get_child(ui_Customize2_selector_coffee_selector4,
+                                      UI_COMP_CONTAINER_SELECTOR_CONTAINER_SELECTOR__IMAGE_LEFT_CHEVRON), true);    /// Flags
 
-    lv_obj_add_flag(ui_comp_get_child(ui_Customize2_selector_coffee_selector4,
-                                      UI_COMP_CONTAINER_SELECTOR_CONTAINER_SELECTOR__IMAGE_RIGHT_CHEVRON), LV_OBJ_FLAG_HIDDEN);    /// Flags
+    lv_obj_set_hidden(ui_comp_get_child(ui_Customize2_selector_coffee_selector4,
+                                      UI_COMP_CONTAINER_SELECTOR_CONTAINER_SELECTOR__IMAGE_RIGHT_CHEVRON), true);    /// Flags
 
     ui_Customize2_Container_main_parameters4 = lv_obj_create(ui_Customize2_Container_full_content4);
     lv_obj_remove_style_all(ui_Customize2_Container_main_parameters4);
@@ -179,8 +179,8 @@ void ui_Screen_Customize2_screen_init(void)
     lv_obj_set_flex_flow(ui_Customize2_Container_main_parameters4, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_Customize2_Container_main_parameters4, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_START,
                           LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(ui_Customize2_Container_main_parameters4,
-                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(ui_Customize2_Container_main_parameters4, false);
+    lv_obj_set_scrollable(ui_Customize2_Container_main_parameters4, false);      /// Flags
     lv_obj_set_style_pad_left(ui_Customize2_Container_main_parameters4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_Customize2_Container_main_parameters4, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_Customize2_Container_main_parameters4, 24, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -193,7 +193,8 @@ void ui_Screen_Customize2_screen_init(void)
     lv_obj_set_align(ui_Customize2_Container_content1, LV_ALIGN_BOTTOM_MID);
     lv_obj_set_flex_flow(ui_Customize2_Container_content1, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_Customize2_Container_content1, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(ui_Customize2_Container_content1, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(ui_Customize2_Container_content1, false);
+    lv_obj_set_scrollable(ui_Customize2_Container_content1, false);      /// Flags
     lv_obj_set_style_pad_left(ui_Customize2_Container_content1, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_Customize2_Container_content1, 33, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_Customize2_Container_content1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -209,7 +210,8 @@ void ui_Screen_Customize2_screen_init(void)
     lv_obj_set_flex_flow(ui_Customize2_Container_sliders1, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_Customize2_Container_sliders1, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER,
                           LV_FLEX_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_Customize2_Container_sliders1, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_clickable(ui_Customize2_Container_sliders1, false);
+    lv_obj_set_scrollable(ui_Customize2_Container_sliders1, false);      /// Flags
     lv_obj_set_style_pad_left(ui_Customize2_Container_sliders1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_Customize2_Container_sliders1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_Customize2_Container_sliders1, 40, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -287,7 +289,7 @@ void ui_Screen_Customize2_screen_init(void)
     lv_obj_set_y(ui_Customize2_Label_num, 105);
     lv_obj_set_align(ui_Customize2_Label_num, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Customize2_Label_num, "x1");
-    lv_obj_add_flag(ui_Customize2_Label_num, LV_OBJ_FLAG_IGNORE_LAYOUT);     /// Flags
+    lv_obj_set_ignore_layout(ui_Customize2_Label_num, true);     /// Flags
     ui_object_set_themeable_style_property(ui_Customize2_Label_num, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
                                            _ui_theme_color_fg_Primary);
     ui_object_set_themeable_style_property(ui_Customize2_Label_num, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
