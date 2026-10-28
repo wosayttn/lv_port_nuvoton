@@ -14,7 +14,6 @@ concurrency:
 
 jobs:
   security_scan:
-    if: github.repository == 'wosayttn/lv_port_nuvoton'
     runs-on: ubuntu-24.04
 
     steps:

@@ -54,6 +54,10 @@ extern "C" {
 #   define __ARM_2D_HAS_ASYNC__                                     0
 #endif
 
+#ifndef __ARM_2D_CFG_CORE_DISABLE_ORIGIN_SUPPORT__
+#   define __ARM_2D_CFG_CORE_DISABLE_ORIGIN_SUPPORT__               0
+#endif
+
 // <o>Enable Anti-Alias support for all transform operations.
 //     <0=>     No Anti-Alias
 //     <1=>     Use 4x Supersampling Anti-Alias (4xSSAA)

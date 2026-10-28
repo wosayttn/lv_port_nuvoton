@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-    if: github.repository == 'wosayttn/lv_port_nuvoton'
     runs-on: ubuntu-24.04
 
     steps:
